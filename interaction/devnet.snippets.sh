@@ -6,7 +6,7 @@ PROXY=https://devnet-gateway.elrond.com
 CHAINID=D
 MY_LOGS="interaction-logs"
 
-DEPLOY_GAS="3000000"
+DEPLOY_GAS="5000000"
 
 TOKEN_ID="BCOIN-aafe6c"
 TOKEN_ID_HEX=$(echo -n ${TOKEN_ID} | xxd -p)
