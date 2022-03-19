@@ -1,0 +1,53 @@
+{
+  "name": "xlauncher-presale",
+  "comment": "deploy scenario",
+  "steps": [
+    {
+      "step": "externalSteps",
+      "path": "01-deploy.scen.json"
+    },
+    {
+      "step": "scCall",
+      "txId": "fund-contract",
+      "tx": {
+        "from": "address:owner",
+        "to": "sc:xlauncher-presale",
+        "function": "fundContract",
+        "esdtValue": [
+          {
+            "tokenIdentifier": "str:BCOIN-good00",
+            "value": "25,000,000,000,000,000"
+          }
+        ],
+        "gasLimit": "100,000,000",
+        "gasPrice": "0"
+      }
+    },
+    {
+      "step": "checkState",
+      "accounts": {
+        "address:owner": {
+          "nonce": "*",
+          "balance": "0",
+          "esdt": {
+            "str:BCOIN-good00": "75,000,000,000,000,000",
+            "str:BCOIN-bad000": "100,000,000,000,000,000"
+          },
+          "storage": {},
+          "code": ""
+        },
+        "sc:xlauncher-presale": {
+          "nonce": "*",
+          "balance": "0",
+          "esdt": {
+            "str:BCOIN-good00": "25,000,000,000,000,000"
+          },
+          "storage": {
+            "str:tokenId": "str:BCOIN-good00"
+          },
+          "code": "file:../output/xlauncher-presale.wasm"
+        }
+      }
+    }
+  ]
+}
