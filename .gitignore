@@ -8,6 +8,7 @@
 # The erdpy output
 output
 /wallets/users/testnet-bogdan.pem
+/wallets/users/alice.pem
 
 # interaction logs
 interaction-logs
