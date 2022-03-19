@@ -6,12 +6,17 @@ PROXY=https://devnet-gateway.elrond.com
 CHAINID=D
 MY_LOGS="interaction-logs"
 
-DEPLOY_GAS="2000000"
+DEPLOY_GAS="3000000"
+
+TOKEN_ID="BCOIN-aafe6c"
+TOKEN_ID_HEX=$(echo -n ${TOKEN_ID} | xxd -p)
+DEPLOY_ARGUMENTS="0x${TOKEN_ID_HEX}"
 
 deploy() {
   erdpy --verbose contract deploy --project=${PROJECT} --recall-nonce --pem=${PEM_FILE} \
     --gas-limit=${DEPLOY_GAS} --send --outfile="${MY_LOGS}/deploy-devnet.interaction.json" \
-    --proxy=${PROXY} --chain=${CHAINID} || return
+    --proxy=${PROXY} --chain=${CHAINID} \
+    --arguments ${DEPLOY_ARGUMENTS} || return
 
   TRANSACTION=$(erdpy data parse --file="${MY_LOGS}/deploy-devnet.interaction.json" --expression="data['emitted_tx']['hash']")
   ADDRESS=$(erdpy data parse --file="${MY_LOGS}/deploy-devnet.interaction.json" --expression="data['emitted_tx']['address']")
