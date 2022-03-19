@@ -32,7 +32,7 @@ deploy() {
   echo "Smart contract address: ${ADDRESS}"
 }
 
-fundContract(){
+fundContract() {
   method_name="0x$(echo -n 'fundContract' | xxd -p -u | tr -d '\n')"
   token_id="0x$(echo -n ${TOKEN_ID} | xxd -p -u | tr -d '\n')"
   amount="25${MY_DECIMALS}"
@@ -44,4 +44,9 @@ fundContract(){
     --arguments $token_id $amount $method_name \
     --send \
     --outfile="${MY_LOGS}/fundContract-${ENV_LOGS}.json"
+}
+
+getBalance() {
+  erdpy --verbose contract query ${ADDRESS} --function="getBalance" \
+    --proxy=${PROXY}
 }
