@@ -51,3 +51,8 @@ getBalance() {
   erdpy --verbose contract query ${ADDRESS} --function="getBalance" \
     --proxy=${PROXY}
 }
+
+getPrice(){
+  erdpy --verbose contract query ${ADDRESS} --function="getPrice" \
+    --proxy=${PROXY}
+}
