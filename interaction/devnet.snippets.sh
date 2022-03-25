@@ -14,13 +14,14 @@ DEPLOY_GAS="15000000"
 
 TOKEN_ID="BCOIN-aafe6c"
 TOKEN_ID_HEX=$(echo -n ${TOKEN_ID} | xxd -p)
-DEPLOY_ARGUMENTS="0x${TOKEN_ID_HEX}"
 
 deploy() {
+  local INITIAL_PRICE=100
+
   erdpy --verbose contract deploy --project=${PROJECT} --recall-nonce --pem=${PEM_FILE} \
     --gas-limit=${DEPLOY_GAS} --send --outfile="${MY_LOGS}/deploy-${ENV_LOGS}.json" \
     --proxy=${PROXY} --chain=${CHAINID} \
-    --arguments ${DEPLOY_ARGUMENTS} || return
+    --arguments "0x${TOKEN_ID_HEX}" ${INITIAL_PRICE} || return
 
   TRANSACTION=$(erdpy data parse --file="${MY_LOGS}/deploy-${ENV_LOGS}.json" --expression="data['emitted_tx']['hash']")
   ADDRESS=$(erdpy data parse --file="${MY_LOGS}/deploy-${ENV_LOGS}.json" --expression="data['emitted_tx']['address']")
