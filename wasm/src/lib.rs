@@ -9,6 +9,8 @@ elrond_wasm_node::wasm_endpoints! {
     (
         fundContract
         getBalance
+        getMaxAmount
+        getMinAmount
         getPrice
         getTokenId
     )

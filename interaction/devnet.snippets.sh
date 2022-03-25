@@ -16,7 +16,9 @@ TOKEN_ID="BCOIN-aafe6c"
 TOKEN_ID_HEX=$(echo -n ${TOKEN_ID} | xxd -p)
 
 deploy() {
-  local INITIAL_PRICE=100
+  local INITIAL_PRICE=100000000000000000
+  local MIN_AMOUNT=10000000000000000
+  local MAX_AMOUNT=10000000000000000000
 
   erdpy --verbose contract deploy --project=${PROJECT} --recall-nonce --pem=${PEM_FILE} \
     --gas-limit=${DEPLOY_GAS} --send --outfile="${MY_LOGS}/deploy-${ENV_LOGS}.json" \
