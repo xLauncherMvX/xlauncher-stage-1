@@ -10,7 +10,7 @@ CHAINID=D
 MY_LOGS="interaction-logs"
 ENV_LOGS="devnet"
 
-DEPLOY_GAS="15000000"
+
 
 TOKEN_ID="BCOIN-aafe6c"
 TOKEN_ID_HEX=$(echo -n ${TOKEN_ID} | xxd -p)
@@ -21,7 +21,7 @@ deploy() {
   local MAX_AMOUNT=10000000000000000000
 
   erdpy --verbose contract deploy --project=${PROJECT} --recall-nonce --pem=${PEM_FILE} \
-    --gas-limit=${DEPLOY_GAS} --send --outfile="${MY_LOGS}/deploy-${ENV_LOGS}.json" \
+    --gas-limit=30000000 --send --outfile="${MY_LOGS}/deploy-${ENV_LOGS}.json" \
     --proxy=${PROXY} --chain=${CHAINID} \
     --arguments "0x${TOKEN_ID_HEX}" ${INITIAL_PRICE} ${MIN_AMOUNT} ${MAX_AMOUNT} || return
 
@@ -68,3 +68,14 @@ getMaxAmount(){
    erdpy --verbose contract query ${ADDRESS} --function="getMaxAmount" \
      --proxy=${PROXY}
  }
+
+buyTokens(){
+  erdpy --verbose contract call ${ADDRESS} --recall-nonce \
+      --pem=${PEM_FILE} \
+      --gas-limit=3000000 \
+      --function="buy" \
+      --value=1000000000000000000 \
+      --proxy=${PROXY} --chain=${CHAINID} \
+      --send \
+      --outfile="${MY_LOGS}/buyTokens-${ENV_LOGS}.json"
+}
