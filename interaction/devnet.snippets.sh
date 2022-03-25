@@ -1,5 +1,6 @@
 PROJECT="${PWD}"
 PEM_FILE="${PROJECT}/../walets/users/x-launcher-owner-devnet.pem"
+CHESSOUT_PEM_FILE="${PROJECT}/../walets/users/test-chessout.pem"
 ADDRESS=$(erdpy data load --key=address-devnet)
 DEPLOY_TRANSACTION=$(erdpy data load --key=deployTransaction-devnet)
 MY_DECIMALS="000000000000000000"
@@ -71,7 +72,7 @@ getMaxAmount(){
 
 buyTokens(){
   erdpy --verbose contract call ${ADDRESS} --recall-nonce \
-      --pem=${PEM_FILE} \
+      --pem=${CHESSOUT_PEM_FILE} \
       --gas-limit=3000000 \
       --function="buy" \
       --value=1000000000000000000 \
