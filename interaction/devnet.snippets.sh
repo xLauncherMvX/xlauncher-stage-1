@@ -23,7 +23,7 @@ deploy() {
   erdpy --verbose contract deploy --project=${PROJECT} --recall-nonce --pem=${PEM_FILE} \
     --gas-limit=${DEPLOY_GAS} --send --outfile="${MY_LOGS}/deploy-${ENV_LOGS}.json" \
     --proxy=${PROXY} --chain=${CHAINID} \
-    --arguments "0x${TOKEN_ID_HEX}" ${INITIAL_PRICE} || return
+    --arguments "0x${TOKEN_ID_HEX}" ${INITIAL_PRICE} ${MIN_AMOUNT} ${MAX_AMOUNT} || return
 
   TRANSACTION=$(erdpy data parse --file="${MY_LOGS}/deploy-${ENV_LOGS}.json" --expression="data['emitted_tx']['hash']")
   ADDRESS=$(erdpy data parse --file="${MY_LOGS}/deploy-${ENV_LOGS}.json" --expression="data['emitted_tx']['address']")
@@ -58,3 +58,13 @@ getPrice(){
   erdpy --verbose contract query ${ADDRESS} --function="getPrice" \
     --proxy=${PROXY}
 }
+
+getMinAmount(){
+  erdpy --verbose contract query ${ADDRESS} --function="getMinAmount" \
+    --proxy=${PROXY}
+}
+
+getMaxAmount(){
+   erdpy --verbose contract query ${ADDRESS} --function="getMaxAmount" \
+     --proxy=${PROXY}
+ }
