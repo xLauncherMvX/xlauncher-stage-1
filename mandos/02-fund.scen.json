@@ -43,7 +43,8 @@
             "str:BCOIN-good00": "25,000,000,000,000,000"
           },
           "storage": {
-            "str:tokenId": "str:BCOIN-good00"
+            "str:tokenId": "str:BCOIN-good00",
+            "str:price": "100"
           },
           "code": "file:../output/xlauncher-presale.wasm"
         }
