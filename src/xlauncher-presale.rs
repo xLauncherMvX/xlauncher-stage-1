@@ -3,6 +3,9 @@
 elrond_wasm::imports!();
 elrond_wasm::derive_imports!();
 
+const EGLD_DECIMALS_VALUE: u64 = 1_000_000_000_000_000_000;
+const EGLD_ZERO: u64 = 0;
+
 #[elrond_wasm::derive::contract]
 pub trait XLauncherPresale {
     #[init]
@@ -37,6 +40,52 @@ pub trait XLauncherPresale {
         let my_token_id = self.token_id().get();
         let balance: BigUint = self.blockchain().get_sc_balance(&my_token_id, 0);
         return balance;
+    }
+
+    #[payable("EGLD")]
+    #[endpoint]
+    fn buy(
+        &self,
+    ) {
+        let (payment_amount, payment_token) = self.call_value().payment_token_pair();
+        require!(payment_token.is_egld(),"Only EGLD");
+        require!(
+            payment_amount >= self.min_amount().get(),
+            "Payment amount is to low"
+        );
+        require!(
+            payment_amount <= self.max_amount().get(),
+            "Payment amount is to high"
+        );
+        let balance = self.get_balance();
+        require!(
+
+            balance > EGLD_ZERO,
+            "No more tokens to sale."
+        );
+        let current_price = self.price().get();
+        let one_egld = BigUint::from(EGLD_DECIMALS_VALUE);
+        let result_edst_token_amount = (&current_price * &payment_amount) / one_egld;
+        require!(
+            balance > result_edst_token_amount,
+            "Not enough tokens for sale."
+        );
+
+        //sent token to caller
+        let caller = self.blockchain().get_caller();
+        let token_id_val = self.token_id().get();
+        self.send().direct(
+            &caller,
+            &token_id_val,
+            0, &result_edst_token_amount,
+            &[],
+        );
+        let owner = self.blockchain().get_owner_address();
+        self.send().direct_egld(
+            &owner,
+            &payment_amount,
+            &[],
+        )
     }
 
     // storage
