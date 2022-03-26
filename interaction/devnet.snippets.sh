@@ -11,8 +11,8 @@ CHAINID=D
 MY_LOGS="interaction-logs"
 ENV_LOGS="devnet"
 
-#TOKEN_ID="XLH-06bd23"
-TOKEN_ID="BCOIN-aafe6c"
+TOKEN_ID="XLH-06bd23"
+#TOKEN_ID="BCOIN-aafe6c"
 TOKEN_ID_HEX=$(echo -n ${TOKEN_ID} | xxd -p)
 
 deploy() {
