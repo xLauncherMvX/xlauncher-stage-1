@@ -68,6 +68,13 @@
             "outputs": []
         },
         {
+            "name": "collect",
+            "onlyOwner": true,
+            "mutability": "mutable",
+            "inputs": [],
+            "outputs": []
+        },
+        {
             "name": "getTokenId",
             "mutability": "readonly",
             "inputs": [],

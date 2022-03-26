@@ -45,7 +45,7 @@ pub trait XLauncherPresale {
     #[payable("EGLD")]
     #[endpoint]
     fn buy(
-        &self,
+        &self
     ) {
         let (payment_amount, payment_token) = self.call_value().payment_token_pair();
         require!(payment_token.is_egld(),"Only EGLD");
@@ -59,7 +59,6 @@ pub trait XLauncherPresale {
         );
         let balance = self.get_balance();
         require!(
-
             balance > EGLD_ZERO,
             "No more tokens to sale."
         );
@@ -80,13 +79,21 @@ pub trait XLauncherPresale {
             0, &result_edst_token_amount,
             &[],
         );
-        let owner = self.blockchain().get_owner_address();
+       /* let owner = self.blockchain().get_owner_address();
         self.send().direct_egld(
             &owner,
             &payment_amount,
             &[],
-        )
+        )*/
     }
+
+
+    #[only_owner]
+    #[endpoint]
+    fn collect(&self){
+
+    }
+
 
     // storage
     #[view(getTokenId)]
