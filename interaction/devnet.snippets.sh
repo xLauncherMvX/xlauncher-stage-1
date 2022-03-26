@@ -13,7 +13,7 @@ ENV_LOGS="devnet"
 
 
 
-TOKEN_ID="XLH-06bd23"
+#TOKEN_ID="XLH-06bd23"
 TOKEN_ID_HEX=$(echo -n ${TOKEN_ID} | xxd -p)
 
 deploy() {
@@ -39,7 +39,7 @@ deploy() {
 fundContract() {
   method_name="0x$(echo -n 'fundContract' | xxd -p -u | tr -d '\n')"
   token_id="0x$(echo -n ${TOKEN_ID} | xxd -p -u | tr -d '\n')"
-  amount="100000${MY_DECIMALS}"
+  amount="13000000${MY_DECIMALS}"
   erdpy --verbose contract call ${ADDRESS} --recall-nonce \
     --pem=${PEM_FILE} \
     --gas-limit=2000000 \
@@ -79,4 +79,14 @@ buyTokens(){
       --proxy=${PROXY} --chain=${CHAINID} \
       --send \
       --outfile="${MY_LOGS}/buyTokens-${ENV_LOGS}.json"
+}
+
+collect() {
+  erdpy --verbose contract call ${ADDRESS} --recall-nonce \
+    --pem=${PEM_FILE} \
+    --gas-limit=2000000 \
+    --proxy=${PROXY} --chain=${CHAINID} \
+    --function="collect" \
+    --send \
+    --outfile="${MY_LOGS}/fundContract-${ENV_LOGS}.json"
 }

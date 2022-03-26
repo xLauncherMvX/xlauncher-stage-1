@@ -4,7 +4,7 @@ elrond_wasm::imports!();
 elrond_wasm::derive_imports!();
 
 const EGLD_DECIMALS_VALUE: u64 = 1_000_000_000_000_000_000;
-const EGLD_ZERO: u64 = 0;
+const ZERO: u64 = 0;
 
 #[elrond_wasm::derive::contract]
 pub trait XLauncherPresale {
@@ -59,7 +59,7 @@ pub trait XLauncherPresale {
         );
         let balance = self.get_token_balance();
         require!(
-            balance > EGLD_ZERO,
+            balance > ZERO,
             "No more tokens to sale."
         );
         let current_price = self.price().get();
@@ -93,21 +93,26 @@ pub trait XLauncherPresale {
         let owner = self.blockchain().get_owner_address();
 
         let sc_address: ManagedAddress = self.blockchain().get_sc_address();
-        let egld_balance: BigUint = self.blockchain().get_balance(&sc_address);
+        let egld_balance = self.blockchain().get_balance(&sc_address);
 
         let my_token_id = self.token_id().get();
-        let token_balance: BigUint = self.blockchain().get_sc_balance(&my_token_id, 0);
+        let token_balance = self.blockchain().get_sc_balance(&my_token_id, 0);
 
-        self.send().direct(
-            &owner,
-            &my_token_id,
-            0, &token_balance,
-            &[]);
+        let big_zero: BigUint = BigUint::from(0u32);
+        if big_zero < token_balance {
+            self.send().direct(
+                &owner,
+                &my_token_id,
+                0, &token_balance,
+                &[]);
+        }
 
-        self.send().direct_egld(
-            &owner,
-            &egld_balance,
-            &[])
+        if big_zero < egld_balance {
+            self.send().direct_egld(
+                &owner,
+                &egld_balance,
+                &[])
+        }
     }
 
 
