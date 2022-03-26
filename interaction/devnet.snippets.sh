@@ -17,7 +17,7 @@ TOKEN_ID="BCOIN-aafe6c"
 TOKEN_ID_HEX=$(echo -n ${TOKEN_ID} | xxd -p)
 
 deploy() {
-  local INITIAL_PRICE=100000000000000000
+  local INITIAL_PRICE=25000000000000000000000
   local MIN_AMOUNT=10000000000000000
   local MAX_AMOUNT=10000000000000000000
 
@@ -39,7 +39,7 @@ deploy() {
 fundContract() {
   method_name="0x$(echo -n 'fundContract' | xxd -p -u | tr -d '\n')"
   token_id="0x$(echo -n ${TOKEN_ID} | xxd -p -u | tr -d '\n')"
-  amount="25${MY_DECIMALS}"
+  amount="100000${MY_DECIMALS}"
   erdpy --verbose contract call ${ADDRESS} --recall-nonce \
     --pem=${PEM_FILE} \
     --gas-limit=2000000 \
