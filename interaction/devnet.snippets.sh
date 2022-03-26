@@ -49,8 +49,8 @@ fundContract() {
     --outfile="${MY_LOGS}/fundContract-${ENV_LOGS}.json"
 }
 
-getBalance() {
-  erdpy --verbose contract query ${ADDRESS} --function="getBalance" \
+getTokenBalance() {
+  erdpy --verbose contract query ${ADDRESS} --function="getTokenBalance" \
     --proxy=${PROXY}
 }
 
@@ -83,7 +83,7 @@ buyTokens(){
 collect() {
   erdpy --verbose contract call ${ADDRESS} --recall-nonce \
     --pem=${PEM_FILE} \
-    --gas-limit=2000000 \
+    --gas-limit=5000000 \
     --proxy=${PROXY} --chain=${CHAINID} \
     --function="collect" \
     --send \
