@@ -35,8 +35,8 @@ pub trait XLauncherPresale {
         require!( my_token_id == token_identifier, "Invalid fund token" )
     }
 
-    #[view(getBalance)]
-    fn get_balance(&self) -> BigUint {
+    #[view(getTokenBalance)]
+    fn get_token_balance(&self) -> BigUint {
         let my_token_id = self.token_id().get();
         let balance: BigUint = self.blockchain().get_sc_balance(&my_token_id, 0);
         return balance;
@@ -57,7 +57,7 @@ pub trait XLauncherPresale {
             payment_amount <= self.max_amount().get(),
             "Payment amount is to high"
         );
-        let balance = self.get_balance();
+        let balance = self.get_token_balance();
         require!(
             balance > EGLD_ZERO,
             "No more tokens to sale."
@@ -77,21 +77,37 @@ pub trait XLauncherPresale {
             &caller,
             &token_id_val,
             0, &result_edst_token_amount,
-            &[],
-        );
-       /* let owner = self.blockchain().get_owner_address();
-        self.send().direct_egld(
-            &owner,
-            &payment_amount,
-            &[],
-        )*/
+            &[]);
+        /* let owner = self.blockchain().get_owner_address();
+         self.send().direct_egld(
+             &owner,
+             &payment_amount,
+             &[],
+         )*/
     }
 
 
     #[only_owner]
     #[endpoint]
-    fn collect(&self){
+    fn collect(&self) {
+        let owner = self.blockchain().get_owner_address();
 
+        let sc_address: ManagedAddress = self.blockchain().get_sc_address();
+        let egld_balance: BigUint = self.blockchain().get_balance(&sc_address);
+
+        let my_token_id = self.token_id().get();
+        let token_balance: BigUint = self.blockchain().get_sc_balance(&my_token_id, 0);
+
+        self.send().direct(
+            &owner,
+            &my_token_id,
+            0, &token_balance,
+            &[]);
+
+        self.send().direct_egld(
+            &owner,
+            &egld_balance,
+            &[])
     }
 
 

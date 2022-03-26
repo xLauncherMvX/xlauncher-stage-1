@@ -49,7 +49,7 @@
             "outputs": []
         },
         {
-            "name": "getBalance",
+            "name": "getTokenBalance",
             "mutability": "readonly",
             "inputs": [],
             "outputs": [
