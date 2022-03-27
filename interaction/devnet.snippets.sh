@@ -15,10 +15,11 @@ TOKEN_ID="XLH-06bd23"
 #TOKEN_ID="BCOIN-aafe6c"
 TOKEN_ID_HEX=$(echo -n ${TOKEN_ID} | xxd -p)
 
+INITIAL_PRICE=25000000000000000000000
+MIN_AMOUNT=10000000000000000
+MAX_AMOUNT=10000000000000000000
+
 deploy() {
-  local INITIAL_PRICE=25000000000000000000000
-  local MIN_AMOUNT=10000000000000000
-  local MAX_AMOUNT=10000000000000000000
 
   erdpy --verbose contract deploy --project=${PROJECT} --recall-nonce --pem=${PEM_FILE} \
     --gas-limit=30000000 --send --outfile="${MY_LOGS}/deploy-${ENV_LOGS}.json" \
@@ -34,6 +35,15 @@ deploy() {
   echo ""
   echo "Smart contract address: ${ADDRESS}"
 }
+
+updateContract() {
+
+    erdpy --verbose contract upgrade ${ADDRESS} --project=${PROJECT} --recall-nonce --pem=${PEM_FILE} \
+      --gas-limit=30000000 --send --outfile="${MY_LOGS}/deploy-${ENV_LOGS}.json" \
+      --proxy=${PROXY} --chain=${CHAINID} \
+      --arguments "0x${TOKEN_ID_HEX}" ${INITIAL_PRICE} ${MIN_AMOUNT} ${MAX_AMOUNT}
+}
+
 
 fundContract() {
   method_name="0x$(echo -n 'fundContract' | xxd -p -u | tr -d '\n')"
