@@ -20,6 +20,42 @@ export default function ScratchBare() {
 
   const { WebWalletLoginButton, WalletConnectLoginButton } = DappUI;
 
+  let connectSection = timeToConnect ? (
+    <VStack>
+      <Text>Time to connect</Text>
+      <HStack>
+        <Button>
+          <WebWalletLoginButton
+            callbackRoute="/"
+            loginButtonText={"Web wallet"}
+          />
+        </Button>
+        <Button>
+          <WalletConnectLoginButton
+            callbackRoute="/wallet"
+            loginButtonText={"Maiar"}
+          />
+        </Button>
+      </HStack>
+    </VStack>
+  ) : (
+    ""
+  );
+
+  let connectButton = isLoggedIn ? (
+    <Button onClick={() => logout(`${window.location.origin}/`)}>
+      Disconnect
+    </Button>
+  ) : (
+    <Button onClick={() => setTimeToConnect(true)}> Connect</Button>
+  );
+
+  let addressSection = isLoggedIn ? (
+    <Text paddingTop={2}>My wallet: {address}</Text>
+  ) : (
+    ""
+  );
+
   return (
     <Grid>
       <Flex backgroundColor={'gray.900'} padding={5}>
@@ -27,12 +63,12 @@ export default function ScratchBare() {
           <Link to="/home">Home</Link>
         </Button>
         <Spacer />
-        <Text>--address--</Text>
+        {addressSection}
         <Spacer />
-        <Button>Connect</Button>
+        {connectButton}
       </Flex>
       <Container>
-        <Text>The rest</Text>
+        {connectSection}
       </Container>
     </Grid>
   );
