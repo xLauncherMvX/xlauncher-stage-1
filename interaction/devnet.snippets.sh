@@ -1,6 +1,5 @@
 PROJECT="${PWD}"
 PEM_FILE="${PROJECT}/../walets/users/x-launcher-owner-devnet.pem"
-CHESSOUT_PEM_FILE="${PROJECT}/../walets/users/test-chessout.pem"
 ADDRESS=$(erdpy data load --key=address-devnet)
 DEPLOY_TRANSACTION=$(erdpy data load --key=deployTransaction-devnet)
 MY_DECIMALS="000000000000000000"
