@@ -32,7 +32,7 @@ export default function ScratchBare() {
         </Button>
         <Button>
           <WalletConnectLoginButton
-            callbackRoute="/wallet"
+            callbackRoute="/"
             loginButtonText={"Maiar"}
           />
         </Button>
