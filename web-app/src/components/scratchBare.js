@@ -10,6 +10,7 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
 
 
 export default function ScratchBare() {
@@ -17,7 +18,7 @@ export default function ScratchBare() {
   return (
     <Grid>
       <Flex backgroundColor={"gray.900"} padding={5}>
-        <Button disabled={true}>Home</Button>
+        <Button ><Link to="/home">Home</Link></Button>
         <Spacer />
         <Text>--address--</Text>
         <Spacer />

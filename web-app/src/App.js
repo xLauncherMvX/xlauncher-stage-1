@@ -12,6 +12,7 @@ import { ColorModeSwitcher } from './ColorModeSwitcher';
 import { Logo } from './Logo';
 import theme from "./theme/defaultDark";
 import ScratchBare from './components/scratchBare';
+import { Outlet } from 'react-router-dom';
 
 function App() {
   return (
@@ -19,10 +20,7 @@ function App() {
         <Grid >
             <ScratchBare/>
           <VStack >
-            <Text>
-              X-launcher
-            </Text>
-            
+          <Outlet/>
           </VStack>
         </Grid>
     </ChakraProvider>
