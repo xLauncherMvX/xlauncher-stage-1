@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Box,
   Button,
@@ -9,12 +9,17 @@ import {
   Spacer,
   Text,
   VStack,
-} from "@chakra-ui/react";
+} from '@chakra-ui/react';
 
+import { Link } from 'react-router-dom';
 
 export default function Home() {
-
   return (
-    <Text>Home</Text>
+    <Container>
+      <Text>Home</Text>
+      <Button>
+        <Link to="/">Landing page</Link>
+      </Button>
+    </Container>
   );
 }
