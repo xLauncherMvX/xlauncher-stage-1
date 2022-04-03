@@ -37,6 +37,7 @@ import {
 
 import { Link } from 'react-router-dom';
 import { FaEuroSign, FaGhost } from 'react-icons/fa';
+import Pricing from './pricing';
 
 const { SignTransactionsModals, TransactionsToastList } = DappUI;
 const { sendTransactions } = transactionServices;
@@ -80,6 +81,9 @@ export default function Buy() {
 
   return (
     <Grid templateColumns="repeat(3, 1fr)" gap={200} mt={100}>
+      <GridItem>
+        <Pricing/>
+      </GridItem>
       <GridItem h="400" bg="orange.400" p={10}>
         <Text color={'black'} fontWeight="bold" textAlign={'center'}>
           Small Package
@@ -103,11 +107,8 @@ export default function Buy() {
           Medium Package
         </Text>
       </GridItem>
-      <GridItem h="400" bg="green.500" p={10}>
-        <Text color={'black'} fontWeight="bold" textAlign={'center'}>
-          Large Package
-        </Text>
-      </GridItem>
+    
+      
       <SignTransactionsModals className="custom-class-for-modals" />
       <Box maxWidth={"xl"}><TransactionsToastList /></Box>
       
