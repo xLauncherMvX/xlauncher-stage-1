@@ -52,7 +52,7 @@ export default function BuyComponent() {
 
     console.log("Formatting transaction");
     const createTournamentTransaction = {
-      value: "1000000000000000000",
+      value: egoldAmount,
       data: [
         "buy",
       ].join("@"),
@@ -82,7 +82,7 @@ export default function BuyComponent() {
   return (
     <Grid templateColumns="repeat(3, 1fr)" gap={200} mt={100}>
       <GridItem>
-        <Pricing/>
+        <Pricing contractByXlh={contractByXlh}/>
       </GridItem>
       <GridItem h="400" bg="orange.400" p={10}>
         <Text color={'black'} fontWeight="bold" textAlign={'center'}>

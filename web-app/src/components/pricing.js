@@ -13,7 +13,7 @@ import {
 import { CheckIcon, MinusIcon, PlusSquareIcon } from '@chakra-ui/icons';
 import { FaPlus } from 'react-icons/fa';
 
-export default function Pricing() {
+export default function Pricing({ contractByXlh }) {
   const [xlhAmount, setXlhAmount] = React.useState(6250);
   const [egldAmount, setEgldAmount] = React.useState(250000000000000000);
   const [egldDisplay, setEgldDisplay] = React.useState(0.26);
@@ -83,6 +83,7 @@ export default function Pricing() {
           </List>
 
           <Button
+           onClick={()=>contractByXlh(egldAmount)}
             mt={10}
             w={'full'}
             bg={'green.400'}
