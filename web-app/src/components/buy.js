@@ -51,15 +51,12 @@ export default function Buy() {
 
     console.log("Formatting transaction");
     const createTournamentTransaction = {
-      value: "0",
+      value: "1000000000000000000",
       data: [
-        "createTournament",
-        Buffer.from("tournament-04").toString("hex"),
-        Buffer.from("EGLD").toString("hex"),
-        new BigUIntValue(Balance.egld(11).valueOf()),
+        "buy",
       ].join("@"),
       receiver:
-        "erd1qqqqqqqqqqqqqpgqgufwtgw9ax4hvt6g956rxg7nw3u349ucd8sskgy2sm",
+        "erd1qqqqqqqqqqqqqpgqrvc0vklltk8us4ftcf79cm3fhx7vtm72pa7q7zql3t",
       gasLimit: 10_000_000,
     };
 
@@ -112,7 +109,8 @@ export default function Buy() {
         </Text>
       </GridItem>
       <SignTransactionsModals className="custom-class-for-modals" />
-      <TransactionsToastList />
+      <Box maxWidth={"xl"}><TransactionsToastList /></Box>
+      
     </Grid>
   );
 }
