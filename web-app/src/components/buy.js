@@ -38,7 +38,7 @@ import {
 import { Link } from 'react-router-dom';
 import { FaEuroSign, FaGhost } from 'react-icons/fa';
 
-const { SignTransactionsModals } = DappUI;
+const { SignTransactionsModals, TransactionsToastList } = DappUI;
 const { sendTransactions } = transactionServices;
 
 export default function Buy() {
@@ -112,6 +112,7 @@ export default function Buy() {
         </Text>
       </GridItem>
       <SignTransactionsModals className="custom-class-for-modals" />
+      <TransactionsToastList />
     </Grid>
   );
 }
