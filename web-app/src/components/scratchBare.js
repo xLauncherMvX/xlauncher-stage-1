@@ -62,6 +62,9 @@ export default function ScratchBare() {
         <Button>
           <Link to="/home">Home</Link>
         </Button>
+        <Button ml={5}>
+        <Link to="/buy">Buy Page</Link>
+        </Button>
         <Spacer />
         {addressSection}
         <Spacer />
