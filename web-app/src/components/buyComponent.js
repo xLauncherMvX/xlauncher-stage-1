@@ -42,7 +42,7 @@ import Pricing from './pricing';
 const { SignTransactionsModals, TransactionsToastList } = DappUI;
 const { sendTransactions } = transactionServices;
 
-export default function Buy() {
+export default function BuyComponent() {
 
   const [transactionSessionId, setTransactionSessionId] = React.useState(null)
 
