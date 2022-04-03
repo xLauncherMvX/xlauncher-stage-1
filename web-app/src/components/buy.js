@@ -111,6 +111,7 @@ export default function Buy() {
           Large Package
         </Text>
       </GridItem>
+      <SignTransactionsModals className="custom-class-for-modals" />
     </Grid>
   );
 }
