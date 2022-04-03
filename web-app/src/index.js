@@ -4,7 +4,6 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import App from './App';
 import Home from './components/home';
-import Buy from './components/buy';
 import reportWebVitals from './reportWebVitals';
 import * as serviceWorker from './serviceWorker';
 
@@ -16,7 +15,6 @@ ReactDOM.render(
         <Route path="/" element={<App />}>
           <Route path="home" element={<Home />} />
           <Route path="unlock" element={<Home />} />
-          <Route path="buy" element={<Buy />} />
         </Route>
       </Routes>
     </BrowserRouter>
