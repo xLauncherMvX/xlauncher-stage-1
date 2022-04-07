@@ -6,7 +6,6 @@ import App from './App';
 import Home from './components/home';
 import reportWebVitals from './reportWebVitals';
 import * as serviceWorker from './serviceWorker';
-import BuyComponent from './components/buyComponent';
 
 ReactDOM.render(
   <StrictMode>
@@ -14,9 +13,6 @@ ReactDOM.render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />}>
-          <Route path="home" element={<Home />} />
-          <Route path="unlock" element={<Home />} />
-          <Route path="buy" element={<BuyComponent />} />
         </Route>
       </Routes>
     </BrowserRouter>

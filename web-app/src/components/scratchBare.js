@@ -18,11 +18,15 @@ export default function ScratchBare() {
   const isLoggedIn = Boolean(address);
   const [timeToConnect, setTimeToConnect] = React.useState(false);
 
-  const { WebWalletLoginButton, WalletConnectLoginButton } = DappUI;
+  const { 
+    WebWalletLoginButton, 
+    WalletConnectLoginButton,
+    LedgerLoginButton
+  } = DappUI;
 
   let connectSection = timeToConnect ? (
-    <VStack>
-      <Text>Time to connect</Text>
+    <VStack marginTop={50}>
+      <Text>Pick a login method</Text>
       <HStack>
         <Button>
           <WebWalletLoginButton
@@ -31,16 +35,28 @@ export default function ScratchBare() {
           />
         </Button>
         <Button>
+          <LedgerLoginButton
+            loginButtonText={"Ledger"}
+            callbackRoute="/"
+          />
+        </Button>
+        <Button>
           <WalletConnectLoginButton
             callbackRoute="/"
             loginButtonText={"Maiar"}
           />
         </Button>
+      
       </HStack>
     </VStack>
   ) : (
     ""
   );
+
+  let connectLoggedinSection = " ";
+  if(!isLoggedIn){
+    connectLoggedinSection = connectSection;
+  }
 
   let connectButton = isLoggedIn ? (
     <Button onClick={() => logout(`${window.location.origin}/`)}>
@@ -59,19 +75,13 @@ export default function ScratchBare() {
   return (
     <Grid>
       <Flex backgroundColor={'gray.900'} padding={5}>
-        <Button>
-          <Link to="/home">Home</Link>
-        </Button>
-        <Button ml={5}>
-        <Link to="/buy">Buy Page</Link>
-        </Button>
         <Spacer />
         {addressSection}
         <Spacer />
         {connectButton}
       </Flex>
       <Container>
-        {connectSection}
+        {connectLoggedinSection}
       </Container>
     </Grid>
   );

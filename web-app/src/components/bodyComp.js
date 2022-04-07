@@ -83,37 +83,13 @@ export default function BuyComponent() {
     <Grid templateColumns="repeat(3, 1fr)" gap={200} mt={100}>
       <GridItem>
         <Pricing contractByXlh={contractByXlh}/>
-      </GridItem>
-      <GridItem h="400" bg="orange.400" p={10}>
-        <Text color={'black'} fontWeight="bold" textAlign={'center'}>
-          Small Package
-        </Text>
-        <Box>
-          <Center>
-            <Button
-              leftIcon={<FaEuroSign />}
-              colorScheme={'black'}
-              variant="outline"
-              mt={'10'}
-             onClick={() => contractByXlh(124)}
-            >
-              Buy
-            </Button>
-          </Center>
-        </Box>
-      </GridItem>
-      <GridItem h="400" bg="blue.400" p={10}>
-        <Text color={'black'} fontWeight="bold" textAlign={'center'}>
-          Medium Package
-        </Text>
-      </GridItem>
+      </GridItem> 
     
-      
       <SignTransactionsModals className="custom-class-for-modals" />
-      <Layout>
+      <Box>
         <TransactionsToastList />
         <NotificationModal />
-      </Layout>
+      </Box>
       
       
     </Grid>

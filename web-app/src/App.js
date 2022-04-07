@@ -12,6 +12,7 @@ import { ColorModeSwitcher } from './ColorModeSwitcher';
 import { Logo } from './Logo';
 import theme from './theme/defaultDark';
 import ScratchBare from './components/scratchBare';
+import BodyComp from './components/bodyComp';
 import { Outlet } from 'react-router-dom';
 import { DappProvider } from '@elrondnetwork/dapp-core';
 
@@ -30,6 +31,7 @@ function App() {
           <VStack>
             <Outlet />
           </VStack>
+          <BodyComp />
         </Grid>
       </DappProvider>
     </ChakraProvider>
