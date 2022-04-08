@@ -1,5 +1,6 @@
 import React from 'react';
 import CountdownTimer from './CountdownTimer';
+import { Progress } from '@chakra-ui/react';
 
 import '../custom.css';
 
@@ -13,6 +14,7 @@ export default function CountdownComponent() {
     <div className='center-countdown'>
       <p className='seedsale-text'>Seed Sale countdown started</p>
       <CountdownTimer targetDate={dateTimeAfterThreeDays} />
+      <Progress hasStripe value={64} />
     </div>
   );
 }

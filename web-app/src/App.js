@@ -40,12 +40,14 @@ function App() {
             <Outlet />
           </VStack>
           <VStack>
-    
+            <HStack>
               <CountdownComponent />
-              
-           
+            </HStack>    
+            <HStack>
+            <BodyComp />
+            </HStack>    
           </VStack>
-          <BodyComp />
+         
         </Grid>
       </DappProvider>
     </ChakraProvider>

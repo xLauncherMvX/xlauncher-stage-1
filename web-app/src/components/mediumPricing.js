@@ -14,19 +14,42 @@ import { CheckIcon, MinusIcon, PlusSquareIcon } from '@chakra-ui/icons';
 import { FaPlus } from 'react-icons/fa';
 
 export default function Pricing({ contractByXlh }) {
-  const [xlhAmount, setXlhAmount] = React.useState(6250);
-  const [egldAmount, setEgldAmount] = React.useState(250000000000000000);
+  const [xlhAmount, setXlhAmount] = React.useState(12500);
+  const [egldAmount, setEgldAmount] = React.useState(500000000000000000);
   const [egldDisplay, setEgldDisplay] = React.useState(0.26);
 
-  const inclementAmount = () => {
-    let egldInc = 250000000000000000;
+  const increaseAmount = () => {
+    let egldInc = 500000000000000000;
     let newEgldVal = egldAmount + egldInc;
-    setEgldAmount(newEgldVal);
+    if(newEgldVal <= 5000000000000000000){ 
+      setEgldAmount(newEgldVal);
+      console.log(newEgldVal);
+    }
 
-    let xlhInc = 6250;
+    let xlhInc = 12500;
     let newXlhVal = xlhAmount + xlhInc;
-    setXlhAmount(newXlhVal);
-    console.log('Time to increment');
+    if(newXlhVal <= 125000){ 
+      setXlhAmount(newXlhVal);
+      console.log(newXlhVal);
+    }    
+    console.log('Time to increase');
+  };
+
+  const decreaseAmount = () => {
+    let egldInc = 500000000000000000;
+    let newEgldVal = egldAmount - egldInc;
+    if(newEgldVal > 0){      
+      setEgldAmount(newEgldVal);
+      console.log(newEgldVal);
+    }
+    
+    let xlhInc = 12500;
+    let newXlhVal = xlhAmount - xlhInc;
+    if(newXlhVal > 0){ 
+      setXlhAmount(newXlhVal);
+      console.log(newXlhVal);
+    }
+    console.log('Time to decrease');
   };
 
   return (
@@ -48,10 +71,10 @@ export default function Pricing({ contractByXlh }) {
           <Text
             fontSize={'sm'}
             fontWeight={500}
-            bg={useColorModeValue('green.50', 'green.900')}
+            bg={useColorModeValue('blue.50', 'blue.900')}
             p={2}
             px={3}
-            color={'green.500'}
+            color={'white'}
             rounded={'full'}
           >
             $XLH
@@ -68,17 +91,17 @@ export default function Pricing({ contractByXlh }) {
         <Box bg={useColorModeValue('gray.50', 'gray.900')} px={6} py={10}>
           <List spacing={3}>
             <ListItem>
-              <ListIcon as={CheckIcon} color="green.400" />
-              {egldAmount}
+              <ListIcon as={CheckIcon} color="blue.400" />
+              {egldAmount/1000000000000000000}
             </ListItem>
             
             <ListItem>
-              <ListIcon as={FaPlus} color="green.400" />
-              <span onClick={() => inclementAmount()}>Buy more</span>
+              <ListIcon as={FaPlus} color="blue.400" />
+              <span onClick={() => increaseAmount()}>Buy more</span>
             </ListItem>
             <ListItem>
-              <ListIcon as={MinusIcon} color="green.400" />
-              Buy less
+              <ListIcon as={MinusIcon} color="blue.400" />
+              <span onClick={() => decreaseAmount()}>Buy less</span>
             </ListItem>
           </List>
 
@@ -86,15 +109,15 @@ export default function Pricing({ contractByXlh }) {
            onClick={()=>contractByXlh(egldAmount)}
             mt={10}
             w={'full'}
-            bg={'green.400'}
+            bg={'blue.400'}
             color={'white'}
             rounded={'xl'}
             boxShadow={'0 5px 20px 0px rgb(72 187 120 / 43%)'}
             _hover={{
-              bg: 'green.500',
+              bg: 'blue.500',
             }}
             _focus={{
-              bg: 'green.500',
+              bg: 'blue.500',
             }}
           >
             Buy XLH

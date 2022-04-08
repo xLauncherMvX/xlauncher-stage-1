@@ -28,17 +28,3 @@ serviceWorker.unregister();
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
-
-$(window).resize(function() {
-  var height = $(window).height();
-  var width = $(window).width();
-
-  if (width > height) {
-      // Landscape
-      $("#mode").text("LANDSCAPE");
-  } else {
-      // Portrait
-      $("#mode").text("PORTRAIT");
-  }
-
-});

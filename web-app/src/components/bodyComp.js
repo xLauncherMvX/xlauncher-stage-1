@@ -37,7 +37,9 @@ import {
 
 import { Link } from 'react-router-dom';
 import { FaEuroSign, FaGhost } from 'react-icons/fa';
-import Pricing from './pricing';
+import SmallPricing from './smallPricing';
+import MediumPricing from './mediumPricing';
+import LargePricing from './largePricing';
 import '@elrondnetwork/dapp-core/build/index.css';
 import '../custom.css';
 
@@ -84,7 +86,13 @@ export default function BuyComponent() {
   return (
     <Grid templateColumns="repeat(3, 1fr)" gap={200} mt={100}>
         <GridItem>
-            <Pricing contractByXlh={contractByXlh}/>
+            <SmallPricing contractByXlh={contractByXlh}/>
+        </GridItem> 
+        <GridItem>
+            <MediumPricing contractByXlh={contractByXlh}/>
+        </GridItem> 
+        <GridItem>
+            <LargePricing contractByXlh={contractByXlh}/>
         </GridItem> 
         <SignTransactionsModals className="custom-class-for-modals" />
         <Box>
