@@ -33,6 +33,7 @@ import {
   ProxyProvider,
   SmartContract,
   SmartContractAbi,
+  getTokenBalance
 } from '@elrondnetwork/erdjs/out';
 
 import { Link } from 'react-router-dom';
@@ -41,7 +42,7 @@ import SmallPricing from './smallPricing';
 import MediumPricing from './mediumPricing';
 import LargePricing from './largePricing';
 import '@elrondnetwork/dapp-core/build/index.css';
-import './../styles.css';
+import '../styles.css';
 
 const { SignTransactionsModals, TransactionsToastList, NotificationModal } = DappUI;
 const { sendTransactions } = transactionServices;
@@ -49,7 +50,10 @@ const { sendTransactions } = transactionServices;
 export default function BodyComp() {
 
   const [transactionSessionId, setTransactionSessionId] = React.useState(null);
-
+  const { address, account } = useGetAccountInfo();
+  console.log();
+  
+  
 
   const contractByXlh = async (egoldAmount) => {
     console.log('Time to buy xlh', egoldAmount);

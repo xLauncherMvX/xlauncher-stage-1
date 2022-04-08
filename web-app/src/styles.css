@@ -149,9 +149,20 @@ body {
 .account-info-custom{
   border: 2px solid lightskyblue;
   margin-right: 20px;
-  padding: 1px 15px 1px 15px;
+  padding: 0 15px 2px 15px;
   border-radius: 5%;
+  font-size: 11px;
+  background-color: rgba (255, 255, 255, 0.08);
 }
 .date-time-text{
   margin-top: 10px;
+}
+.popover-login{
+  border: 1px solid white;
+  border-radius: 10px;
+  background-color: #4299e1;
+  color: white;
+}
+.css-p7yt37 {
+  width: 10rem;
 }

@@ -9,13 +9,22 @@ import {
   Spacer,
   Text,
   VStack,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverHeader,
+  PopoverBody,
+  PopoverFooter,
+  PopoverArrow,
+  PopoverCloseButton,
+  PopoverAnchor,
 } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 import { DappUI, logout, useGetAccountInfo } from '@elrondnetwork/dapp-core';
 import './../styles.css';
 
 export default function ScratchBare() {
-  const { address } = useGetAccountInfo();
+  const { address, account } = useGetAccountInfo();
   const isLoggedIn = Boolean(address);
   const [timeToConnect, setTimeToConnect] = React.useState(false);
 
@@ -71,10 +80,20 @@ export default function ScratchBare() {
   );
 
   let addressSection = isLoggedIn ? (
-    <Box className='account-info-custom'>
-      <Text paddingTop={2}>{fls}...{lls}</Text>
-    </Box>
-    
+      <Box marginRight={'5'} className='popover-login'>
+        <Popover>
+          <PopoverTrigger>
+            <Button>{fls}...{lls}</Button>
+          </PopoverTrigger>
+          <PopoverContent>
+            <PopoverArrow />
+            <PopoverCloseButton />
+            <PopoverBody>
+              <DappUI.Denominate value={account.balance}/>   
+            </PopoverBody>
+          </PopoverContent>
+        </Popover> 
+      </Box>
   ) : (
     ""
   );

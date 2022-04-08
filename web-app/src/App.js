@@ -17,7 +17,6 @@ import BodyComp from './components/bodyComp';
 import LocalStorageCountdown from './components/localStorageCountdown';
 import { Outlet } from 'react-router-dom';
 import { DappProvider } from '@elrondnetwork/dapp-core';
-import './styles.css';
 
 const environment = 'devnet';
 
