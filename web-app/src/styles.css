@@ -133,7 +133,6 @@ body {
   line-height: 1rem;
 }
 
-/* */
 .center-countdown{
   margin-top: 20px;
   text-align: center;
@@ -147,9 +146,12 @@ body {
   font-size: 75px;
   font-weight: bold;
 }
-.account-info{
+.account-info-custom{
   border: 2px solid lightskyblue;
   margin-right: 20px;
   padding: 1px 15px 1px 15px;
   border-radius: 5%;
+}
+.date-time-text{
+  margin-top: 10px;
 }

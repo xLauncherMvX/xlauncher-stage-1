@@ -12,7 +12,7 @@ import {
 } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 import { DappUI, logout, useGetAccountInfo } from '@elrondnetwork/dapp-core';
-import '../custom.css';
+import './../styles.css';
 
 export default function ScratchBare() {
   const { address } = useGetAccountInfo();
@@ -71,7 +71,7 @@ export default function ScratchBare() {
   );
 
   let addressSection = isLoggedIn ? (
-    <Box className='account-info'>
+    <Box className='account-info-custom'>
       <Text paddingTop={2}>{fls}...{lls}</Text>
     </Box>
     

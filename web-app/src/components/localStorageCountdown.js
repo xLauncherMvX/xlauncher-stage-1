@@ -4,7 +4,7 @@ import Countdown from "react-countdown";
 import { useState, useEffect } from "react";
 import DateTimeDisplay from './DateTimeDisplay';
 import { Progress, Text } from '@chakra-ui/react';
-import './../custom.css';
+import './../styles.css';
 
 // Random component
 const Completionist = () => <span>You are good to go!</span>;

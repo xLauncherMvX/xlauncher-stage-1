@@ -2,7 +2,7 @@ import React from 'react';
 import CountdownTimer from './CountdownTimer';
 import { Progress, Text } from '@chakra-ui/react';
 
-import '../custom.css';
+import '../styles.css';
 
 export default function CountdownComponent() {
   const THREE_DAYS_IN_MS = 13 * 24 * 60 * 60 * 1000;

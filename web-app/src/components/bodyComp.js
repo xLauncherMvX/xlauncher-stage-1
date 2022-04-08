@@ -41,14 +41,14 @@ import SmallPricing from './smallPricing';
 import MediumPricing from './mediumPricing';
 import LargePricing from './largePricing';
 import '@elrondnetwork/dapp-core/build/index.css';
-import '../custom.css';
+import './../styles.css';
 
 const { SignTransactionsModals, TransactionsToastList, NotificationModal } = DappUI;
 const { sendTransactions } = transactionServices;
 
-export default function BuyComponent() {
+export default function BodyComp() {
 
-  const [transactionSessionId, setTransactionSessionId] = React.useState(null)
+  const [transactionSessionId, setTransactionSessionId] = React.useState(null);
 
 
   const contractByXlh = async (egoldAmount) => {
