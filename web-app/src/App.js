@@ -14,7 +14,7 @@ import { Logo } from './Logo';
 import theme from './theme/defaultDark';
 import ScratchBare from './components/scratchBare';
 import BodyComp from './components/bodyComp';
-import CountdownComponent from './components/CountdownComponent';
+import LocalStorageCountdown from './components/localStorageCountdown';
 import { Outlet } from 'react-router-dom';
 import { DappProvider } from '@elrondnetwork/dapp-core';
 import './custom.css';
@@ -41,10 +41,10 @@ function App() {
           </VStack>
           <VStack>
             <HStack>
-              <CountdownComponent />
-            </HStack>    
+              <LocalStorageCountdown/>
+            </HStack> 
             <HStack>
-            <BodyComp />
+              <BodyComp />
             </HStack>    
           </VStack>
          
