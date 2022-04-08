@@ -38,6 +38,8 @@ import {
 import { Link } from 'react-router-dom';
 import { FaEuroSign, FaGhost } from 'react-icons/fa';
 import Pricing from './pricing';
+import '@elrondnetwork/dapp-core/build/index.css';
+import '../custom.css';
 
 const { SignTransactionsModals, TransactionsToastList, NotificationModal } = DappUI;
 const { sendTransactions } = transactionServices;
@@ -81,17 +83,14 @@ export default function BuyComponent() {
 
   return (
     <Grid templateColumns="repeat(3, 1fr)" gap={200} mt={100}>
-      <GridItem>
-        <Pricing contractByXlh={contractByXlh}/>
-      </GridItem> 
-    
-      <SignTransactionsModals className="custom-class-for-modals" />
-      <Box>
+        <GridItem>
+            <Pricing contractByXlh={contractByXlh}/>
+        </GridItem> 
+        <SignTransactionsModals className="custom-class-for-modals" />
+        <Box>
         <TransactionsToastList />
-        <NotificationModal />
-      </Box>
-      
-      
+        {/* <NotificationModal /> */}
+        </Box>     
     </Grid>
   );
 }

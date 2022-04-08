@@ -1,0 +1,145 @@
+/* TransactionsToastList */
+.dapp-core-ui-component .toast-messages .toast {
+    display: block;
+    flex-basis: 4rem;
+    width: 100%;
+    max-width: 28.875rem;
+    transition: transform 0.3s ease-in-out;
+    transform: translateX(120%);
+    background-color: #fff;
+    border-radius: 0.5rem;
+    border-color: rgb(68, 67, 67);
+    background-color: rgb(31, 27, 27);
+}
+
+/* Login buttons */
+.dapp-core-ui-component .btn-primary {
+  color: #fff;
+  background-color: #1b45c200;
+  border-color: #1b45c200;
+}
+.dapp-core-ui-component .btn-primary:hover {
+  color: #fff;
+  background-color: #1b45c200;
+  border-color: #1b45c200; 
+}
+.dapp-core-ui-component .btn-primary:focus, .dapp-core-ui-component .btn-primary.focus {
+  color: #fff;
+  background-color: #1b45c200;
+  border-color: #1b45c200;
+  box-shadow: 0 0 0 0.2rem rgba(61, 98, 203, 0.5); 
+}
+.dapp-core-ui-component .btn-primary.disabled, .dapp-core-ui-component .btn-primary:disabled {
+  color: #fff;
+  background-color: #1b45c200;
+  border-color: #1b45c200; 
+}
+.dapp-core-ui-component .btn-primary:not(:disabled):not(.disabled):active, .dapp-core-ui-component .btn-primary:not(:disabled):not(.disabled).active,
+.show > .dapp-core-ui-component .btn-primary.dropdown-toggle {
+  color: #fff;
+  background-color: #1b45c200;
+  border-color: #1b45c200; 
+}
+.dapp-core-ui-component .btn-primary:not(:disabled):not(.disabled):active:focus, .dapp-core-ui-component .btn-primary:not(:disabled):not(.disabled).active:focus,
+  .show > .dapp-core-ui-component .btn-primary.dropdown-toggle:focus {
+    box-shadow: 0 0 0 0.2rem rgba(61, 98, 203, 0.5); 
+}
+
+/* Modal connect section */
+.dapp-core-ui-component .card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: rgba(0, 0, 0, 0.64);
+  background-clip: border-box;
+  border: 1px solid rgba(0, 0, 0, 0.64);
+  border-radius: 0.25rem;
+  padding: 10px;
+}
+.dapp-core-ui-component .modal-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  pointer-events: auto;
+  background-color: rgba(224, 213, 213, 0.2);
+  background-clip: padding-box;
+  border-radius: 0.3rem;
+  outline: 0;
+}
+body {
+  background: rgba(0, 0, 0);
+}
+
+/* Countdown timer */
+.expired-notice {
+  text-align: center;
+  padding: 2rem;
+  border: 1px solid #ebebeb;
+  border-radius: 0.25rem;
+  margin: 0.5rem;
+}
+
+.expired-notice > span {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: red;
+}
+
+.expired-notice > p {
+  font-size: 1.5rem;
+}
+
+.show-counter {
+  padding: 0.5rem;
+}
+
+.show-counter .countdown-link {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+  font-size: 2.25rem;
+  line-height: 1.75rem;
+  padding: 1rem;
+  border: 2px solid #ebebeb;
+  border-radius: 0.45rem;
+  text-decoration: none;
+  color: white;
+}
+
+.show-counter .countdown {
+  line-height: 1.25rem;
+  padding: 1rem 0.75rem 0 0.75rem;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.show-counter .countdown.danger {
+  color: #ff0000;
+}
+
+.show-counter .countdown > p {
+  margin: 0;
+}
+
+.show-counter .countdown > span {
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+/* */
+.center-countdown{
+  margin-top: 20px;
+  text-align: center;
+}
+
+.seedsale-text{
+  font-size: 30px;
+  font-weight: bold;
+}

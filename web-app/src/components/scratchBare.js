@@ -63,7 +63,7 @@ export default function ScratchBare() {
       Disconnect
     </Button>
   ) : (
-    <Button onClick={() => setTimeToConnect(true)}> Connect</Button>
+    <Button className='btn btn-xs' onClick={() => setTimeToConnect(true)}> Connect</Button>
   );
 
   let addressSection = isLoggedIn ? (
@@ -74,7 +74,7 @@ export default function ScratchBare() {
 
   return (
     <Grid>
-      <Flex backgroundColor={'gray.900'} padding={5}>
+      <Flex backgroundColor={'blackAlpha.700'} padding={4}>
         <Spacer />
         {addressSection}
         <Spacer />

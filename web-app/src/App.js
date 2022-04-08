@@ -7,14 +7,17 @@ import {
   VStack,
   Code,
   Grid,
+  HStack,
 } from '@chakra-ui/react';
 import { ColorModeSwitcher } from './ColorModeSwitcher';
 import { Logo } from './Logo';
 import theme from './theme/defaultDark';
 import ScratchBare from './components/scratchBare';
 import BodyComp from './components/bodyComp';
+import CountdownComponent from './components/CountdownComponent';
 import { Outlet } from 'react-router-dom';
 import { DappProvider } from '@elrondnetwork/dapp-core';
+import './custom.css';
 
 const environment = 'devnet';
 
@@ -26,10 +29,21 @@ function App() {
         customNetworkConfig={{ name: 'customConfig', apiTimeout: 6000 }}
         completedTransactionsDelay={200}
       >
-        <Grid>
+        <Grid backgroundImage={
+          'url(https://x-launcher.com/wp-content/uploads/2022/03/roadmap4-scaled.jpg)'
+        }
+        backgroundSize={'cover'}
+        backgroundPosition={'center'}
+        backgroundRepeat={'repeat'}>
           <ScratchBare />
           <VStack>
             <Outlet />
+          </VStack>
+          <VStack>
+    
+              <CountdownComponent />
+              
+           
           </VStack>
           <BodyComp />
         </Grid>
