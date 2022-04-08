@@ -33,7 +33,6 @@ import {
   ProxyProvider,
   SmartContract,
   SmartContractAbi,
-  getTokenBalance
 } from '@elrondnetwork/erdjs/out';
 
 import { Link } from 'react-router-dom';
@@ -51,7 +50,8 @@ export default function BodyComp() {
 
   const [transactionSessionId, setTransactionSessionId] = React.useState(null);
   const { address, account } = useGetAccountInfo();
-  console.log();
+  
+  
   
   
 

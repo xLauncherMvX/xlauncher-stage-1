@@ -97,11 +97,11 @@ export default function Pricing({ contractByXlh }) {
             
             <ListItem>
               <ListIcon as={FaPlus} color="green.400" />
-              <span onClick={() => increaseAmount()}>Buy more</span>
+              <span className='cursor-pointer' onClick={() => increaseAmount()}>Buy more</span>
             </ListItem>
             <ListItem>
               <ListIcon as={MinusIcon} color="green.400" />
-              <span onClick={() => decreaseAmount()}>Buy less</span>
+              <span className='cursor-pointer' onClick={() => decreaseAmount()}>Buy less</span>
             </ListItem>
           </List>
 

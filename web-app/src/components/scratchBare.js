@@ -28,6 +28,7 @@ export default function ScratchBare() {
   const isLoggedIn = Boolean(address);
   const [timeToConnect, setTimeToConnect] = React.useState(false);
 
+
   const { 
     WebWalletLoginButton, 
     WalletConnectLoginButton,
