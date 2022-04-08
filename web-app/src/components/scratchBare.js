@@ -12,6 +12,7 @@ import {
 } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 import { DappUI, logout, useGetAccountInfo } from '@elrondnetwork/dapp-core';
+import '../custom.css';
 
 export default function ScratchBare() {
   const { address } = useGetAccountInfo();
@@ -23,6 +24,9 @@ export default function ScratchBare() {
     WalletConnectLoginButton,
     LedgerLoginButton
   } = DappUI;
+
+  var fls = address.slice(0,5);
+  var lls = address.slice(58,62);
 
   let connectSection = timeToConnect ? (
     <VStack marginTop={50}>
@@ -67,7 +71,10 @@ export default function ScratchBare() {
   );
 
   let addressSection = isLoggedIn ? (
-    <Text paddingTop={2}>My wallet: {address}</Text>
+    <Box className='account-info'>
+      <Text paddingTop={2}>{fls}...{lls}</Text>
+    </Box>
+    
   ) : (
     ""
   );
@@ -76,8 +83,9 @@ export default function ScratchBare() {
     <Grid>
       <Flex backgroundColor={'blackAlpha.700'} padding={4}>
         <Spacer />
-        {addressSection}
+        
         <Spacer />
+        {addressSection}
         {connectButton}
       </Flex>
       <Container>

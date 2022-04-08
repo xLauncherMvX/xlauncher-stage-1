@@ -84,7 +84,6 @@ export default function BuyComponent() {
   };
 
   return (
-    
     <Grid templateColumns="repeat(3, 1fr)" gap={200} mt={100}>
         <GridItem>
             <SmallPricing contractByXlh={contractByXlh}/>

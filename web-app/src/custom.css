@@ -143,8 +143,13 @@ body {
   font-size: 30px;
   font-weight: bold;
 }
-
 .token-text-type {
   font-size: 75px;
   font-weight: bold;
+}
+.account-info{
+  border: 2px solid lightskyblue;
+  margin-right: 20px;
+  padding: 1px 15px 1px 15px;
+  border-radius: 5%;
 }

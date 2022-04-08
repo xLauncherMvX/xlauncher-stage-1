@@ -92,7 +92,7 @@ export default function Pricing({ contractByXlh }) {
           <List spacing={3}>
             <ListItem>
               <ListIcon as={CheckIcon} color="green.400" />
-              {egldAmount/1000000000000000000}
+              {egldAmount/1000000000000000000} eGLD
             </ListItem>
             
             <ListItem>

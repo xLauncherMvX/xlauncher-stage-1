@@ -15,7 +15,7 @@ const renderer = ({ days, hours, minutes, seconds, completed }) => {
     // Render a countdown
     return (
         <div className="show-counter">
-            <p className='seedsale-text'>Seed Sale countdown start in:</p>
+            <p className='seedsale-text' align={'center'}>Seed Sale starts in:</p>
             <a className="countdown-link">
                 <DateTimeDisplay value={days} type={'Days'} isDanger={days <= 3} />
                 <p>:</p>
