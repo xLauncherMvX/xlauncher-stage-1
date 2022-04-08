@@ -102,7 +102,7 @@ body {
   justify-content: center;
   align-items: center;
   font-weight: 700;
-  font-size: 2.25rem;
+  font-size: 5rem;
   line-height: 1.75rem;
   padding: 1rem;
   border: 2px solid #ebebeb;
@@ -113,7 +113,7 @@ body {
 
 .show-counter .countdown {
   line-height: 1.25rem;
-  padding: 1rem 0.75rem 0 0.75rem;
+  padding: 2rem 1.75rem 0 0.75rem;
   align-items: center;
   display: flex;
   flex-direction: column;
@@ -155,7 +155,7 @@ body {
   background-color: rgba (255, 255, 255, 0.08);
 }
 .date-time-text{
-  margin-top: 10px;
+  margin-top: 20px;
 }
 .popover-login{
   border: 1px solid white;

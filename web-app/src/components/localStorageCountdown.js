@@ -25,7 +25,7 @@ const renderer = ({ days, hours, minutes, seconds, completed }) => {
                 <p>:</p>
                 <DateTimeDisplay value={seconds} type={'Seconds'} isDanger={false} />
             </a>
-            <Progress hasStripe value={60} size={'lg'} colorScheme='blue' marginTop={'4'}/>
+            <Progress hasStripe value={0} size={'lg'} colorScheme='blue' marginTop={'4'}/>
             <Text align={'center'} fontSize={'20'} fontWeight={'bold'} mt={'2'}> 0 / 13000000 XLH</Text>
         </div>
     );
