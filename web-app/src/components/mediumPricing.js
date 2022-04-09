@@ -12,8 +12,12 @@ import {
 } from '@chakra-ui/react';
 import { CheckIcon, MinusIcon, PlusSquareIcon } from '@chakra-ui/icons';
 import { FaPlus } from 'react-icons/fa';
+import { DappUI, logout, useGetAccountInfo } from '@elrondnetwork/dapp-core';
 
 export default function Pricing({ contractByXlh }) {
+  const { address, account } = useGetAccountInfo();
+  const isLoggedIn = Boolean(address);
+
   const [xlhAmount, setXlhAmount] = React.useState(12500);
   const [egldAmount, setEgldAmount] = React.useState(500000000000000000);
   const [egldDisplay, setEgldDisplay] = React.useState(0.26);
@@ -51,6 +55,28 @@ export default function Pricing({ contractByXlh }) {
     }
     console.log('Time to decrease');
   };
+
+  let buttonShow = isLoggedIn ? (
+    <Button
+      onClick={()=>contractByXlh(egldAmount)}
+      mt={10}
+      w={'full'}
+      bg={'blue.400'}
+      color={'white'}
+      rounded={'xl'}
+      boxShadow={'0 5px 20px 0px rgb(72 187 120 / 43%)'}
+      _hover={{
+        bg: 'blue.500',
+      }}
+      _focus={{
+        bg: 'blue.500',
+      }}
+    >
+    Buy XLH
+    </Button>
+  ) : ( ""
+  
+  );
 
   return (
     <Center py={6}>
@@ -104,24 +130,7 @@ export default function Pricing({ contractByXlh }) {
               <span className='cursor-pointer' onClick={() => decreaseAmount()}>Buy less</span>
             </ListItem>
           </List>
-
-          <Button
-           onClick={()=>contractByXlh(egldAmount)}
-            mt={10}
-            w={'full'}
-            bg={'blue.400'}
-            color={'white'}
-            rounded={'xl'}
-            boxShadow={'0 5px 20px 0px rgb(72 187 120 / 43%)'}
-            _hover={{
-              bg: 'blue.500',
-            }}
-            _focus={{
-              bg: 'blue.500',
-            }}
-          >
-            Buy XLH
-          </Button>
+          {buttonShow}  
         </Box>
       </Box>
     </Center>
