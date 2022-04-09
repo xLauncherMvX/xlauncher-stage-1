@@ -102,7 +102,7 @@ body {
   justify-content: center;
   align-items: center;
   font-weight: 700;
-  font-size: 5rem;
+  font-size: 4rem;
   line-height: 1.75rem;
   padding: 1rem;
   border: 2px solid #ebebeb;
@@ -113,7 +113,7 @@ body {
 
 .show-counter .countdown {
   line-height: 1.25rem;
-  padding: 2rem 1.75rem 0 0.75rem;
+  padding: 1rem 1.75rem 0 1.75rem;
   align-items: center;
   display: flex;
   flex-direction: column;
@@ -155,7 +155,7 @@ body {
   background-color: rgba (255, 255, 255, 0.08);
 }
 .date-time-text{
-  margin-top: 20px;
+  margin-top: 25px;
 }
 .popover-login{
   border: 1px solid white;
@@ -168,4 +168,10 @@ body {
 }
 .cursor-pointer{
   cursor: pointer;
+}
+.chakra-ui-dark{
+  background-image: url(https://x-launcher.com/wp-content/uploads/2022/03/roadmap4-scaled.jpg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }

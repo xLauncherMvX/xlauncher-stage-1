@@ -30,13 +30,7 @@ function App() {
         customNetworkConfig={{ name: 'customConfig', apiTimeout: 6000 }}
         completedTransactionsDelay={200}
       >
-        <Grid backgroundImage={
-          'url(https://x-launcher.com/wp-content/uploads/2022/03/roadmap4-scaled.jpg)'
-        }
-        backgroundSize={'cover'}
-        backgroundPosition={'top'}
-        backgroundRepeat={'repeat'}
-        >
+        <Grid>
           <ScratchBare />
           <VStack>
             <Outlet />
@@ -49,7 +43,7 @@ function App() {
               <BodyComp />
             </HStack>    
           </VStack>
-         
+        
         </Grid>
       </DappProvider>
     </ChakraProvider>
