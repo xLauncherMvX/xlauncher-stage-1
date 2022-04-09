@@ -17,6 +17,8 @@ import BodyComp from './components/bodyComp';
 import LocalStorageCountdown from './components/localStorageCountdown';
 import { Outlet } from 'react-router-dom';
 import { DappProvider } from '@elrondnetwork/dapp-core';
+import '@elrondnetwork/dapp-core/build/index.css';
+import './styles.css';
 
 const environment = 'devnet';
 
@@ -32,8 +34,9 @@ function App() {
           'url(https://x-launcher.com/wp-content/uploads/2022/03/roadmap4-scaled.jpg)'
         }
         backgroundSize={'cover'}
-        backgroundPosition={'center'}
-        backgroundRepeat={'repeat'}>
+        backgroundPosition={'top'}
+        backgroundRepeat={'repeat'}
+        >
           <ScratchBare />
           <VStack>
             <Outlet />

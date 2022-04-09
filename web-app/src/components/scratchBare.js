@@ -21,7 +21,8 @@ import {
 } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 import { DappUI, logout, useGetAccountInfo } from '@elrondnetwork/dapp-core';
-import './../styles.css';
+import '@elrondnetwork/dapp-core/build/index.css';
+import '../styles.css';
 
 export default function ScratchBare() {
   const { address, account } = useGetAccountInfo();
@@ -39,7 +40,7 @@ export default function ScratchBare() {
   var lls = address.slice(58,62);
 
   let connectSection = timeToConnect ? (
-    <VStack marginTop={50}>
+    <VStack marginTop={100} marginBottom={100}>
       <Text>Pick a login method</Text>
       <HStack>
         <Button>
