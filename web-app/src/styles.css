@@ -104,7 +104,7 @@ body {
   font-weight: 700;
   font-size: 4rem;
   line-height: 1.75rem;
-  padding: 1rem;
+  padding: 1rem 1rem 2rem 1rem;
   border: 2px solid #ebebeb;
   border-radius: 0.45rem;
   text-decoration: none;
@@ -208,9 +208,8 @@ body {
   align-items: center;
 }
 .custom-ctt-numbers{
-  font-size: 40px;
+  font-size: 30px;
 }
 .custom-ctt-numbers2{
   color: lightskyblue;
 }
-

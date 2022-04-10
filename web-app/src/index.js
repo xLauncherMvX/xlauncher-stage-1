@@ -11,8 +11,7 @@ ReactDOM.render(
     <ColorModeScript />
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<App />}>
-        </Route>
+        <Route path="/" element={<App />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,

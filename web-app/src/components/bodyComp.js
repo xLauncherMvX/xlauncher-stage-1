@@ -1,42 +1,17 @@
 import React from 'react';
 import {
   Box,
-  Button,
-  Center,
   Container,
-  Divider,
-  Flex,
   Grid,
   GridItem,
-  HStack,
-  Spacer,
-  Text,
-  VStack,
 } from '@chakra-ui/react';
 import {
   DappUI,
   refreshAccount,
   transactionServices,
-  useGetAccountInfo,
-  useGetNetworkConfig,
-  useGetPendingTransactions,
-  useSignTransactions,
+  useGetAccountInfo
 } from '@elrondnetwork/dapp-core';
-import {
-  AbiRegistry,
-  Address,
-  Balance,
-  BigUIntValue,
-  BytesValue,
-  Interaction,
-  NetworkConfig,
-  ProxyProvider,
-  SmartContract,
-  SmartContractAbi,
-} from '@elrondnetwork/erdjs/out';
 
-import { Link } from 'react-router-dom';
-import { FaEuroSign, FaGhost } from 'react-icons/fa';
 import SmallPricing from './smallPricing';
 import MediumPricing from './mediumPricing';
 import LargePricing from './largePricing';
@@ -50,9 +25,6 @@ export default function BodyComp() {
 
   const [transactionSessionId, setTransactionSessionId] = React.useState(null);
   const { address, account } = useGetAccountInfo();
-  
-  
-  
   
 
   const contractByXlh = async (egoldAmount) => {
@@ -88,21 +60,28 @@ export default function BodyComp() {
   };
 
   return (
-    <Grid templateColumns="repeat(3, 1fr)" gap={200} mt={100}>
-        <GridItem>
-            <SmallPricing contractByXlh={contractByXlh}/>
-        </GridItem> 
-        <GridItem>
-            <MediumPricing contractByXlh={contractByXlh}/>
-        </GridItem> 
-        <GridItem>
-            <LargePricing contractByXlh={contractByXlh}/>
-        </GridItem> 
+    <Box as={Container} maxW="5xl" mt={14} p={4}>
+        <Grid
+            templateColumns={{
+            base: 'repeat(1, 1fr)',
+            sm: 'repeat(2, 1fr)',
+            md: 'repeat(4, 1fr)'
+            }}
+            gap={{ base: '8', sm: '12', md: '32' }}
+          >
+            <GridItem>
+              <SmallPricing contractByXlh={contractByXlh}/>
+            </GridItem>
+            <GridItem>
+              <MediumPricing contractByXlh={contractByXlh}/>
+            </GridItem>
+            <GridItem>
+              <LargePricing contractByXlh={contractByXlh}/>
+            </GridItem> 
+        </Grid>
         <SignTransactionsModals className="custom-class-for-modals" />
-        <Box>
         <TransactionsToastList />
-        {/* <NotificationModal /> */}
-        </Box>     
-    </Grid>
+        <NotificationModal />
+    </Box>
   );
 }
