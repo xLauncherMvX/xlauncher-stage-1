@@ -12,6 +12,7 @@ ReactDOM.render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />} />
+        <Route path="/unlock" element={<App />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,
