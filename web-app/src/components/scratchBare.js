@@ -36,7 +36,7 @@ export default function ScratchBare() {
   var lls = address.slice(58,62);
 
   let connectSection = timeToConnect ? (
-    <Box as={Container} maxW="7xl" mt={14} p={4} align={'center'}>
+    <Box as={Container} maxW="6xl" mt={14} p={4} align={'center'}>
         <Text fontSize={'2xl'} mb={10}>Pick a login method</Text>
         <Grid
             templateColumns={{
@@ -44,10 +44,10 @@ export default function ScratchBare() {
             sm: 'repeat(2, 1fr)',
             md: 'repeat(4, 1fr)'
             }}
-            gap={{ base: '8', sm: '12', md: '32' }}
+            gap={{ base: '8', sm: '12', md: '16' }}
           >
             <GridItem>
-              <Button minW={'200'} backgroundColor={'blue.600'}>
+              <Button minW={'210'} backgroundColor={'blue.600'}>
                 <WebWalletLoginButton
                   callbackRoute="/"
                   loginButtonText={"Web wallet"}
@@ -55,7 +55,7 @@ export default function ScratchBare() {
               </Button>
             </GridItem>
             <GridItem>
-              <Button minW={'200'} backgroundColor={'blue.600'}>
+              <Button minW={'210'} backgroundColor={'blue.600'}>
                 <LedgerLoginButton
                   loginButtonText={"Ledger"}
                   callbackRoute="/"
@@ -63,7 +63,7 @@ export default function ScratchBare() {
               </Button>
             </GridItem>
             <GridItem>
-              <Button minW={'200'} backgroundColor={'blue.600'}>
+              <Button minW={'210'} backgroundColor={'blue.600'}>
                 <WalletConnectLoginButton
                   callbackRoute="/"
                   loginButtonText={"Maiar"}
@@ -71,11 +71,10 @@ export default function ScratchBare() {
               </Button>
             </GridItem> 
             <GridItem>
-              <Button minW={'200'} backgroundColor={'blue.600'}>
+              <Button minW={'210'} backgroundColor={'blue.600'} className="dapp-core-ui-component-2">
                 <ExtensionLoginButton
                   callbackRoute="/"
                   loginButtonText={"Extension"}
-                  className="white-color"
                 />
               </Button>
             </GridItem> 
