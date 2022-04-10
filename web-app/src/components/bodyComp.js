@@ -25,7 +25,7 @@ export default function BodyComp() {
 
   const [transactionSessionId, setTransactionSessionId] = React.useState(null);
   const { address, account } = useGetAccountInfo();
-
+  
   const contractByXlh = async (egoldAmount) => {
     console.log('Time to buy xlh', egoldAmount);
 
