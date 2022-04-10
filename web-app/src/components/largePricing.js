@@ -10,17 +10,16 @@ import {
   Button,
   useColorModeValue,
 } from '@chakra-ui/react';
-import { CheckIcon, MinusIcon, PlusSquareIcon } from '@chakra-ui/icons';
-import { FaPlus } from 'react-icons/fa';
-import { DappUI, logout, useGetAccountInfo } from '@elrondnetwork/dapp-core';
+import { CheckIcon } from '@chakra-ui/icons';
+import { FaPlus, FaMinus } from 'react-icons/fa';
+import { useGetAccountInfo } from '@elrondnetwork/dapp-core';
 
 export default function Pricing({ contractByXlh }) {
-  const { address, account } = useGetAccountInfo();
+  const { address } = useGetAccountInfo();
   const isLoggedIn = Boolean(address);
 
   const [xlhAmount, setXlhAmount] = React.useState(25000);
   const [egldAmount, setEgldAmount] = React.useState(1000000000000000000);
-  const [egldDisplay, setEgldDisplay] = React.useState(0.26);
 
   const increaseAmount = () => {
     let egldInc = 1000000000000000000;
@@ -120,14 +119,17 @@ export default function Pricing({ contractByXlh }) {
               <ListIcon as={CheckIcon} color="green.400" />
               {egldAmount/1000000000000000000} eGLD
             </ListItem>
-            
             <ListItem>
-              <ListIcon as={FaPlus} color="green.400" />
-              <span className='cursor-pointer' onClick={() => increaseAmount()}>Buy more</span>
+              <Button minW={'120'}>
+                <ListIcon as={FaPlus} color="green.400" />
+                <span className='cursor-pointer' onClick={() => increaseAmount()}>Buy more</span>
+              </Button>              
             </ListItem>
             <ListItem>
-              <ListIcon as={MinusIcon} color="green.400" />
-              <span className='cursor-pointer' onClick={() => decreaseAmount()}>Buy less</span>
+              <Button minW={'130'} marginLeft={'0'}>
+                <ListIcon as={FaMinus} color="green.400"  marginLeft={-3} />
+                <span className='cursor-pointer' onClick={() => decreaseAmount()}>Buy less</span>
+              </Button>
             </ListItem>
           </List>
           {buttonShow}            
