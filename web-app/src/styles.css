@@ -139,8 +139,10 @@ body {
 }
 
 .seedsale-text{
-  font-size: 30px;
+  font-size: 40px;
   font-weight: bold;
+  margin-top: 30px;
+  margin-bottom: 10px;
 }
 .token-text-type {
   font-size: 75px;
@@ -175,3 +177,40 @@ body {
   background-position: center;
   background-repeat: no-repeat;
 }
+
+/* */
+@keyframes moveup {
+  0%   {opacity: 0; transform: translateY(12px);}
+  100%  {opacity: 1; transform: translateY(0px);}
+}
+
+@keyframes movedown {
+  0%   {opacity: 1; transform: translateY(0px);}
+  100%  {opacity: 0; transform: translateY(-12px);}
+}
+
+.odometerStart{
+  display: inline-block;
+  animation-name: moveup 0.25s;
+  -webkit-animation: moveup 0.25s;
+  animation-fill-mode: forwards;
+}
+.odometerEnd{
+  display: inline-block;
+  animation-name: movedown 0.25s;
+  -webkit-animation: movedown 0.25s;
+  animation-fill-mode: forwards;
+}
+
+.odometer-block{
+  display: inline-block;
+  justify-content: center;
+  align-items: center;
+}
+.custom-ctt-numbers{
+  font-size: 40px;
+}
+.custom-ctt-numbers2{
+  color: lightskyblue;
+}
+

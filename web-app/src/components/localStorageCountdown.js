@@ -4,6 +4,7 @@ import Countdown from "react-countdown";
 import { useState, useEffect } from "react";
 import DateTimeDisplay from './DateTimeDisplay';
 import { Progress, Text } from '@chakra-ui/react';
+import DateCountdown from "./hooks/dateCountdown";
 import './../styles.css';
 
 // Random component
@@ -15,6 +16,7 @@ const renderer = ({ days, hours, minutes, seconds, completed }) => {
     // Render a countdown
     return (
         <div className="show-counter">
+          <DateCountdown dateTo='January 01, 2023 00:00:00 GMT+03:00' callback={()=>alert('Hello')}  />
             <p className='seedsale-text' align={'center'}>Seed Sale starts in:</p>
             <a className="countdown-link">
                 <DateTimeDisplay value={days} type={'Days'} isDanger={days <= 3} />
@@ -28,6 +30,7 @@ const renderer = ({ days, hours, minutes, seconds, completed }) => {
             <Progress hasStripe value={0} size={'lg'} colorScheme='blue' marginTop={'4'}/>
             <Text align={'center'} fontSize={'20'} fontWeight={'bold'} mt={'2'}> 0 / 13000000 XLH</Text>
         </div>
+        
     );
   
 };

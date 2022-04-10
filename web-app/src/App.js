@@ -7,6 +7,7 @@ import {
   VStack,
   Code,
   Grid,
+  GridItem,
   HStack,
 } from '@chakra-ui/react';
 import { ColorModeSwitcher } from './ColorModeSwitcher';
@@ -14,7 +15,7 @@ import { Logo } from './Logo';
 import theme from './theme/defaultDark';
 import ScratchBare from './components/scratchBare';
 import BodyComp from './components/bodyComp';
-import LocalStorageCountdown from './components/localStorageCountdown';
+import CountdownTimer from './components/countdownTimer';
 import { Outlet } from 'react-router-dom';
 import { DappProvider } from '@elrondnetwork/dapp-core';
 import '@elrondnetwork/dapp-core/build/index.css';
@@ -30,21 +31,11 @@ function App() {
         customNetworkConfig={{ name: 'customConfig', apiTimeout: 6000 }}
         completedTransactionsDelay={200}
       >
-        <Grid>
-          <ScratchBare />
-          <VStack>
-            <Outlet />
-          </VStack>
-          <VStack>
-            <HStack>
-              <LocalStorageCountdown/>
-            </HStack> 
-            <HStack>
-              <BodyComp />
-            </HStack>    
-          </VStack>
+        <ScratchBare />
+        <Outlet />        
+        <CountdownTimer/>
+        <BodyComp />
         
-        </Grid>
       </DappProvider>
     </ChakraProvider>
   );
