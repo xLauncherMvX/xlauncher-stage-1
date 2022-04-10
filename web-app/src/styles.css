@@ -192,12 +192,14 @@ body {
 .odometerStart{
   display: inline-block;
   animation-name: moveup 0.25s;
+  animation: moveup 0.25s;
   -webkit-animation: moveup 0.25s;
   animation-fill-mode: forwards;
 }
 .odometerEnd{
   display: inline-block;
   animation-name: movedown 0.25s;
+  animation: movedown 0.25s;
   -webkit-animation: movedown 0.25s;
   animation-fill-mode: forwards;
 }
@@ -213,3 +215,12 @@ body {
 .custom-ctt-numbers2{
   color: lightskyblue;
 }
+.dapp-core-ui-component .btn {
+  color: white;
+  margin-right: 10px;
+}
+.svg-inline--fa {
+  margin-left: 5px;
+  margin-top: -3px;
+}
+  

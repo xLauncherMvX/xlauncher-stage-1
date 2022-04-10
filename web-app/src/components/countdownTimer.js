@@ -2,8 +2,6 @@ import DateCountdown from "./hooks/dateCountdown";
 import {
     Box,
     Container,
-    Grid,
-    GridItem,
     Progress, 
     Text
   } from '@chakra-ui/react';

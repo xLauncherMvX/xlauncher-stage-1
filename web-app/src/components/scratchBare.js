@@ -5,21 +5,16 @@ import {
   Container,
   Flex,
   Grid,
-  HStack,
+  GridItem,
   Spacer,
   Text,
-  VStack,
   Popover,
   PopoverTrigger,
   PopoverContent,
-  PopoverHeader,
   PopoverBody,
-  PopoverFooter,
   PopoverArrow,
   PopoverCloseButton,
-  PopoverAnchor,
 } from '@chakra-ui/react';
-import { Link } from 'react-router-dom';
 import { DappUI, logout, useGetAccountInfo } from '@elrondnetwork/dapp-core';
 import '@elrondnetwork/dapp-core/build/index.css';
 import '../styles.css';
@@ -33,37 +28,59 @@ export default function ScratchBare() {
   const { 
     WebWalletLoginButton, 
     WalletConnectLoginButton,
-    LedgerLoginButton
+    LedgerLoginButton,
+    ExtensionLoginButton
   } = DappUI;
 
   var fls = address.slice(0,5);
   var lls = address.slice(58,62);
 
   let connectSection = timeToConnect ? (
-    <VStack marginTop={100} marginBottom={100}>
-      <Text>Pick a login method</Text>
-      <HStack>
-        <Button>
-          <WebWalletLoginButton
-            callbackRoute="/"
-            loginButtonText={"Web wallet"}
-          />
-        </Button>
-        <Button>
-          <LedgerLoginButton
-            loginButtonText={"Ledger"}
-            callbackRoute="/"
-          />
-        </Button>
-        <Button>
-          <WalletConnectLoginButton
-            callbackRoute="/"
-            loginButtonText={"Maiar"}
-          />
-        </Button>
-      
-      </HStack>
-    </VStack>
+    <Box as={Container} maxW="7xl" mt={14} p={4} align={'center'}>
+        <Text fontSize={'2xl'} mb={10}>Pick a login method</Text>
+        <Grid
+            templateColumns={{
+            base: 'repeat(1, 1fr)',
+            sm: 'repeat(2, 1fr)',
+            md: 'repeat(4, 1fr)'
+            }}
+            gap={{ base: '8', sm: '12', md: '32' }}
+          >
+            <GridItem>
+              <Button minW={'200'} backgroundColor={'blue.600'}>
+                <WebWalletLoginButton
+                  callbackRoute="/"
+                  loginButtonText={"Web wallet"}
+                />
+              </Button>
+            </GridItem>
+            <GridItem>
+              <Button minW={'200'} backgroundColor={'blue.600'}>
+                <LedgerLoginButton
+                  loginButtonText={"Ledger"}
+                  callbackRoute="/"
+                />
+              </Button>
+            </GridItem>
+            <GridItem>
+              <Button minW={'200'} backgroundColor={'blue.600'}>
+                <WalletConnectLoginButton
+                  callbackRoute="/"
+                  loginButtonText={"Maiar"}
+                />
+              </Button>
+            </GridItem> 
+            <GridItem>
+              <Button minW={'200'} backgroundColor={'blue.600'}>
+                <ExtensionLoginButton
+                  callbackRoute="/"
+                  loginButtonText={"Extension"}
+                  className="white-color"
+                />
+              </Button>
+            </GridItem> 
+        </Grid>
+    </Box>
   ) : (
     ""
   );
@@ -109,9 +126,7 @@ export default function ScratchBare() {
         {addressSection}
         {connectButton}
       </Flex>
-      <Container>
-        {connectLoggedinSection}
-      </Container>
+      {connectLoggedinSection}   
     </Grid>
   );
 }
