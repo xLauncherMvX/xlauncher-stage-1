@@ -80,7 +80,7 @@ export default function BodyComp() {
         </Grid>
         <SignTransactionsModals className="custom-class-for-modals" />
         <TransactionsToastList />
-        <NotificationModal />
+        {/* <NotificationModal /> */}
     </Box>
   );
 }

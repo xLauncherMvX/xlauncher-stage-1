@@ -18,7 +18,7 @@ export default function Pricing({ contractByXlh }) {
   const { address } = useGetAccountInfo();
   const isLoggedIn = Boolean(address);
 
-  const [xlhAmount, setXlhAmount] = React.useState(12500);
+  const [xlhAmount, setXlhAmount] = React.useState(5000);
   const [egldAmount, setEgldAmount] = React.useState(500000000000000000);
 
   const increaseAmount = () => {
@@ -29,9 +29,9 @@ export default function Pricing({ contractByXlh }) {
       console.log(newEgldVal);
     }
 
-    let xlhInc = 12500;
+    let xlhInc = 5000;
     let newXlhVal = xlhAmount + xlhInc;
-    if(newXlhVal <= 125000){ 
+    if(newXlhVal <= 100000){ 
       setXlhAmount(newXlhVal);
       console.log(newXlhVal);
     }    
@@ -46,7 +46,7 @@ export default function Pricing({ contractByXlh }) {
       console.log(newEgldVal);
     }
     
-    let xlhInc = 12500;
+    let xlhInc = 5000;
     let newXlhVal = xlhAmount - xlhInc;
     if(newXlhVal > 0){ 
       setXlhAmount(newXlhVal);

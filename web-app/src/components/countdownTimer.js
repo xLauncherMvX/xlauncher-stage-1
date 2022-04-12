@@ -9,7 +9,7 @@ import {
 export default function CountdownTimer(){
     // Render a countdown
     return (
-        <Box as={Container} maxW="7xl" mt={14}>        
+        <Box as={Container} maxW="5xl" mt={14}>        
             <div className="show-counter" >
                 <p className='seedsale-text' align={'center'}>Seed Sale starts in:</p>
                 <a className="countdown-link">

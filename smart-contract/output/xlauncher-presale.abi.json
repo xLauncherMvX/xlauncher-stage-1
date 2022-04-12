@@ -1,11 +1,11 @@
 {
     "buildInfo": {
         "rustc": {
-            "version": "1.60.0-nightly",
-            "commitHash": "ec4bcaac450279b029f3480b8b8f1b82ab36a5eb",
-            "commitDate": "2022-01-15",
+            "version": "1.61.0-nightly",
+            "commitHash": "0677edc86e342f333d4828b0ee1ef395a4e70fe5",
+            "commitDate": "2022-03-31",
             "channel": "Nightly",
-            "short": "rustc 1.60.0-nightly (ec4bcaac4 2022-01-15)"
+            "short": "rustc 1.61.0-nightly (0677edc86 2022-03-31)"
         },
         "contractCrate": {
             "name": "xlauncher-presale",
