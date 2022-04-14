@@ -36,7 +36,6 @@ deploy() {
 }
 
 updateContract() {
-
     erdpy --verbose contract upgrade ${ADDRESS} --project=${PROJECT} --recall-nonce --pem=${PEM_FILE} \
       --gas-limit=30000000 --send --outfile="${MY_LOGS}/deploy-${ENV_LOGS}.json" \
       --proxy=${PROXY} --chain=${CHAINID} \
