@@ -9,7 +9,9 @@
 output
 /wallets/users/testnet-bogdan.pem
 /wallets/users/alice.pem
+utils/devnet_owner_wallet.pem
 
 # interaction logs
 interaction-logs
 erdpy.data-storage.json
+

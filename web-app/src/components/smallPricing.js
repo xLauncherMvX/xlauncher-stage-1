@@ -10,7 +10,6 @@ import {
   Button,
   useColorModeValue,
 } from '@chakra-ui/react';
-import { CheckIcon } from '@chakra-ui/icons';
 import { FaPlus, FaMinus } from 'react-icons/fa';
 import { useGetAccountInfo } from '@elrondnetwork/dapp-core';
 
@@ -18,7 +17,7 @@ export default function Pricing({ contractByXlh }) {
   const { address } = useGetAccountInfo();
   const isLoggedIn = Boolean(address);
 
-  const [xlhAmount, setXlhAmount] = React.useState(6250);
+  const [xlhAmount, setXlhAmount] = React.useState(2500);
   const [egldAmount, setEgldAmount] = React.useState(250000000000000000);
 
   const increaseAmount = () => {
@@ -29,9 +28,9 @@ export default function Pricing({ contractByXlh }) {
       console.log(newEgldVal);
     }
 
-    let xlhInc = 6250;
+    let xlhInc = 2500;
     let newXlhVal = xlhAmount + xlhInc;
-    if(newXlhVal <= 125000){ 
+    if(newXlhVal <= 50000){ 
       setXlhAmount(newXlhVal);
       console.log(newXlhVal);
     }    
@@ -46,7 +45,7 @@ export default function Pricing({ contractByXlh }) {
       console.log(newEgldVal);
     }
     
-    let xlhInc = 6250;
+    let xlhInc = 2500;
     let newXlhVal = xlhAmount - xlhInc;
     if(newXlhVal > 0){ 
       setXlhAmount(newXlhVal);
@@ -111,24 +110,25 @@ export default function Pricing({ contractByXlh }) {
             </Text>
             <Text color={'gray.500'}> XLH</Text>
           </Stack>
+          <Stack direction={'row'} align={'center'} justify={'center'}>
+            <Text fontSize={'2xl'} fontWeight={800}>
+            {egldAmount/1000000000000000000} EGLD
+            </Text>
+          </Stack>
         </Stack>
 
         <Box bg={useColorModeValue('gray.50', 'gray.900')} px={6} py={10}>
-          <List spacing={3}>
+          <List spacing={3}>          
             <ListItem>
-              <ListIcon as={CheckIcon} color="yellow.400" />
-              {egldAmount/1000000000000000000} eGLD
-            </ListItem>            
-            <ListItem>
-              <Button minW={'120'}>
+              <Button w={'full'} onClick={() => increaseAmount()}>
                 <ListIcon as={FaPlus} color="yellow.400" />
-                <span className='cursor-pointer' onClick={() => increaseAmount()}>Buy more</span>
+                <span className='cursor-pointer'>Buy more</span>
               </Button>              
             </ListItem>
             <ListItem>
-              <Button minW={'130'} marginLeft={'0'}>
+              <Button w={'full'} marginLeft={'0'} onClick={() => decreaseAmount()}>
                 <ListIcon as={FaMinus} color="yellow.400" marginLeft={-3} />
-                <span className='cursor-pointer' onClick={() => decreaseAmount()}>Buy less</span>
+                <span className='cursor-pointer'>Buy less</span>
               </Button>
             </ListItem>
           </List>

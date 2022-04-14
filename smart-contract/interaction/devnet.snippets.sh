@@ -1,5 +1,5 @@
 PROJECT="${PWD}"
-PEM_FILE="${PROJECT}/../../walets/users/x-launcher-owner-devnet.pem"
+PEM_FILE="${PROJECT}/../utils/devnet_owner_wallet.pem"
 ADDRESS=$(erdpy data load --key=address-devnet)
 DEPLOY_TRANSACTION=$(erdpy data load --key=deployTransaction-devnet)
 MY_DECIMALS="000000000000000000"
@@ -14,9 +14,9 @@ TOKEN_ID="XLH-cb26c7"
 #TOKEN_ID="BCOIN-aafe6c"
 TOKEN_ID_HEX=$(echo -n ${TOKEN_ID} | xxd -p)
 
-INITIAL_PRICE=25000000000000000000000
-MIN_AMOUNT=10000000000000000
-MAX_AMOUNT=10000000000000000000
+INITIAL_PRICE=10000000000000000000000
+MIN_AMOUNT= 250000000000000000
+MAX_AMOUNT=5000000000000000000
 
 deploy() {
 
