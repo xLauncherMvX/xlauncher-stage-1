@@ -82,8 +82,8 @@ pub trait XLauncherPresale {
             &caller, &token_id_val, 0).amount;
         let client_total_balance = (&result_edst_token_amount + &client_token_balance);
         let max_balance_val = self.max_balance().get();
-        require!(client_total_balance > max_balance_val,
-         "Buying that much client will exceed max allowed token balance");
+        require!(client_total_balance <= max_balance_val,
+         "Buying that much will exceed max allowed token balance");
 
 
         self.send().direct(
