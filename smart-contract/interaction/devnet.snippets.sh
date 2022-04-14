@@ -17,13 +17,14 @@ TOKEN_ID_HEX=$(echo -n ${TOKEN_ID} | xxd -p)
 INITIAL_PRICE=10000000000000000000000
 MIN_AMOUNT=250000000000000000
 MAX_AMOUNT=5000000000000000000
+MAX_BALANCE="55000${MY_DECIMALS}"
 
 deploy() {
 
   erdpy --verbose contract deploy --project=${PROJECT} --recall-nonce --pem=${PEM_FILE} \
     --gas-limit=30000000 --send --outfile="${MY_LOGS}/deploy-${ENV_LOGS}.json" \
     --proxy=${PROXY} --chain=${CHAINID} \
-    --arguments "0x${TOKEN_ID_HEX}" ${INITIAL_PRICE} ${MIN_AMOUNT} ${MAX_AMOUNT} || return
+    --arguments "0x${TOKEN_ID_HEX}" ${INITIAL_PRICE} ${MIN_AMOUNT} ${MAX_AMOUNT} ${MAX_BALANCE} || return
 
   TRANSACTION=$(erdpy data parse --file="${MY_LOGS}/deploy-${ENV_LOGS}.json" --expression="data['emitted_tx']['hash']")
   ADDRESS=$(erdpy data parse --file="${MY_LOGS}/deploy-${ENV_LOGS}.json" --expression="data['emitted_tx']['address']")
