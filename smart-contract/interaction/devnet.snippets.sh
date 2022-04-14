@@ -1,5 +1,5 @@
 PROJECT="${PWD}"
-PEM_FILE="${PROJECT}/../utils/devnet_owner_wallet.pem"
+PEM_FILE="${PROJECT}/../../utils/devnet_owner_wallet.pem"
 ADDRESS=$(erdpy data load --key=address-devnet)
 DEPLOY_TRANSACTION=$(erdpy data load --key=deployTransaction-devnet)
 MY_DECIMALS="000000000000000000"
@@ -36,9 +36,8 @@ deploy() {
 }
 
 updateContract() {
-
     erdpy --verbose contract upgrade ${ADDRESS} --project=${PROJECT} --recall-nonce --pem=${PEM_FILE} \
-      --gas-limit=30000000 --send --outfile="${MY_LOGS}/deploy-${ENV_LOGS}.json" \
+      --gas-limit=20000000 --send --outfile="${MY_LOGS}/deploy-${ENV_LOGS}.json" \
       --proxy=${PROXY} --chain=${CHAINID} \
       --arguments "0x${TOKEN_ID_HEX}" ${INITIAL_PRICE} ${MIN_AMOUNT} ${MAX_AMOUNT}
 }
@@ -80,7 +79,7 @@ getMaxAmount(){
 
 buyTokens(){
   erdpy --verbose contract call ${ADDRESS} --recall-nonce \
-      --pem=${CHESSOUT_PEM_FILE} \
+      --pem=${PEM_FILE} \
       --gas-limit=3000000 \
       --function="buy" \
       --value=1000000000000000000 \
