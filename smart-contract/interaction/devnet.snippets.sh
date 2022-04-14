@@ -38,9 +38,9 @@ deploy() {
 
 updateContract() {
     erdpy --verbose contract upgrade ${ADDRESS} --project=${PROJECT} --recall-nonce --pem=${PEM_FILE} \
-      --gas-limit=20000000 --send --outfile="${MY_LOGS}/deploy-${ENV_LOGS}.json" \
+      --gas-limit=30000000 --send --outfile="${MY_LOGS}/deploy-${ENV_LOGS}.json" \
       --proxy=${PROXY} --chain=${CHAINID} \
-      --arguments "0x${TOKEN_ID_HEX}" ${INITIAL_PRICE} ${MIN_AMOUNT} ${MAX_AMOUNT}
+      --arguments "0x${TOKEN_ID_HEX}" ${INITIAL_PRICE} ${MIN_AMOUNT} ${MAX_AMOUNT} ${MAX_BALANCE}
 }
 
 
@@ -77,6 +77,11 @@ getMaxAmount(){
    erdpy --verbose contract query ${ADDRESS} --function="getMaxAmount" \
      --proxy=${PROXY}
  }
+
+ getMaxBalance(){
+    erdpy --verbose contract query ${ADDRESS} --function="getMaxBalance" \
+      --proxy=${PROXY}
+  }
 
 buyTokens(){
   erdpy --verbose contract call ${ADDRESS} --recall-nonce \
