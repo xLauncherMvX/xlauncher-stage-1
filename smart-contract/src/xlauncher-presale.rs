@@ -42,6 +42,8 @@ pub trait XLauncherPresale {
         return balance;
     }
 
+
+
     #[payable("EGLD")]
     #[endpoint]
     fn buy(
@@ -73,6 +75,12 @@ pub trait XLauncherPresale {
         //sent token to caller
         let caller = self.blockchain().get_caller();
         let token_id_val = self.token_id().get();
+
+        let client_token_balance = self.blockchain().get_esdt_token_data(
+            &caller, &token_id_val, 0).amount;
+        let client_total_balance = (&result_edst_token_amount + &client_token_balance);
+
+
         self.send().direct(
             &caller,
             &token_id_val,
