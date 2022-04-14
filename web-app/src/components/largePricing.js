@@ -30,7 +30,7 @@ export default function Pricing({ contractByXlh }) {
 
     let xlhInc = 10000;
     let newXlhVal = xlhAmount + xlhInc;
-    if(newXlhVal <= 100000){ 
+    if(newXlhVal <= 50000){ 
       setXlhAmount(newXlhVal);
       console.log(newXlhVal);
     }    
