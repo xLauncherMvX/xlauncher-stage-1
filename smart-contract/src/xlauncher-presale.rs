@@ -13,16 +13,19 @@ pub trait XLauncherPresale {
             token_id: TokenIdentifier,
             initial_price: BigUint,
             min_amount: BigUint,
-            max_amount_val: BigUint) {
+            max_amount_val: BigUint,
+            max_balance_val: BigUint) {
         require!(token_id.is_valid_esdt_identifier(), "Invalid token identifier");
         require!(initial_price > 0, "Initial price must be positive value");
         require!(min_amount > 0, "Min amount must be positive value");
         require!(max_amount_val > 0, "Max amount must be positive value");
         require!(min_amount < max_amount_val, "min amount must be smaller then max amount");
+        require!(max_balance_val > 0, "Max balance must be positive value");
         self.token_id().set(&token_id);
         self.price().set(initial_price);
         self.min_amount().set(min_amount);
         self.max_amount().set(max_amount_val);
+        self.max_balance().set(max_balance_val);
     }
 
     #[endpoint(fundContract)]
@@ -41,7 +44,6 @@ pub trait XLauncherPresale {
         let balance: BigUint = self.blockchain().get_sc_balance(&my_token_id, 0);
         return balance;
     }
-
 
 
     #[payable("EGLD")]
@@ -140,4 +142,8 @@ pub trait XLauncherPresale {
     #[view(getMaxAmount)]
     #[storage_mapper("maxAmount")]
     fn max_amount(&self) -> SingleValueMapper<BigUint>;
+
+    #[view(getMaxBalance)]
+    #[storage_mapper("maxBalance")]
+    fn max_balance(&self) -> SingleValueMapper<BigUint>;
 }

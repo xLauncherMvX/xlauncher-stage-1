@@ -63,7 +63,8 @@
             "str:tokenId": "str:BCOIN-good00",
             "str:price": "25,000,000,000,000,000,000,000",
             "str:minAmount": "10,000,000,000,000,000",
-            "str:maxAmount": "10,000,000,000,000,000,000"
+            "str:maxAmount": "10,000,000,000,000,000,000",
+            "str:maxBalance": "55,000,000,000,000,000,000,000"
           },
           "code": "file:../output/xlauncher-presale.wasm"
         }

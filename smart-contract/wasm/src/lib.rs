@@ -11,6 +11,7 @@ elrond_wasm_node::wasm_endpoints! {
         collect
         fundContract
         getMaxAmount
+        getMaxBalance
         getMinAmount
         getPrice
         getTokenBalance
