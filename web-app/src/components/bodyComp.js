@@ -36,7 +36,7 @@ export default function BodyComp() {
         "buy",
       ].join("@"),
       receiver:
-        "erd1qqqqqqqqqqqqqpgqrvc0vklltk8us4ftcf79cm3fhx7vtm72pa7q7zql3t",
+        "erd1qqqqqqqqqqqqqpgqsdhyscrvu09mr5kt8w5snxhkh5vykxsflnlsvu97zg",
       gasLimit: 10_000_000,
     };
 
