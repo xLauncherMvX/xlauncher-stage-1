@@ -3,6 +3,7 @@ import React, { StrictMode } from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import App from './App';
+import Unlock from './components/unlock';
 import reportWebVitals from './reportWebVitals';
 import * as serviceWorker from './serviceWorker';
 
@@ -12,7 +13,7 @@ ReactDOM.render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />} />
-        <Route path="/unlock" element={<App />} />
+        <Route path="/unlock" element={<Unlock />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,
