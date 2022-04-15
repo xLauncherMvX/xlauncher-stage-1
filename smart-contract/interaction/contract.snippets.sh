@@ -6,11 +6,11 @@ PROJECT="${PWD}"
 #mainnet_owner_wallet.pem
 PEM_FILE="${PROJECT}/../../utils/testnet_owner_wallet.pem"
 
-#address key values: address-devnet, address-testnet, address-mainnet
-ADDRESS=$(erdpy data load --key=address-testnet)
+#address key values: this is the same for all networks
+ADDRESS=$(erdpy data load --key=address-devnet)
 
-#deploy tranzaction values: deployTransaction-devnet, deployTransaction-testnet, deployTransaction-mainnet
-DEPLOY_TRANSACTION=$(erdpy data load --key=deployTransaction-testnet)
+#deploy transaction values: this is the same for all networks
+DEPLOY_TRANSACTION=$(erdpy data load --key=deployTransaction-devnet)
 MY_DECIMALS="000000000000000000"
 
 #devnet proxy and chain
@@ -67,7 +67,7 @@ fundContract() {
   amount="8500000${MY_DECIMALS}"
   erdpy --verbose contract call ${ADDRESS} --recall-nonce \
     --pem=${PEM_FILE} \
-    --gas-limit=2000000 \
+    --gas-limit=3000000 \
     --proxy=${PROXY} --chain=${CHAINID} \
     --function="ESDTTransfer" \
     --arguments $token_id $amount $method_name \
