@@ -4,27 +4,31 @@ PROJECT="${PWD}"
 #devnet_owner_wallet.pem
 #testnet_owner_wallet.pem
 #mainnet_owner_wallet.pem
-PEM_FILE="${PROJECT}/../../utils/devnet_owner_wallet.pem"
-ADDRESS=$(erdpy data load --key=address-devnet)
-DEPLOY_TRANSACTION=$(erdpy data load --key=deployTransaction-devnet)
+PEM_FILE="${PROJECT}/../../utils/testnet_owner_wallet.pem"
+
+#address key values: address-devnet, address-testnet, address-mainnet
+ADDRESS=$(erdpy data load --key=address-testnet)
+
+#deploy tranzaction values: deployTransaction-devnet, deployTransaction-testnet, deployTransaction-mainnet
+DEPLOY_TRANSACTION=$(erdpy data load --key=deployTransaction-testnet)
 MY_DECIMALS="000000000000000000"
 
 #devnet proxy and chain
 #devnet=https://devnet-gateway.elrond.com
 #testnet=https://testnet-gateway.elrond.com
 #mainnet=https://mainnet-gateway.elrond.com
-PROXY=https://devnet-gateway.elrond.com
+PROXY=https://testnet-gateway.elrond.com
 
 #chain values: D, T, M
-CHAINID=D
+CHAINID=T
 
 
 MY_LOGS="interaction-logs"
 #envs logs values: devnet, testnet, mainnet
-ENV_LOGS="devnet"
+ENV_LOGS="testnet"
 
 #token id values: devnet=XLH-cb26c7, testnet=XLH-0be7d1, mainnet=XLH-8daa50
-TOKEN_ID="XLH-cb26c7"
+TOKEN_ID="XLH-0be7d1"
 TOKEN_ID_HEX=$(echo -n ${TOKEN_ID} | xxd -p)
 
 INITIAL_PRICE=10000000000000000000000
@@ -60,7 +64,7 @@ updateContract() {
 fundContract() {
   method_name="0x$(echo -n 'fundContract' | xxd -p -u | tr -d '\n')"
   token_id="0x$(echo -n ${TOKEN_ID} | xxd -p -u | tr -d '\n')"
-  amount="13000000${MY_DECIMALS}"
+  amount="8500000${MY_DECIMALS}"
   erdpy --verbose contract call ${ADDRESS} --recall-nonce \
     --pem=${PEM_FILE} \
     --gas-limit=2000000 \
