@@ -1,17 +1,30 @@
 PROJECT="${PWD}"
+
+#possible pem values
+#devnet_owner_wallet.pem
+#testnet_owner_wallet.pem
+#mainnet_owner_wallet.pem
 PEM_FILE="${PROJECT}/../../utils/devnet_owner_wallet.pem"
 ADDRESS=$(erdpy data load --key=address-devnet)
 DEPLOY_TRANSACTION=$(erdpy data load --key=deployTransaction-devnet)
 MY_DECIMALS="000000000000000000"
 
+#devnet proxy and chain
+#devnet=https://devnet-gateway.elrond.com
+#testnet=https://testnet-gateway.elrond.com
+#mainnet=https://mainnet-gateway.elrond.com
 PROXY=https://devnet-gateway.elrond.com
+
+#chain values: D, T, M
 CHAINID=D
 
+
 MY_LOGS="interaction-logs"
+#envs logs values: devnet, testnet, mainnet
 ENV_LOGS="devnet"
 
+#token id values: devnet=XLH-cb26c7, testnet=XLH-0be7d1, mainnet=XLH-8daa50
 TOKEN_ID="XLH-cb26c7"
-#TOKEN_ID="BCOIN-aafe6c"
 TOKEN_ID_HEX=$(echo -n ${TOKEN_ID} | xxd -p)
 
 INITIAL_PRICE=10000000000000000000000
