@@ -12,6 +12,7 @@ import {
 } from '@chakra-ui/react';
 import { FaPlus, FaMinus } from 'react-icons/fa';
 import { useGetAccountInfo } from '@elrondnetwork/dapp-core';
+import employee from '../whitelist.json';
 
 export default function Pricing({ contractByXlh }) {
   const { address } = useGetAccountInfo();
@@ -54,7 +55,17 @@ export default function Pricing({ contractByXlh }) {
     console.log('Time to decrease');
   };
 
-  let buttonShow = isLoggedIn ? (
+  var whitelisted = false;
+  {
+    employee['addresses'].map(name => {
+      if(name == address){
+        whitelisted = true;
+        console.log('Address found in the whitelist');
+      }
+    })
+  } 
+
+  let buttonShow = isLoggedIn && whitelisted ? (
     <Button
       onClick={()=>contractByXlh(egldAmount)}
       mt={10}
