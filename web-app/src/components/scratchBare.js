@@ -18,7 +18,8 @@ import {
 } from '@chakra-ui/react';
 import { DappUI, logout, useGetAccountInfo } from '@elrondnetwork/dapp-core';
 import '@elrondnetwork/dapp-core/build/index.css';
-import '../styles.css';
+import './../styles.css';
+import { ReactComponent as ElrondLogo } from './../logo.svg';
 
 export default function ScratchBare() {
   const { address, account } = useGetAccountInfo();
@@ -143,8 +144,9 @@ export default function ScratchBare() {
   return (
     <Grid>
       <Flex backgroundColor={'blackAlpha.700'} padding={4}>
-        <Spacer />
+        <ElrondLogo className='elrond-logo'/>
         
+        <Spacer />
         <Spacer />
         {addressSection}
         {connectButton}
