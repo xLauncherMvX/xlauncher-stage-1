@@ -71,37 +71,30 @@ export default function ScratchBare() {
             }}
             gap={{ base: '8', sm: '12', md: '16' }}
           >
-            <GridItem>
-              <Button minW={'210'} backgroundColor={'blue.600'}>
-                <WebWalletLoginButton
-                  callbackRoute="/"
-                  loginButtonText={"Web wallet"}
-                />
-              </Button>
+            <GridItem>              
+              <WebWalletLoginButton 
+                callbackRoute="/"
+                loginButtonText={"Web wallet"}
+              />              
             </GridItem>
             <GridItem>
-              <Button minW={'210'} backgroundColor={'blue.600'}>
-                <LedgerLoginButton
-                  loginButtonText={"Ledger"}
-                  callbackRoute="/"
-                />
-              </Button>
+              <LedgerLoginButton
+                loginButtonText={"Ledger"}
+                callbackRoute="/"
+              />
             </GridItem>
             <GridItem>
-              <Button minW={'210'} backgroundColor={'blue.600'}>
-                <WalletConnectLoginButton
-                  callbackRoute="/"
-                  loginButtonText={"Maiar"}
-                />
-              </Button>
+              <WalletConnectLoginButton
+                callbackRoute="/"
+                loginButtonText={"Maiar"}
+              />
             </GridItem> 
             <GridItem>
-              <Button minW={'210'} backgroundColor={'blue.600'} className="dapp-core-ui-component-2">
-                <ExtensionLoginButton
-                  callbackRoute="/"
-                  loginButtonText={"Extension"}
-                />
-              </Button>
+              <ExtensionLoginButton
+                callbackRoute="/"
+                loginButtonText={"Extension"}
+                className="dapp-core-ui-component-2"
+              />
             </GridItem> 
         </Grid>
     </Box>
@@ -128,9 +121,9 @@ export default function ScratchBare() {
           <PopoverTrigger>
             <Button>{fls}...{lls}</Button>
           </PopoverTrigger>
-          <PopoverContent width={'12rem'}>
-            <PopoverArrow />
-            <PopoverCloseButton />
+          <PopoverContent width={'12rem'} backgroundColor={'#1b46c2'} borderColor={'white'}>
+            <PopoverArrow backgroundColor={'white'}/>
+            <PopoverCloseButton color={'white'}/>
             <PopoverBody>
               <DappUI.Denominate value={account.balance}/> 
               <Divider orientation='horizontal' mt={'1'} />  
