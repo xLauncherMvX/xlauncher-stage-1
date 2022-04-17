@@ -28,9 +28,12 @@ export default function CountdownTimer(){
         getBalance();
     }, []);
 
-    
-    var balanceLeft = 13000000 - (data/1000000000000000000);
-    var procents = balanceLeft * 100 / 13000000;
+    var maxBalance = 8500000;
+    var balanceLeft = maxBalance - (data/1000000000000000000);
+    if(balanceLeft < 0){
+        balanceLeft = 0;
+    }
+    var procents = balanceLeft * 100 / maxBalance;
     var procentsOneDigit = parseFloat(procents).toFixed(1);
  
 
@@ -47,7 +50,7 @@ export default function CountdownTimer(){
                     <DateCountdown dateTo='April 27, 2022 00:00:00 GMT+03:00'/>
                 </a>   
                 <Progress hasStripe value={procentsOneDigit} height='32px' colorScheme='blue' marginTop={'4'} marginLeft={-2} />
-                <Text align={'center'} fontSize={'20'} fontWeight={'bold'} mt={'2'}> {balanceLeft} / 13000000 XLH sold</Text>
+                <Text align={'center'} fontSize={'20'} fontWeight={'bold'} mt={'2'}> {balanceLeft} / {maxBalance} XLH sold</Text>
             </div>
         </Box>
     );
