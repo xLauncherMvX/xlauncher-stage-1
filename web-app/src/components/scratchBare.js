@@ -34,9 +34,17 @@ export default function ScratchBare() {
   } = DappUI;
 
   const [dataAccount, setDataAccount] = useState([]);
-  const apiLink = 'https://devnet-api.elrond.com/accounts/';
-  const apiToken = 'XLH-cb26c7';
+
+  //devnet
+  // const apiLink = 'https://devnet-api.elrond.com/accounts/';
+  // const apiToken = 'XLH-cb26c7';
+  // const customApi = apiLink+address+'/tokens/'+apiToken;  
+
+  //testnet
+  const apiLink = 'https://testnet-api.elrond.com/accounts/';  
+  const apiToken = 'XLH-0be7d1';  
   const customApi = apiLink+address+'/tokens/'+apiToken;
+
   const getBalanceAccount = async () => {
       try {
       const response = await fetch(customApi, { 
@@ -144,9 +152,9 @@ export default function ScratchBare() {
   return (
     <Grid>
       <Flex backgroundColor={'blackAlpha.700'} padding={4}>
-        <ElrondLogo className='elrond-logo'/>
-        
+        <ElrondLogo className='elrond-logo'/>        
         <Spacer />
+        <Text mt={'3'} fontWeight={'bold'}>TESTNET</Text>
         <Spacer />
         {addressSection}
         {connectButton}
