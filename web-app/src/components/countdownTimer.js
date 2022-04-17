@@ -9,7 +9,6 @@ import {
 
 export default function CountdownTimer(){
     const [data, setData] = useState([]);
-    const [data2, setData2] = useState([]);
 
     const getBalance = async () => {
         try {
@@ -37,6 +36,8 @@ export default function CountdownTimer(){
     var procents = balanceLeft * 100 / maxBalance;
     var procentsOneDigit = parseFloat(procents).toFixed(1);
 
+    
+
     useEffect(() => {
         getBalance();
     }, []);
@@ -50,7 +51,7 @@ export default function CountdownTimer(){
                     <DateCountdown dateTo='April 26, 2022 19:00:00 GMT+03:00'/>
                 </a>   
                 <Progress hasStripe value={procentsOneDigit} height='32px' colorScheme='blue' marginTop={'4'} marginLeft={-2} />
-                <Text align={'center'} fontSize={'20'} fontWeight={'bold'} mt={'2'}> {balanceLeft} / {maxBalance} XLH sold</Text>
+                <Text align={'center'} fontSize={'20'} fontWeight={'bold'} mt={'2'}> {balanceLeft.toFixed()} / {maxBalance} XLH sold</Text>
             </div>
         </Box>
     );
