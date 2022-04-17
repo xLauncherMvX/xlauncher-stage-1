@@ -4,37 +4,55 @@ PROJECT="${PWD}"
 #devnet_owner_wallet.pem
 #testnet_owner_wallet.pem
 #mainnet_owner_wallet.pem
-PEM_FILE="${PROJECT}/../../utils/testnet_owner_wallet.pem"
 
 #address key values: this is the same for all networks
-ADDRESS=$(erdpy data load --key=address-devnet)
 
 #deploy transaction values: this is the same for all networks
 DEPLOY_TRANSACTION=$(erdpy data load --key=deployTransaction-devnet)
+
 MY_DECIMALS="000000000000000000"
 
 #devnet proxy and chain
 #devnet=https://devnet-gateway.elrond.com
 #testnet=https://testnet-gateway.elrond.com
 #mainnet=https://mainnet-gateway.elrond.com
-PROXY=https://testnet-gateway.elrond.com
 
 #chain values: D, T, M
-CHAINID=T
-
-
+CURRENT_ENV="not-set"
 MY_LOGS="interaction-logs"
 #envs logs values: devnet, testnet, mainnet
-ENV_LOGS="testnet"
-
 #token id values: devnet=XLH-cb26c7, testnet=XLH-0be7d1, mainnet=XLH-8daa50
-TOKEN_ID="XLH-0be7d1"
-TOKEN_ID_HEX=$(echo -n ${TOKEN_ID} | xxd -p)
 
 INITIAL_PRICE=10000000000000000000000
 MIN_AMOUNT=250000000000000000
 MAX_AMOUNT=5000000000000000000
 MAX_BALANCE="55000${MY_DECIMALS}"
+
+setEnvDevnet() {
+  cp -f erdpy.data-storage-devnet.json erdpy.data-storage.json
+  CURRENT_ENV="devnet"
+  PEM_FILE="${PROJECT}/../../walets/users/devnet_owner_wallet.pem"
+  ADDRESS=$(erdpy data load --key=address-devnet)
+  PROXY=https://devnet-gateway.elrond.com
+  CHAINID=D
+  ENV_LOGS="devnet"
+  TOKEN_ID="XLH-cb26c7"
+}
+
+setEnvTestnet() {
+  cp -f erdpy.data-storage-testnet.json erdpy.data-storage.json
+  CURRENT_ENV="testnet"
+  PEM_FILE="${PROJECT}/../../walets/users/testnet_owner_wallet.pem"
+  ADDRESS=$(erdpy data load --key=address-devnet)
+  PROXY=https://testnet-gateway.elrond.com
+  CHAINID=T
+  ENV_LOGS="testnet"
+  TOKEN_ID="XLH-0be7d1"
+}
+
+printCurrentEnv(){
+  echo ${CURRENT_ENV}
+}
 
 deploy() {
 
@@ -54,12 +72,11 @@ deploy() {
 }
 
 updateContract() {
-    erdpy --verbose contract upgrade ${ADDRESS} --project=${PROJECT} --recall-nonce --pem=${PEM_FILE} \
-      --gas-limit=30000000 --send --outfile="${MY_LOGS}/deploy-${ENV_LOGS}.json" \
-      --proxy=${PROXY} --chain=${CHAINID} \
-      --arguments "0x${TOKEN_ID_HEX}" ${INITIAL_PRICE} ${MIN_AMOUNT} ${MAX_AMOUNT} ${MAX_BALANCE}
+  erdpy --verbose contract upgrade ${ADDRESS} --project=${PROJECT} --recall-nonce --pem=${PEM_FILE} \
+    --gas-limit=30000000 --send --outfile="${MY_LOGS}/deploy-${ENV_LOGS}.json" \
+    --proxy=${PROXY} --chain=${CHAINID} \
+    --arguments "0x${TOKEN_ID_HEX}" ${INITIAL_PRICE} ${MIN_AMOUNT} ${MAX_AMOUNT} ${MAX_BALANCE}
 }
-
 
 fundContract() {
   method_name="0x$(echo -n 'fundContract' | xxd -p -u | tr -d '\n')"
@@ -80,35 +97,35 @@ getTokenBalance() {
     --proxy=${PROXY}
 }
 
-getPrice(){
+getPrice() {
   erdpy --verbose contract query ${ADDRESS} --function="getPrice" \
     --proxy=${PROXY}
 }
 
-getMinAmount(){
+getMinAmount() {
   erdpy --verbose contract query ${ADDRESS} --function="getMinAmount" \
     --proxy=${PROXY}
 }
 
-getMaxAmount(){
-   erdpy --verbose contract query ${ADDRESS} --function="getMaxAmount" \
-     --proxy=${PROXY}
- }
+getMaxAmount() {
+  erdpy --verbose contract query ${ADDRESS} --function="getMaxAmount" \
+    --proxy=${PROXY}
+}
 
- getMaxBalance(){
-    erdpy --verbose contract query ${ADDRESS} --function="getMaxBalance" \
-      --proxy=${PROXY}
-  }
+getMaxBalance() {
+  erdpy --verbose contract query ${ADDRESS} --function="getMaxBalance" \
+    --proxy=${PROXY}
+}
 
-buyTokens(){
+buyTokens() {
   erdpy --verbose contract call ${ADDRESS} --recall-nonce \
-      --pem=${PEM_FILE} \
-      --gas-limit=3000000 \
-      --function="buy" \
-      --value=1000000000000000000 \
-      --proxy=${PROXY} --chain=${CHAINID} \
-      --send \
-      --outfile="${MY_LOGS}/buyTokens-${ENV_LOGS}.json"
+    --pem=${PEM_FILE} \
+    --gas-limit=3000000 \
+    --function="buy" \
+    --value=1000000000000000000 \
+    --proxy=${PROXY} --chain=${CHAINID} \
+    --send \
+    --outfile="${MY_LOGS}/buyTokens-${ENV_LOGS}.json"
 }
 
 collect() {
