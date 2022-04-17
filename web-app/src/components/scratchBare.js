@@ -33,7 +33,9 @@ export default function ScratchBare() {
   } = DappUI;
 
   const [dataAccount, setDataAccount] = useState([]);
-  const customApi = 'https://devnet-api.elrond.com/accounts/'+address+'/tokens/XLH-cb26c7';
+  const apiLink = 'https://devnet-api.elrond.com/accounts/';
+  const apiToken = 'XLH-cb26c7';
+  const customApi = apiLink+address+'/tokens/'+apiToken;
   const getBalanceAccount = async () => {
       try {
       const response = await fetch(customApi, { 
@@ -47,6 +49,8 @@ export default function ScratchBare() {
       console.error(error);
       }
   }
+
+  getBalanceAccount();
 
   useEffect(() => {
     getBalanceAccount();

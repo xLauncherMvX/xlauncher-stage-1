@@ -24,6 +24,8 @@ export default function CountdownTimer(){
         }
     }
 
+    getBalance();
+    
     useEffect(() => {
         getBalance();
     }, []);
