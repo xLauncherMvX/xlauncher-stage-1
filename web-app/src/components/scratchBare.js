@@ -1,8 +1,9 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   Box,
   Button,
   Container,
+  Divider,
   Flex,
   Grid,
   GridItem,
@@ -23,14 +24,38 @@ export default function ScratchBare() {
   const { address, account } = useGetAccountInfo();
   const isLoggedIn = Boolean(address);
   const [timeToConnect, setTimeToConnect] = React.useState(false);
-
-
+  
   const { 
     WebWalletLoginButton, 
     WalletConnectLoginButton,
     LedgerLoginButton,
     ExtensionLoginButton
   } = DappUI;
+
+  const [dataAccount, setDataAccount] = useState([]);
+  const customApi = 'https://devnet-api.elrond.com/accounts/'+address+'/tokens/XLH-cb26c7';
+  const getBalanceAccount = async () => {
+      try {
+      const response = await fetch(customApi, { 
+          headers: {
+              'Accept': 'application/json',
+          }
+      });
+      const json = await response.json();
+      setDataAccount(json.balance);
+      } catch (error) {
+      console.error(error);
+      }
+  }
+
+  useEffect(() => {
+    getBalanceAccount();
+  }, []);
+
+  var balanceAccount = dataAccount/1000000000000000000;
+  if(!balanceAccount){
+    balanceAccount = 0;
+  }
 
   var fls = address.slice(0,5);
   var lls = address.slice(58,62);
@@ -99,15 +124,17 @@ export default function ScratchBare() {
 
   let addressSection = isLoggedIn ? (
       <Box marginRight={'5'} className='popover-login'>
-        <Popover>
+        <Popover usePortal>
           <PopoverTrigger>
             <Button>{fls}...{lls}</Button>
           </PopoverTrigger>
-          <PopoverContent>
+          <PopoverContent width={'12rem'}>
             <PopoverArrow />
             <PopoverCloseButton />
             <PopoverBody>
-              <DappUI.Denominate value={account.balance}/>   
+              <DappUI.Denominate value={account.balance}/> 
+              <Divider orientation='horizontal' mt={'1'} />  
+              <Text mt={'2'}>{balanceAccount} XLH</Text>
             </PopoverBody>
           </PopoverContent>
         </Popover> 
