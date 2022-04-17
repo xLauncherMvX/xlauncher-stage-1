@@ -61,6 +61,9 @@ export default function BodyComp() {
 
   return (
     <Box as={Container} maxW="5xl" mt={14} p={4}>
+          <TransactionsToastList />
+          <NotificationModal />
+          <SignTransactionsModals className='custom-class-for-modals' />
         <Grid
             templateColumns={{
             base: 'repeat(1, 1fr)',
@@ -79,9 +82,6 @@ export default function BodyComp() {
               <LargePricing contractByXlh={contractByXlh}/>
             </GridItem> 
         </Grid>
-        <SignTransactionsModals className="custom-class-for-modals" />
-        <TransactionsToastList />
-        <NotificationModal />
     </Box>
   );
 }
