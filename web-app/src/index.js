@@ -13,7 +13,8 @@ ReactDOM.render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />} />
-        <Route path="/unlock" element={<Unlock />} />
+        <Route path="/unlock" element={<App />} />
+        <Route path='*' element={<App />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,
