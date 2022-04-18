@@ -59,7 +59,11 @@
           "nonce": "*",
           "balance": "0",
           "storage": {
-            "str:tokenId": "str:BCOIN-good00"
+            "str:stakingSettings": {
+              "1-token_id": "nested:str:BCOIN-good00",
+              "2-pull_a_locking_time_span": "u64:0",
+              "3-pull_a_id": "u32:1"
+            }
           },
           "code": "file:../output/xlauncher-staking.wasm"
         }
