@@ -284,8 +284,8 @@ DateCountdown.propTypes = {
 };
 
 DateCountdown.defaultProps = {
-  locales: ['year', 'month', 'day', 'hour', 'minute', 'second'],
-  locales_plural: ['years', 'months', 'days', 'hours', 'minutes', 'seconds'],
+  locales: ['y', 'm', 'd', 'h', 'm', 's'],
+  locales_plural: ['y', 'm', 'd', 'h', 'm', 's'],
   dateTo: (new Date()).toString(),
   dateFrom: (new Date()).toString(),
   callback: () => null,

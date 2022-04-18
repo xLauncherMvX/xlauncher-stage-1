@@ -13,32 +13,35 @@
 }
 
 /* Login buttons */
+.dapp-core-ui-component-2_noExtensionButtonContent {
+  color: #fff;
+  min-width: 200px;
+  background-color: #1b46c2;
+  border-color: #1b46c2;
+  border-radius: 0.25rem;
+  padding-left: 1.5rem !important;
+  padding-right: 1.5rem !important;
+  padding-top: 0.5rem !important;
+  padding-bottom: 0.5rem !important;
+  margin-top: -4px;
+}
 .dapp-core-ui-component .btn-primary {
   color: #fff;
-  background-color: #1b45c200;
-  border-color: #1646d400;
+  min-width: 200px;
 }
 .dapp-core-ui-component .btn-primary:hover {
   color: #fff;
-  background-color: #1b45c200;
-  border-color: #1b45c200; 
 }
 .dapp-core-ui-component .btn-primary:focus, .dapp-core-ui-component .btn-primary.focus {
   color: #fff;
-  background-color: #1b45c200;
-  border-color: #1b45c200;
   box-shadow: 0 0 0 0.2rem rgba(61, 98, 203, 0.5); 
 }
 .dapp-core-ui-component .btn-primary.disabled, .dapp-core-ui-component .btn-primary:disabled {
   color: #fff;
-  background-color: #1b45c200;
-  border-color: #1b45c200; 
 }
 .dapp-core-ui-component .btn-primary:not(:disabled):not(.disabled):active, .dapp-core-ui-component .btn-primary:not(:disabled):not(.disabled).active,
 .show > .dapp-core-ui-component .btn-primary.dropdown-toggle {
   color: #fff;
-  background-color: #1b45c200;
-  border-color: #1b45c200; 
 }
 .dapp-core-ui-component .btn-primary:not(:disabled):not(.disabled):active:focus, .dapp-core-ui-component .btn-primary:not(:disabled):not(.disabled).active:focus,
   .show > .dapp-core-ui-component .btn-primary.dropdown-toggle:focus {
@@ -105,7 +108,7 @@ body {
   font-size: 4rem;
   line-height: 1.75rem;
   padding: 1rem 1rem 2rem 1rem;
-  border: 2px solid #ebebeb;
+  /* border: 2px solid #ebebeb; */
   border-radius: 0.45rem;
   text-decoration: none;
   color: white;
@@ -139,10 +142,9 @@ body {
 }
 
 .seedsale-text{
-  font-size: 40px;
+  font-size: 35px;
   font-weight: bold;
   margin-top: 30px;
-  margin-bottom: 10px;
 }
 .token-text-type {
   font-size: 75px;
@@ -162,7 +164,7 @@ body {
 .popover-login{
   border: 1px solid white;
   border-radius: 10px;
-  background-color: #4299e1;
+  background-color: #1b46c2;;
   color: white;
 }
 .css-p7yt37 {
@@ -215,7 +217,7 @@ body {
 .custom-ctt-numbers2{
   color: lightskyblue;
 }
-.dapp-core-ui-component-2 .btn {
+.dapp-core-ui-component-2{
   color: white;
   margin-right: 10px;
 }
@@ -231,4 +233,8 @@ body {
 }
 .css-wkrk1s {
   margin-inline-start: 1rem;
+}
+.elrond-logo{
+  width: 52px;
+  height: 43px;
 }
