@@ -64,6 +64,7 @@ export default function Pricing({ contractByXlh }) {
       }
     })
   } 
+  
   /////////////////////////////////////
   //get xlh balance
   const [dataAccount, setDataAccount] = useState([]);
@@ -91,10 +92,7 @@ export default function Pricing({ contractByXlh }) {
       console.error(error);
       }
   }
-  useEffect(() => {
-    getBalanceAccount();
-  }, []);
-
+  getBalanceAccount();  
   
   var balanceXLH = dataAccount/1000000000000000000;
   if(!balanceXLH){
@@ -107,6 +105,9 @@ export default function Pricing({ contractByXlh }) {
     maxAmountReached = true;
   }
 
+  useEffect(() => {
+    getBalanceAccount();
+  }, []);
   
   //let buttonShow = isLoggedIn && whitelisted ? (
   let buttonShow = isLoggedIn && !maxAmountReached ? (
