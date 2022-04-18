@@ -1,0 +1,115 @@
+{
+  "name": "xlauncher-staking",
+  "comment": "stake pull a",
+  "steps": [
+    {
+      "step": "externalSteps",
+      "path": "01-deploy.scen.json"
+    },
+    {
+      "step": "setState",
+      "accounts": {
+        "address:client1": {
+          "nonce": "0",
+          "balance": "0",
+          "esdt": {
+            "str:BCOIN-good00": "5,000,000,000,000,000,000,000",
+            "str:BCOIN-bad000": "5,000,000,000,000,000,000,000"
+          }
+        }
+      }
+    },
+    {
+      "step": "scCall",
+      "txId": "stake-wrong-coin",
+      "tx": {
+        "from": "address:client1",
+        "to": "sc:xlauncher-staking",
+        "value": "0",
+        "function": "stake",
+        "esdtValue": [
+          {
+            "tokenIdentifier": "str:BCOIN-bad000",
+            "value": "1,000,000,000,000,000,000,000"
+          }
+        ],
+        "arguments": [
+          "1"
+        ],
+        "gasLimit": "100,000,000",
+        "gasPrice": "0"
+      },
+      "expect": {
+        "out": [],
+        "status": "4",
+        "message": "str:not the same token id",
+        "gas": "*",
+        "refund": "*"
+      }
+    },
+    {
+      "step": "scCall",
+      "txId": "stake-good-coin",
+      "tx": {
+        "from": "address:client1",
+        "to": "sc:xlauncher-staking",
+        "value": "0",
+        "function": "stake",
+        "esdtValue": [
+          {
+            "tokenIdentifier": "str:BCOIN-good00",
+            "value": "1,000,000,000,000,000,000,000"
+          }
+        ],
+        "arguments": [
+          "1"
+        ],
+        "gasLimit": "100,000,000",
+        "gasPrice": "0"
+      },
+      "expect": {
+        "out": [],
+        "status": "0",
+        "message": "",
+        "gas": "*",
+        "refund": "*"
+      }
+    },
+    {
+      "step": "checkState",
+      "accounts": {
+        "address:client1": {
+          "nonce": "2",
+          "balance": "0",
+          "esdt": {
+            "str:BCOIN-good00": "4,000,000,000,000,000,000,000",
+            "str:BCOIN-bad000": "5,000,000,000,000,000,000,000"
+          }
+        },
+        "address:owner": {
+          "nonce": "1",
+          "balance": "0",
+          "esdt": {
+            "str:BCOIN-good00": "100,000,000,000,000,000,000,000,000"
+          }
+        },
+        "sc:xlauncher-staking": {
+          "nonce": "*",
+          "balance": "0",
+          "esdt": {
+            "str:BCOIN-good00": "1,000,000,000,000,000,000,000"
+          },
+          "storage": {
+            "str:stakingSettings": {
+              "1-token_id": "nested:str:BCOIN-good00",
+              "2-min_amount": "biguint:250,000,000,000,000,000",
+              "3-pull_a_id": "u32:1",
+              "4-pull_a_locking_time_span": "u64:0"
+            }
+          },
+          "code": "file:../output/xlauncher-staking.wasm"
+        }
+      }
+    }
+  ]
+}
