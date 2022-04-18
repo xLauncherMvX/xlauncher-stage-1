@@ -37,12 +37,6 @@ pub trait XLauncherStaking {
         self.staking_settings().set(&settings);
     }
 
-    // storage
-
-    // #[view(getTokenId)]
-    // #[storage_mapper("tokenId")]
-    // fn token_id(&self) -> SingleValueMapper<TokenIdentifier>;
-
     #[view(getStakingSettings)]
     #[storage_mapper("stakingSettings")]
     fn staking_settings(&self) -> SingleValueMapper<StakingSettings<Self::Api>>;
