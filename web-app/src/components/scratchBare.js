@@ -140,7 +140,7 @@ export default function ScratchBare() {
             <PopoverBody>
               <DappUI.Denominate value={account.balance}/> 
               <Divider orientation='horizontal' mt={'1'} />  
-              <Text mt={'2'}>{balanceAccount} XLH</Text>
+              <Text mt={'2'}>{balanceAccount.toFixed(4)} XLH</Text>
             </PopoverBody>
           </PopoverContent>
         </Popover> 
