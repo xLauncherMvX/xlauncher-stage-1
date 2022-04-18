@@ -107,7 +107,7 @@ export default function Pricing({ contractByXlh }) {
 
   useEffect(() => {
     getBalanceAccount();
-  }, []);
+  });
   
   //let buttonShow = isLoggedIn && whitelisted ? (
   let buttonShow = isLoggedIn && !maxAmountReached ? (
