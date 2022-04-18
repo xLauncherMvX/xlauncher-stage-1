@@ -1,4 +1,9 @@
 #![no_std]
+#![feature(generic_associated_types)]
+
+extern crate alloc;
+
+use alloc::vec::IntoIter;
 
 elrond_wasm::imports!();
 elrond_wasm::derive_imports!();
@@ -9,7 +14,14 @@ pub struct ContractSettings<M: ManagedTypeApi> {
     pub min_amount: BigUint<M>,
     pub pull_a_id: u32,
     pub pull_a_locking_time_span: u64,
+}
 
+#[derive(TypeAbi, TopEncode, TopDecode, ManagedVecItem, NestedEncode, NestedDecode)]
+pub struct ClientPullState<M: ManagedTypeApi> {
+    pub pull_id: u32,
+    pub pull_time_stamp_entry: u64,
+    pub pull_time_stamp_last_collection: u64,
+    pub pull_amount: BigUint<M>,
 }
 
 
@@ -41,11 +53,40 @@ pub trait XLauncherStaking {
     fn stake(&self,
              #[payment_token] token_id: TokenIdentifier,
              #[payment_amount] amount: BigUint,
-             pool_type: u32,
+             pull_id: u32,
     ) {
         let settings: ContractSettings<Self::Api> = self.contract_settings().get();
         require!(token_id.is_valid_esdt_identifier(), "invalid token_id");
         require!(settings.token_id == token_id, "not the same token id");
+
+        let client = self.blockchain().get_caller();
+        let current_time_stamp = self.blockchain().get_block_timestamp();
+        let mut stateVector = self.client_state(&client);
+        let new_pull_state = ClientPullState {
+            pull_id: (pull_id),
+            pull_time_stamp_entry: (current_time_stamp),
+            pull_time_stamp_last_collection: (current_time_stamp),
+            pull_amount: amount,
+        };
+
+        if stateVector.is_empty() {
+            stateVector.push(&new_pull_state);
+        } else {
+            for prev_pull_state in stateVector.iter() {
+                if prev_pull_state.pull_id == pull_id {
+                    let rewords = self.calculate_rewords(prev_pull_state);
+                    let new_amount = rewords + &amount + prev_pull_state.pull_amount;
+                    prev_pull_state.pull_time_stamp_entry = current_time_stamp;
+                    prev_pull_state.pull_time_stamp_last_collection = current_time_stamp;
+                    prev_pull_state.pull_amount = new_amount;
+                }
+            }
+        }
+    }
+
+    fn calculate_rewords(&self,
+                         pull_state: ClientPullState) -> BigUint {
+        return pull_state.pull_amount / 2;
     }
 
     fn is_valid_pull_id(&self,
@@ -58,7 +99,14 @@ pub trait XLauncherStaking {
         return is_valid;
     }
 
+    // storage
+
     #[view(getContractSettings)]
     #[storage_mapper("contractSettings")]
     fn contract_settings(&self) -> SingleValueMapper<ContractSettings<Self::Api>>;
+
+    #[view(getClientState)]
+    #[storage_mapper("clientState")]
+    fn client_state(&self, client_address: &ManagedAddress)
+                    -> VecMapper<ClientPullState<Self::Api>>;
 }
