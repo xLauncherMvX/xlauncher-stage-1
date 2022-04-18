@@ -7,7 +7,7 @@
 elrond_wasm_node::wasm_endpoints! {
     xlauncher_staking
     (
-        getStakingSettings
+        getContractSettings
         stake
     )
 }

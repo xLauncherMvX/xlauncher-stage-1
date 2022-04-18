@@ -4,7 +4,7 @@ elrond_wasm::imports!();
 elrond_wasm::derive_imports!();
 
 #[derive(TypeAbi, TopEncode, TopDecode, NestedEncode, NestedDecode)]
-pub struct StakingSettings<M: ManagedTypeApi> {
+pub struct ContractSettings<M: ManagedTypeApi> {
     pub token_id: TokenIdentifier<M>,
     pub min_amount: BigUint<M>,
     pub pull_a_id: u32,
@@ -27,13 +27,13 @@ pub trait XLauncherStaking {
 
         let pull_a_id = 1u32;
 
-        let settings = StakingSettings {
+        let settings = ContractSettings {
             token_id,
             min_amount,
             pull_a_id,
             pull_a_locking_time_span,
         };
-        self.staking_settings().set(&settings);
+        self.contract_settings().set(&settings);
     }
 
     #[payable("*")]
@@ -43,14 +43,14 @@ pub trait XLauncherStaking {
              #[payment_amount] amount: BigUint,
              pool_type: u32,
     ) {
-        let settings: StakingSettings<Self::Api> = self.staking_settings().get();
+        let settings: ContractSettings<Self::Api> = self.contract_settings().get();
         require!(token_id.is_valid_esdt_identifier(), "invalid token_id");
         require!(settings.token_id == token_id, "not the same token id");
     }
 
     fn is_valid_pull_id(&self,
                         pull_id: u32,
-                        staking_settings: StakingSettings<Self::Api>) -> bool {
+                        staking_settings: ContractSettings<Self::Api>) -> bool {
         let is_valid: bool =
             if pull_id == staking_settings.pull_a_id {
                 true
@@ -58,7 +58,7 @@ pub trait XLauncherStaking {
         return is_valid;
     }
 
-    #[view(getStakingSettings)]
-    #[storage_mapper("stakingSettings")]
-    fn staking_settings(&self) -> SingleValueMapper<StakingSettings<Self::Api>>;
+    #[view(getContractSettings)]
+    #[storage_mapper("contractSettings")]
+    fn contract_settings(&self) -> SingleValueMapper<ContractSettings<Self::Api>>;
 }

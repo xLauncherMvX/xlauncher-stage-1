@@ -59,7 +59,7 @@
           "nonce": "*",
           "balance": "0",
           "storage": {
-            "str:stakingSettings": {
+            "str:contractSettings": {
               "1-token_id": "nested:str:BCOIN-good00",
               "2-min_amount": "biguint:250,000,000,000,000,000",
               "3-pull_a_id": "u32:1",
