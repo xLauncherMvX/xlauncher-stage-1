@@ -10,6 +10,7 @@ elrond_wasm::derive_imports!();
 #[derive(TypeAbi, TopEncode, TopDecode, NestedEncode, NestedDecode)]
 pub struct StakingSettings<M: ManagedTypeApi> {
     pub token_id: TokenIdentifier<M>,
+    pub min_amount: BigUint<M>,
     pub pull_a_locking_time_span: u64,
     pub pull_a_id: u32,
 }
@@ -31,6 +32,7 @@ pub trait XLauncherStaking {
 
         let settings = StakingSettings {
             token_id,
+            min_amount,
             pull_a_locking_time_span,
             pull_a_id,
         };
