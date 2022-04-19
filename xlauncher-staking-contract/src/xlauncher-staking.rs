@@ -3,6 +3,7 @@
 
 extern crate alloc;
 
+use alloc::string::ToString;
 
 elrond_wasm::imports!();
 elrond_wasm::derive_imports!();
@@ -60,8 +61,7 @@ pub trait XLauncherStaking {
         let settings: ContractSettings<Self::Api> = self.contract_settings().get();
         require!(token_id.is_valid_esdt_identifier(), "invalid token_id");
         require!(settings.token_id == token_id, "not the same token id");
-        require!(pull_id < 1, "pull id outside of lower bound");
-        require!(3 < pull_id, "pull id outside of higher bound");
+
 
         let client = self.blockchain().get_caller();
         let current_time_stamp = self.blockchain().get_block_timestamp();
