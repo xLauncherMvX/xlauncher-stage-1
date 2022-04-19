@@ -82,6 +82,16 @@
       }
     },
     {
+      "step": "setState",
+      "comment": "set-block-time-stamp",
+      "currentBlockInfo": {
+        "blockTimestamp": "511",
+        "blockNonce": "522",
+        "blockRound": "533",
+        "blockEpoch": "544"
+      }
+    },
+    {
       "step": "scCall",
       "txId": "stake-good-coin-second-time",
       "tx": {
@@ -143,8 +153,8 @@
             "str:clientState|address:client1|str:.len": "1",
             "str:clientState|address:client1|str:.item|u32:1": {
               "1-pull_id": "u32:1",
-              "2-pull_time_stamp_entry": "u64:0",
-              "3-pull_time_stamp_last_collection": "u64:0",
+              "2-pull_time_stamp_entry": "u64:511",
+              "3-pull_time_stamp_last_collection": "u64:511",
               "4-pull_amount": "biguint:2,500,000,000,000,000,000,000"
             }
           },

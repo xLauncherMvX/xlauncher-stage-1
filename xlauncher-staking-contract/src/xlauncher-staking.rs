@@ -61,28 +61,28 @@ pub trait XLauncherStaking {
 
         let client = self.blockchain().get_caller();
         let current_time_stamp = self.blockchain().get_block_timestamp();
-        let mut stateVector = self.client_state(&client);
+        let mut state_vector = self.client_state(&client);
 
 
-        if stateVector.is_empty() {
+        if state_vector.is_empty() {
             let new_pull_state = ClientPullState {
                 pull_id: (pull_id),
                 pull_time_stamp_entry: (current_time_stamp),
                 pull_time_stamp_last_collection: (current_time_stamp),
                 pull_amount: amount,
             };
-            stateVector.push(&new_pull_state);
+            state_vector.push(&new_pull_state);
         } else {
-            for i in 1..=stateVector.len() {
-                let mut prev_pull_state = stateVector.get(i);
+            for i in 1..=state_vector.len() {
+                let mut prev_pull_state = state_vector.get(i);
                 if prev_pull_state.pull_id == pull_id {
                     let rewords = self.calculate_rewords(
                         prev_pull_state.pull_amount.clone());
-                    prev_pull_state.pull_amount += (&rewords + &amount);
+                    prev_pull_state.pull_amount += &rewords + &amount;
                     prev_pull_state.pull_time_stamp_entry = current_time_stamp;
                     prev_pull_state.pull_time_stamp_last_collection = current_time_stamp;
 
-                    stateVector.set(i, &prev_pull_state);
+                    state_vector.set(i, &prev_pull_state);
                 }
             }
         }
