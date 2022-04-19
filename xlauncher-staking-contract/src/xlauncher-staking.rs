@@ -111,7 +111,7 @@ pub trait XLauncherStaking {
         let seconds = &current_time_stamp - &pull_time_stamp_last_collection; // elapsed seconds since last collection
         let bu_seconds = BigUint::from(seconds); // elapsed seconds as BigUint
         let rewords = &bu_seconds * &bu_r_in_1_second; // calculate rewords
-        return rewords;
+        return pull_amount / 100_u32;
     }
 
     fn get_pull_apy(&self,
