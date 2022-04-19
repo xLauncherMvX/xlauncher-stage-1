@@ -8,6 +8,12 @@
     },
     {
       "step": "setState",
+      "currentBlockInfo": {
+        "blockTimestamp": "0",
+        "blockNonce": "522",
+        "blockRound": "533",
+        "blockEpoch": "544"
+      },
       "accounts": {
         "address:client1": {
           "nonce": "0",
@@ -105,6 +111,15 @@
               "2-min_amount": "biguint:250,000,000,000,000,000",
               "3-pull_a_id": "u32:1",
               "4-pull_a_locking_time_span": "u64:0"
+            },
+            "str:clientStateclient1": {
+              "str:vec_mapper.len": "1",
+              "str:vec_mapper.item:u32:1": {
+                "1-pull_id": "u32:1",
+                "2-pull_time_stamp_entry": "u64:0",
+                "3-pull_time_stamp_last_collection": "u64:0",
+                "4-pull_amount": "biguint:1,000,000,000,000,000,000,000"
+              }
             }
           },
           "code": "file:../output/xlauncher-staking.wasm"
