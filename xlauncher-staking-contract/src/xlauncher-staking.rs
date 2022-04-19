@@ -103,10 +103,10 @@ pub trait XLauncherStaking {
         let seconds_in_year: u64 = 60 * 60 * 24 * 365;
         let pull_apy: u64 = self.get_pull_apy(pull_id.clone());
         let bu_s_in_year = BigUint::from(seconds_in_year); // seconds in year as BigUint
-        let bu_api = BigUint::from(pull_apy); // pull api as BigUint
+        let bu_apy = BigUint::from(pull_apy); // pull api as BigUint
         let bu_amount = pull_amount.clone(); // pull amount as BigUint
         let bu_hundred = BigUint::from(100u64); // 100 as BigUint
-        let bu_r_in_year = (&bu_amount * &bu_api) / &bu_hundred; // rewords in one year as BigUint
+        let bu_r_in_year = (&bu_amount * &bu_apy) / &bu_hundred; // rewords in one year as BigUint
         let bu_r_in_1_second = &bu_r_in_year / &bu_s_in_year; // rewords in one second as BigUint
         let seconds = &current_time_stamp - &pull_time_stamp_last_collection; // elapsed seconds since last collection
         let bu_seconds = BigUint::from(seconds); // elapsed seconds as BigUint
