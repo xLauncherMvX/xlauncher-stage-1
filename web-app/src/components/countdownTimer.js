@@ -49,7 +49,7 @@ export default function CountdownTimer(){
             <div className="show-counter" >
                 <p className='seedsale-text' align={'center'}>Seed Sale starts in:</p>
                 <a className="countdown-link">
-                    <DateCountdown dateTo='April 26, 2022 19:00:00 GMT+03:00'/>
+                    <DateCountdown dateTo='April 26, 2021 19:00:00 GMT+03:00'/>
                 </a>   
                 <Progress hasStripe value={procentsOneDigit} height='32px' colorScheme='blue' marginTop={'4'} marginLeft={-2} />
                 <Text align={'center'} fontSize={'20'} fontWeight={'bold'} mt={'2'}> {balanceLeftFixed} / {maxBalanceFixed} XLH sold</Text>
