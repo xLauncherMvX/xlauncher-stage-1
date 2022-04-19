@@ -3,10 +3,10 @@
 
 extern crate alloc;
 
-use alloc::vec::IntoIter;
 
 elrond_wasm::imports!();
 elrond_wasm::derive_imports!();
+
 
 #[derive(TypeAbi, TopEncode, TopDecode, NestedEncode, NestedDecode)]
 pub struct ContractSettings<M: ManagedTypeApi> {
@@ -72,21 +72,23 @@ pub trait XLauncherStaking {
         if stateVector.is_empty() {
             stateVector.push(&new_pull_state);
         } else {
-            for prev_pull_state in stateVector.iter() {
+            for i in 1..=stateVector.len() {
+                let mut prev_pull_state = stateVector.get(i);
                 if prev_pull_state.pull_id == pull_id {
                     let rewords = self.calculate_rewords(prev_pull_state);
-                    let new_amount = rewords + &amount + prev_pull_state.pull_amount;
+                    prev_pull_state.pull_amount += (&rewords + &amount);
                     prev_pull_state.pull_time_stamp_entry = current_time_stamp;
                     prev_pull_state.pull_time_stamp_last_collection = current_time_stamp;
-                    prev_pull_state.pull_amount = new_amount;
+
+                    stateVector.set(i, &prev_pull_state);
                 }
             }
         }
     }
 
     fn calculate_rewords(&self,
-                         pull_state: ClientPullState) -> BigUint {
-        return pull_state.pull_amount / 2;
+                         pull_state: ClientPullState<Self::Api>) -> BigUint {
+        pull_state.pull_amount / 2u32
     }
 
     fn is_valid_pull_id(&self,
