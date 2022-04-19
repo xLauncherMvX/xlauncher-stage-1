@@ -14,6 +14,7 @@ pub struct ContractSettings<M: ManagedTypeApi> {
     pub min_amount: BigUint<M>,
     pub pull_a_id: u32,
     pub pull_a_locking_time_span: u64,
+    pub pull_a_apy: u64,
 }
 
 #[derive(TypeAbi, TopEncode, TopDecode, ManagedVecItem, NestedEncode, NestedDecode)]
@@ -32,10 +33,10 @@ pub trait XLauncherStaking {
             token_id: TokenIdentifier,
             min_amount: BigUint,
             pull_a_locking_time_span: u64,
+            pull_a_apy: u64,
     ) {
         require!(token_id.is_valid_esdt_identifier(), "invalid token_id");
         require!(min_amount > 0, "min_amount must be positive");
-        //self.token_id().set(&token_id);
 
         let pull_a_id = 1u32;
 
@@ -44,6 +45,7 @@ pub trait XLauncherStaking {
             min_amount,
             pull_a_id,
             pull_a_locking_time_span,
+            pull_a_apy,
         };
         self.contract_settings().set(&settings);
     }
@@ -58,6 +60,8 @@ pub trait XLauncherStaking {
         let settings: ContractSettings<Self::Api> = self.contract_settings().get();
         require!(token_id.is_valid_esdt_identifier(), "invalid token_id");
         require!(settings.token_id == token_id, "not the same token id");
+        require!(pull_id < 1, "pull id outside of lower bound");
+        require!(3 < pull_id, "pull id outside of higher bound");
 
         let client = self.blockchain().get_caller();
         let current_time_stamp = self.blockchain().get_block_timestamp();
@@ -77,6 +81,9 @@ pub trait XLauncherStaking {
                 let mut prev_pull_state = state_vector.get(i);
                 if prev_pull_state.pull_id == pull_id {
                     let rewords = self.calculate_rewords(
+                        prev_pull_state.pull_id.clone(),
+                        prev_pull_state.pull_time_stamp_last_collection.clone(),
+                        current_time_stamp.clone(),
                         prev_pull_state.pull_amount.clone());
                     prev_pull_state.pull_amount += &rewords + &amount;
                     prev_pull_state.pull_time_stamp_entry = current_time_stamp;
@@ -89,18 +96,31 @@ pub trait XLauncherStaking {
     }
 
     fn calculate_rewords(&self,
+                         pull_id: u32,
+                         pull_time_stamp_last_collection: u64,
+                         current_time_stamp: u64,
                          pull_amount: BigUint<Self::Api>) -> BigUint {
-        pull_amount / 2u32
+        let seconds_in_year: u64 = 60 * 60 * 24 * 356;
+        let pull_api: u64 = self.get_pull_apy(pull_id.clone());
+        let bu_s_in_year = BigUint::from(seconds_in_year); // seconds in year as BigUint
+        let bu_api = BigUint::from(pull_api); // pull api as BigUint
+        let bu_amount = pull_amount.clone(); // pull amount as BigUint
+        let bu_hundred = BigUint::from(100u64); // 100 as BigUint
+        let bu_r_in_year = (&bu_amount * &bu_api) / &bu_hundred; // rewords in one year as BigUint
+        let bu_r_in_1_second = &bu_r_in_year / &bu_s_in_year; // rewords in one second as BigUint
+        let seconds = &current_time_stamp - &pull_time_stamp_last_collection; // elapsed seconds since last collection
+        let bu_seconds = BigUint::from(seconds); // elapsed seconds as BigUint
+        let rewords = &bu_seconds * &bu_r_in_1_second; // calculate rewords
+        return rewords;
     }
 
-    fn is_valid_pull_id(&self,
-                        pull_id: u32,
-                        staking_settings: ContractSettings<Self::Api>) -> bool {
-        let is_valid: bool =
-            if pull_id == staking_settings.pull_a_id {
-                true
-            } else { false };
-        return is_valid;
+    fn get_pull_apy(&self,
+                    pull_id: u32) -> u64 {
+        let contract_settings = self.contract_settings().get();
+        if pull_id == contract_settings.pull_a_id {
+            return contract_settings.pull_a_apy.clone();
+        }
+        sc_panic!("Not valid pull id");
     }
 
     // storage

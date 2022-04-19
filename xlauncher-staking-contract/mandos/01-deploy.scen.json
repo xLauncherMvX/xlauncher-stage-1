@@ -30,7 +30,8 @@
         "arguments": [
           "str:BCOIN-good00",
           "250,000,000,000,000,000",
-          "0"
+          "0",
+          "1"
         ],
         "gasLimit": "10,000,000",
         "gasPrice": "0"
@@ -63,7 +64,8 @@
               "1-token_id": "nested:str:BCOIN-good00",
               "2-min_amount": "biguint:250,000,000,000,000,000",
               "3-pull_a_id": "u32:1",
-              "4-pull_a_locking_time_span": "u64:0"
+              "4-pull_a_locking_time_span": "u64:0",
+              "5-pull_a_apy": "u64:1"
             }
           },
           "code": "file:../output/xlauncher-staking.wasm"
