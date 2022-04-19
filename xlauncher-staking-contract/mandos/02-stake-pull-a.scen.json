@@ -153,7 +153,7 @@
               "1-pull_id": "u32:1",
               "2-pull_time_stamp_entry": "u64:31536000",
               "3-pull_time_stamp_last_collection": "u64:31536000",
-              "4-pull_amount": "biguint:2,010,000,000,000,000,000,000"
+              "4-pull_amount": "biguint:2,009,999,999,999,979,632,000"
             }
           },
           "code": "file:../output/xlauncher-staking.wasm"
