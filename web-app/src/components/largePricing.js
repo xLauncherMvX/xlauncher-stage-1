@@ -15,7 +15,7 @@ import { useGetAccountInfo } from '@elrondnetwork/dapp-core';
 import employee from '../whitelist.json';
 
 export default function Pricing({ contractByXlh }) {
-  const { address } = useGetAccountInfo();
+  const { address, account } = useGetAccountInfo();
   const isLoggedIn = Boolean(address);
 
   const [xlhAmount, setXlhAmount] = React.useState(10000);
@@ -109,28 +109,60 @@ export default function Pricing({ contractByXlh }) {
     getBalanceAccount();
   }, []);
 
-  //let buttonShow = isLoggedIn && whitelisted ? (
-  let buttonShow = isLoggedIn && !maxAmountReached ? (
-    <Button
-      onClick={()=>contractByXlh(egldAmount)}
-      mt={10}
-      w={'full'}
-      bg={'green.400'}
-      color={'white'}
-      rounded={'xl'}
-      boxShadow={'0 5px 20px 0px rgb(72 187 120 / 43%)'}
-      _hover={{
-        bg: 'green.500',
-      }}
-      _focus={{
-        bg: 'green.500',
-      }}
-    >
-      Buy XLH
-    </Button>
-  ) : ( ""
-  
-  );
+  var egldAmountReached = false;
+  var accountEgldConverted = account.balance/1000000000000000000;
+  var egldConverted = egldAmount/1000000000000000000;  
+  if(egldConverted < accountEgldConverted){
+    egldAmountReached = true;
+    console.log(egldConverted + ' < ' + accountEgldConverted);
+  }  
+
+  //if(isLoggedIn && !maxAmountReached && whitelisted){
+  var buttonShow;
+  if(isLoggedIn && !maxAmountReached){
+      if(egldAmountReached){
+        buttonShow = 
+        <Button
+          onClick={()=>contractByXlh(egldAmount)}
+          mt={10}
+          w={'full'}
+          bg={'green.400'}
+          color={'white'}
+          rounded={'xl'}
+          boxShadow={'0 5px 20px 0px rgb(72 187 120 / 43%)'}
+          _hover={{
+            bg: 'green.500',
+          }}
+          _focus={{
+            bg: 'green.500',
+          }}
+        >
+          Buy XLH
+        </Button>;
+      }else{
+        buttonShow = 
+        <Button          
+          mt={10}
+          w={'full'}
+          bg={'red.400'}
+          color={'white'}
+          rounded={'xl'}
+          boxShadow={'0 5px 20px 0px rgb(72 187 120 / 43%)'}
+          _hover={{
+            bg: 'red.500',
+          }}
+          _focus={{
+            bg: 'red.500',
+          }}
+        >
+          Insufficient XEGLD
+        </Button>;
+      }
+      
+  }else{
+    buttonShow = "";
+  }
+
 
   return (
     <Center py={6}>
