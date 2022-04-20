@@ -53,14 +53,15 @@ setEnvTestnet() {
 }
 
 setEnvMainnet() {
-  #cp -f erdpy.data-storage-testnet.json erdpy.data-storage.json
+  cp -f erdpy.data-storage-mainnet.json erdpy.data-storage.json
   CURRENT_ENV="mainnet"
   PEM_FILE="${PROJECT}/../../wallets/users/mainnet_owner_wallet.pem"
   ADDRESS=$(erdpy data load --key=address-devnet)
   PROXY=https://api.elrond.com
   CHAINID=1
   ENV_LOGS="mainnet"
-  TOKEN_ID="BCOIN-efba9c"
+  #TOKEN_ID="BCOIN-efba9c"
+  TOKEN_ID="XLH-8daa50"
   TOKEN_ID_HEX=$(echo -n ${TOKEN_ID} | xxd -p)
 }
 
