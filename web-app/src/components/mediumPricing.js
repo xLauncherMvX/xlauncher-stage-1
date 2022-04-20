@@ -117,9 +117,18 @@ export default function Pricing({ contractByXlh }) {
     console.log(egldConverted + ' < ' + accountEgldConverted);
   }  
 
+  var xlhAmountReached = false;
+  var accountXlhConverted = dataAccount/1000000000000000000;
+  var xlhConverted = xlhAmount;
+  if((xlhConverted + accountXlhConverted) >= 55000){
+    xlhAmountReached = true;
+    console.log(xlhConverted + ' + ' + accountXlhConverted);
+  }  
+
   //if(isLoggedIn && !maxAmountReached && whitelisted){
   var buttonShow;
   if(isLoggedIn && !maxAmountReached){
+    if(!xlhAmountReached){
       if(egldAmountReached){
         buttonShow = 
         <Button
@@ -141,7 +150,7 @@ export default function Pricing({ contractByXlh }) {
         </Button>;
       }else{
         buttonShow = 
-        <Button          
+        <Button
           mt={10}
           w={'full'}
           bg={'red.400'}
@@ -158,7 +167,25 @@ export default function Pricing({ contractByXlh }) {
           Insufficient XEGLD
         </Button>;
       }
-      
+    }else{
+      buttonShow = 
+      <Button
+        mt={10}
+        w={'full'}
+        bg={'red.400'}
+        color={'white'}
+        rounded={'xl'}
+        boxShadow={'0 5px 20px 0px rgb(72 187 120 / 43%)'}
+        _hover={{
+          bg: 'red.500',
+        }}
+        _focus={{
+          bg: 'red.500',
+        }}
+      >
+        XLH Limit Reached
+      </Button>;
+    }      
   }else{
     buttonShow = "";
   }
