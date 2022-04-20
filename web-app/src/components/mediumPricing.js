@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   Box,
   Center,
@@ -65,7 +65,52 @@ export default function Pricing({ contractByXlh }) {
     })
   } 
 
-  let buttonShow = isLoggedIn && whitelisted ? (
+  /////////////////////////////////////
+  //get xlh balance
+  const [dataAccount, setDataAccount] = useState([]);
+
+  //devnet
+  // const apiLink = 'https://devnet-api.elrond.com/accounts/';
+  // const apiToken = 'XLH-cb26c7';
+  // const customApi = apiLink+address+'/tokens/'+apiToken;  
+
+  //testnet
+  const apiLink = 'https://testnet-api.elrond.com/accounts/';  
+  const apiToken = 'XLH-0be7d1';  
+  const customApi = apiLink+address+'/tokens/'+apiToken;
+
+  const getBalanceAccount = async () => {
+      try {
+      const response = await fetch(customApi, { 
+          headers: {
+              'Accept': 'application/json',
+          }
+      });
+      const json = await response.json();
+      setDataAccount(json.balance);
+      } catch (error) {
+      console.error(error);
+      }
+  }
+  getBalanceAccount();
+  
+  var balanceXLH = dataAccount/1000000000000000000;
+  if(!balanceXLH){
+    balanceXLH = 0;
+  }
+  console.log('xlh amount: ' + balanceXLH);
+
+  var maxAmountReached = false;
+  if(balanceXLH >= 55000){
+    maxAmountReached = true;
+  }
+
+  useEffect(() => {
+    getBalanceAccount();
+  }, []);
+
+  //let buttonShow = isLoggedIn && whitelisted ? (
+  let buttonShow = isLoggedIn && !maxAmountReached ? (
     <Button
       onClick={()=>contractByXlh(egldAmount)}
       mt={10}

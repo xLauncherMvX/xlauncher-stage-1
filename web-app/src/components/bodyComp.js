@@ -36,7 +36,8 @@ export default function BodyComp() {
         "buy",
       ].join("@"),
       receiver:
-        "erd1qqqqqqqqqqqqqpgqf2ddf4cd3ycqde6d43ulkcjh46lqa5lnpa7qaej6t9",
+        //"erd1qqqqqqqqqqqqqpgqf2ddf4cd3ycqde6d43ulkcjh46lqa5lnpa7qaej6t9",
+        "erd1qqqqqqqqqqqqqpgqrvc0vklltk8us4ftcf79cm3fhx7vtm72pa7q7zql3t",
       gasLimit: 10_000_000,
     };
 
@@ -60,6 +61,9 @@ export default function BodyComp() {
 
   return (
     <Box as={Container} maxW="5xl" mt={14} p={4}>
+          <TransactionsToastList />
+          <NotificationModal />
+          <SignTransactionsModals className='custom-class-for-modals' />
         <Grid
             templateColumns={{
             base: 'repeat(1, 1fr)',
@@ -78,9 +82,6 @@ export default function BodyComp() {
               <LargePricing contractByXlh={contractByXlh}/>
             </GridItem> 
         </Grid>
-        <SignTransactionsModals className="custom-class-for-modals" />
-        <TransactionsToastList />
-        <NotificationModal />
     </Box>
   );
 }
