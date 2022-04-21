@@ -11,12 +11,14 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import { FaPlus, FaMinus } from 'react-icons/fa';
-import { DappUI, useGetAccountInfo } from '@elrondnetwork/dapp-core';
+import { DappUI, useGetAccountInfo, useGetPendingTransactions } from '@elrondnetwork/dapp-core';
 import employee from '../whitelist.json';
 
 export default function Pricing({ contractByXlh }) {
   const { address, account } = useGetAccountInfo();
   const isLoggedIn = Boolean(address);
+
+  const trans = useGetPendingTransactions().hasPendingTransactions;
 
   const [xlhAmount, setXlhAmount] = React.useState(2500);
   const [egldAmount, setEgldAmount] = React.useState(250000000000000000);
@@ -127,7 +129,7 @@ export default function Pricing({ contractByXlh }) {
 
   //if(isLoggedIn && !maxAmountReached && whitelisted){
   var buttonShow;
-  if(isLoggedIn && !maxAmountReached){
+  if(isLoggedIn && !maxAmountReached && !trans){
     if(!xlhAmountReached){
       if(egldAmountReached){
         buttonShow = 
@@ -183,7 +185,7 @@ export default function Pricing({ contractByXlh }) {
           bg: 'red.500',
         }}
       >
-        XLH Limit Reached
+        XLH Limit Exceeded
       </Button>;
     }      
   }else{
