@@ -28,6 +28,7 @@ export default function CountdownTimer(){
     getBalance();
 
     var maxBalance = 8500000;
+    var maxBalanceFixed = new Intl.NumberFormat('ro-Ro', { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(maxBalance);
     var balanceLeft = maxBalance - (data/1000000000000000000);
 
     if(balanceLeft < 0 || !balanceLeft){
@@ -36,12 +37,12 @@ export default function CountdownTimer(){
     var procents = balanceLeft * 100 / maxBalance;
     var procentsOneDigit = parseFloat(procents).toFixed(1);
 
-    
+    var balanceLeftFixed = new Intl.NumberFormat('ro-Ro', { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(balanceLeft);
 
     useEffect(() => {
         getBalance();
-    }, []);
-
+    }, [data]);
+    
     // Render a countdown
     return (
         <Box as={Container} maxW="5xl" mt={14}>        
@@ -51,7 +52,7 @@ export default function CountdownTimer(){
                     <DateCountdown dateTo='April 26, 2022 19:00:00 GMT+03:00'/>
                 </a>   
                 <Progress hasStripe value={procentsOneDigit} height='32px' colorScheme='blue' marginTop={'4'} marginLeft={-2} />
-                <Text align={'center'} fontSize={'20'} fontWeight={'bold'} mt={'2'}> {balanceLeft.toFixed()} / {maxBalance} XLH sold</Text>
+                <Text align={'center'} fontSize={'20'} fontWeight={'bold'} mt={'2'}> {balanceLeftFixed} / {maxBalanceFixed} XLH sold</Text>
             </div>
         </Box>
     );

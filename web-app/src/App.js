@@ -24,7 +24,6 @@ function App() {
       >
         <ScratchBare />
         <Outlet />        
-        <CountdownTimer/>
         <BodyComp />
         
       </DappProvider>

@@ -11,11 +11,11 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import { FaPlus, FaMinus } from 'react-icons/fa';
-import { useGetAccountInfo } from '@elrondnetwork/dapp-core';
+import { DappUI, useGetAccountInfo } from '@elrondnetwork/dapp-core';
 import employee from '../whitelist.json';
 
 export default function Pricing({ contractByXlh }) {
-  const { address } = useGetAccountInfo();
+  const { address, account } = useGetAccountInfo();
   const isLoggedIn = Boolean(address);
 
   const [xlhAmount, setXlhAmount] = React.useState(2500);
@@ -64,6 +64,7 @@ export default function Pricing({ contractByXlh }) {
       }
     })
   } 
+  
   /////////////////////////////////////
   //get xlh balance
   const [dataAccount, setDataAccount] = useState([]);
@@ -91,10 +92,7 @@ export default function Pricing({ contractByXlh }) {
       console.error(error);
       }
   }
-  useEffect(() => {
-    getBalanceAccount();
-  }, []);
-
+  getBalanceAccount();  
   
   var balanceXLH = dataAccount/1000000000000000000;
   if(!balanceXLH){
@@ -107,29 +105,91 @@ export default function Pricing({ contractByXlh }) {
     maxAmountReached = true;
   }
 
+  useEffect(() => {
+    getBalanceAccount();
+  });
+
+  var egldAmountReached = false;
+  var accountEgldConverted = account.balance/1000000000000000000;
+  var egldConverted = egldAmount/1000000000000000000;  
+  if(egldConverted < accountEgldConverted){
+    egldAmountReached = true;
+    console.log(egldConverted + ' < ' + accountEgldConverted);
+  }  
+
+  var xlhAmountReached = false;
+  var accountXlhConverted = dataAccount/1000000000000000000;
+  var xlhConverted = xlhAmount;
+  if((xlhConverted + accountXlhConverted) >= 55000){
+    xlhAmountReached = true;
+    console.log(xlhConverted + ' + ' + accountXlhConverted);
+  }  
+
+  //if(isLoggedIn && !maxAmountReached && whitelisted){
+  var buttonShow;
+  if(isLoggedIn && !maxAmountReached){
+    if(!xlhAmountReached){
+      if(egldAmountReached){
+        buttonShow = 
+        <Button
+          onClick={()=>contractByXlh(egldAmount)}
+          mt={10}
+          w={'full'}
+          bg={'yellow.400'}
+          color={'white'}
+          rounded={'xl'}
+          boxShadow={'0 5px 20px 0px rgb(72 187 120 / 43%)'}
+          _hover={{
+            bg: 'yellow.500',
+          }}
+          _focus={{
+            bg: 'yellow.500',
+          }}
+        >
+          Buy XLH
+        </Button>;
+      }else{
+        buttonShow = 
+        <Button
+          mt={10}
+          w={'full'}
+          bg={'red.400'}
+          color={'white'}
+          rounded={'xl'}
+          boxShadow={'0 5px 20px 0px rgb(72 187 120 / 43%)'}
+          _hover={{
+            bg: 'red.500',
+          }}
+          _focus={{
+            bg: 'red.500',
+          }}
+        >
+          Insufficient XEGLD
+        </Button>;
+      }
+    }else{
+      buttonShow = 
+      <Button
+        mt={10}
+        w={'full'}
+        bg={'red.400'}
+        color={'white'}
+        rounded={'xl'}
+        boxShadow={'0 5px 20px 0px rgb(72 187 120 / 43%)'}
+        _hover={{
+          bg: 'red.500',
+        }}
+        _focus={{
+          bg: 'red.500',
+        }}
+      >
+        XLH Limit Reached
+      </Button>;
+    }      
+  }else{
+    buttonShow = "";
+  }
   
-  //let buttonShow = isLoggedIn && whitelisted ? (
-  let buttonShow = isLoggedIn && !maxAmountReached ? (
-    <Button
-      onClick={()=>contractByXlh(egldAmount)}
-      mt={10}
-      w={'full'}
-      bg={'yellow.400'}
-      color={'white'}
-      rounded={'xl'}
-      boxShadow={'0 5px 20px 0px rgb(72 187 120 / 43%)'}
-      _hover={{
-        bg: 'yellow.500',
-      }}
-      _focus={{
-        bg: 'yellow.500',
-      }}
-    >
-      Buy XLH
-    </Button>
-  ) : ( ""
-  
-  );
 
   return (
     <Center py={6}>

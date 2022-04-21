@@ -235,7 +235,7 @@ class DateCountdown extends Component {
             units.map((unit, key) => {
               if (significance.indexOf(unit) !== -1) {
                 return (
-                  <span key={key}>
+                  <span key={key} className="custom-ctt-numbers3">
                     00
                     {' '}
                     {locales[key]}

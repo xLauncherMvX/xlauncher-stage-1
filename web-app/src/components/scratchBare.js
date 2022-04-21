@@ -20,6 +20,7 @@ import { DappUI, logout, useGetAccountInfo } from '@elrondnetwork/dapp-core';
 import '@elrondnetwork/dapp-core/build/index.css';
 import './../styles.css';
 import { ReactComponent as ElrondLogo } from './../logo.svg';
+import CountdownTimer from './countdownTimer';
 
 export default function ScratchBare() {
   const { address, account } = useGetAccountInfo();
@@ -63,12 +64,14 @@ export default function ScratchBare() {
 
   useEffect(() => {
     getBalanceAccount();
-  }, []);
+  });
 
   var balanceAccount = dataAccount/1000000000000000000;
   if(!balanceAccount){
     balanceAccount = 0;
   }
+
+  var balanceAccountFixed = new Intl.NumberFormat('ro-Ro', { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(balanceAccount);
 
   var fls = address.slice(0,5);
   var lls = address.slice(58,62);
@@ -140,7 +143,7 @@ export default function ScratchBare() {
             <PopoverBody>
               <DappUI.Denominate value={account.balance}/> 
               <Divider orientation='horizontal' mt={'1'} />  
-              <Text mt={'2'}>{balanceAccount.toFixed(4)} XLH</Text>
+              <Text mt={'2'}>{balanceAccountFixed} XLH</Text>
             </PopoverBody>
           </PopoverContent>
         </Popover> 
@@ -150,7 +153,7 @@ export default function ScratchBare() {
   );
 
   return (
-    <Grid>
+    <div>
       <Flex backgroundColor={'blackAlpha.700'} padding={4}>
         <ElrondLogo className='elrond-logo'/>        
         <Spacer />
@@ -159,7 +162,9 @@ export default function ScratchBare() {
         {addressSection}
         {connectButton}
       </Flex>
-      {connectLoggedinSection}   
-    </Grid>
+      {connectLoggedinSection}  
+      <CountdownTimer /> 
+    </div>
+    
   );
 }
