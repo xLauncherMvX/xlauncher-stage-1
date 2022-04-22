@@ -47,8 +47,7 @@ export default function CountdownTimer(){
     // Render a countdown
     return (
         <Box as={Container} maxW="5xl" mt={14}>        
-            <div className="show-counter" >
-                <p className='seedsale-text' align={'center'}>Seed Sale starts in:</p>
+            <div className="show-counter">                
                 <a className="countdown-link">
                     <DateCountdown dateTo='April 29, 2022 19:00:00 GMT+03:00'/>
                 </a>   
