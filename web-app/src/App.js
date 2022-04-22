@@ -6,7 +6,6 @@ import { Logo } from './Logo';
 import theme from './theme/defaultDark';
 import ScratchBare from './components/scratchBare';
 import BodyComp from './components/bodyComp';
-import CountdownTimer from './components/countdownTimer';
 import { Outlet } from 'react-router-dom';
 import { DappProvider } from '@elrondnetwork/dapp-core';
 import '@elrondnetwork/dapp-core/build/index.css';

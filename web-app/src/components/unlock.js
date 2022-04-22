@@ -5,7 +5,6 @@ import {
 import theme from './../theme/defaultDark';
 import ScratchBare from './scratchBare';
 import BodyComp from './bodyComp';
-import CountdownTimer from './countdownTimer';
 import { Outlet } from 'react-router-dom';
 import { DappProvider } from '@elrondnetwork/dapp-core';
 import '@elrondnetwork/dapp-core/build/index.css';
@@ -23,7 +22,6 @@ function Unlock() {
       >
         <ScratchBare />
         <Outlet />        
-        <CountdownTimer/>
         <BodyComp />
         
       </DappProvider>

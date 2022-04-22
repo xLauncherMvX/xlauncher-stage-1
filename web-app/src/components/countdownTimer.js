@@ -12,8 +12,9 @@ export default function CountdownTimer(){
 
     const getBalance = async () => {
         try {
+            const response = await fetch('https://api.elrond.com/accounts/erd1qqqqqqqqqqqqqpgqdy3tyfye72r2u8ahg7wwmm7yuu48vdqt4d6q27mvjm/tokens/XLH-8daa50', { 
             //const response = await fetch('https://devnet-api.elrond.com/accounts/erd1qqqqqqqqqqqqqpgqf2ddf4cd3ycqde6d43ulkcjh46lqa5lnpa7qaej6t9/tokens/XLH-cb26c7', { 
-            const response = await fetch('https://testnet-api.elrond.com/accounts/erd1qqqqqqqqqqqqqpgqrvc0vklltk8us4ftcf79cm3fhx7vtm72pa7q7zql3t/tokens/XLH-0be7d1', { 
+            //const response = await fetch('https://testnet-api.elrond.com/accounts/erd1qqqqqqqqqqqqqpgqrvc0vklltk8us4ftcf79cm3fhx7vtm72pa7q7zql3t/tokens/XLH-0be7d1', { 
             headers: {
                 'Accept': 'application/json',
             }
@@ -49,7 +50,7 @@ export default function CountdownTimer(){
             <div className="show-counter" >
                 <p className='seedsale-text' align={'center'}>Seed Sale starts in:</p>
                 <a className="countdown-link">
-                    <DateCountdown dateTo='April 26, 2022 19:00:00 GMT+03:00'/>
+                    <DateCountdown dateTo='April 29, 2022 19:00:00 GMT+03:00'/>
                 </a>   
                 <Progress hasStripe value={procentsOneDigit} height='32px' colorScheme='blue' marginTop={'4'} marginLeft={-2} />
                 <Text align={'center'} fontSize={'20'} fontWeight={'bold'} mt={'2'}> {balanceLeftFixed} / {maxBalanceFixed} XLH sold</Text>
