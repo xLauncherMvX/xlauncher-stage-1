@@ -134,7 +134,7 @@ export default function Pricing({ contractByXlh }) {
 
   //if(isLoggedIn && !maxAmountReached && whitelisted){
   var buttonShow;
-  if(isLoggedIn && !maxAmountReached && !trans){
+  if(isLoggedIn && !maxAmountReached && whitelisted && !trans){
     if(!xlhAmountReached){
       if(egldAmountReached){
         buttonShow = 
