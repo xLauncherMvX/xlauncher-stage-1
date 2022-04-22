@@ -11,7 +11,7 @@ import { DappProvider } from '@elrondnetwork/dapp-core';
 import '@elrondnetwork/dapp-core/build/index.css';
 import './styles.css';
 
-const environment = 'testnet';
+const environment = 'mainnet';
 
 function App() {
   return (
