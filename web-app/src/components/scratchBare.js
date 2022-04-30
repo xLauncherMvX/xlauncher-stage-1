@@ -157,6 +157,27 @@ export default function ScratchBare() {
     ""
   );
 
+  const openInNewTab = (url) => {
+    const newWindow = window.open(url, '_blank', 'noopener,noreferrer')
+    if (newWindow) newWindow.opener = null;
+  }
+
+  let WhitelistButton = 
+  <Button 
+    className='btn btn-sm'
+    marginTop={'3'}
+    marginRight={'4'}
+    float = {'right'}
+    _hover={{
+      bg: 'green.500',
+    }}
+    _focus={{
+      bg: 'green.500',
+    }}
+    onClick={() => openInNewTab('https://docs.google.com/spreadsheets/d/1zA0P_PmgxiVITbPLaebDVoA1ZkzSeOrF/edit?usp=sharing&ouid=103298199306214700218&rtpof=true&sd=true')}>
+      Whitelist
+  </Button>;
+
   return (
     <div>
       <Flex backgroundColor={'blackAlpha.700'} padding={4}>
@@ -168,6 +189,7 @@ export default function ScratchBare() {
         {addressSection}
         {connectButton}
       </Flex>
+      {WhitelistButton}
       {connectLoggedinSection}  
       <CountdownTimer /> 
     </div>
