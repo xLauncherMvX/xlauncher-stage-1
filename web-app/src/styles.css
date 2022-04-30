@@ -221,3 +221,9 @@ body {
   width: 52px;
   height: 43px;
 }
+
+/* Leder modal */
+.dapp-core-ui-component .modal-content {
+  margin-bottom: 270px;
+  overflow-y: visible;
+}
