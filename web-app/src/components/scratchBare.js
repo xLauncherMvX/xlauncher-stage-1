@@ -174,7 +174,7 @@ export default function ScratchBare() {
     _focus={{
       bg: 'green.500',
     }}
-    onClick={() => openInNewTab('https://docs.google.com/spreadsheets/d/1zA0P_PmgxiVITbPLaebDVoA1ZkzSeOrF/edit?usp=sharing&ouid=103298199306214700218&rtpof=true&sd=true')}>
+    onClick={() => openInNewTab('https://docs.google.com/spreadsheets/d/14Qwk2ZfaFqwVVVD72kigKEnYNTIeYiVK/edit#gid=1344773073')}>
       Whitelist
   </Button>;
 

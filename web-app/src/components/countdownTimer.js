@@ -28,7 +28,7 @@ export default function CountdownTimer(){
 
     getBalance();
 
-    var maxBalance = 8500000;
+    var maxBalance = 4000000;
     var maxBalanceFixed = new Intl.NumberFormat('ro-Ro', { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(maxBalance);
     var balanceLeft = maxBalance - (data/1000000000000000000);
 
@@ -36,24 +36,41 @@ export default function CountdownTimer(){
         balanceLeft = 0;
     }
     var procents = balanceLeft * 100 / maxBalance;
-    var procentsOneDigit = parseFloat(procents).toFixed(1);
-
+    var procentsOneDigit = 0;
+    procentsOneDigit = parseFloat(procents).toFixed(1);
+    
     var balanceLeftFixed = new Intl.NumberFormat('ro-Ro', { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(balanceLeft);
+
+    //balanceLeftFixed = 4000000;
+    let displayTimer;  
+    if(balanceLeftFixed >= maxBalance){
+        displayTimer =
+            <div className="show-counter" align={'center'}>                
+                <span className="odometer-block">
+                    <p className='seedsale-text'>Sold out</p>
+                </span>
+            </div>
+        ;
+    }else{
+        displayTimer = 
+            <div className="show-counter">                
+                <a className="countdown-link">
+                    <DateCountdown dateTo='May 02, 2022 19:00:00 GMT+03:00'/>
+                </a>   
+                <Progress hasStripe value={procentsOneDigit} height='32px' colorScheme='blue' marginTop={'4'} marginLeft={-2} />
+                {<Text align={'center'} fontSize={'20'} fontWeight={'bold'} mt={'2'}> {balanceLeftFixed} / {maxBalanceFixed} XLH sold</Text>}
+            </div>
+        ;
+    }
 
     useEffect(() => {
         getBalance();
-    }, [data]);
-    
+    }, [data]);  
+        
     // Render a countdown
     return (
         <Box as={Container} maxW="5xl" mt={14}>        
-            <div className="show-counter">                
-                <a className="countdown-link">
-                    <DateCountdown dateTo='April 29, 2022 19:00:00 GMT+03:00'/>
-                </a>   
-                <Progress hasStripe value={procentsOneDigit} height='32px' colorScheme='blue' marginTop={'4'} marginLeft={-2} />
-                <Text align={'center'} fontSize={'20'} fontWeight={'bold'} mt={'2'}> {balanceLeftFixed} / {maxBalanceFixed} XLH sold</Text>
-            </div>
+            {displayTimer}
         </Box>
     );
 }

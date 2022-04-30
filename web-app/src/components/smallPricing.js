@@ -112,8 +112,25 @@ export default function Pricing({ contractByXlh }) {
     maxAmountReached = true;
   }
 
+  //Check if countdown is over
+  const [seedOpener, setOpener] = useState([]);
+
+  const getSeedOpen = async () => {
+    const currentDate = new Date();
+    const targetDate = new Date('May 02, 2022 19:00:00 GMT+03:00');
+    const diff = targetDate - currentDate;
+    
+    if(diff <= 0){
+      setOpener(true);
+    }else{
+      setOpener(false);
+    }   
+    console.log('countdown open: ' + seedOpener);      
+  }
+
   useEffect(() => {
     getBalanceAccount();
+    getSeedOpen();
   });
 
   var egldAmountReached = false;
@@ -132,9 +149,19 @@ export default function Pricing({ contractByXlh }) {
     console.log(xlhConverted + ' + ' + accountXlhConverted);
   }  
 
-  //if(isLoggedIn && !maxAmountReached && whitelisted){
+  //Check if max amount of tokens were sold
+  var maxBalance = 4000000;
+  var balanceLeft = maxBalance - (dataAccount/1000000000000000000);
+  if(balanceLeft < 0 || !balanceLeft){
+      balanceLeft = 0;
+  }
+  var soldOut = false;
+  if(balanceLeft >= maxBalance - 10){
+    soldOut = true;
+  }
+
   var buttonShow;
-  if(isLoggedIn && !maxAmountReached && whitelisted && !trans){
+  if(isLoggedIn && !maxAmountReached && whitelisted && !trans && !soldOut && seedOpener){
     if(!xlhAmountReached){
       if(egldAmountReached){
         buttonShow = 
