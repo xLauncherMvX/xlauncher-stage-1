@@ -72,14 +72,14 @@ export default function Pricing({ contractByXlh }) {
   const [dataAccount, setDataAccount] = useState([]);
 
   //mainnet
-  const apiLink = 'https://api.elrond.com/accounts/';  
-  const apiToken = 'XLH-8daa50';  
-  const customApi = apiLink+address+'/tokens/'+apiToken;
+  // const apiLink = 'https://api.elrond.com/accounts/';  
+  // const apiToken = 'XLH-8daa50';  
+  // const customApi = apiLink+address+'/tokens/'+apiToken;
 
   //devnet
-  // const apiLink = 'https://devnet-api.elrond.com/accounts/';
-  // const apiToken = 'XLH-cb26c7';
-  // const customApi = apiLink+address+'/tokens/'+apiToken;  
+  const apiLink = 'https://devnet-api.elrond.com/accounts/';
+  const apiToken = 'XLH-cb26c7';
+  const customApi = apiLink+address+'/tokens/'+apiToken;  
 
   //testnet
   // const apiLink = 'https://testnet-api.elrond.com/accounts/';  
@@ -128,11 +128,6 @@ export default function Pricing({ contractByXlh }) {
     console.log('countdown open: ' + seedOpener);      
   }
 
-  useEffect(() => {
-    getBalanceAccount();
-    getSeedOpen();
-  });
-
   var egldAmountReached = false;
   var accountEgldConverted = account.balance/1000000000000000000;
   var egldConverted = egldAmount/1000000000000000000;  
@@ -150,8 +145,26 @@ export default function Pricing({ contractByXlh }) {
   }  
 
   //Check if max amount of tokens were sold
-  var maxBalance = 4000000;
-  var balanceLeft = maxBalance - (dataAccount/1000000000000000000);
+  const [data, setData] = useState([]);
+  const getBalance = async () => {
+      try {
+          //const response = await fetch('https://api.elrond.com/accounts/erd1qqqqqqqqqqqqqpgqdy3tyfye72r2u8ahg7wwmm7yuu48vdqt4d6q27mvjm/tokens/XLH-8daa50', { 
+          const response = await fetch('https://devnet-api.elrond.com/accounts/erd1qqqqqqqqqqqqqpgqf2ddf4cd3ycqde6d43ulkcjh46lqa5lnpa7qaej6t9/tokens/XLH-cb26c7', { 
+          //const response = await fetch('https://testnet-api.elrond.com/accounts/erd1qqqqqqqqqqqqqpgqrvc0vklltk8us4ftcf79cm3fhx7vtm72pa7q7zql3t/tokens/XLH-0be7d1', { 
+          headers: {
+              'Accept': 'application/json',
+          }
+      });
+      const json = await response.json();
+      setData(json.balance);
+      } catch (error) {
+      console.error(error);
+      }
+  }
+  getBalance();
+
+  var maxBalance = 100000;
+  var balanceLeft = maxBalance - (data/1000000000000000000);
   if(balanceLeft < 0 || !balanceLeft){
       balanceLeft = 0;
   }
@@ -160,6 +173,13 @@ export default function Pricing({ contractByXlh }) {
     soldOut = true;
   }
 
+  useEffect(() => {
+    getBalanceAccount();
+    getSeedOpen();
+    getBalance();
+  });
+
+  //Buy button section
   var buttonShow;
   if(isLoggedIn && !maxAmountReached && whitelisted && !trans && !soldOut && seedOpener){
     if(!xlhAmountReached){
