@@ -10,8 +10,8 @@ import { DappProvider } from '@elrondnetwork/dapp-core';
 import '@elrondnetwork/dapp-core/build/index.css';
 import './../styles.css';
 
-// const environment = 'mainnet';
-const environment = 'devnet';
+const environment = 'mainnet';
+//const environment = 'devnet';
 // const environment = 'testnet';
 
 function Unlock() {

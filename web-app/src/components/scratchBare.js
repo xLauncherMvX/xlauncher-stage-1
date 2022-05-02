@@ -37,14 +37,14 @@ export default function ScratchBare() {
   const [dataAccount, setDataAccount] = useState([]);
 
   //mainnet
-  //const apiLink = 'https://api.elrond.com/accounts/';  
-  //const apiToken = 'XLH-8daa50';  
-  //const customApi = apiLink+address+'/tokens/'+apiToken;
+  const apiLink = 'https://api.elrond.com/accounts/';  
+  const apiToken = 'XLH-8daa50';  
+  const customApi = apiLink+address+'/tokens/'+apiToken;
 
   //devnet
-  const apiLink = 'https://devnet-api.elrond.com/accounts/';
-  const apiToken = 'XLH-cb26c7';
-  const customApi = apiLink+address+'/tokens/'+apiToken;  
+  // const apiLink = 'https://devnet-api.elrond.com/accounts/';
+  // const apiToken = 'XLH-cb26c7';
+  // const customApi = apiLink+address+'/tokens/'+apiToken;  
 
   //testnet
   // const apiLink = 'https://testnet-api.elrond.com/accounts/';  
