@@ -30,29 +30,23 @@ pub struct ClientPullState<M: ManagedTypeApi> {
 pub struct VariableContractSettings<M: ManagedTypeApi> {
     pub token_id: TokenIdentifier<M>,
     pub min_amount: BigUint<M>,
-    pub pull_items: ManagedVec<M, Pull>,
+    pub pull_items: ManagedVec<M, Pull<M>>,
 }
 
-/**
- *
- */
-// id_a, start_time_a1, api_a1, start_time_a2, api_a2, start_time_a3, api_a3
-// id_b, start_time_b1, api_b1, start_time_b2, api_b2, start_time_b3, api_b3
 #[derive(TypeAbi, TopEncode, TopDecode, ManagedVecItem, NestedEncode, NestedDecode)]
-pub struct Pull {
+pub struct Pull<M: ManagedTypeApi> {
     pub id: u64,
     pub locking_time_span: u64,
-    //pub api_configuration: ManagedVec<M, ApiConfiguration>,
+    pub api_configuration: ManagedVec<M, ApiConfiguration>,
 }
-//
-// #[derive(TypeAbi, TopEncode, TopDecode, ManagedVecItem, NestedEncode, NestedDecode)]
-// pub struct ApiConfiguration<M: ManagedTypeApi> {
-//     pub id: u64,
-//     pub start_timestamp: u64,
-//     //if end_timestamp is zero then this extends for ever
-//     pub end_timestamp: u64,
-//     pub api: u64,
-// }
+
+#[derive(TypeAbi, TopEncode, TopDecode, ManagedVecItem, NestedEncode, NestedDecode)]
+pub struct ApiConfiguration {
+    pub id: u64,
+    pub start_timestamp: u64,
+    pub end_timestamp: u64,
+    pub api: u64,
+}
 //
 // #[derive(TypeAbi, TopEncode, TopDecode, ManagedVecItem, NestedEncode, NestedDecode)]
 // pub struct ClientVariableState<M: ManagedTypeApi> {
