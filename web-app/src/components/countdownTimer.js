@@ -42,32 +42,61 @@ export default function CountdownTimer(){
     
     var balanceLeftFixed = new Intl.NumberFormat('ro-Ro', { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(balanceLeft);
 
-    let displayTimer;  
-    console.log('balanceLeft ' + balanceLeft);
-    console.log('maxBalance ' + maxBalance); 
-    if(balanceLeft >= maxBalance){
-        displayTimer =
-            <div className="show-counter" align={'center'}>                
-                <span className="odometer-block">
-                    <p className='seedsale-text'>Sold out</p>
-                </span>
-            </div>
-        ;
-    }else{
-        displayTimer = 
-            <div className="show-counter">                
-                <a className="countdown-link">
-                    <DateCountdown dateTo='May 02, 2022 19:00:00 GMT+03:00'/>
-                </a>   
-                <Progress hasStripe value={procentsOneDigit} height='32px' colorScheme='blue' marginTop={'4'} marginLeft={-2} />
-                {<Text align={'center'} fontSize={'20'} fontWeight={'bold'} mt={'2'}> {balanceLeftFixed} / {maxBalanceFixed} XLH sold</Text>}
-            </div>
-        ;
+    //Check if countdown is over
+    const [seedOpener, setOpener] = useState([false]);
+
+    const getSeedOpen = async () => {
+        const currentDate = new Date();
+        const targetDate = new Date('May 02, 2022 19:00:00 GMT+03:00');
+        const diff = targetDate - currentDate;
+        
+        if(diff <= 0){
+        setOpener(true);
+        }else{
+        setOpener(false);
+        }   
+        console.log('countdown open: ' + seedOpener);      
     }
 
     useEffect(() => {
         getBalance();
+        getSeedOpen();
     }, [data]);  
+
+    let displayTimer;  
+    console.log('balanceLeft ' + balanceLeft);
+    console.log('maxBalance ' + maxBalance); 
+    if(seedOpener){
+        if(balanceLeft >= maxBalance){
+            displayTimer =
+                <div className="show-counter" align={'center'}>                
+                    <span className="odometer-block">
+                        <p className='seedsale-text'>Sold out</p>
+                    </span>
+                </div>
+            ;
+        }else{
+            displayTimer = 
+                <div className="show-counter">                
+                    <a className="countdown-link">
+                        <DateCountdown dateTo='May 02, 2022 19:00:00 GMT+03:00'/>
+                    </a>   
+                    <Progress hasStripe value={procentsOneDigit} height='32px' colorScheme='blue' marginTop={'4'} marginLeft={-2} />
+                    {<Text align={'center'} fontSize={'20'} fontWeight={'bold'} mt={'2'}> {balanceLeftFixed} / {maxBalanceFixed} XLH sold</Text>}
+                </div>
+            ;
+        }
+    }else{
+        displayTimer = 
+                <div className="show-counter">                
+                    <a className="countdown-link">
+                        <DateCountdown dateTo='May 02, 2022 19:00:00 GMT+03:00'/>
+                    </a>   
+                    <Progress hasStripe value={procentsOneDigit} height='32px' colorScheme='blue' marginTop={'4'} marginLeft={-2} />
+                    {<Text align={'center'} fontSize={'20'} fontWeight={'bold'} mt={'2'}> {balanceLeftFixed} / {maxBalanceFixed} XLH sold</Text>}
+                </div>
+            ;
+    }
         
     // Render a countdown
     return (
