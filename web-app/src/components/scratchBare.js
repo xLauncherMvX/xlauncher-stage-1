@@ -46,6 +46,11 @@ export default function ScratchBare() {
   // const apiToken = 'XLH-cb26c7';
   // const customApi = apiLink+address+'/tokens/'+apiToken;  
 
+  //devnet2
+  // const apiLink = 'https://devnet-api.elrond.com/accounts/';
+  // const apiToken = 'XLH-4f55ab';
+  // const customApi = apiLink+address+'/tokens/'+apiToken;  
+
   //testnet
   // const apiLink = 'https://testnet-api.elrond.com/accounts/';  
   // const apiToken = 'XLH-0be7d1';  

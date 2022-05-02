@@ -81,6 +81,11 @@ export default function Pricing({ contractByXlh }) {
   // const apiToken = 'XLH-cb26c7';
   // const customApi = apiLink+address+'/tokens/'+apiToken;  
 
+  //devnet2
+  // const apiLink = 'https://devnet-api.elrond.com/accounts/';
+  // const apiToken = 'XLH-4f55ab';
+  // const customApi = apiLink+address+'/tokens/'+apiToken; 
+
   //testnet
   // const apiLink = 'https://testnet-api.elrond.com/accounts/';  
   // const apiToken = 'XLH-0be7d1';  
@@ -149,7 +154,11 @@ export default function Pricing({ contractByXlh }) {
   const getBalance = async () => {
       try {
           const response = await fetch('https://api.elrond.com/accounts/erd1qqqqqqqqqqqqqpgqdy3tyfye72r2u8ahg7wwmm7yuu48vdqt4d6q27mvjm/tokens/XLH-8daa50', { 
+
           //const response = await fetch('https://devnet-api.elrond.com/accounts/erd1qqqqqqqqqqqqqpgqf2ddf4cd3ycqde6d43ulkcjh46lqa5lnpa7qaej6t9/tokens/XLH-cb26c7', { 
+          //const response = await fetch('https://devnet-api.elrond.com/accounts/erd1qqqqqqqqqqqqqpgqhh5csdlkpxkt79zxnffrp9972tmnaq45f2ns7lsdph/tokens/XLH-4f55ab', { 
+
+
           //const response = await fetch('https://testnet-api.elrond.com/accounts/erd1qqqqqqqqqqqqqpgqrvc0vklltk8us4ftcf79cm3fhx7vtm72pa7q7zql3t/tokens/XLH-0be7d1', { 
           headers: {
               'Accept': 'application/json',
@@ -163,7 +172,7 @@ export default function Pricing({ contractByXlh }) {
   }
   getBalance();
 
-  var maxBalance = 4000000;
+  var maxBalance = 100000;
   var balanceLeft = maxBalance - (data/1000000000000000000);
   if(balanceLeft < 0 || !balanceLeft){
       balanceLeft = 0;
