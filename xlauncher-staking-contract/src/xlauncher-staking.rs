@@ -66,7 +66,7 @@ pub trait XLauncherStaking {
             token_id: TokenIdentifier,
             min_amount: BigUint,
             pull_a_locking_time_span: u64,
-            pull_a_apy: u64, // ignored for variable setting
+            pull_a0_apy: u64, // ignored for variable setting
     ) {
         require!(token_id.is_valid_esdt_identifier(), "invalid token_id");
         require!(min_amount > 0, "min_amount must be positive");
@@ -84,13 +84,15 @@ pub trait XLauncherStaking {
             min_amount,
             pull_a_id,
             pull_a_locking_time_span,
-            pull_a_apy,
+            pull_a_apy: pull_a0_apy,
         };
         self.contract_settings().set(&settings);
 
 
         // variable pull a
         let mut _configuration_items: ManagedVec<ApyConfiguration> = ManagedVec::new();
+
+
         let pull_a = Pull{
             id:(pull_a_id_clone),
             locking_time_span:(pull_a_locking_time_span_clone),
