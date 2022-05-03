@@ -171,6 +171,9 @@ pub trait XLauncherStaking {
         let mut state_vector = self.client_state(&client);
         let id_clone = pull_id.clone();
         let config_vector = self.get_apy_config_vector(id_clone);
+        if config_vector.len() == 0 {
+            sc_panic!("Claim empy pull id = {}", pull_id);
+        }
     }
 
 
@@ -225,17 +228,18 @@ pub trait XLauncherStaking {
     fn get_apy_config_vector(&self, pull_id: u32) -> ManagedVec<ApyConfiguration> {
         let var_setting = self.variable_contract_settings().get();
         let pull_items = var_setting.pull_items;
-        if pull_items.len() > 0 {
-            for i in 1..=pull_items.len() {
-                let len = pull_items.len();
-                //sc_panic!("DEBUG len val = {}", len);
-                let pull = pull_items.get(i);
+
+        for i in 0..=(pull_items.len() - 1) {
+            let pull = pull_items.get(i);
+            if pull.id == pull_id {
+                let api_config = pull.apy_configuration;
+                let len = api_config.len();
+                sc_panic!("DEBUG api_config_len = {}", len);
+                return api_config;
             }
         }
-
         let empty_vector: ManagedVec<ApyConfiguration> = ManagedVec::new();
-        //return empty_vector;
-        sc_panic!("DEBUG PANIC {}",);
+        return empty_vector;
     }
 
     // storage
