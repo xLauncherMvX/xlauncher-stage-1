@@ -177,7 +177,7 @@ pub trait XLauncherStaking {
         }
 
         let zero = BigUint::from(0u64);
-        for i in 1..=state_vector.len() {
+        for i in 1..state_vector.len() {
             let mut prev_pull_state = state_vector.get(i);
             if prev_pull_state.pull_id == pull_id {}
         }
@@ -235,13 +235,15 @@ pub trait XLauncherStaking {
     fn get_apy_config_vector(&self, pull_id: u32) -> ManagedVec<ApyConfiguration> {
         let var_setting = self.variable_contract_settings().get();
         let pull_items = var_setting.pull_items;
-        for i in 1..pull_items.len() {
-            let item = pull_items.get(i);
-            // Pull
-            sc_panic!("DEBUG PANIC");
+        if pull_items.len() > 0 {
+            for i in 1..=pull_items.len() {
+                let pull = pull_items.get(i);
+            }
         }
+
         let empty_vector: ManagedVec<ApyConfiguration> = ManagedVec::new();
-        return empty_vector;
+        //return empty_vector;
+        sc_panic!("DEBUG PANIC {}",);
     }
 
     // storage
