@@ -171,16 +171,6 @@ pub trait XLauncherStaking {
         let mut state_vector = self.client_state(&client);
         let id_clone = pull_id.clone();
         let config_vector = self.get_apy_config_vector(id_clone);
-        if config_vector.len() == 0 {
-            //let message = sc_format!("{}{}","Not valid pull id=",pull_id);
-            //sc_panic!("Not valid id = {}", pull_id)
-        }
-
-        let zero = BigUint::from(0u64);
-        for i in 1..state_vector.len() {
-            let mut prev_pull_state = state_vector.get(i);
-            if prev_pull_state.pull_id == pull_id {}
-        }
     }
 
 
@@ -237,6 +227,8 @@ pub trait XLauncherStaking {
         let pull_items = var_setting.pull_items;
         if pull_items.len() > 0 {
             for i in 1..=pull_items.len() {
+                let len = pull_items.len();
+                //sc_panic!("DEBUG len val = {}", len);
                 let pull = pull_items.get(i);
             }
         }
