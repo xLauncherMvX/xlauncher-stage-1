@@ -1,0 +1,90 @@
+{
+  "name": "xlauncher-staking",
+  "comment": "stake pull a",
+  "steps": [
+    {
+      "step": "externalSteps",
+      "path": "02-stake-pull-a.scen.json"
+    },
+    {
+      "step": "scCall",
+      "txId": "calling-claim-pull-1",
+      "tx": {
+        "from": "address:client1",
+        "to": "sc:xlauncher-staking",
+        "value": "0",
+        "function": "claim",
+        "arguments": [
+          "1"
+        ],
+        "gasLimit": "10,000,000",
+        "gasPrice": "0"
+      },
+      "expect": {
+        "status": "",
+        "gas": "*",
+        "refund": "*"
+      }
+    },
+    {
+      "step": "checkState",
+      "accounts": {
+        "address:client1": {
+          "nonce": "4",
+          "balance": "0",
+          "esdt": {
+            "str:BCOIN-good00": "3,000,000,000,000,000,000,000",
+            "str:BCOIN-bad000": "5,000,000,000,000,000,000,000"
+          }
+        },
+        "address:owner": {
+          "nonce": "1",
+          "balance": "0",
+          "esdt": {
+            "str:BCOIN-good00": "100,000,000,000,000,000,000,000,000"
+          }
+        },
+        "sc:xlauncher-staking": {
+          "nonce": "*",
+          "balance": "0",
+          "esdt": {
+            "str:BCOIN-good00": "2,000,000,000,000,000,000,000"
+          },
+          "storage": {
+            "str:contractSettings": {
+              "1-token_id": "nested:str:BCOIN-good00",
+              "2-min_amount": "biguint:250,000,000,000,000,000",
+              "3-pull_a_id": "u32:1",
+              "4-pull_a_locking_time_span": "u64:0",
+              "5-pull_a_apy": "u64:1"
+            },
+            "str:variableContractSettings": {
+              "1-token_id": "nested:str:BCOIN-good00",
+              "2-min_amount": "biguint:250,000,000,000,000,000",
+              "3-pull_items_vec_len": "u32:1",
+              "4-first_pull_item": {
+                "1-id": "u32:1",
+                "2-locking_time_span": "u64:0",
+                "3-apy_configuration": "nested:"
+              }
+            },
+            "str:clientState|address:client1|str:.len": "2",
+            "str:clientState|address:client1|str:.item|u32:1": {
+              "1-pull_id": "u32:1",
+              "2-pull_time_stamp_entry": "u64:0",
+              "3-pull_time_stamp_last_collection": "u64:0",
+              "4-pull_amount": "biguint:1,000,000,000,000,000,000,000"
+            },
+            "str:clientState|address:client1|str:.item|u32:2": {
+              "1-pull_id": "u32:1",
+              "2-pull_time_stamp_entry": "u64:31536000",
+              "3-pull_time_stamp_last_collection": "u64:31536000",
+              "4-pull_amount": "biguint:1,000,000,000,000,000,000,000"
+            }
+          },
+          "code": "file:../output/xlauncher-staking.wasm"
+        }
+      }
+    }
+  ]
+}
