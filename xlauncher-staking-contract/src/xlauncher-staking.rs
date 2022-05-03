@@ -3,6 +3,7 @@
 
 extern crate alloc;
 
+use alloc::format;
 use alloc::string::ToString;
 
 elrond_wasm::imports!();
@@ -168,6 +169,13 @@ pub trait XLauncherStaking {
         let client = self.blockchain().get_caller();
         let current_time_stamp = self.blockchain().get_block_timestamp();
         let mut state_vector = self.client_state(&client);
+        let id_clone = pull_id.clone();
+        let config_vector = self.get_apy_config_vector(id_clone);
+        if config_vector.len() ==0{
+            // let message = sc_format!("{}{}","Not valid pull id=",pull_id);
+            // sc_panic!(message);
+            //sc_panic!("Not valid pull id val");
+        }
 
         let zero = BigUint::from(0u64);
         for i in 1..=state_vector.len() {
@@ -228,10 +236,18 @@ pub trait XLauncherStaking {
     }
 
     fn get_apy_config_vector(&self, pull_id: u32) -> ManagedVec<ApyConfiguration> {
-        let config_vector: ManagedVec<ApyConfiguration> = ManagedVec::new();
+
         let var_setting = self.variable_contract_settings().get();
-        //for i in 1..var_setting.pull_items
-        return config_vector;
+        let pull_items = var_setting.pull_items;
+        for i in 1..pull_items.len() {
+            let item = pull_items.get(i); // Pull
+            if pull_id == item.id {
+                let located_vector = item.apy_configuration;
+                return located_vector;
+            }
+        }
+        let empty_vector: ManagedVec<ApyConfiguration> = ManagedVec::new();
+        return empty_vector;
     }
 
     // storage
