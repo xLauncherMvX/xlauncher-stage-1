@@ -45,7 +45,7 @@ pub struct VariableContractSettings<M: ManagedTypeApi> {
 
 #[derive(TypeAbi, TopEncode, TopDecode, ManagedVecItem, NestedEncode, NestedDecode)]
 pub struct Pull<M: ManagedTypeApi> {
-    pub id: u64,
+    pub id: u32,
     pub locking_time_span: u64,
     pub apy_configuration: ManagedVec<M, ApyConfiguration>,
 }
@@ -72,8 +72,12 @@ pub trait XLauncherStaking {
         require!(min_amount > 0, "min_amount must be positive");
 
         let pull_a_id = 1u32;
+
+        let pull_a_id_clone = pull_a_id.clone();
         let token_id_clone = token_id.clone();
         let min_amount_clone = min_amount.clone();
+        let pull_a_locking_time_span_clone= pull_a_locking_time_span.clone();
+
         // standard settings
         let settings = ContractSettings {
             token_id,
@@ -84,9 +88,19 @@ pub trait XLauncherStaking {
         };
         self.contract_settings().set(&settings);
 
+
+        // variable pull a
+        let mut _configuration_items: ManagedVec<ApyConfiguration> = ManagedVec::new();
+        let pull_a = Pull{
+            id:(pull_a_id_clone),
+            locking_time_span:(pull_a_locking_time_span_clone),
+            apy_configuration:(_configuration_items)
+        };
+
         // variable settings
-        let _pull_items: ManagedVec< Pull<_>> = ManagedVec::new();
-        let variable_settings = VariableContractSettings {
+        let mut _pull_items: ManagedVec<Pull<_>> = ManagedVec::new();
+        _pull_items.push(pull_a);
+        let mut variable_settings = VariableContractSettings {
             token_id: (token_id_clone),
             min_amount: (min_amount_clone),
             pull_items: (_pull_items),
