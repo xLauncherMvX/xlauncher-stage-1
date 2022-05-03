@@ -98,7 +98,7 @@ pub trait XLauncherStaking {
         };
 
         // variable settings
-        let mut _pull_items: ManagedVec<Pull<_>> = ManagedVec::new();
+        let mut _pull_items: ManagedVec<Pull<Self::Api>> = ManagedVec::new();
         _pull_items.push(pull_a);
         let mut variable_settings = VariableContractSettings {
             token_id: (token_id_clone),
