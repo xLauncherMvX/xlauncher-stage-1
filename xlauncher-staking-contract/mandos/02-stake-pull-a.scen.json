@@ -89,41 +89,13 @@
       }
     },
     {
-      "step": "scCall",
-      "txId": "stake-good-coin-second-time",
-      "tx": {
-        "from": "address:client1",
-        "to": "sc:xlauncher-staking",
-        "value": "0",
-        "function": "stake",
-        "esdtValue": [
-          {
-            "tokenIdentifier": "str:BCOIN-good00",
-            "value": "1,000,000,000,000,000,000,000"
-          }
-        ],
-        "arguments": [
-          "1"
-        ],
-        "gasLimit": "100,000,000",
-        "gasPrice": "0"
-      },
-      "expect": {
-        "out": [],
-        "status": "0",
-        "message": "",
-        "gas": "*",
-        "refund": "*"
-      }
-    },
-    {
       "step": "checkState",
       "accounts": {
         "address:client1": {
-          "nonce": "3",
+          "nonce": "2",
           "balance": "0",
           "esdt": {
-            "str:BCOIN-good00": "3,000,000,000,000,000,000,000",
+            "str:BCOIN-good00": "4,000,000,000,000,000,000,000",
             "str:BCOIN-bad000": "5,000,000,000,000,000,000,000"
           }
         },
@@ -138,7 +110,7 @@
           "nonce": "*",
           "balance": "0",
           "esdt": {
-            "str:BCOIN-good00": "2,000,000,000,000,000,000,000"
+            "str:BCOIN-good00": "1,000,000,000,000,000,000,000"
           },
           "storage": {
             "str:contractSettings": {
@@ -161,9 +133,9 @@
             "str:clientState|address:client1|str:.len": "1",
             "str:clientState|address:client1|str:.item|u32:1": {
               "1-pull_id": "u32:1",
-              "2-pull_time_stamp_entry": "u64:31536000",
-              "3-pull_time_stamp_last_collection": "u64:31536000",
-              "4-pull_amount": "biguint:2,009,999,999,999,979,632,000"
+              "2-pull_time_stamp_entry": "u64:0",
+              "3-pull_time_stamp_last_collection": "u64:0",
+              "4-pull_amount": "biguint:1,000,000,000,000,000,000,000"
             }
           },
           "code": "file:../output/xlauncher-staking.wasm"
