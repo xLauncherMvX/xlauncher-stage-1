@@ -31,7 +31,7 @@ export default function CountdownTimer(){
 
     getBalance();
 
-    var maxBalance = 100000;
+    var maxBalance = 4000000;
     var maxBalanceFixed = new Intl.NumberFormat('ro-Ro', { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(maxBalance);
     var balanceLeft = maxBalance + 1 - (data/1000000000000000000);
     console.log('data ' + (data/1000000000000000000));

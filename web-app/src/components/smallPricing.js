@@ -172,7 +172,7 @@ export default function Pricing({ contractByXlh }) {
   }
   getBalance();
 
-  var maxBalance = 100000;
+  var maxBalance = 4000000;
   var balanceLeft = maxBalance - (data/1000000000000000000);
   if(balanceLeft < 0 || !balanceLeft){
       balanceLeft = 0;
@@ -180,6 +180,12 @@ export default function Pricing({ contractByXlh }) {
   var soldOut = false;
   if(balanceLeft >= maxBalance - 10){
     soldOut = true;
+  }
+
+  //Check if collect function was called
+  var collected = false;
+  if((data/1000000000000000000 == 0) || !data){
+    collected = true;
   }
 
   useEffect(() => {
@@ -190,27 +196,49 @@ export default function Pricing({ contractByXlh }) {
 
   //Buy button section
   var buttonShow;
-  if(isLoggedIn && !maxAmountReached && whitelisted && !trans && !soldOut && seedOpener){
-    if(!xlhAmountReached){
-      if(egldAmountReached){
-        buttonShow = 
-        <Button
-          onClick={()=>contractByXlh(egldAmount)}
-          mt={10}
-          w={'full'}
-          bg={'yellow.400'}
-          color={'white'}
-          rounded={'xl'}
-          boxShadow={'0 5px 20px 0px rgb(72 187 120 / 43%)'}
-          _hover={{
-            bg: 'yellow.500',
-          }}
-          _focus={{
-            bg: 'yellow.500',
-          }}
-        >
-          Buy XLH
-        </Button>;
+  if(isLoggedIn && !maxAmountReached && whitelisted && !trans && seedOpener && !soldOut){
+    if(collected){
+      buttonShow = "";
+    }else{
+      if(!xlhAmountReached){
+        if(egldAmountReached){
+          buttonShow = 
+          <Button
+            onClick={()=>contractByXlh(egldAmount)}
+            mt={10}
+            w={'full'}
+            bg={'yellow.400'}
+            color={'white'}
+            rounded={'xl'}
+            boxShadow={'0 5px 20px 0px rgb(72 187 120 / 43%)'}
+            _hover={{
+              bg: 'yellow.500',
+            }}
+            _focus={{
+              bg: 'yellow.500',
+            }}
+          >
+            Buy XLH
+          </Button>;
+        }else{
+          buttonShow = 
+          <Button
+            mt={10}
+            w={'full'}
+            bg={'red.400'}
+            color={'white'}
+            rounded={'xl'}
+            boxShadow={'0 5px 20px 0px rgb(72 187 120 / 43%)'}
+            _hover={{
+              bg: 'red.500',
+            }}
+            _focus={{
+              bg: 'red.500',
+            }}
+          >
+            Insufficient EGLD
+          </Button>;
+        }
       }else{
         buttonShow = 
         <Button
@@ -227,28 +255,10 @@ export default function Pricing({ contractByXlh }) {
             bg: 'red.500',
           }}
         >
-          Insufficient EGLD
+          XLH Limit Exceeded
         </Button>;
-      }
-    }else{
-      buttonShow = 
-      <Button
-        mt={10}
-        w={'full'}
-        bg={'red.400'}
-        color={'white'}
-        rounded={'xl'}
-        boxShadow={'0 5px 20px 0px rgb(72 187 120 / 43%)'}
-        _hover={{
-          bg: 'red.500',
-        }}
-        _focus={{
-          bg: 'red.500',
-        }}
-      >
-        XLH Limit Exceeded
-      </Button>;
-    }      
+      } 
+    }     
   }else{
     buttonShow = "";
   }
