@@ -26,6 +26,16 @@ pub struct ClientPullState<M: ManagedTypeApi> {
     pub pull_amount: BigUint<M>,
 }
 
+// how to initialize variables
+// token_id, min_amount
+//
+// pull_a_id, pull_a_locking_time_span
+// apy_a0_id, apy_a0_start, apy_a0_end, apy_a0_apy
+// apy_a1_id, apy_a1_start, apy_a1_end, apy_a1_apy
+//
+// pull_b_id, pull_b_locking_time_span
+// apy_b0_id, apy_b0_start, apy_b0_end, apy_b0_apy
+// apy_a1_id, apy_a1_start, apy_a1_end, apy_a1_apy
 #[derive(TypeAbi, TopEncode, TopDecode, ManagedVecItem, NestedEncode, NestedDecode)]
 pub struct VariableContractSettings<M: ManagedTypeApi> {
     pub token_id: TokenIdentifier<M>,
@@ -43,9 +53,9 @@ pub struct Pull<M: ManagedTypeApi> {
 #[derive(TypeAbi, TopEncode, TopDecode, ManagedVecItem, NestedEncode, NestedDecode)]
 pub struct ApyConfiguration {
     pub id: u64,
+    pub apy: u64,
     pub start_timestamp: u64,
     pub end_timestamp: u64,
-    pub apy: u64,
 }
 
 
@@ -56,13 +66,15 @@ pub trait XLauncherStaking {
             token_id: TokenIdentifier,
             min_amount: BigUint,
             pull_a_locking_time_span: u64,
-            pull_a_apy: u64,
+            pull_a_apy: u64, // ignored for variable setting
     ) {
         require!(token_id.is_valid_esdt_identifier(), "invalid token_id");
         require!(min_amount > 0, "min_amount must be positive");
 
         let pull_a_id = 1u32;
-
+        let token_id_clone = token_id.clone();
+        let min_amount_clone = min_amount.clone();
+        // standard settings
         let settings = ContractSettings {
             token_id,
             min_amount,
@@ -71,6 +83,15 @@ pub trait XLauncherStaking {
             pull_a_apy,
         };
         self.contract_settings().set(&settings);
+
+        // variable settings
+        let _pull_items: ManagedVec< Pull<_>> = ManagedVec::new();
+        let variable_settings = VariableContractSettings {
+            token_id: (token_id_clone),
+            min_amount: (min_amount_clone),
+            pull_items: (_pull_items),
+        };
+        self.variable_contract_settings().set(&variable_settings)
     }
 
     #[payable("*")]
@@ -150,6 +171,10 @@ pub trait XLauncherStaking {
     #[view(getContractSettings)]
     #[storage_mapper("contractSettings")]
     fn contract_settings(&self) -> SingleValueMapper<ContractSettings<Self::Api>>;
+
+    #[view(getVariableContractSettings)]
+    #[storage_mapper("variableContractSettings")]
+    fn variable_contract_settings(&self) -> SingleValueMapper<VariableContractSettings<Self::Api>>;
 
     #[view(getClientState)]
     #[storage_mapper("clientState")]
