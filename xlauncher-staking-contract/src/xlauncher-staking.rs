@@ -37,23 +37,16 @@ pub struct VariableContractSettings<M: ManagedTypeApi> {
 pub struct Pull<M: ManagedTypeApi> {
     pub id: u64,
     pub locking_time_span: u64,
-    pub api_configuration: ManagedVec<M, ApiConfiguration>,
+    pub apy_configuration: ManagedVec<M, ApyConfiguration>,
 }
 
 #[derive(TypeAbi, TopEncode, TopDecode, ManagedVecItem, NestedEncode, NestedDecode)]
-pub struct ApiConfiguration {
+pub struct ApyConfiguration {
     pub id: u64,
     pub start_timestamp: u64,
     pub end_timestamp: u64,
-    pub api: u64,
+    pub apy: u64,
 }
-//
-// #[derive(TypeAbi, TopEncode, TopDecode, ManagedVecItem, NestedEncode, NestedDecode)]
-// pub struct ClientVariableState<M: ManagedTypeApi> {
-//     pub pull_id: u32,
-//     pub entry_time_stamp: u64,
-//     pub last_collection_time_stamp: u64,
-// }
 
 
 #[elrond_wasm::derive::contract]
