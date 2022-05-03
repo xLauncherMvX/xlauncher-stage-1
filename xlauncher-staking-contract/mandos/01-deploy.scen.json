@@ -9,7 +9,7 @@
           "nonce": "0",
           "balance": "0",
           "esdt": {
-            "str:BCOIN-good00": "100,000,000,000,000,000,000,000,000"
+            "str:BCOIN-a00000": "100,000,000,000,000,000,000,000,000"
           }
         }
       },
@@ -28,7 +28,7 @@
         "from": "address:owner",
         "contractCode": "file:../output/xlauncher-staking.wasm",
         "arguments": [
-          "str:BCOIN-good00",
+          "str:BCOIN-a00000",
           "250,000,000,000,000,000",
           "0",
           "1"
@@ -51,7 +51,7 @@
           "nonce": "*",
           "balance": "0",
           "esdt": {
-            "str:BCOIN-good00": "100,000,000,000,000,000,000,000,000"
+            "str:BCOIN-a00000": "100,000,000,000,000,000,000,000,000"
           },
           "storage": {},
           "code": ""
@@ -61,14 +61,14 @@
           "balance": "0",
           "storage": {
             "str:contractSettings": {
-              "1-token_id": "nested:str:BCOIN-good00",
+              "1-token_id": "nested:str:BCOIN-a00000",
               "2-min_amount": "biguint:250,000,000,000,000,000",
               "3-pull_a_id": "u32:1",
               "4-pull_a_locking_time_span": "u64:0",
               "5-pull_a_apy": "u64:1"
             },
             "str:variableContractSettings": {
-              "1-token_id": "nested:str:BCOIN-good00",
+              "1-token_id": "nested:str:BCOIN-a00000",
               "2-min_amount": "biguint:250,000,000,000,000,000",
               "3-pull_items_vec_len": "u32:1",
               "4-first_pull_item": {
