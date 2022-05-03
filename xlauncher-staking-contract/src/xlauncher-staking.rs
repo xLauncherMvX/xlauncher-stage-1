@@ -171,17 +171,15 @@ pub trait XLauncherStaking {
         let mut state_vector = self.client_state(&client);
         let id_clone = pull_id.clone();
         let config_vector = self.get_apy_config_vector(id_clone);
-        if config_vector.len() ==0{
+        if config_vector.len() == 0 {
             //let message = sc_format!("{}{}","Not valid pull id=",pull_id);
-            sc_panic!("Not valid id = {}", pull_id)
+            //sc_panic!("Not valid id = {}", pull_id)
         }
 
         let zero = BigUint::from(0u64);
         for i in 1..=state_vector.len() {
             let mut prev_pull_state = state_vector.get(i);
-            if prev_pull_state.pull_id == pull_id {
-
-            }
+            if prev_pull_state.pull_id == pull_id {}
         }
     }
 
@@ -235,15 +233,12 @@ pub trait XLauncherStaking {
     }
 
     fn get_apy_config_vector(&self, pull_id: u32) -> ManagedVec<ApyConfiguration> {
-
         let var_setting = self.variable_contract_settings().get();
         let pull_items = var_setting.pull_items;
         for i in 1..pull_items.len() {
-            let item = pull_items.get(i); // Pull
-            if pull_id == item.id {
-                let located_vector = item.apy_configuration;
-                return located_vector;
-            }
+            let item = pull_items.get(i);
+            // Pull
+            sc_panic!("DEBUG PANIC");
         }
         let empty_vector: ManagedVec<ApyConfiguration> = ManagedVec::new();
         return empty_vector;
