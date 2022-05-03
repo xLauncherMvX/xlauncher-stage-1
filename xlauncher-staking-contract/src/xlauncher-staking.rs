@@ -126,7 +126,15 @@ pub trait XLauncherStaking {
         let current_time_stamp = self.blockchain().get_block_timestamp();
         let mut state_vector = self.client_state(&client);
 
+        let new_pull_state = ClientPullState {
+            pull_id: (pull_id),
+            pull_time_stamp_entry: (current_time_stamp),
+            pull_time_stamp_last_collection: (current_time_stamp),
+            pull_amount: amount,
+        };
 
+        state_vector.push(&new_pull_state);
+        /*
         if state_vector.is_empty() {
             let new_pull_state = ClientPullState {
                 pull_id: (pull_id),
@@ -151,7 +159,7 @@ pub trait XLauncherStaking {
                     state_vector.set(i, &prev_pull_state);
                 }
             }
-        }
+        }*/
     }
 
     fn calculate_rewords(&self,
