@@ -172,9 +172,8 @@ pub trait XLauncherStaking {
         let id_clone = pull_id.clone();
         let config_vector = self.get_apy_config_vector(id_clone);
         if config_vector.len() ==0{
-            // let message = sc_format!("{}{}","Not valid pull id=",pull_id);
-            // sc_panic!(message);
-            //sc_panic!("Not valid pull id val");
+            //let message = sc_format!("{}{}","Not valid pull id=",pull_id);
+            sc_panic!("Not valid id = {}", pull_id)
         }
 
         let zero = BigUint::from(0u64);
