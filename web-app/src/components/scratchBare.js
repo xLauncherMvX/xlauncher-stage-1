@@ -167,6 +167,11 @@ export default function ScratchBare() {
     if (newWindow) newWindow.opener = null;
   }
 
+  const openInSameTab = (url) => {
+    const newWindow = window.open(url, '_self', 'noopener,noreferrer')
+    if (newWindow) newWindow.opener = null;
+  }
+
   let WhitelistButton = 
   <Button 
     className='btn btn-sm'
@@ -185,8 +190,23 @@ export default function ScratchBare() {
 
   return (
     <div>
-      <Flex backgroundColor={'blackAlpha.700'} padding={4}>
-        <ElrondLogo className='elrond-logo'/>        
+      <Flex backgroundColor={'blackAlpha.700'} padding={4}>            
+        <Button 
+        className='btn btn-xs btn-outline'
+        backgroundColor={'transparent'}
+        _hover={{
+          bg: 'transparent',
+        }}
+        _focus={{
+          bg: 'transparent',
+        }}
+        _active={{
+          bg: 'transparent',
+        }}
+        onClick={() => openInSameTab('https://x-launcher.com')}
+        >
+          <ElrondLogo className='elrond-logo'/>    
+        </Button>        
         <Spacer />
         {/* <Text mt={'3'} fontWeight={'bold'}>DEVNET</Text> */}
         {/* <Text mt={'3'} fontWeight={'bold'}>TESTNET</Text> */}
