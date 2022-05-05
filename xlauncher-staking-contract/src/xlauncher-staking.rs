@@ -68,7 +68,10 @@ pub trait XLauncherStaking {
             min_amount: BigUint,
             pull_a_id: u32,
             pull_a_locking_time_span: u64,
-            pull_a0_apy: u64, // ignored for variable setting
+            apy_a0_id: u64,
+            apy_a0_start: u64,
+            apy_a0_end: u64,
+            apy_a0_apy: u64,
     ) {
         require!(token_id.is_valid_esdt_identifier(), "invalid token_id");
         require!(min_amount > 0, "min_amount must be positive");
@@ -86,28 +89,37 @@ pub trait XLauncherStaking {
             min_amount,
             pull_a_id,
             pull_a_locking_time_span,
-            pull_a_apy: pull_a0_apy,
+            pull_a_apy: apy_a0_apy,
         };
         self.contract_settings().set(&settings);
 
 
         // variable pull a
-        let mut _configuration_items: ManagedVec<ApyConfiguration> = ManagedVec::new();
+
+
+        let mut configuration_items: ManagedVec<ApyConfiguration> = ManagedVec::new();
+        let apy_a0 = ApyConfiguration {
+            id: (apy_a0_id),
+            apy: (apy_a0_apy),
+            start_timestamp: (apy_a0_start),
+            end_timestamp: (apy_a0_end),
+        };
+        configuration_items.push(apy_a0);
 
 
         let pull_a = Pull {
             id: (pull_a_id_clone),
             locking_time_span: (pull_a_locking_time_span_clone),
-            apy_configuration: (_configuration_items),
+            apy_configuration: (configuration_items),
         };
 
         // variable settings
-        let mut _pull_items: ManagedVec<Pull<Self::Api>> = ManagedVec::new();
-        _pull_items.push(pull_a);
+        let mut pull_items: ManagedVec<Pull<Self::Api>> = ManagedVec::new();
+        pull_items.push(pull_a);
         let mut variable_settings = VariableContractSettings {
             token_id: (token_id_clone),
             min_amount: (min_amount_clone),
-            pull_items: (_pull_items),
+            pull_items: (pull_items),
         };
         self.variable_contract_settings().set(&variable_settings)
     }
