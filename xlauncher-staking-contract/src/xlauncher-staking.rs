@@ -184,9 +184,14 @@ pub trait XLauncherStaking {
         let mut state_vector = self.client_state(&client);
         let id_clone = pull_id.clone();
         let config_vector = self.get_apy_config_vector(id_clone);
-        if config_vector.len() > 0 {
-            for i in 0..(config_vector.len() - 1) {
-                sc_panic!("Finaly we hit a brakepoint")
+        let vector_len = config_vector.len();
+        if state_vector.len() > 0 {
+            let rewords = BigUint::zero();
+            for i in 1..=state_vector.len()  {
+                let state_item = state_vector.get(i);
+                if state_item.pull_id == pull_id {
+                    sc_panic!("time to calculate item rewords");
+                }
             }
         }
     }
