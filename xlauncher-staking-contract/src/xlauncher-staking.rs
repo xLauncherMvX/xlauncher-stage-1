@@ -66,13 +66,14 @@ pub trait XLauncherStaking {
     fn init(&self,
             token_id: TokenIdentifier,
             min_amount: BigUint,
+            pull_a_id: u32,
             pull_a_locking_time_span: u64,
             pull_a0_apy: u64, // ignored for variable setting
     ) {
         require!(token_id.is_valid_esdt_identifier(), "invalid token_id");
         require!(min_amount > 0, "min_amount must be positive");
 
-        let pull_a_id = 1u32;
+        //let pull_a_id = 1u32;
 
         let pull_a_id_clone = pull_a_id.clone();
         let token_id_clone = token_id.clone();
@@ -171,8 +172,10 @@ pub trait XLauncherStaking {
         let mut state_vector = self.client_state(&client);
         let id_clone = pull_id.clone();
         let config_vector = self.get_apy_config_vector(id_clone);
-        if config_vector.len() == 0 {
-            sc_panic!("Claim empy pull id = {}", pull_id);
+        if config_vector.len() > 0 {
+            for i in 0..(config_vector.len() - 1) {
+                sc_panic!("Finaly we hit a brakepoint")
+            }
         }
     }
 
@@ -233,8 +236,6 @@ pub trait XLauncherStaking {
             let pull = pull_items.get(i);
             if pull.id == pull_id {
                 let api_config = pull.apy_configuration;
-                let len = api_config.len();
-                sc_panic!("DEBUG api_config_len = {}", len);
                 return api_config;
             }
         }
