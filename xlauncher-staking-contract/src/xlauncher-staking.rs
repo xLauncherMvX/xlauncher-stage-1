@@ -105,7 +105,6 @@ pub trait XLauncherStaking {
             end_timestamp: (apy_a0_end),
         };
         configuration_items.push(apy_a0);
-        if (apy_a0.id == u32_1)
 
 
         let pull_a = Pull {
