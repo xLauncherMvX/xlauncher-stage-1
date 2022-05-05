@@ -53,7 +53,7 @@ pub struct Pull<M: ManagedTypeApi> {
 
 #[derive(TypeAbi, TopEncode, TopDecode, ManagedVecItem, NestedEncode, NestedDecode)]
 pub struct ApyConfiguration {
-    pub id: u64,
+    pub id: u32,
     pub apy: u64,
     pub start_timestamp: u64,
     pub end_timestamp: u64,
@@ -68,7 +68,7 @@ pub trait XLauncherStaking {
             min_amount: BigUint,
             pull_a_id: u32,
             pull_a_locking_time_span: u64,
-            apy_a0_id: u64,
+            apy_a0_id: u32,
             apy_a0_start: u64,
             apy_a0_end: u64,
             apy_a0_apy: u64,
@@ -104,7 +104,7 @@ pub trait XLauncherStaking {
             start_timestamp: (apy_a0_start),
             end_timestamp: (apy_a0_end),
         };
-        configuration_items.push(apy_a0);
+       // configuration_items.push(apy_a0);
 
 
         let pull_a = Pull {
