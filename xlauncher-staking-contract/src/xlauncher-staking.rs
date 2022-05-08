@@ -189,10 +189,9 @@ pub trait XLauncherStaking {
     #[endpoint(reinvest)]
     fn reinvest(&self,
              pull_id: u32) {
-        sc_panic!("Time to reinvest")
-        /*let client = self.blockchain().get_caller();
+        let client = self.blockchain().get_caller();
         let current_time_stamp = self.blockchain().get_block_timestamp();
-        let client_vector = self.client_state(&client);
+        let mut client_vector = self.client_state(&client);
         let id_clone = pull_id.clone();
         let config_vector = self.get_apy_config_vector(id_clone);
         let mut total_rewards = BigUint::zero(); //total rewords
@@ -217,7 +216,7 @@ pub trait XLauncherStaking {
                         }
                     }
                 }
-                if item_rewards > 0 {
+                if item_rewards > 0_u64 {
                     //sc_panic!("Computed rewords = {}", item_rewords);
                     client_item.pull_time_stamp_last_collection = current_time_stamp;
                     client_vector.set(i, &client_item);
@@ -226,15 +225,16 @@ pub trait XLauncherStaking {
             }
         }
 
-        if total_rewards > 0 {
-            let token_id = self.get_contract_token_id();
-            self.send().direct(
-                &client,
-                &token_id,
-                0,
-                &total_rewards,
-                &[]);
-        }*/
+        if total_rewards > 0_u64 {
+            let new_pull_state = ClientPullState {
+                pull_id: (pull_id),
+                pull_time_stamp_entry: (current_time_stamp),
+                pull_time_stamp_last_collection: (current_time_stamp),
+                pull_amount: total_rewards,
+            };
+
+            client_vector.push(&new_pull_state);
+        }
     }
 
 
