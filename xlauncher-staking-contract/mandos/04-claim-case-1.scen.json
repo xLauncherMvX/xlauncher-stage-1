@@ -99,6 +99,28 @@
       }
     },
     {
+      "step": "scCall",
+      "txId": "claim-case-1",
+      "tx": {
+        "from": "address:client1",
+        "to": "sc:xlauncher-staking",
+        "value": "0",
+        "function": "claim",
+        "arguments": [
+          "1"
+        ],
+        "gasLimit": "100,000,000",
+        "gasPrice": "0"
+      },
+      "expect": {
+        "out": [],
+        "status": "0",
+        "message": "",
+        "gas": "*",
+        "refund": "*"
+      }
+    },
+    {
       "step": "checkState",
       "accounts": {
         "address:owner": {
@@ -144,63 +166,13 @@
           "code": "file:../output/xlauncher-staking.wasm"
         },
         "address:client1": {
-          "nonce": "1",
+          "nonce": "2",
           "balance": "0",
           "esdt": {
             "str:BCOIN-a00000": "4,000,000,000,000,000,000,000",
             "str:BCOIN-b00000": "5,000,000,000,000,000,000,000"
           }
         }
-      }
-    },
-    {
-      "step": "scCall",
-      "txId": "claim-case-1",
-      "tx": {
-        "from": "address:client1",
-        "to": "sc:xlauncher-staking",
-        "value": "0",
-        "function": "claim",
-        "arguments": [
-          "1"
-        ],
-        "gasLimit": "100,000,000",
-        "gasPrice": "0"
-      },
-      "expect": {
-        "out": [],
-        "status": "0",
-        "message": "",
-        "gas": "*",
-        "refund": "*"
-      }
-    },
-    {
-      "step": "setState",
-      "currentBlockInfo": {
-        "blockTimestamp": "7884000"
-      }
-    },
-    {
-      "step": "scCall",
-      "txId": "claim-case-2",
-      "tx": {
-        "from": "address:client1",
-        "to": "sc:xlauncher-staking",
-        "value": "0",
-        "function": "claim",
-        "arguments": [
-          "1"
-        ],
-        "gasLimit": "100,000,000",
-        "gasPrice": "0"
-      },
-      "expect": {
-        "out": [],
-        "status": "0",
-        "message": "",
-        "gas": "*",
-        "refund": "*"
       }
     }
   ]

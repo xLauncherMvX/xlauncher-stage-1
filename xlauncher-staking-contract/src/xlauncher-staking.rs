@@ -186,6 +186,59 @@ pub trait XLauncherStaking {
         }
     }
 
+    #[endpoint(reinvest)]
+    fn reinvest(&self,
+             pull_id: u32) {
+        sc_panic!("Time to reinvest")
+        /*let client = self.blockchain().get_caller();
+        let current_time_stamp = self.blockchain().get_block_timestamp();
+        let client_vector = self.client_state(&client);
+        let id_clone = pull_id.clone();
+        let config_vector = self.get_apy_config_vector(id_clone);
+        let mut total_rewards = BigUint::zero(); //total rewords
+        if client_vector.len() > 0 && config_vector.len() > 0 {
+            for i in 1..=client_vector.len() {
+                let mut client_item = client_vector.get(i);
+                let mut item_rewards = BigUint::zero(); // item rewords
+                if client_item.pull_id == pull_id {
+                    for k in 0..=(config_vector.len() - 1) {
+                        let config_item = config_vector.get(k);
+                        let copy_state_item = ClientPullState {
+                            pull_id: (pull_id.clone()),
+                            pull_amount: (client_item.pull_amount.clone()),
+                            pull_time_stamp_last_collection: (client_item.pull_time_stamp_last_collection.clone()),
+                            pull_time_stamp_entry: (client_item.pull_time_stamp_entry.clone()),
+                        };
+                        let config_rewords = self.calculate_rewords_v2(copy_state_item,
+                                                                       config_item,
+                                                                       current_time_stamp);
+                        if config_rewords > BigUint::zero() {
+                            item_rewards += config_rewords;
+                        }
+                    }
+                }
+                if item_rewards > 0 {
+                    //sc_panic!("Computed rewords = {}", item_rewords);
+                    client_item.pull_time_stamp_last_collection = current_time_stamp;
+                    client_vector.set(i, &client_item);
+                    total_rewards += item_rewards;
+                }
+            }
+        }
+
+        if total_rewards > 0 {
+            let token_id = self.get_contract_token_id();
+            self.send().direct(
+                &client,
+                &token_id,
+                0,
+                &total_rewards,
+                &[]);
+        }*/
+    }
+
+
+
     fn calculate_rewords_v2(&self,
                             client_pull_state: ClientPullState<Self::Api>,
                             apy_configuration: ApyConfiguration,
