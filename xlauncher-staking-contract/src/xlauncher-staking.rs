@@ -7,14 +7,7 @@ elrond_wasm::imports!();
 elrond_wasm::derive_imports!();
 
 
-#[derive(TypeAbi, TopEncode, TopDecode, NestedEncode, NestedDecode)]
-pub struct ContractSettings<M: ManagedTypeApi> {
-    pub token_id: TokenIdentifier<M>,
-    pub min_amount: BigUint<M>,
-    pub pull_a_id: u32,
-    pub pull_a_locking_time_span: u64,
-    pub pull_a_apy: u64,
-}
+
 
 #[derive(TypeAbi, TopEncode, TopDecode, ManagedVecItem, NestedEncode, NestedDecode)]
 pub struct ClientPullState<M: ManagedTypeApi> {
@@ -72,7 +65,7 @@ pub trait XLauncherStaking {
             apy_a0_apy: u64,
     ) {
         require!(token_id.is_valid_esdt_identifier(), "invalid token_id");
-        require!(min_amount > 0, "min_amount must be positive");
+        require!(min_amount > 0_u64, "min_amount must be positive");
 
         //let pull_a_id = 1u32;
 
@@ -81,18 +74,8 @@ pub trait XLauncherStaking {
         let min_amount_clone = min_amount.clone();
         let pull_a_locking_time_span_clone = pull_a_locking_time_span.clone();
 
-        // standard settings
-        let settings = ContractSettings {
-            token_id,
-            min_amount,
-            pull_a_id,
-            pull_a_locking_time_span,
-            pull_a_apy: apy_a0_apy,
-        };
-
 
         // variable pull a
-
 
         let mut configuration_items: ManagedVec<ApyConfiguration> = ManagedVec::new();
         let apy_a0 = ApyConfiguration {
