@@ -283,7 +283,6 @@ pub trait XLauncherStaking {
 
         //case 1
         if t < s {
-            //sc_panic!("Case 1: s={}, e={} t={}, l={}",s,e,t,l);
             return BigUint::zero();
         }
 
@@ -310,6 +309,11 @@ pub trait XLauncherStaking {
             let rewords = self.compute_seconds_rewords(&seconds,
                                                        bu_r_in_1_second);
             return rewords;
+        }
+
+        //case 5
+        if e <= l  {
+            return BigUint::zero();
         }
 
 
