@@ -304,7 +304,7 @@ pub trait XLauncherStaking {
         }
 
         //case 4
-        if l <= e && e < t {
+        if s <=l && l <= e && e < t {
             let seconds = e - l;
             let rewords = self.compute_seconds_rewords(&seconds,
                                                        bu_r_in_1_second);
@@ -316,6 +316,13 @@ pub trait XLauncherStaking {
             return BigUint::zero();
         }
 
+        //case 6
+        if l<=s && e<= t{
+            let seconds = e - s;
+            let rewords = self.compute_seconds_rewords(&seconds,
+                                                       bu_r_in_1_second);
+            return rewords;
+        }
 
 
         sc_panic!("Case not supported: s={}, e={} t={}, l={}",s,e,t,l);
