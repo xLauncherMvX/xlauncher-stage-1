@@ -159,7 +159,7 @@ pub trait XLauncherStaking {
                             pull_time_stamp_last_collection: (client_item.pull_time_stamp_last_collection.clone()),
                             pull_time_stamp_entry: (client_item.pull_time_stamp_entry.clone()),
                         };
-                        let config_rewords = self.calculate_rewords_v2(copy_state_item,
+                        let config_rewords = self.calculate_rewards_v2(copy_state_item,
                                                                        config_item,
                                                                        current_time_stamp);
                         if config_rewords > BigUint::zero() {
@@ -208,7 +208,7 @@ pub trait XLauncherStaking {
                             pull_time_stamp_last_collection: (client_item.pull_time_stamp_last_collection.clone()),
                             pull_time_stamp_entry: (client_item.pull_time_stamp_entry.clone()),
                         };
-                        let config_rewords = self.calculate_rewords_v2(copy_state_item,
+                        let config_rewords = self.calculate_rewards_v2(copy_state_item,
                                                                        config_item,
                                                                        current_time_stamp);
                         if config_rewords > BigUint::zero() {
@@ -239,7 +239,7 @@ pub trait XLauncherStaking {
 
 
 
-    fn calculate_rewords_v2(&self,
+    fn calculate_rewards_v2(&self,
                             client_pull_state: ClientPullState<Self::Api>,
                             apy_configuration: ApyConfiguration,
                             current_time_stamp: u64) -> BigUint {
@@ -273,26 +273,26 @@ pub trait XLauncherStaking {
         //case 2
         if l < s && s < t && t <= e {
             let seconds = t - s; // elapsed seconds
-            let rewords = self.compute_seconds_rewords(&seconds,
+            let rewards = self.compute_seconds_rewards(&seconds,
                                                        bu_r_in_1_second);
-            return rewords;
+            return rewards;
         }
 
         //case 3
         if s <= l && t <= e {
             //sc_panic!("Case 3 not supported: s={}, e={} t={}, l={}",s,e,t,l);
             let seconds = t - l;
-            let rewords = self.compute_seconds_rewords(&seconds,
+            let rewards = self.compute_seconds_rewards(&seconds,
                                                        bu_r_in_1_second);
-            return rewords;
+            return rewards;
         }
 
         //case 4
         if s <= l && l <= e && e < t {
             let seconds = e - l;
-            let rewords = self.compute_seconds_rewords(&seconds,
+            let rewards = self.compute_seconds_rewards(&seconds,
                                                        bu_r_in_1_second);
-            return rewords;
+            return rewards;
         }
 
         //case 5
@@ -303,21 +303,21 @@ pub trait XLauncherStaking {
         //case 6
         if l <= s && e <= t {
             let seconds = e - s;
-            let rewords = self.compute_seconds_rewords(&seconds,
+            let rewards = self.compute_seconds_rewards(&seconds,
                                                        bu_r_in_1_second);
-            return rewords;
+            return rewards;
         }
 
 
         sc_panic!("Case not supported: s={}, e={} t={}, l={}",s,e,t,l);
     }
 
-    fn compute_seconds_rewords(&self,
+    fn compute_seconds_rewards(&self,
                                &seconds: &u64,
                                bu_r_in_1_second: BigUint) -> BigUint {
         let bu_seconds = BigUint::from(seconds);
-        let rewords = (&bu_seconds * &bu_r_in_1_second) / BigUint::from(100_u64);
-        return rewords;
+        let rewards = (&bu_seconds * &bu_r_in_1_second) / BigUint::from(100_u64);
+        return rewards;
     }
 
     // getters
