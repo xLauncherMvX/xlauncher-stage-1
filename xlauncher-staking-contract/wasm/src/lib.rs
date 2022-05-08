@@ -9,7 +9,6 @@ elrond_wasm_node::wasm_endpoints! {
     (
         claim
         getClientState
-        getContractSettings
         getVariableContractSettings
         stake
     )
