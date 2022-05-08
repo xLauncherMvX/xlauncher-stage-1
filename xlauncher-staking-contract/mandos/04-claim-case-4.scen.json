@@ -117,13 +117,6 @@
             "str:BCOIN-a00000": "1,000,000,000,000,000,000,000"
           },
           "storage": {
-            "str:contractSettings": {
-              "1-token_id": "nested:str:BCOIN-a00000",
-              "2-min_amount": "biguint:250,000,000,000,000,000",
-              "3-pull_a_id": "u32:1",
-              "4-pull_a_locking_time_span": "u64:0",
-              "5-pull_a_apy": "u64:100"
-            },
             "str:variableContractSettings": {
               "1-token_id": "nested:str:BCOIN-a00000",
               "2-min_amount": "biguint:250,000,000,000,000,000",
@@ -243,13 +236,6 @@
             "str:BCOIN-a00000": "995,000,000,000,000,092,480"
           },
           "storage": {
-            "str:contractSettings": {
-              "1-token_id": "nested:str:BCOIN-a00000",
-              "2-min_amount": "biguint:250,000,000,000,000,000",
-              "3-pull_a_id": "u32:1",
-              "4-pull_a_locking_time_span": "u64:0",
-              "5-pull_a_apy": "u64:100"
-            },
             "str:variableContractSettings": {
               "1-token_id": "nested:str:BCOIN-a00000",
               "2-min_amount": "biguint:250,000,000,000,000,000",
