@@ -176,28 +176,28 @@ pub trait XLauncherStaking {
         }*/
     }
 
-    #[endpoint]
+    #[endpoint(claim)]
     fn claim(&self,
              pull_id: u32) {
         let client = self.blockchain().get_caller();
         let current_time_stamp = self.blockchain().get_block_timestamp();
-        let mut state_vector = self.client_state(&client);
+        let mut client_vector = self.client_state(&client);
         let id_clone = pull_id.clone();
         let config_vector = self.get_apy_config_vector(id_clone);
         let vector_len = config_vector.len();
-        if state_vector.len() > 0 && config_vector.len() > 0 {
-            let mut total_rewords = BigUint::zero(); //total rewords
-            for i in 1..=state_vector.len() {
-                let state_item = state_vector.get(i);
-                if state_item.pull_id == pull_id {
-                    let mut item_rewords = BigUint::zero(); // item rewords
+        let mut total_rewords = BigUint::zero(); //total rewords
+        if client_vector.len() > 0 && config_vector.len() > 0 {
+            for i in 1..=client_vector.len() {
+                let mut client_item = client_vector.get(i);
+                let mut item_rewords = BigUint::zero(); // item rewords
+                if client_item.pull_id == pull_id {
                     for k in 0..=(config_vector.len() - 1) {
                         let config_item = config_vector.get(k);
                         let copy_state_item = ClientPullState {
                             pull_id: (pull_id.clone()),
-                            pull_amount: (state_item.pull_amount.clone()),
-                            pull_time_stamp_last_collection: (state_item.pull_time_stamp_last_collection.clone()),
-                            pull_time_stamp_entry: (state_item.pull_time_stamp_entry.clone()),
+                            pull_amount: (client_item.pull_amount.clone()),
+                            pull_time_stamp_last_collection: (client_item.pull_time_stamp_last_collection.clone()),
+                            pull_time_stamp_entry: (client_item.pull_time_stamp_entry.clone()),
                         };
                         let config_rewords = self.calculate_rewords_v2(copy_state_item,
                                                                        config_item,
@@ -206,11 +206,23 @@ pub trait XLauncherStaking {
                             item_rewords += config_rewords;
                         }
                     }
-                    if item_rewords > 0 {
-                        sc_panic!("Computed rewords = {}", item_rewords);
-                    }
+                }
+                if item_rewords > 0 {
+                    //sc_panic!("Computed rewords = {}", item_rewords);
+                    client_item.pull_time_stamp_last_collection = current_time_stamp;
+                    client_vector.set(i, &client_item);
+                    total_rewords += item_rewords;
                 }
             }
+        }
+        if total_rewords > 0 {
+            let token_id = self.get_contract_token_id();
+            self.send().direct(
+                &client,
+                &token_id,
+                0,
+                &total_rewords,
+                &[]);
         }
     }
 
@@ -238,10 +250,13 @@ pub trait XLauncherStaking {
                             client_pull_state: ClientPullState<Self::Api>,
                             apy_configuration: ApyConfiguration,
                             current_time_stamp: u64) -> BigUint {
+        let s = apy_configuration.start_timestamp;
+        let e = apy_configuration.end_timestamp;
+        let l = client_pull_state.pull_time_stamp_last_collection;
+        let t = current_time_stamp;
+
         let zero = BigUint::zero();
-        if current_time_stamp < apy_configuration.start_timestamp {
-            return zero;
-        }
+
         if current_time_stamp < apy_configuration.end_timestamp {}
         let seconds_in_year: u64 = 60 * 60 * 24 * 365;
         let pull_apy: u64 = apy_configuration.apy;
@@ -259,10 +274,6 @@ pub trait XLauncherStaking {
         // return rewords;
         //
 
-        let s = apy_configuration.start_timestamp;
-        let e = apy_configuration.end_timestamp;
-        let l = client_pull_state.pull_time_stamp_last_collection;
-        let t = current_time_stamp;
 
         //case zero
         if t < l {
@@ -271,13 +282,22 @@ pub trait XLauncherStaking {
 
         //case 1
         if t < s {
-            //return BigUint::zero();
-            sc_panic!("case 1");
+            //sc_panic!("Case 1: s={}, e={} t={}, l={}",s,e,t,l);
+            return BigUint::zero();
         }
 
-        return zero;
+        if l < s && s < t && t < e {
+            let seconds = t - s; // elapsed seconds
+            let bu_seconds = BigUint::from(seconds); // elapsed seconds as BigUint
+            let rewords = &bu_seconds * &bu_r_in_1_second; // calculate rewords
+            return rewords;
+        }
+
+        sc_panic!("Case not supported: s={}, e={} t={}, l={}",s,e,t,l);
+        return BigUint::zero();
     }
 
+    // getters
     fn get_pull_apy(&self,
                     pull_id: u32) -> u64 {
         let contract_settings = self.contract_settings().get();
@@ -286,6 +306,7 @@ pub trait XLauncherStaking {
         }
         sc_panic!("Not valid pull id");
     }
+
 
     fn get_apy_config_vector(&self, pull_id: u32) -> ManagedVec<ApyConfiguration> {
         let var_setting = self.variable_contract_settings().get();
@@ -300,6 +321,11 @@ pub trait XLauncherStaking {
         }
         let empty_vector: ManagedVec<ApyConfiguration> = ManagedVec::new();
         return empty_vector;
+    }
+
+    fn get_contract_token_id(&self) -> TokenIdentifier {
+        let settings = self.contract_settings().get();
+        return settings.token_id;
     }
 
     // storage
