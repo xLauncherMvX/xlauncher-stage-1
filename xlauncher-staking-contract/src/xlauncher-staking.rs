@@ -186,9 +186,6 @@ pub trait XLauncherStaking {
         }
     }
 
-
-
-
     fn calculate_rewords_v2(&self,
                             client_pull_state: ClientPullState<Self::Api>,
                             apy_configuration: ApyConfiguration,
