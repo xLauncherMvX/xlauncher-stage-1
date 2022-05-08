@@ -11,7 +11,6 @@ elrond_wasm_node::wasm_endpoints! {
         getClientState
         getContractSettings
         getVariableContractSettings
-        reinvest
         stake
     )
 }

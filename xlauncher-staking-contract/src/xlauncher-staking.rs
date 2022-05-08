@@ -174,11 +174,11 @@ pub trait XLauncherStaking {
         }*/
     }
 
-    #[endpoint(reinvest)]
+   /* #[endpoint(reinvest)]
     fn reinvest(&self,
              pull_id: u32) {
         sc_panic!("hello reinvest");
-    }
+    }*/
 
     #[endpoint(claim)]
     fn claim(&self,
@@ -188,11 +188,11 @@ pub trait XLauncherStaking {
         let client_vector = self.client_state(&client);
         let id_clone = pull_id.clone();
         let config_vector = self.get_apy_config_vector(id_clone);
-        let mut total_rewords = BigUint::zero(); //total rewords
+        let mut total_rewards = BigUint::zero(); //total rewords
         if client_vector.len() > 0 && config_vector.len() > 0 {
             for i in 1..=client_vector.len() {
                 let mut client_item = client_vector.get(i);
-                let mut item_rewords = BigUint::zero(); // item rewords
+                let mut item_rewards = BigUint::zero(); // item rewords
                 if client_item.pull_id == pull_id {
                     for k in 0..=(config_vector.len() - 1) {
                         let config_item = config_vector.get(k);
@@ -206,25 +206,25 @@ pub trait XLauncherStaking {
                                                                        config_item,
                                                                        current_time_stamp);
                         if config_rewords > BigUint::zero() {
-                            item_rewords += config_rewords;
+                            item_rewards += config_rewords;
                         }
                     }
                 }
-                if item_rewords > 0 {
+                if item_rewards > 0 {
                     //sc_panic!("Computed rewords = {}", item_rewords);
                     client_item.pull_time_stamp_last_collection = current_time_stamp;
                     client_vector.set(i, &client_item);
-                    total_rewords += item_rewords;
+                    total_rewards += item_rewards;
                 }
             }
         }
-        if total_rewords > 0 {
+        if total_rewards > 0 {
             let token_id = self.get_contract_token_id();
             self.send().direct(
                 &client,
                 &token_id,
                 0,
-                &total_rewords,
+                &total_rewards,
                 &[]);
         }
     }
