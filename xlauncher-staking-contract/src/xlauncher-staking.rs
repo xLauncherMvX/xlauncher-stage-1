@@ -3,9 +3,6 @@
 
 extern crate alloc;
 
-use alloc::format;
-use alloc::string::ToString;
-
 elrond_wasm::imports!();
 elrond_wasm::derive_imports!();
 
@@ -117,7 +114,7 @@ pub trait XLauncherStaking {
         // variable settings
         let mut pull_items: ManagedVec<Pull<Self::Api>> = ManagedVec::new();
         pull_items.push(pull_a);
-        let mut variable_settings = VariableContractSettings {
+        let variable_settings = VariableContractSettings {
             token_id: (token_id_clone),
             min_amount: (min_amount_clone),
             pull_items: (pull_items),
@@ -177,15 +174,20 @@ pub trait XLauncherStaking {
         }*/
     }
 
+    #[endpoint(reinvest)]
+    fn reinvest(&self,
+             pull_id: u32) {
+        sc_panic!("hello reinvest");
+    }
+
     #[endpoint(claim)]
     fn claim(&self,
              pull_id: u32) {
         let client = self.blockchain().get_caller();
         let current_time_stamp = self.blockchain().get_block_timestamp();
-        let mut client_vector = self.client_state(&client);
+        let client_vector = self.client_state(&client);
         let id_clone = pull_id.clone();
         let config_vector = self.get_apy_config_vector(id_clone);
-        let vector_len = config_vector.len();
         let mut total_rewords = BigUint::zero(); //total rewords
         if client_vector.len() > 0 && config_vector.len() > 0 {
             for i in 1..=client_vector.len() {
@@ -256,7 +258,6 @@ pub trait XLauncherStaking {
         let l = client_pull_state.pull_time_stamp_last_collection;
         let t = current_time_stamp;
 
-        let zero = BigUint::zero();
 
         if current_time_stamp < apy_configuration.end_timestamp {}
         let seconds_in_year: u64 = 60 * 60 * 24 * 365;
@@ -267,13 +268,6 @@ pub trait XLauncherStaking {
         let bu_hundred = BigUint::from(100u64); // 100 as BigUint
         let bu_r_in_year = (&bu_amount * &bu_apy) / &bu_hundred; // rewords in one year as BigUint
         let bu_r_in_1_second = &bu_r_in_year / &bu_s_in_year; // rewords in one second as BigUint
-        let mut seconds = 0_u64;
-
-        // let seconds = &current_time_stamp - &pull_time_stamp_last_collection; // elapsed seconds since last collection
-        // let bu_seconds = BigUint::from(seconds); // elapsed seconds as BigUint
-        // let rewords = &bu_seconds * &bu_r_in_1_second; // calculate rewords
-        // return rewords;
-        //
 
 
         //case zero
@@ -326,7 +320,6 @@ pub trait XLauncherStaking {
 
 
         sc_panic!("Case not supported: s={}, e={} t={}, l={}",s,e,t,l);
-        return BigUint::zero();
     }
 
     fn compute_seconds_rewords(&self,
