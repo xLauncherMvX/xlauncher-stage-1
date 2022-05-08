@@ -55,6 +55,7 @@ pub struct Pull<M: ManagedTypeApi> {
 pub struct ApyConfiguration {
     pub id: u32,
     pub apy: u64,
+    // apy is multiplied by 100. ex: 1% = 100, 0.5& = 50, 0.01% = 1
     pub start_timestamp: u64,
     pub end_timestamp: u64,
 }
@@ -289,7 +290,7 @@ pub trait XLauncherStaking {
         if l < s && s < t && t < e {
             let seconds = t - s; // elapsed seconds
             let bu_seconds = BigUint::from(seconds); // elapsed seconds as BigUint
-            let rewords = &bu_seconds * &bu_r_in_1_second; // calculate rewords
+            let rewords = (&bu_seconds * &bu_r_in_1_second) / BigUint::from(100_u64); // calculate rewords
             return rewords;
         }
 
