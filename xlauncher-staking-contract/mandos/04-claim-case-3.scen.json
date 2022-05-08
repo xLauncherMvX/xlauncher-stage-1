@@ -189,6 +189,34 @@
       }
     },
     {
+      "step": "setState",
+      "currentBlockInfo": {
+        "blockTimestamp": "31536000"
+      }
+    },
+    {
+      "step": "scCall",
+      "txId": "claim-case-3",
+      "tx": {
+        "from": "address:client1",
+        "to": "sc:xlauncher-staking",
+        "value": "0",
+        "function": "claim",
+        "arguments": [
+          "1"
+        ],
+        "gasLimit": "100,000,000",
+        "gasPrice": "0"
+      },
+      "expect": {
+        "out": [],
+        "status": "0",
+        "message": "",
+        "gas": "*",
+        "refund": "*"
+      }
+    },
+    {
       "step": "checkState",
       "accounts": {
         "address:owner": {
