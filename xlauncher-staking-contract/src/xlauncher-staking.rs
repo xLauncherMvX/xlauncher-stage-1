@@ -287,16 +287,19 @@ pub trait XLauncherStaking {
             return BigUint::zero();
         }
 
-        if l < s && s < t && t < e {
+        if l < s && s < t && t <= e {
             let seconds = t - s; // elapsed seconds
-            let bu_seconds = BigUint::from(seconds); // elapsed seconds as BigUint
             let rewords = self.compute_seconds_rewords(&seconds,
                                                        bu_r_in_1_second);
             return rewords;
         }
 
         if s <= l && t <= e {
-            sc_panic!("Case 3 not supported: s={}, e={} t={}, l={}",s,e,t,l);
+            //sc_panic!("Case 3 not supported: s={}, e={} t={}, l={}",s,e,t,l);
+            let seconds = t - l;
+            let rewords = self.compute_seconds_rewords(&seconds,
+                                                       bu_r_in_1_second);
+            return rewords;
         }
 
         sc_panic!("Case not supported: s={}, e={} t={}, l={}",s,e,t,l);
