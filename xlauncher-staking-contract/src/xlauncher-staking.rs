@@ -101,12 +101,20 @@ pub trait XLauncherStaking {
             apy_b0_end,
             apy_b0_apy);
 
+        let pull_c = self.build_pull(
+            pull_c_id,
+            pull_c_locking_time_span,
+            apy_c0_id,
+            apy_c0_start,
+            apy_c0_end,
+            apy_c0_apy);
 
 
         // variable settings
         let mut pull_items: ManagedVec<Pull<Self::Api>> = ManagedVec::new();
         pull_items.push(pull_a);
         pull_items.push(pull_b);
+        pull_items.push(pull_c);
         let variable_settings = VariableContractSettings {
             token_id: (token_id),
             min_amount: (min_amount),

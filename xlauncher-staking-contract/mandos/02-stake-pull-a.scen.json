@@ -144,7 +144,7 @@
             "str:variableContractSettings": {
               "1-token_id": "nested:str:BCOIN-a00000",
               "2-min_amount": "biguint:250,000,000,000,000,000",
-              "3-pull_items_vec_len": "u32:2",
+              "3-pull_items_vec_len": "u32:3",
               "4-first_pull_item": {
                 "1-id": "u32:1",
                 "2-locking_time_span": "u64:0",
@@ -163,6 +163,17 @@
                 "4-first_apy_configuration": {
                   "1-id": "u32:1",
                   "2-apy": "u64:200",
+                  "3-start_timestamp": "u64:0",
+                  "4-end_timestamp": "u64:31536000"
+                }
+              },
+              "6-third_pull_item": {
+                "1-id": "u32:3",
+                "2-locking_time_span": "u64:15552000",
+                "3-apy_configuration_vec_len": "u32:1",
+                "4-first_apy_configuration": {
+                  "1-id": "u32:1",
+                  "2-apy": "u64:300",
                   "3-start_timestamp": "u64:0",
                   "4-end_timestamp": "u64:31536000"
                 }
