@@ -106,25 +106,25 @@ pub trait XLauncherStaking {
         self.variable_contract_settings().set(&variable_settings)
     }
 
-    fn build_pull(self, pull_a_id: u32,
-                  pull_a_locking_time_span: u64,
-                  apy_a0_id: u32,
-                  apy_a0_start: u64,
-                  apy_a0_end: u64,
-                  apy_a0_apy: u64, ) -> Pull<Self::Api> {
+    fn build_pull(self, pull_id: u32,
+                  pull_locking_time_span: u64,
+                  apy_0_id: u32,
+                  apy_0_start: u64,
+                  apy_0_end: u64,
+                  apy_0_apy: u64, ) -> Pull<Self::Api> {
         let mut pull_a_config_vector: ManagedVec<ApyConfiguration> = ManagedVec::new();
         let apy_a0 = ApyConfiguration {
-            id: (apy_a0_id),
-            apy: (apy_a0_apy),
-            start_timestamp: (apy_a0_start),
-            end_timestamp: (apy_a0_end),
+            id: (apy_0_id),
+            apy: (apy_0_apy),
+            start_timestamp: (apy_0_start),
+            end_timestamp: (apy_0_end),
         };
         pull_a_config_vector.push(apy_a0);
 
 
         let pull_a = Pull {
-            id: (pull_a_id),
-            locking_time_span: (pull_a_locking_time_span),
+            id: (pull_id),
+            locking_time_span: (pull_locking_time_span),
             apy_configuration: (pull_a_config_vector),
         };
         return pull_a;
