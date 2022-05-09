@@ -85,41 +85,49 @@ pub trait XLauncherStaking {
         require!(token_id.is_valid_esdt_identifier(), "invalid token_id");
         require!(min_amount > 0_u64, "min_amount must be positive");
 
-        //let pull_a_id = 1u32;
+        let pull_a = self.build_pull(
+            pull_a_id,
+            pull_a_locking_time_span,
+            apy_a0_id,
+            apy_a0_start,
+            apy_a0_end,
+            apy_a0_apy);
 
-        let pull_a_id_clone = pull_a_id.clone();
-        let token_id_clone = token_id.clone();
-        let min_amount_clone = min_amount.clone();
-        let pull_a_locking_time_span_clone = pull_a_locking_time_span.clone();
 
 
-        // variable pull a
+        // variable settings
+        let mut pull_items: ManagedVec<Pull<Self::Api>> = ManagedVec::new();
+        pull_items.push(pull_a);
+        let variable_settings = VariableContractSettings {
+            token_id: (token_id),
+            min_amount: (min_amount),
+            pull_items: (pull_items),
+        };
+        self.variable_contract_settings().set(&variable_settings)
+    }
 
-        let mut configuration_items: ManagedVec<ApyConfiguration> = ManagedVec::new();
+    fn build_pull(self, pull_a_id: u32,
+                  pull_a_locking_time_span: u64,
+                  apy_a0_id: u32,
+                  apy_a0_start: u64,
+                  apy_a0_end: u64,
+                  apy_a0_apy: u64, ) -> Pull<Self::Api> {
+        let mut pull_a_config_vector: ManagedVec<ApyConfiguration> = ManagedVec::new();
         let apy_a0 = ApyConfiguration {
             id: (apy_a0_id),
             apy: (apy_a0_apy),
             start_timestamp: (apy_a0_start),
             end_timestamp: (apy_a0_end),
         };
-        configuration_items.push(apy_a0);
+        pull_a_config_vector.push(apy_a0);
 
 
         let pull_a = Pull {
-            id: (pull_a_id_clone),
-            locking_time_span: (pull_a_locking_time_span_clone),
-            apy_configuration: (configuration_items),
+            id: (pull_a_id),
+            locking_time_span: (pull_a_locking_time_span),
+            apy_configuration: (pull_a_config_vector),
         };
-
-        // variable settings
-        let mut pull_items: ManagedVec<Pull<Self::Api>> = ManagedVec::new();
-        pull_items.push(pull_a);
-        let variable_settings = VariableContractSettings {
-            token_id: (token_id_clone),
-            min_amount: (min_amount_clone),
-            pull_items: (pull_items),
-        };
-        self.variable_contract_settings().set(&variable_settings)
+        return pull_a;
     }
 
     #[payable("*")]
