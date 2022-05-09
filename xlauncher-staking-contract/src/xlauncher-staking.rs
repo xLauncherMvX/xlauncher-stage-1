@@ -57,12 +57,30 @@ pub trait XLauncherStaking {
     fn init(&self,
             token_id: TokenIdentifier,
             min_amount: BigUint,
+
+            //pull a no lockout: 0
             pull_a_id: u32,
             pull_a_locking_time_span: u64,
             apy_a0_id: u32,
             apy_a0_start: u64,
             apy_a0_end: u64,
             apy_a0_apy: u64,
+
+            //pull b 60 days: 5184000
+            pull_b_id: u32,
+            pull_b_locking_time_span: u64,
+            apy_b0_id: u32,
+            apy_b0_start: u64,
+            apy_b0_end: u64,
+            apy_b0_apy: u64,
+
+            //pull c 180 days: 15552000
+            pull_c_id: u32,
+            pull_c_locking_time_span: u64,
+            apy_c0_id: u32,
+            apy_c0_start: u64,
+            apy_c0_end: u64,
+            apy_c0_apy: u64,
     ) {
         require!(token_id.is_valid_esdt_identifier(), "invalid token_id");
         require!(min_amount > 0_u64, "min_amount must be positive");
@@ -128,7 +146,6 @@ pub trait XLauncherStaking {
         };
 
         state_vector.push(&new_pull_state);
-
     }
 
     /* #[endpoint(reinvest)]
@@ -188,7 +205,7 @@ pub trait XLauncherStaking {
 
     #[endpoint(reinvest)]
     fn reinvest(&self,
-             pull_id: u32) {
+                pull_id: u32) {
         let client = self.blockchain().get_caller();
         let current_time_stamp = self.blockchain().get_block_timestamp();
         let mut client_vector = self.client_state(&client);
@@ -236,7 +253,6 @@ pub trait XLauncherStaking {
             client_vector.push(&new_pull_state);
         }
     }
-
 
 
     fn calculate_rewards_v2(&self,
