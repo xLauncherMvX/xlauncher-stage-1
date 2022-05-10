@@ -196,21 +196,72 @@ pub trait XLauncherStaking {
         let config_vector = self.get_apy_config_vector(pull_id.clone());
         let locking_time_span = self.get_pull_locking_time_span(pull_id.clone());
 
+
         let mut selected_items: ManagedVec<ClientPullState<Self::Api>> = ManagedVec::new();
         let mut total_items_value = BigUint::zero();
+        let mut total_rewards = BigUint::zero(); //total rewords
 
         if client_vector.len() > 0 && config_vector.len() > 0 {
             for i in 1..=client_vector.len() {
                 let mut client_item = client_vector.get(i);
 
                 let unstake_time = locking_time_span + client_item.pull_time_stamp_entry;
-                if client_item.pull_id == pull_id && unstake_time < current_time_stamp {
+                if client_item.pull_id == pull_id
+                    && unstake_time < current_time_stamp
+                    && total_items_value < amount {
+                    selected_items.push(client_item.clone());
+
                     for k in 0..=(config_vector.len() - 1) {
-                        selected_items.push(client_item.clone());
-                        sc_panic!("Time to clone iterate")
+
+                        //sc_panic!("unstake_time={}, current_time_stamp{},total_items_value={},amount={},client_item.pull_id={}",unstake_time,current_time_stamp,total_items_value,amount,client_item.pull_id);
+
+                        let config_item = config_vector.get(k);
+                        let item_rewords = self.calculate_rewards_v2(client_item.clone(),
+                                                                     config_item,
+                                                                     current_time_stamp);
+                        total_items_value = total_items_value + client_item.pull_amount.clone();
+                        total_rewards = total_rewards + item_rewords;
+                        //sc_panic!("Time to clone iterate")
                     }
                 }
             }
+        }
+        require!(amount <= total_items_value , "total staking value smaller then requested amount{}",total_items_value);
+
+        //case 1 selected amount is exact amount staked
+        if total_items_value == amount {
+            for i in 0..=(selected_items.len() - 1) {
+                let item = selected_items.get(i);
+                self.remove_client_item_from_storadge(&item.pull_time_stamp_entry, &client);
+            }
+            let total_value = total_items_value + total_rewards.clone();
+            if total_value > 0 {
+                //sc_panic!("unstake case 1 items total_value={}, current_time={}",total_value, current_time_stamp);
+                let token_id = self.get_contract_token_id();
+                self.send().direct(
+                    &client,
+                    &token_id,
+                    0,
+                    &total_value,
+                    &[]);
+            }
+        }
+    }
+
+    fn remove_client_item_from_storadge(&self, entry_time_stamp: &u64, client: &ManagedAddress) {
+        let mut id = 0_usize;
+        let mut client_vector = self.client_state(&client);
+        for i in 1..=client_vector.len() {
+            let item = client_vector.get(i);
+            if (item.pull_time_stamp_entry == *entry_time_stamp) {
+                id = i;
+                break;
+            }
+        }
+        if id > 0 {
+            client_vector.swap_remove(id);
+        } else {
+            sc_panic!("No item located to remove id={}", id)
         }
     }
 
