@@ -184,6 +184,14 @@ pub trait XLauncherStaking {
     }
 
 
+    #[endpoint(unstake)]
+    fn unstake(&self,
+               pull_id: u32,
+               amount: BigUint) {
+        sc_panic!("Time to unstake pull_id={} amount={}",pull_id,amount);
+    }
+
+
     #[endpoint(claim)]
     fn claim(&self,
              pull_id: u32) {

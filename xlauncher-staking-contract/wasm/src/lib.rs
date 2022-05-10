@@ -13,6 +13,7 @@ elrond_wasm_node::wasm_endpoints! {
         getVariableContractSettings
         reinvest
         stake
+        unstake
     )
 }
 
