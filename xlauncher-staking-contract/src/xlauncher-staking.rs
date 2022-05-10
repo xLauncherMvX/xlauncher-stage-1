@@ -9,7 +9,7 @@ elrond_wasm::derive_imports!();
 
 
 
-#[derive(TypeAbi, TopEncode, TopDecode, ManagedVecItem, NestedEncode, NestedDecode)]
+#[derive(TypeAbi, TopEncode, TopDecode, ManagedVecItem, NestedEncode, NestedDecode, Clone)]
 pub struct ClientPullState<M: ManagedTypeApi> {
     pub pull_id: u32,
     pub pull_time_stamp_entry: u64,
@@ -188,7 +188,30 @@ pub trait XLauncherStaking {
     fn unstake(&self,
                pull_id: u32,
                amount: BigUint) {
-        sc_panic!("Time to unstake pull_id={} amount={}",pull_id,amount);
+        //sc_panic!("Time to unstake pull_id={} amount={}",pull_id,amount);
+        let client = self.blockchain().get_caller();
+        let current_time_stamp = self.blockchain().get_block_timestamp();
+
+        let client_vector = self.client_state(&client);
+        let config_vector = self.get_apy_config_vector(pull_id.clone());
+        let locking_time_span = self.get_pull_locking_time_span(pull_id.clone());
+
+        let mut selected_items: ManagedVec<ClientPullState<Self::Api>> = ManagedVec::new();
+        let mut total_items_value = BigUint::zero();
+
+        if client_vector.len() > 0 && config_vector.len() > 0 {
+            for i in 1..=client_vector.len() {
+                let mut client_item = client_vector.get(i);
+
+                let unstake_time = locking_time_span + client_item.pull_time_stamp_entry;
+                if client_item.pull_id == pull_id && unstake_time < current_time_stamp {
+                    for k in 0..=(config_vector.len() - 1) {
+                        selected_items.push(client_item.clone());
+                        sc_panic!("Time to clone iterate")
+                    }
+                }
+            }
+        }
     }
 
 
@@ -208,13 +231,8 @@ pub trait XLauncherStaking {
                 if client_item.pull_id == pull_id {
                     for k in 0..=(config_vector.len() - 1) {
                         let config_item = config_vector.get(k);
-                        let copy_state_item = ClientPullState {
-                            pull_id: (pull_id.clone()),
-                            pull_amount: (client_item.pull_amount.clone()),
-                            pull_time_stamp_last_collection: (client_item.pull_time_stamp_last_collection.clone()),
-                            pull_time_stamp_entry: (client_item.pull_time_stamp_entry.clone()),
-                        };
-                        let config_rewords = self.calculate_rewards_v2(copy_state_item,
+
+                        let config_rewords = self.calculate_rewards_v2(client_item.clone(),
                                                                        config_item,
                                                                        current_time_stamp);
                         if config_rewords > BigUint::zero() {
@@ -257,13 +275,8 @@ pub trait XLauncherStaking {
                 if client_item.pull_id == pull_id {
                     for k in 0..=(config_vector.len() - 1) {
                         let config_item = config_vector.get(k);
-                        let copy_state_item = ClientPullState {
-                            pull_id: (pull_id.clone()),
-                            pull_amount: (client_item.pull_amount.clone()),
-                            pull_time_stamp_last_collection: (client_item.pull_time_stamp_last_collection.clone()),
-                            pull_time_stamp_entry: (client_item.pull_time_stamp_entry.clone()),
-                        };
-                        let config_rewords = self.calculate_rewards_v2(copy_state_item,
+
+                        let config_rewords = self.calculate_rewards_v2(client_item.clone(),
                                                                        config_item,
                                                                        current_time_stamp);
                         if config_rewords > BigUint::zero() {
@@ -387,8 +400,21 @@ pub trait XLauncherStaking {
                 return api_config;
             }
         }
-        let empty_vector: ManagedVec<ApyConfiguration> = ManagedVec::new();
-        return empty_vector;
+        sc_panic!("Not valid pull_id={}",pull_id)
+    }
+
+    fn get_pull_locking_time_span(&self, pull_id: u32) -> u64 {
+        let var_setting = self.variable_contract_settings().get();
+        let pull_items = var_setting.pull_items;
+
+        for i in 0..=(pull_items.len() - 1) {
+            let pull = pull_items.get(i);
+            if pull.id == pull_id {
+                let locking_time_span = pull.locking_time_span;
+                return locking_time_span;
+            }
+        }
+        sc_panic!("Not valid pull_id={}",pull_id)
     }
 
     fn get_contract_token_id(&self) -> TokenIdentifier {
