@@ -147,6 +147,16 @@ pub trait XLauncherStaking {
         return pull_a;
     }
 
+    #[endpoint(fundContract)]
+    #[payable("*")]
+    fn fund_contract(&self,
+                     #[payment_token] token_id: TokenIdentifier,
+                     #[payment] _payment: BigUint) {
+        let settings: VariableContractSettings<Self::Api> = self.variable_contract_settings().get();
+        require!(token_id.is_valid_esdt_identifier(), "invalid token_id");
+        require!(settings.token_id == token_id, "not the same token id");
+    }
+
     #[payable("*")]
     #[endpoint(stake)]
     fn stake(&self,
@@ -173,11 +183,6 @@ pub trait XLauncherStaking {
         state_vector.push(&new_pull_state);
     }
 
-    /* #[endpoint(reinvest)]
-     fn reinvest(&self,
-              pull_id: u32) {
-         sc_panic!("hello reinvest");
-     }*/
 
     #[endpoint(claim)]
     fn claim(&self,

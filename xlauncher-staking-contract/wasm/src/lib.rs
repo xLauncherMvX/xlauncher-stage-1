@@ -8,6 +8,7 @@ elrond_wasm_node::wasm_endpoints! {
     xlauncher_staking
     (
         claim
+        fundContract
         getClientState
         getVariableContractSettings
         reinvest
