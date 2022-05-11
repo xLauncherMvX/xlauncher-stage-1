@@ -203,7 +203,7 @@ pub trait XLauncherStaking {
 
         if client_vector.len() > 0 && config_vector.len() > 0 {
             for i in 1..=client_vector.len() {
-                let mut client_item = client_vector.get(i);
+                let client_item = client_vector.get(i);
 
                 let unstake_time = locking_time_span + client_item.pull_time_stamp_entry;
                 if client_item.pull_id == pull_id
@@ -234,8 +234,8 @@ pub trait XLauncherStaking {
                 let item = selected_items.get(i);
                 self.remove_client_item_from_storadge(&item.pull_time_stamp_entry, &client);
             }
-            let total_value = total_items_value + total_rewards.clone();
-            if total_value > 0 {
+            let total_value = total_items_value.clone() + total_rewards.clone();
+            if total_value > BigUint::zero() {
                 //sc_panic!("unstake case 1 items total_value={}, current_time={}",total_value, current_time_stamp);
                 let token_id = self.get_contract_token_id();
                 self.send().direct(
@@ -246,6 +246,38 @@ pub trait XLauncherStaking {
                     &[]);
             }
         }
+
+        //case 2 amount is a bit smaller then total_items_value
+        if amount < total_items_value {
+            for i in 0..=(selected_items.len() - 1) {
+                let item = selected_items.get(i);
+                self.remove_client_item_from_storadge(&item.pull_time_stamp_entry, &client);
+            }
+
+            // select last item
+            let mut last_tem = selected_items.get(selected_items.len() - 1);
+
+            // change the amount with what is left over and the last time collection
+            let diff = total_items_value.clone() - amount.clone();
+            last_tem.pull_amount = diff;
+            last_tem.pull_time_stamp_last_collection = current_time_stamp;
+
+            // push back this lastItem to the user staked vector;
+            let mut updated_vector = self.client_state(&client);
+            updated_vector.push(&last_tem);
+
+            // compute how mutch we need to transfer in client wallet
+            let total_case_2_value = amount.clone() + total_rewards.clone();
+            if total_case_2_value > 0 {
+                let token_id = self.get_contract_token_id();
+                self.send().direct(
+                    &client,
+                    &token_id,
+                    0,
+                    &total_case_2_value,
+                    &[]);
+            }
+        }
     }
 
     fn remove_client_item_from_storadge(&self, entry_time_stamp: &u64, client: &ManagedAddress) {
@@ -253,7 +285,7 @@ pub trait XLauncherStaking {
         let mut client_vector = self.client_state(&client);
         for i in 1..=client_vector.len() {
             let item = client_vector.get(i);
-            if (item.pull_time_stamp_entry == *entry_time_stamp) {
+            if item.pull_time_stamp_entry == *entry_time_stamp {
                 id = i;
                 break;
             }
