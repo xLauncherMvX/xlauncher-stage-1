@@ -529,20 +529,9 @@ pub trait XLauncherStaking {
     // report
 
     #[view(getClientReport)]
-    fn get_client_report(&self) -> u64 {
-        let mut report_pull_items: ManagedVec<ReportClientPullPullItem<Self::Api>> = ManagedVec::new();
-        let mut report = ReportClinet {
-            total_amount: BigUint::zero(),
-            total_rewords: BigUint::zero(),
-            report_pull_items: report_pull_items,
-        };
-
-       /* let c_vector = self.client_state(client_address);
-        let c_settings = self.variable_contract_settings().get();
-        let pull_settings_list = c_settings.pull_items;*/
-
-
-        return 123_u64;
+    fn get_client_report(&self, client: ManagedAddress) -> BigUint {
+        let balance = BigUint::from(17081978_u64);
+        return balance;
     }
 
     // storage

@@ -37,7 +37,6 @@ setEnvDevnet() {
   ENV_LOGS="devnet"
   TOKEN_ID="XLH-cb26c7"
   TOKEN_ID_HEX=$(echo -n ${TOKEN_ID} | xxd -p)
-
 }
 
 printCurrentEnv() {
@@ -82,11 +81,9 @@ getTokenBalance() {
     --proxy=${PROXY}
 }
 
-getClientReport(){
-  CLIENT_ADDRESS="tournament-01"
-  CLIENT_ADDRESS_HEX=$(echo -n ${CLIENT_ADDRESS} | xxd -p)
-  echo ${CLIENT_ADDRESS}
+getClientReport() {
+  CLIENT_ADDRESS="0x$(echo -n 'erd1qqqqqqqqqqqqqpgqe5dj7t9dthds7ht8zvax22r758lvj5s9pa7q0qtj8m' | xxd -p -u | tr -d '\n')"
   erdpy --verbose contract query ${ADDRESS} --function="getClientReport" \
-    --arguments "0x${CLIENT_ADDRESS_HEX}" \
+    --arguments ${CLIENT_ADDRESS} \
     --proxy=${PROXY}
 }
