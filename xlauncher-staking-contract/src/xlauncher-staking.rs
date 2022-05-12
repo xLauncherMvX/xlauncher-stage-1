@@ -157,6 +157,14 @@ pub trait XLauncherStaking {
         require!(settings.token_id == token_id, "not the same token id");
     }
 
+    #[view(getTokenBalance)]
+    fn get_token_balance(&self) -> BigUint {
+        let settings: VariableContractSettings<Self::Api> = self.variable_contract_settings().get();
+        let my_token_id = settings.token_id;
+        let balance: BigUint = self.blockchain().get_sc_balance(&my_token_id, 0);
+        return balance;
+    }
+
     #[payable("*")]
     #[endpoint(stake)]
     fn stake(&self,

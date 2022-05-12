@@ -76,3 +76,8 @@ fundContract() {
     --send \
     --outfile="${MY_LOGS}/fundContract-${ENV_LOGS}.json"
 }
+
+getTokenBalance() {
+  erdpy --verbose contract query ${ADDRESS} --function="getTokenBalance" \
+    --proxy=${PROXY}
+}
