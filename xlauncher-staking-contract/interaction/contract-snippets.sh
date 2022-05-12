@@ -82,8 +82,8 @@ getTokenBalance() {
 }
 
 getClientReport() {
-  CLIENT_ADDRESS="0x$(echo -n 'erd1qqqqqqqqqqqqqpgqe5dj7t9dthds7ht8zvax22r758lvj5s9pa7q0qtj8m' | xxd -p -u | tr -d '\n')"
+  # erdpy wallet bech32 --decode erd1mhhnd3ux2duwc9824dhelherdj3gvzn04erdw29l8cyr5z8fpa7quda68z
   erdpy --verbose contract query ${ADDRESS} --function="getClientReport" \
-    --arguments ${CLIENT_ADDRESS} \
+    --arguments 0xddef36c7865378ec14eaab6f9fdf236ca2860a6fae46d728bf3e083a08e90f7c \
     --proxy=${PROXY}
 }
