@@ -50,6 +50,19 @@ pub struct ApyConfiguration {
     pub end_timestamp: u64,
 }
 
+#[derive(TypeAbi, TopEncode, TopDecode, ManagedVecItem, NestedEncode, NestedDecode, Clone)]
+pub struct ReportClinet<M: ManagedTypeApi> {
+    pub total_amount: BigUint<M>,
+    pub total_rewords: BigUint<M>,
+    pub report_pull_items: ManagedVec<M, ReportClientPullPullItem<M>>,
+}
+
+#[derive(TypeAbi, TopEncode, TopDecode, ManagedVecItem, NestedEncode, NestedDecode, Clone)]
+pub struct ReportClientPullPullItem<M: ManagedTypeApi> {
+    pub pull_id: u32,
+    pub pull_amount: BigUint<M>,
+    pub rewords_amount: BigUint<M>,
+}
 
 #[elrond_wasm::derive::contract]
 pub trait XLauncherStaking {
@@ -511,6 +524,25 @@ pub trait XLauncherStaking {
     fn get_contract_token_id(&self) -> TokenIdentifier {
         let settings = self.variable_contract_settings().get();
         return settings.token_id;
+    }
+
+    // report
+
+    #[view(getClientReport)]
+    fn get_client_report(&self) -> u64 {
+        let mut report_pull_items: ManagedVec<ReportClientPullPullItem<Self::Api>> = ManagedVec::new();
+        let mut report = ReportClinet {
+            total_amount: BigUint::zero(),
+            total_rewords: BigUint::zero(),
+            report_pull_items: report_pull_items,
+        };
+
+       /* let c_vector = self.client_state(client_address);
+        let c_settings = self.variable_contract_settings().get();
+        let pull_settings_list = c_settings.pull_items;*/
+
+
+        return 123_u64;
     }
 
     // storage

@@ -81,3 +81,12 @@ getTokenBalance() {
   erdpy --verbose contract query ${ADDRESS} --function="getTokenBalance" \
     --proxy=${PROXY}
 }
+
+getClientReport(){
+  CLIENT_ADDRESS="tournament-01"
+  CLIENT_ADDRESS_HEX=$(echo -n ${CLIENT_ADDRESS} | xxd -p)
+  echo ${CLIENT_ADDRESS}
+  erdpy --verbose contract query ${ADDRESS} --function="getClientReport" \
+    --arguments "0x${CLIENT_ADDRESS_HEX}" \
+    --proxy=${PROXY}
+}
