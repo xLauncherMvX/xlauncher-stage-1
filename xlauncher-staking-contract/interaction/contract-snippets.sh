@@ -62,3 +62,17 @@ deploy() {
   echo ""
   echo "Smart contract address: ${ADDRESS}"
 }
+
+fundContract() {
+  method_name="0x$(echo -n 'fundContract' | xxd -p -u | tr -d '\n')"
+  token_id="0x$(echo -n ${TOKEN_ID} | xxd -p -u | tr -d '\n')"
+  amount="1${MY_DECIMALS}"
+  erdpy --verbose contract call ${ADDRESS} --recall-nonce \
+    --pem=${PEM_FILE} \
+    --gas-limit=4000000 \
+    --proxy=${PROXY} --chain=${CHAINID} \
+    --function="ESDTTransfer" \
+    --arguments $token_id $amount $method_name \
+    --send \
+    --outfile="${MY_LOGS}/fundContract-${ENV_LOGS}.json"
+}
