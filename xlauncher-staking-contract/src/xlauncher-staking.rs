@@ -529,9 +529,14 @@ pub trait XLauncherStaking {
     // report
 
     #[view(getClientReport)]
-    fn get_client_report(&self, client: ManagedAddress) -> BigUint {
-        let balance = BigUint::from(17081978_u64);
-        return balance;
+    fn get_client_report(&self, client: ManagedAddress) -> ReportClinet<Self::Api> {
+        let mut report_pull_items: ManagedVec<ReportClientPullPullItem<Self::Api>> = ManagedVec::new();
+        let mut report = ReportClinet {
+            total_amount: BigUint::zero(),
+            total_rewords: BigUint::zero(),
+            report_pull_items: report_pull_items,
+        };
+        return report;
     }
 
     // storage
