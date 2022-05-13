@@ -110,29 +110,39 @@
         "refund": "*"
       }
     },
-
     {
       "step": "setState",
       "currentBlockInfo": {
         "blockTimestamp": "23652000"
       }
     },
-
     {
       "step": "scQuery",
       "txId": "get-client-report",
       "tx": {
         "to": "sc:xlauncher-staking",
         "function": "getClientReport",
-        "arguments": ["address:client1"]
+        "arguments": [
+          "address:client1"
+        ]
       },
       "expect": {
-        "out": ["0x000000000000000000000000"],
         "status": "0",
+        "out": [
+          {
+            "1-total_amount": "biguint:1,000,000,000,000,000,000,000",
+            "2-total_rewords": "biguint:2,499,999,999,999,953,760",
+            "3-report_pull_items_vec_len": "u32:1",
+            "4-first_report_pull_item": {
+              "1-pull_id": "u32:1",
+              "2-pull_amount": "biguint:1,000,000,000,000,000,000,000",
+              "3-rewords_amount": "biguint:2,499,999,999,999,953,760"
+            }
+          }
+        ],
         "logs": []
       }
     },
-
     {
       "step": "checkState",
       "accounts": {

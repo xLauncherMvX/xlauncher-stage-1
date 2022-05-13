@@ -545,6 +545,7 @@ pub trait XLauncherStaking {
             return report;
         }
 
+        let mut count = 0;
         let pull_items = var_setting.pull_items;
         for i in 0..=(pull_items.len() - 1) {
             let pull = pull_items.get(i);
@@ -570,9 +571,11 @@ pub trait XLauncherStaking {
             }
             report.total_amount = report.total_amount.clone() + rep_item.pull_amount.clone();
             report.total_rewords = report.total_rewords.clone() + rep_item.rewords_amount.clone();
-            report.report_pull_items.push(rep_item);
+            if rep_item.pull_amount > 0 {
+                count = count + 1;
+                report.report_pull_items.push(rep_item);
+            }
         }
-
 
         return report;
     }
