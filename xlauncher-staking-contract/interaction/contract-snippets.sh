@@ -81,6 +81,21 @@ getTokenBalance() {
     --proxy=${PROXY}
 }
 
+stake() {
+  method_name="0x$(echo -n 'stake' | xxd -p -u | tr -d '\n')"
+  token_id="0x$(echo -n ${TOKEN_ID} | xxd -p -u | tr -d '\n')"
+  amount="1${MY_DECIMALS}"
+  pull_id="1"
+  erdpy --verbose contract call ${ADDRESS} --recall-nonce \
+    --pem=${PEM_FILE} \
+    --gas-limit=5000000 \
+    --proxy=${PROXY} --chain=${CHAINID} \
+    --function="ESDTTransfer" \
+    --arguments $token_id $amount $method_name $pull_id \
+    --send \
+    --outfile="${MY_LOGS}/stake-${ENV_LOGS}.json"
+}
+
 getClientReport() {
   # erdpy wallet bech32 --decode erd1mhhnd3ux2duwc9824dhelherdj3gvzn04erdw29l8cyr5z8fpa7quda68z
   erdpy --verbose contract query ${ADDRESS} --function="getClientReport" \
