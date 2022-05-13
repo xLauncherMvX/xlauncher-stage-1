@@ -96,6 +96,31 @@ stake() {
     --outfile="${MY_LOGS}/stake-${ENV_LOGS}.json"
 }
 
+claim(){
+  pull_id="1"
+  erdpy --verbose contract call ${ADDRESS} --recall-nonce \
+      --pem=${PEM_FILE} \
+      --gas-limit=5000000 \
+      --proxy=${PROXY} --chain=${CHAINID} \
+      --function="claim" \
+      --arguments ${pull_id} \
+      --send \
+      --outfile="${MY_LOGS}/claim-${ENV_LOGS}.json"
+}
+
+unstake(){
+  pull_id="1"
+  amount="1${MY_DECIMALS}"
+  erdpy --verbose contract call ${ADDRESS} --recall-nonce \
+        --pem=${PEM_FILE} \
+        --gas-limit=5000000 \
+        --proxy=${PROXY} --chain=${CHAINID} \
+        --function="unstake" \
+        --arguments ${pull_id} ${amount} \
+        --send \
+        --outfile="${MY_LOGS}/unstake-${ENV_LOGS}.json"
+}
+
 getClientReport() {
   # erdpy wallet bech32 --decode erd1mhhnd3ux2duwc9824dhelherdj3gvzn04erdw29l8cyr5z8fpa7quda68z
   erdpy --verbose contract query ${ADDRESS} --function="getClientReport" \
