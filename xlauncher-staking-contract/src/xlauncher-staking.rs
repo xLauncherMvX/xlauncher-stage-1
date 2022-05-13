@@ -41,7 +41,7 @@ pub struct Pull<M: ManagedTypeApi> {
     pub apy_configuration: ManagedVec<M, ApyConfiguration>,
 }
 
-#[derive(TypeAbi, TopEncode, TopDecode, ManagedVecItem, NestedEncode, NestedDecode)]
+#[derive(TypeAbi, TopEncode, TopDecode, ManagedVecItem, NestedEncode, NestedDecode, Clone)]
 pub struct ApyConfiguration {
     pub id: u32,
     pub apy: u64,
@@ -530,12 +530,50 @@ pub trait XLauncherStaking {
 
     #[view(getClientReport)]
     fn get_client_report(&self, client: ManagedAddress) -> ReportClinet<Self::Api> {
-        let mut report_pull_items: ManagedVec<ReportClientPullPullItem<Self::Api>> = ManagedVec::new();
+        //let mut report_pull_items: ManagedVec<ReportClientPullPullItem<Self::Api>> = ManagedVec::new();
         let mut report = ReportClinet {
             total_amount: BigUint::zero(),
             total_rewords: BigUint::zero(),
-            report_pull_items: report_pull_items,
+            report_pull_items: ManagedVec::new(),
         };
+        let current_time_stamp = self.blockchain().get_block_timestamp();
+        let var_setting = self.variable_contract_settings().get();
+        let client_vector = self.client_state(&client);
+
+        if client_vector.len() == 0 {
+            //if clinet has no staked items we stop here
+            return report;
+        }
+
+        let pull_items = var_setting.pull_items;
+        for i in 0..=(pull_items.len() - 1) {
+            let pull = pull_items.get(i);
+            let pul_id = pull.id;
+            let mut rep_item = ReportClientPullPullItem {
+                pull_id: pul_id.clone(),
+                pull_amount: BigUint::zero(),
+                rewords_amount: BigUint::zero(),
+            };
+            for pc in 0..=(pull.apy_configuration.len() - 1) {
+                let pc_val = pull.apy_configuration.get(pc);
+                for c in 1..=client_vector.len() {
+                    let pc_clone = pc_val.clone();
+                    let client_item = client_vector.get(c);
+                    if client_item.pull_id == pul_id {
+                        rep_item.pull_amount = rep_item.pull_amount.clone() + client_item.pull_amount.clone();
+                        let item_reword = self.calculate_rewards_v2(client_item.clone(),
+                                                                    pc_clone,
+                                                                    current_time_stamp);
+                        rep_item.rewords_amount = rep_item.rewords_amount.clone() + item_reword;
+                    }
+                }
+            }
+            report.total_amount = report.total_amount.clone() + rep_item.pull_amount.clone();
+            report.total_rewords = report.total_rewords.clone() + rep_item.rewords_amount.clone();
+            report.report_pull_items.push(rep_item);
+        }
+
+
         return report;
     }
 
