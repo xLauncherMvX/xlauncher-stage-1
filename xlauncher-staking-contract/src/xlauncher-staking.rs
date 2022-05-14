@@ -347,7 +347,7 @@ pub trait XLauncherStaking {
     **/
     #[endpoint(claim)]
     fn claim(&self,
-             pull_id: u32) /*-> MultiValueEncoded<MultiValue5<BigUint, BigUint, u64, u64, u64>> */{
+             pull_id: u32) /*-> MultiValueEncoded<MultiValue5<BigUint, BigUint, u64, u64, u64>> */ {
         let client = self.blockchain().get_caller();
         let current_time_stamp = self.blockchain().get_block_timestamp();
         let client_vector = self.client_state(&client);
@@ -636,6 +636,71 @@ pub trait XLauncherStaking {
 
         return report;
     }
+
+    #[view(getClientReportV2)]
+    fn get_client_report_v2(&self, client: ManagedAddress)
+                            -> MultiValueEncoded<MultiValue3<u32, BigUint, BigUint>> {
+        //let mut report_pull_items: ManagedVec<ReportClientPullPullItem<Self::Api>> = ManagedVec::new();
+        let mut multi_val_vec: MultiValueEncoded<MultiValue3<u32, BigUint, BigUint>> = MultiValueEncoded::new();
+        let mut report = ReportClinet {
+            total_amount: BigUint::zero(),
+            total_rewords: BigUint::zero(),
+            report_pull_items: ManagedVec::new(),
+        };
+        let current_time_stamp = self.blockchain().get_block_timestamp();
+        let var_setting = self.variable_contract_settings().get();
+        let client_vector = self.client_state(&client);
+
+        if client_vector.len() == 0 {
+            //if clinet has no staked items we stop here
+            //return report;
+            return multi_val_vec;
+        }
+
+        let mut count = 0;
+        let pull_items = var_setting.pull_items;
+        for i in 0..=(pull_items.len() - 1) {
+            let pull = pull_items.get(i);
+            let pul_id = pull.id;
+            let mut rep_item = ReportClientPullPullItem {
+                pull_id: pul_id.clone(),
+                pull_amount: BigUint::zero(),
+                rewords_amount: BigUint::zero(),
+            };
+            for pc in 0..=(pull.apy_configuration.len() - 1) {
+                let pc_val = pull.apy_configuration.get(pc);
+                for c in 1..=client_vector.len() {
+                    let pc_clone = pc_val.clone();
+                    let client_item = client_vector.get(c);
+                    if client_item.pull_id == pul_id {
+                        rep_item.pull_amount = rep_item.pull_amount.clone() + client_item.pull_amount.clone();
+                        let item_reword = self.calculate_rewards_v2(client_item.clone(),
+                                                                    pc_clone,
+                                                                    current_time_stamp);
+                        rep_item.rewords_amount = rep_item.rewords_amount.clone() + item_reword;
+                    }
+                }
+            }
+            report.total_amount = report.total_amount.clone() + rep_item.pull_amount.clone();
+            report.total_rewords = report.total_rewords.clone() + rep_item.rewords_amount.clone();
+            if rep_item.pull_amount > 0 {
+                count = count + 1;
+                multi_val_vec.push(
+                    MultiValue3::from((
+                        pul_id.clone(),
+                        rep_item.pull_amount.clone(),
+                        rep_item.rewords_amount.clone()
+                    )));
+                report.report_pull_items.push(rep_item);
+
+
+            }
+        }
+
+        //return report;
+        return multi_val_vec;
+    }
+
 
     // storage
 

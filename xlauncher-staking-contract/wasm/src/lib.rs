@@ -10,6 +10,7 @@ elrond_wasm_node::wasm_endpoints! {
         claim
         fundContract
         getClientReport
+        getClientReportV2
         getClientState
         getTokenBalance
         getVariableContractSettings
