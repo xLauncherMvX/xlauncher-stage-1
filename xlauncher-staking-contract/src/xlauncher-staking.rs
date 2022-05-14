@@ -218,8 +218,9 @@ pub trait XLauncherStaking {
     #[endpoint(unstake)]
     fn unstake(&self,
                pull_id: u32,
-               amount: BigUint) {
-        //sc_panic!("Time to unstake pull_id={} amount={}",pull_id,amount);
+               amount: BigUint) -> MultiValueEncoded<MultiValue4<u32, u64, u64, BigUint>> {
+        let mut multi_val_vec: MultiValueEncoded<MultiValue4<u32, u64, u64, BigUint>> = MultiValueEncoded::new();
+
         let client = self.blockchain().get_caller();
         let current_time_stamp = self.blockchain().get_block_timestamp();
 
@@ -250,6 +251,15 @@ pub trait XLauncherStaking {
                         total_items_value = total_items_value + client_item.pull_amount.clone();
                         total_rewards = total_rewards + item_rewords;
                         sc_print!("k={}, amount={}, total_items_value={}",k, amount,total_items_value);
+
+                        multi_val_vec.push(
+                            MultiValue4::from((
+                                client_item.pull_id.clone(),
+                                client_item.pull_time_stamp_entry.clone(),
+                                client_item.pull_time_stamp_last_collection.clone(),
+                                client_item.pull_amount.clone()
+                            ))
+                        );
                     }
                 }
             }
@@ -307,6 +317,8 @@ pub trait XLauncherStaking {
                     &[]);
             }
         }
+
+        return multi_val_vec;
     }
 
     fn remove_client_item_from_storadge(&self, entry_time_stamp: &u64, client: &ManagedAddress) {
@@ -719,7 +731,7 @@ pub trait XLauncherStaking {
                     client_item.pull_time_stamp_entry,
                     client_item.pull_time_stamp_last_collection,
                     client_item.pull_amount
-                    ))
+                ))
             );
         }
 
