@@ -218,7 +218,7 @@ pub trait XLauncherStaking {
     #[endpoint(unstake)]
     fn unstake(&self,
                pull_id: u32,
-               amount: BigUint) -> MultiValueEncoded<MultiValue4<u32, u64, u64, BigUint>> {
+               amount: BigUint) /*-> MultiValueEncoded<MultiValue4<u32, u64, u64, BigUint>>*/ {
         let mut multi_val_vec: MultiValueEncoded<MultiValue4<u32, u64, u64, BigUint>> = MultiValueEncoded::new();
 
         let client = self.blockchain().get_caller();
@@ -233,15 +233,24 @@ pub trait XLauncherStaking {
         let mut total_items_value = BigUint::zero();
         let mut total_rewards = BigUint::zero(); //total rewords
 
+        let mut lev_1_count = 0;
+        let mut lev_2_count = 0;
+        let mut lev_3_count = 0;
+
         if client_vector.len() > 0 && config_vector.len() > 0 {
             for i in 1..=client_vector.len() {
                 let client_item = client_vector.get(i);
 
                 let unstake_time = locking_time_span + client_item.pull_time_stamp_entry;
+
+                lev_1_count = lev_1_count + 1;
+
                 if client_item.pull_id == pull_id
                     && unstake_time < current_time_stamp
                     && total_items_value < amount {
                     selected_items.push(client_item.clone());
+
+                    lev_2_count = lev_2_count + 1;
 
                     for k in 0..=(config_vector.len() - 1) {
                         let config_item = config_vector.get(k);
@@ -251,6 +260,9 @@ pub trait XLauncherStaking {
                         total_items_value = total_items_value + client_item.pull_amount.clone();
                         total_rewards = total_rewards + item_rewords;
                         sc_print!("k={}, amount={}, total_items_value={}",k, amount,total_items_value);
+
+
+                        lev_3_count = lev_3_count + 1;
 
                         multi_val_vec.push(
                             MultiValue4::from((
@@ -265,7 +277,11 @@ pub trait XLauncherStaking {
             }
         }
         sc_print!("amount={}, total_items_value={}", amount,total_items_value);
-        require!(amount <= total_items_value , "total staking value smaller then requested amount{}",total_items_value);
+        require!(amount <= total_items_value , "total staking value smaller then requested\
+         amount={}, val={}, c1={}, c2={}, c3={}",amount,total_items_value,lev_1_count, lev_2_count, lev_3_count);
+        /* if amount <= total_items_value {
+             return multi_val_vec;
+         }*/
 
         //case 1 selected amount is exact amount staked
         if total_items_value == amount {
@@ -318,7 +334,7 @@ pub trait XLauncherStaking {
             }
         }
 
-        return multi_val_vec;
+        // return multi_val_vec;
     }
 
     fn remove_client_item_from_storadge(&self, entry_time_stamp: &u64, client: &ManagedAddress) {
