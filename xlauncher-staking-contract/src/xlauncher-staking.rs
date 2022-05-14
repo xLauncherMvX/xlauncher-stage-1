@@ -64,6 +64,16 @@ pub struct ReportClientPullPullItem<M: ManagedTypeApi> {
     pub rewords_amount: BigUint<M>,
 }
 
+#[derive(TypeAbi, TopEncode, TopDecode, ManagedVecItem, NestedEncode, NestedDecode)]
+pub struct ClaimItem<M: ManagedTypeApi> {
+    pub pull_id: u32,
+    pub current_time_stamp: u64,
+    pub pull_time_stamp_entry: u64,
+    pub pull_time_stamp_last_collection: u64,
+    pub pull_amount: BigUint<M>,
+    pub rewords: BigUint<M>,
+}
+
 #[elrond_wasm::derive::contract]
 pub trait XLauncherStaking {
     #[init]
@@ -321,13 +331,16 @@ pub trait XLauncherStaking {
 
     #[endpoint(claim)]
     fn claim(&self,
-             pull_id: u32) {
+             pull_id: u32) -> ManagedVec<ClaimItem<Self::Api>> {
         let client = self.blockchain().get_caller();
         let current_time_stamp = self.blockchain().get_block_timestamp();
         let client_vector = self.client_state(&client);
         let id_clone = pull_id.clone();
         let config_vector = self.get_apy_config_vector(id_clone);
         let mut total_rewards = BigUint::zero(); //total rewords
+
+        let mut claim_vector: ManagedVec<ClaimItem<Self::Api>> = ManagedVec::new();
+
         if client_vector.len() > 0 && config_vector.len() > 0 {
             for i in 1..=client_vector.len() {
                 let mut client_item = client_vector.get(i);
@@ -338,21 +351,33 @@ pub trait XLauncherStaking {
 
                         let config_rewords = self.calculate_rewards_v2(client_item.clone(),
                                                                        config_item,
-                                                                       current_time_stamp);
+                                                                       current_time_stamp.clone());
                         if config_rewords > BigUint::zero() {
-                            item_rewards += config_rewords;
+                            item_rewards += config_rewords.clone();
                         }
+                        let claim_item = ClaimItem {
+                            pull_id: (pull_id.clone()),
+                            pull_amount: (client_item.pull_amount.clone()),
+                            pull_time_stamp_entry: (client_item.pull_time_stamp_entry.clone()),
+                            pull_time_stamp_last_collection: (client_item.pull_time_stamp_last_collection.clone()),
+                            rewords: config_rewords.clone(),
+                            current_time_stamp: current_time_stamp.clone(),
+                        };
+                        claim_vector.push(claim_item)
                     }
                 }
-                if item_rewards > 0 {
+                if item_rewards > 0_u64 {
                     //sc_panic!("Computed rewords = {}", item_rewords);
                     client_item.pull_time_stamp_last_collection = current_time_stamp;
                     client_vector.set(i, &client_item);
                     total_rewards += item_rewards;
                 }
+
             }
+
         }
-        if total_rewards > 0 {
+
+        if total_rewards > 0_u64 {
             let token_id = self.get_contract_token_id();
             self.send().direct(
                 &client,
@@ -361,6 +386,8 @@ pub trait XLauncherStaking {
                 &total_rewards,
                 &[]);
         }
+
+        return claim_vector;
     }
 
     #[endpoint(reinvest)]
