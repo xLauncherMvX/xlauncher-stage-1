@@ -376,7 +376,7 @@ pub trait XLauncherStaking {
             }
 
         }
-
+        sc_print!("total_rewards={}",total_rewards);
         if total_rewards > 0_u64 {
             let token_id = self.get_contract_token_id();
             self.send().direct(
