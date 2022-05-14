@@ -240,10 +240,15 @@ pub trait XLauncherStaking {
         if client_vector.len() > 0 && config_vector.len() > 0 {
             for i in 1..=client_vector.len() {
                 let client_item = client_vector.get(i);
+                let client_item_id = client_item.pull_id.clone();
+
+                //require!(client_item.pull_id == pull_id , "hard debug: client_item.pull_id={}, pull_id={}",client_item.pull_id, pull_id);
+                require!(client_item.pull_id == pull_id , "client_item.pull_id={}, pull_id={}",client_item_id, pull_id);
 
                 let unstake_time = locking_time_span + client_item.pull_time_stamp_entry;
 
                 lev_1_count = lev_1_count + 1;
+
 
                 if client_item.pull_id == pull_id
                     && unstake_time < current_time_stamp
@@ -273,6 +278,9 @@ pub trait XLauncherStaking {
                             ))
                         );
                     }
+                } else {
+                    sc_panic!("client_item.pull_id={}, pull_id={}, unstake_time={},current_time_stamp={} total_items_value{}",
+                        client_item.pull_id, pull_id, unstake_time,current_time_stamp, total_items_value);
                 }
             }
         }
@@ -323,7 +331,7 @@ pub trait XLauncherStaking {
 
             // compute how mutch we need to transfer in client wallet
             let total_case_2_value = amount.clone() + total_rewards.clone();
-            if total_case_2_value > 0 {
+            if total_case_2_value > BigUint::zero() {
                 let token_id = self.get_contract_token_id();
                 self.send().direct(
                     &client,

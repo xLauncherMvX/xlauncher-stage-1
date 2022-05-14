@@ -100,7 +100,7 @@ claim(){
   pull_id="1"
   erdpy --verbose contract call ${ADDRESS} --recall-nonce \
       --pem=${PEM_FILE} \
-      --gas-limit=5000000 \
+      --gas-limit=8000000 \
       --proxy=${PROXY} --chain=${CHAINID} \
       --function="claim" \
       --arguments ${pull_id} \
