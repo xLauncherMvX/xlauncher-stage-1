@@ -328,10 +328,18 @@ pub trait XLauncherStaking {
         }
     }
 
+    /* #[endpoint(claim)]
+     fn claim(&self,
+              _pull_id: u32) -> MultiValueEncoded<MultiValue3<BigUint, BigUint, u64>> {
+
+         let mut multi_claim_vec: MultiValueEncoded<MultiValue3<BigUint, BigUint, u64>> = MultiValueEncoded::new();
+
+         return multi_claim_vec;
+     }*/
 
     #[endpoint(claim)]
     fn claim(&self,
-             pull_id: u32)  {
+             pull_id: u32) -> MultiValueEncoded<MultiValue3<BigUint, BigUint, u64>> {
         let client = self.blockchain().get_caller();
         let current_time_stamp = self.blockchain().get_block_timestamp();
         let client_vector = self.client_state(&client);
@@ -340,6 +348,7 @@ pub trait XLauncherStaking {
         let mut total_rewards = BigUint::zero(); //total rewords
 
         let mut claim_vector: ManagedVec<ClaimItem<Self::Api>> = ManagedVec::new();
+        let mut multi_claim_vec: MultiValueEncoded<MultiValue3<BigUint, BigUint, u64>> = MultiValueEncoded::new();
 
         if client_vector.len() > 0 && config_vector.len() > 0 {
             for i in 1..=client_vector.len() {
@@ -363,6 +372,18 @@ pub trait XLauncherStaking {
                             rewords: config_rewords.clone(),
                             current_time_stamp: current_time_stamp.clone(),
                         };
+                        sc_print!("claimItem: pull_id={}, pull_amount={}, pull_time_stamp_entry={}, pull_time_stamp_last_collection={}, rewords={}, current_time_stamp={}",
+                            pull_id.clone(), client_item.pull_amount.clone(),
+                            client_item.pull_time_stamp_entry.clone(),
+                            client_item.pull_time_stamp_last_collection.clone(),
+                            config_rewords.clone(), current_time_stamp.clone());
+
+                        multi_claim_vec.push(
+                            MultiValue3::from((
+                                client_item.pull_amount.clone(),
+                                config_rewords.clone(),
+                                current_time_stamp.clone())));
+
                         claim_vector.push(claim_item)
                     }
                 }
@@ -372,9 +393,7 @@ pub trait XLauncherStaking {
                     client_vector.set(i, &client_item);
                     total_rewards += item_rewards;
                 }
-
             }
-
         }
         sc_print!("total_rewards={}",total_rewards);
         if total_rewards > 0_u64 {
@@ -388,6 +407,7 @@ pub trait XLauncherStaking {
         }
 
         //return claim_vector;
+        return multi_claim_vec;
     }
 
     #[endpoint(reinvest)]
