@@ -13,5 +13,5 @@ fn world() -> BlockchainMock {
 
 #[test]
 fn crowdfunding_claim_successful_rs() {
-    elrond_wasm_debug::mandos_rs("mandos/04-claim-case-2.scen.json", world());
+    elrond_wasm_debug::mandos_rs("mandos/04-claim-case-7.scen.json", world());
 }

@@ -1,0 +1,139 @@
+{
+  "name": "xlauncher-staking",
+  "comment": "deploy scenario",
+  "steps": [
+    {
+      "step": "setState",
+      "accounts": {
+        "address:owner": {
+          "nonce": "0",
+          "balance": "0",
+          "esdt": {
+            "str:BCOIN-a00000": "100,000,000,000,000,000,000,000,000"
+          }
+        }
+      },
+      "newAddresses": [
+        {
+          "creatorAddress": "address:owner",
+          "creatorNonce": "0",
+          "newAddress": "sc:xlauncher-staking"
+        }
+      ],
+      "currentBlockInfo": {
+        "blockTimestamp": "0"
+      }
+    },
+    {
+      "step": "scDeploy",
+      "txId": "deploy",
+      "tx": {
+        "from": "address:owner",
+        "contractCode": "file:../output/xlauncher-staking.wasm",
+        "arguments": [
+          "str:BCOIN-a00000",
+          "250,000,000,000,000,000",
+          "1",
+          "0",
+          "1",
+          "1652911200",
+          "1684447200",
+          "100",
+          "2",
+          "5184000",
+          "1",
+          "0",
+          "31536000",
+          "200",
+          "3",
+          "15552000",
+          "1",
+          "0",
+          "31536000",
+          "300"
+        ],
+        "gasLimit": "10,000,000",
+        "gasPrice": "0"
+      },
+      "expect": {
+        "out": [],
+        "status": "0",
+        "logs": [],
+        "gas": "*",
+        "refund": "*"
+      }
+    },
+    {
+      "step": "setState",
+      "currentBlockInfo": {
+        "blockTimestamp": "1652539344"
+      },
+      "accounts": {
+        "address:client1": {
+          "nonce": "0",
+          "balance": "0",
+          "esdt": {
+            "str:BCOIN-a00000": "5,000,000,000,000,000,000,000",
+            "str:BCOIN-b00000": "5,000,000,000,000,000,000,000"
+          }
+        }
+      }
+    },
+    {
+      "step": "scCall",
+      "txId": "stake-good-coin-first-time",
+      "tx": {
+        "from": "address:client1",
+        "to": "sc:xlauncher-staking",
+        "value": "0",
+        "function": "stake",
+        "esdtValue": [
+          {
+            "tokenIdentifier": "str:BCOIN-a00000",
+            "value": "1,000,000,000,000,000,000,000"
+          }
+        ],
+        "arguments": [
+          "1"
+        ],
+        "gasLimit": "100,000,000",
+        "gasPrice": "0"
+      },
+      "expect": {
+        "out": [],
+        "status": "0",
+        "message": "",
+        "gas": "*",
+        "refund": "*"
+      }
+    },
+    {
+      "step": "setState",
+      "currentBlockInfo": {
+        "blockTimestamp": "1652539356"
+      }
+    },
+    {
+      "step": "scCall",
+      "txId": "claim-case-6",
+      "tx": {
+        "from": "address:client1",
+        "to": "sc:xlauncher-staking",
+        "value": "0",
+        "function": "claim",
+        "arguments": [
+          "1"
+        ],
+        "gasLimit": "100,000,000",
+        "gasPrice": "0"
+      },
+      "expect": {
+        "out": [],
+        "status": "0",
+        "message": "",
+        "gas": "*",
+        "refund": "*"
+      }
+    }
+  ]
+}
