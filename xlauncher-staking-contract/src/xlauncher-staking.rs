@@ -331,7 +331,7 @@ pub trait XLauncherStaking {
 
     #[endpoint(claim)]
     fn claim(&self,
-             pull_id: u32) -> ManagedVec<ClaimItem<Self::Api>> {
+             pull_id: u32)  {
         let client = self.blockchain().get_caller();
         let current_time_stamp = self.blockchain().get_block_timestamp();
         let client_vector = self.client_state(&client);
@@ -387,7 +387,7 @@ pub trait XLauncherStaking {
                 &[]);
         }
 
-        return claim_vector;
+        //return claim_vector;
     }
 
     #[endpoint(reinvest)]
