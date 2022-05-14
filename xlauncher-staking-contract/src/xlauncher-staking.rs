@@ -337,9 +337,17 @@ pub trait XLauncherStaking {
          return multi_claim_vec;
      }*/
 
+    /**
+    Multi value encoded fields
+    - pull value,
+    - rewords,
+    - entry time stamp,
+    - time_stamp_last_colection
+    - current time stamp
+    **/
     #[endpoint(claim)]
     fn claim(&self,
-             pull_id: u32) -> MultiValueEncoded<MultiValue3<BigUint, BigUint, u64>> {
+             pull_id: u32) -> MultiValueEncoded<MultiValue5<BigUint, BigUint, u64, u64, u64>> {
         let client = self.blockchain().get_caller();
         let current_time_stamp = self.blockchain().get_block_timestamp();
         let client_vector = self.client_state(&client);
@@ -348,7 +356,7 @@ pub trait XLauncherStaking {
         let mut total_rewards = BigUint::zero(); //total rewords
 
         let mut claim_vector: ManagedVec<ClaimItem<Self::Api>> = ManagedVec::new();
-        let mut multi_claim_vec: MultiValueEncoded<MultiValue3<BigUint, BigUint, u64>> = MultiValueEncoded::new();
+        let mut multi_claim_vec: MultiValueEncoded<MultiValue5<BigUint, BigUint, u64, u64, u64>> = MultiValueEncoded::new();
 
         if client_vector.len() > 0 && config_vector.len() > 0 {
             for i in 1..=client_vector.len() {
@@ -379,9 +387,11 @@ pub trait XLauncherStaking {
                             config_rewords.clone(), current_time_stamp.clone());
 
                         multi_claim_vec.push(
-                            MultiValue3::from((
+                            MultiValue5::from((
                                 client_item.pull_amount.clone(),
                                 config_rewords.clone(),
+                                client_item.pull_time_stamp_entry.clone(),
+                                client_item.pull_time_stamp_last_collection.clone(),
                                 current_time_stamp.clone())));
 
                         claim_vector.push(claim_item)
