@@ -347,7 +347,7 @@ pub trait XLauncherStaking {
     **/
     #[endpoint(claim)]
     fn claim(&self,
-             pull_id: u32) -> MultiValueEncoded<MultiValue5<BigUint, BigUint, u64, u64, u64>> {
+             pull_id: u32) /*-> MultiValueEncoded<MultiValue5<BigUint, BigUint, u64, u64, u64>> */{
         let client = self.blockchain().get_caller();
         let current_time_stamp = self.blockchain().get_block_timestamp();
         let client_vector = self.client_state(&client);
@@ -417,7 +417,7 @@ pub trait XLauncherStaking {
         }
 
         //return claim_vector;
-        return multi_claim_vec;
+        //return multi_claim_vec;
     }
 
     #[endpoint(reinvest)]
