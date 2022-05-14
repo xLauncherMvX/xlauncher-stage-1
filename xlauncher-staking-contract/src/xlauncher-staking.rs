@@ -243,20 +243,18 @@ pub trait XLauncherStaking {
                     selected_items.push(client_item.clone());
 
                     for k in 0..=(config_vector.len() - 1) {
-
-                        //sc_panic!("unstake_time={}, current_time_stamp{},total_items_value={},amount={},client_item.pull_id={}",unstake_time,current_time_stamp,total_items_value,amount,client_item.pull_id);
-
                         let config_item = config_vector.get(k);
                         let item_rewords = self.calculate_rewards_v2(client_item.clone(),
                                                                      config_item,
                                                                      current_time_stamp);
                         total_items_value = total_items_value + client_item.pull_amount.clone();
                         total_rewards = total_rewards + item_rewords;
-                        //sc_panic!("Time to clone iterate")
+                        sc_print!("k={}, amount={}, total_items_value={}",k, amount,total_items_value);
                     }
                 }
             }
         }
+        sc_print!("amount={}, total_items_value={}", amount,total_items_value);
         require!(amount <= total_items_value , "total staking value smaller then requested amount{}",total_items_value);
 
         //case 1 selected amount is exact amount staked
@@ -692,8 +690,6 @@ pub trait XLauncherStaking {
                         rep_item.rewords_amount.clone()
                     )));
                 report.report_pull_items.push(rep_item);
-
-
             }
         }
 
@@ -701,6 +697,34 @@ pub trait XLauncherStaking {
         return multi_val_vec;
     }
 
+    #[view(getClientReportV3)]
+    fn get_client_report_v3(&self, client: ManagedAddress)
+                            -> MultiValueEncoded<MultiValue4<u32, u64, u64, BigUint>> {
+        let mut multi_val_vec: MultiValueEncoded<MultiValue4<u32, u64, u64, BigUint>> = MultiValueEncoded::new();
+
+        let client_vector = self.client_state(&client);
+
+        if client_vector.len() == 0 {
+            //if clinet has no staked items we stop here
+            //return report;
+            return multi_val_vec;
+        }
+
+        for c in 1..=client_vector.len() {
+            let client_item = client_vector.get(c);
+
+            multi_val_vec.push(
+                MultiValue4::from((
+                    client_item.pull_id,
+                    client_item.pull_time_stamp_entry,
+                    client_item.pull_time_stamp_last_collection,
+                    client_item.pull_amount
+                    ))
+            );
+        }
+
+        return multi_val_vec;
+    }
 
     // storage
 
