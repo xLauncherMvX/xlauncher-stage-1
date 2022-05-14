@@ -14,7 +14,7 @@ APY_A0_END=$(date -d '2022-06-02 00:00:00' +"%s")
 APY_A0_APY="100"
 
 PULL_B_ID="2"
-PULL_A_LOCKING_TIME_SPAN="5184000"
+PULL_B_LOCKING_TIME_SPAN="5184000"
 APY_B0_ID="1"
 APY_B0_START=$(date -d '2022-05-12 00:00:00' +"%s")
 APY_B0_END=$(date -d '2022-06-02 00:00:00' +"%s")
@@ -49,7 +49,7 @@ deploy() {
     --proxy=${PROXY} --chain=${CHAINID} \
     --arguments "0x${TOKEN_ID_HEX}" ${MIN_AMOUNT} \
     ${PULL_A_ID} ${PULL_A_LOCKING_TIME_SPAN} ${APY_A0_ID} ${APY_A0_START} ${APY_A0_END} ${APY_A0_APY} \
-    ${PULL_B_ID} ${PULL_A_LOCKING_TIME_SPAN} ${APY_B0_ID} ${APY_B0_START} ${APY_A0_END} ${APY_B0_APY} \
+    ${PULL_B_ID} ${PULL_B_LOCKING_TIME_SPAN} ${APY_B0_ID} ${APY_B0_START} ${APY_A0_END} ${APY_B0_APY} \
     ${PULL_C_ID} ${PULL_C_LOCKING_TIME_SPAN} ${APY_C0_ID} ${APY_C0_START} ${APY_C0_END} ${APY_C0_APY} || return
 
   TRANSACTION=$(erdpy data parse --file="${MY_LOGS}/deploy-${ENV_LOGS}.json" --expression="data['emitted_tx']['hash']")
@@ -113,7 +113,7 @@ unstake(){
   amount="1${MY_DECIMALS}"
   erdpy --verbose contract call ${ADDRESS} --recall-nonce \
         --pem=${PEM_FILE} \
-        --gas-limit=5000000 \
+        --gas-limit=8000000 \
         --proxy=${PROXY} --chain=${CHAINID} \
         --function="unstake" \
         --arguments ${pull_id} ${amount} \

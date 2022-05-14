@@ -278,10 +278,10 @@ pub trait XLauncherStaking {
                             ))
                         );
                     }
-                } else {
+                } /*else {
                     sc_panic!("client_item.pull_id={}, pull_id={}, unstake_time={},current_time_stamp={} total_items_value{}",
                         client_item.pull_id, pull_id, unstake_time,current_time_stamp, total_items_value);
-                }
+                }*/
             }
         }
         sc_print!("amount={}, total_items_value={}", amount,total_items_value);
