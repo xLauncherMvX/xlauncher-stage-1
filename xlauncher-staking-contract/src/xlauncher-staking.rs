@@ -642,8 +642,6 @@ pub trait XLauncherStaking {
             apy_start.clone(),
             apy_end.clone(),
             pull_a_apy);
-
-        //sc_panic!("hello append pull settings");
     }
 
     fn pull_settings_exist(&self,
@@ -671,13 +669,33 @@ pub trait XLauncherStaking {
                                                   apy_id: u32,
                                                   apy_start: u64,
                                                   apy_end: u64,
-                                                  apy: u64){
+                                                  apy: u64) {
 
         //sc_panic!("hello append_pull_settings_by_pull_id_and_apy_id ")
         let mut var_setting = self.variable_contract_settings().get();
         let mut pull_items = var_setting.pull_items;
 
-
+        let mut value_added = false;
+        for i in 0..=(pull_items.len() - 1) {
+            let mut pull = pull_items.get(i);
+            if pull.id == pull_id {
+                let mut api_config_vector = pull.apy_configuration;
+                let apy_config = ApyConfiguration {
+                    id: (apy_id),
+                    apy: (apy),
+                    start_timestamp: (apy_start),
+                    end_timestamp: (apy_end),
+                };
+                api_config_vector.push(apy_config);
+                value_added = true;
+                pull.apy_configuration = api_config_vector;
+                let _updated_pull_item = pull_items.set(i, &pull);
+            }
+        }
+        if value_added{
+            var_setting.pull_items = pull_items;
+            self.variable_contract_settings().set(var_setting)
+        }
     }
 
     fn update_pull_settings_by_pull_id_and_apy_id(&self,
