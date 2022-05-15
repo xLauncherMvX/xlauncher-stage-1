@@ -586,6 +586,7 @@ pub trait XLauncherStaking {
         return rewards;
     }
 
+    #[only_owner]
     #[endpoint(updatePullSettings)]
     fn update_pull_settings(&self,
                             apy_id: u32,
@@ -618,6 +619,21 @@ pub trait XLauncherStaking {
             pull_c_apy);
     }
 
+    #[endpoint(appendPullSettings)]
+    fn append_pull_settings(&self,
+                            apy_id: u32,
+                            apy_start: u64,
+                            apy_end: u64,
+                            pull_a_apy: u64,
+                            pull_b_apy: u64,
+                            pull_c_apy: u64, ) {
+        let pull_a_id = 1_u32;
+        let pull_b_id: u32 = 2_u32;
+        let pull_c_id: u32 = 3_u32;
+
+        sc_panic!("hello append pull settings");
+    }
+
     fn update_pull_settings_by_pull_id_and_apy_id(&self,
                                                   pull_id: u32,
                                                   apy_id: u32,
@@ -646,13 +662,11 @@ pub trait XLauncherStaking {
                 pull.apy_configuration = api_config_vector;
                 let _updated_pull_item = pull_items.set(i, &pull);
             }
-
         }
         if settings_located {
             var_setting.pull_items = pull_items;
             self.variable_contract_settings().set(var_setting)
         }
-
     }
 
     // getters

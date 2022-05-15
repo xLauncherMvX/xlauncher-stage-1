@@ -70,37 +70,9 @@
 
     {
       "step": "scCall",
-      "txId": "updatePullSettings-not-owner",
+      "txId": "appendPullSettings-not-owner",
       "tx": {
         "from": "address:client1",
-        "to": "sc:xlauncher-staking",
-        "function": "updatePullSettings",
-        "value": "0",
-        "gasLimit": "100,000,000",
-        "gasPrice": "0",
-        "arguments": [
-          "1",
-          "1001",
-          "1002",
-          "400",
-          "500",
-          "600"
-        ]
-      },
-      "expect": {
-        "out": [],
-        "status": "4",
-        "message": "str:Endpoint can only be called by owner",
-        "gas": "*",
-        "refund": "*"
-      }
-    },
-
-    {
-      "step": "scCall",
-      "txId": "updatePullSettings-by-owner",
-      "tx": {
-        "from": "address:owner",
         "to": "sc:xlauncher-staking",
         "function": "updatePullSettings",
         "value": "0",
