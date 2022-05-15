@@ -599,6 +599,10 @@ pub trait XLauncherStaking {
         let pull_b_id: u32 = 2_u32;
         let pull_c_id: u32 = 3_u32;
 
+        require!(self.pull_settings_exist(pull_a_id,apy_id),"pull_a_id settings does not exists for apy_id={}", apy_id);
+        require!(self.pull_settings_exist(pull_b_id,apy_id),"pull_a_id settings does not exists for apy_id={}", apy_id);
+        require!(self.pull_settings_exist(pull_c_id,apy_id),"pull_a_id settings does not exists for apy_id={}", apy_id);
+
         self.update_pull_settings_by_pull_id_and_apy_id(
             pull_a_id,
             apy_id.clone(),
