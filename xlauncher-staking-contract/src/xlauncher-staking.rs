@@ -619,6 +619,7 @@ pub trait XLauncherStaking {
             pull_c_apy);
     }
 
+    #[only_owner]
     #[endpoint(appendPullSettings)]
     fn append_pull_settings(&self,
                             apy_id: u32,
@@ -631,7 +632,52 @@ pub trait XLauncherStaking {
         let pull_b_id: u32 = 2_u32;
         let pull_c_id: u32 = 3_u32;
 
-        sc_panic!("hello append pull settings");
+        require!(!self.pull_settings_exist(pull_a_id,apy_id),"pull_a_id settings already exits for apy_id={}", apy_id);
+        require!(!self.pull_settings_exist(pull_b_id,apy_id),"pull_a_id settings already exits for apy_id={}", apy_id);
+        require!(!self.pull_settings_exist(pull_c_id,apy_id),"pull_a_id settings already exits for apy_id={}", apy_id);
+
+        self.append_pull_settings_by_pull_id_and_apy_id(
+            pull_a_id,
+            apy_id.clone(),
+            apy_start.clone(),
+            apy_end.clone(),
+            pull_a_apy);
+
+        //sc_panic!("hello append pull settings");
+    }
+
+    fn pull_settings_exist(&self,
+                           pull_id: u32,
+                           apy_id: u32, ) -> bool {
+        let var_setting = self.variable_contract_settings().get();
+        let pull_items = var_setting.pull_items;
+        for i in 0..=(pull_items.len() - 1) {
+            let pull = pull_items.get(i);
+            if pull.id == pull_id {
+                let api_config_vector = pull.apy_configuration;
+                for k in 0..=(api_config_vector.len() - 1) {
+                    let config_item = api_config_vector.get(k);
+                    if config_item.id == apy_id {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    fn append_pull_settings_by_pull_id_and_apy_id(&self,
+                                                  pull_id: u32,
+                                                  apy_id: u32,
+                                                  apy_start: u64,
+                                                  apy_end: u64,
+                                                  apy: u64){
+
+        //sc_panic!("hello append_pull_settings_by_pull_id_and_apy_id ")
+        let mut var_setting = self.variable_contract_settings().get();
+        let mut pull_items = var_setting.pull_items;
+
+
     }
 
     fn update_pull_settings_by_pull_id_and_apy_id(&self,
