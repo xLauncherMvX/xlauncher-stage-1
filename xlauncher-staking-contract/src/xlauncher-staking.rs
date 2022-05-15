@@ -594,7 +594,49 @@ pub trait XLauncherStaking {
                             pull_a_apy: u64,
                             pull_b_apy: u64,
                             pull_c_apy: u64, ) {
-        sc_panic!("Hello update pull settings")
+        //sc_panic!("Hello update pull settings")
+        let var_setting = self.variable_contract_settings().get();
+        let pull_a_id = 1_u32;
+        let pull_b_id: u32 = 2_u32;
+        let pull_c_id: u32 = 3_u32;
+
+        self.update_pull_settings_by_pull_id_and_apy_id(
+            pull_a_id,
+            apy_id.clone(),
+            apy_start.clone(),
+            apy_end.clone(),
+            pull_a_apy)
+    }
+
+    fn update_pull_settings_by_pull_id_and_apy_id(&self,
+                                                  pull_id: u32,
+                                                  apy_id: u32,
+                                                  apy_start: u64,
+                                                  apy_end: u64,
+                                                  apy: u64) {
+        let mut var_setting = self.variable_contract_settings().get();
+        let mut pull_items = var_setting.pull_items;
+
+        for i in 0..=(pull_items.len() - 1) {
+            let mut pull = pull_items.get(i);
+            if pull.id == pull_id {
+                let mut api_config_vector = pull.apy_configuration;
+                for k in 0..=(api_config_vector.len() - 1) {
+                    let mut config_item = api_config_vector.get(k);
+                    if config_item.id == apy_id {
+                        //sc_panic!("Hello specific item={}",apy_id)
+                        config_item.start_timestamp = apy_start;
+                        config_item.end_timestamp = apy_end;
+                        config_item.apy = apy;
+                    }
+                    api_config_vector.set(k, &config_item);
+                }
+                pull.apy_configuration = api_config_vector;
+                pull_items.set(i, &pull);
+            }
+
+        }
+
     }
 
     // getters
