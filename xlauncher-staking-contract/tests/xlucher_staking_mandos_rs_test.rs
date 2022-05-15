@@ -25,3 +25,8 @@ fn unstake_case_3_rs() {
 fn update_pull_settings_rs() {
     elrond_wasm_debug::mandos_rs("mandos/09-update-pull-settings.scen.json", world());
 }
+
+#[test]
+fn append_pull_settings_rs() {
+    elrond_wasm_debug::mandos_rs("mandos/10-append-pull-settings.scen.json", world());
+}

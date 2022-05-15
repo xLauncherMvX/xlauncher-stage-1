@@ -642,6 +642,13 @@ pub trait XLauncherStaking {
             apy_start.clone(),
             apy_end.clone(),
             pull_a_apy);
+
+        self.append_pull_settings_by_pull_id_and_apy_id(
+            pull_b_id,
+            apy_id.clone(),
+            apy_start.clone(),
+            apy_end.clone(),
+            pull_b_apy);
     }
 
     fn pull_settings_exist(&self,
@@ -706,7 +713,6 @@ pub trait XLauncherStaking {
                                                   apy: u64) {
         let mut var_setting = self.variable_contract_settings().get();
         let mut pull_items = var_setting.pull_items;
-
         let mut settings_located = false;
         for i in 0..=(pull_items.len() - 1) {
             let mut pull = pull_items.get(i);
