@@ -586,6 +586,17 @@ pub trait XLauncherStaking {
         return rewards;
     }
 
+    #[endpoint(updatePullSettings)]
+    fn update_pull_settings(&self,
+                            apy_id: u32,
+                            apy_start: u64,
+                            apy_end: u64,
+                            pull_a_apy: u64,
+                            pull_b_apy: u64,
+                            pull_c_apy: u64, ) {
+        sc_panic!("Hello update pull settings")
+    }
+
     // getters
 
     fn get_apy_config_vector(&self, pull_id: u32) -> ManagedVec<ApyConfiguration> {
