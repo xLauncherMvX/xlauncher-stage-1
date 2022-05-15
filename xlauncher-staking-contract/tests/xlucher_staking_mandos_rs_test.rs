@@ -12,11 +12,16 @@ fn world() -> BlockchainMock {
 }
 
 #[test]
-fn crowdfunding_claim_successful_rs() {
+fn claim_successful_rs() {
     elrond_wasm_debug::mandos_rs("mandos/04-claim-case-7.scen.json", world());
 }
 
 #[test]
-fn crowdfunding_unstake_case_3_rs() {
+fn unstake_case_3_rs() {
     elrond_wasm_debug::mandos_rs("mandos/07-unstake-case-3.scen.json", world());
+}
+
+#[test]
+fn update_pull_settings_rs() {
+    elrond_wasm_debug::mandos_rs("mandos/09-update-pull-settings.scen.json", world());
 }

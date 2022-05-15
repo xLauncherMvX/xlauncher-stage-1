@@ -594,8 +594,6 @@ pub trait XLauncherStaking {
                             pull_a_apy: u64,
                             pull_b_apy: u64,
                             pull_c_apy: u64, ) {
-        //sc_panic!("Hello update pull settings")
-        let var_setting = self.variable_contract_settings().get();
         let pull_a_id = 1_u32;
         let pull_b_id: u32 = 2_u32;
         let pull_c_id: u32 = 3_u32;
@@ -605,7 +603,19 @@ pub trait XLauncherStaking {
             apy_id.clone(),
             apy_start.clone(),
             apy_end.clone(),
-            pull_a_apy)
+            pull_a_apy);
+        self.update_pull_settings_by_pull_id_and_apy_id(
+            pull_b_id,
+            apy_id.clone(),
+            apy_start.clone(),
+            apy_end.clone(),
+            pull_b_apy);
+        self.update_pull_settings_by_pull_id_and_apy_id(
+            pull_c_id,
+            apy_id.clone(),
+            apy_start.clone(),
+            apy_end.clone(),
+            pull_c_apy);
     }
 
     fn update_pull_settings_by_pull_id_and_apy_id(&self,
@@ -617,6 +627,7 @@ pub trait XLauncherStaking {
         let mut var_setting = self.variable_contract_settings().get();
         let mut pull_items = var_setting.pull_items;
 
+        let mut settings_located = false;
         for i in 0..=(pull_items.len() - 1) {
             let mut pull = pull_items.get(i);
             if pull.id == pull_id {
@@ -628,13 +639,18 @@ pub trait XLauncherStaking {
                         config_item.start_timestamp = apy_start;
                         config_item.end_timestamp = apy_end;
                         config_item.apy = apy;
+                        settings_located = true;
                     }
-                    api_config_vector.set(k, &config_item);
+                    let _updated_config_item = api_config_vector.set(k, &config_item);
                 }
                 pull.apy_configuration = api_config_vector;
-                pull_items.set(i, &pull);
+                let _updated_pull_item = pull_items.set(i, &pull);
             }
 
+        }
+        if settings_located {
+            var_setting.pull_items = pull_items;
+            self.variable_contract_settings().set(var_setting)
         }
 
     }

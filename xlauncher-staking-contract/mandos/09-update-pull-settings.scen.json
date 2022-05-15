@@ -129,9 +129,9 @@
                 "3-apy_configuration_vec_len": "u32:1",
                 "4-first_apy_configuration": {
                   "1-id": "u32:1",
-                  "2-apy": "u64:100",
-                  "3-start_timestamp": "u64:0",
-                  "4-end_timestamp": "u64:31536000"
+                  "2-apy": "u64:400",
+                  "3-start_timestamp": "u64:1001",
+                  "4-end_timestamp": "u64:1002"
                 }
               },
               "5-second_pull_item": {
@@ -140,9 +140,9 @@
                 "3-apy_configuration_vec_len": "u32:1",
                 "4-first_apy_configuration": {
                   "1-id": "u32:1",
-                  "2-apy": "u64:200",
-                  "3-start_timestamp": "u64:0",
-                  "4-end_timestamp": "u64:31536000"
+                  "2-apy": "u64:500",
+                  "3-start_timestamp": "u64:1001",
+                  "4-end_timestamp": "u64:1002"
                 }
               },
               "6-third_pull_item": {
@@ -151,9 +151,9 @@
                 "3-apy_configuration_vec_len": "u32:1",
                 "4-first_apy_configuration": {
                   "1-id": "u32:1",
-                  "2-apy": "u64:300",
-                  "3-start_timestamp": "u64:0",
-                  "4-end_timestamp": "u64:31536000"
+                  "2-apy": "u64:600",
+                  "3-start_timestamp": "u64:1001",
+                  "4-end_timestamp": "u64:1002"
                 }
               }
             }
