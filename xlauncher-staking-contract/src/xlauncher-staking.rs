@@ -108,42 +108,46 @@ pub trait XLauncherStaking {
         require!(token_id.is_valid_esdt_identifier(), "invalid token_id");
         require!(min_amount > 0_u64, "min_amount must be positive");
 
-        let pull_a = self.build_pull(
-            pull_a_id,
-            pull_a_locking_time_span,
-            apy_a0_id,
-            apy_a0_start,
-            apy_a0_end,
-            apy_a0_apy);
+        if self.variable_contract_settings().is_empty() {
+            //we create the initial set of variable settings
 
-        let pull_b = self.build_pull(
-            pull_b_id,
-            pull_b_locking_time_span,
-            apy_b0_id,
-            apy_b0_start,
-            apy_b0_end,
-            apy_b0_apy);
+            let pull_a = self.build_pull(
+                pull_a_id,
+                pull_a_locking_time_span,
+                apy_a0_id,
+                apy_a0_start,
+                apy_a0_end,
+                apy_a0_apy);
 
-        let pull_c = self.build_pull(
-            pull_c_id,
-            pull_c_locking_time_span,
-            apy_c0_id,
-            apy_c0_start,
-            apy_c0_end,
-            apy_c0_apy);
+            let pull_b = self.build_pull(
+                pull_b_id,
+                pull_b_locking_time_span,
+                apy_b0_id,
+                apy_b0_start,
+                apy_b0_end,
+                apy_b0_apy);
+
+            let pull_c = self.build_pull(
+                pull_c_id,
+                pull_c_locking_time_span,
+                apy_c0_id,
+                apy_c0_start,
+                apy_c0_end,
+                apy_c0_apy);
 
 
-        // variable settings
-        let mut pull_items: ManagedVec<Pull<Self::Api>> = ManagedVec::new();
-        pull_items.push(pull_a);
-        pull_items.push(pull_b);
-        pull_items.push(pull_c);
-        let variable_settings = VariableContractSettings {
-            token_id: (token_id),
-            min_amount: (min_amount),
-            pull_items: (pull_items),
-        };
-        self.variable_contract_settings().set(&variable_settings)
+            // variable settings
+            let mut pull_items: ManagedVec<Pull<Self::Api>> = ManagedVec::new();
+            pull_items.push(pull_a);
+            pull_items.push(pull_b);
+            pull_items.push(pull_c);
+            let variable_settings = VariableContractSettings {
+                token_id: (token_id),
+                min_amount: (min_amount),
+                pull_items: (pull_items),
+            };
+            self.variable_contract_settings().set(&variable_settings)
+        }
     }
 
     fn build_pull(self, pull_id: u32,
