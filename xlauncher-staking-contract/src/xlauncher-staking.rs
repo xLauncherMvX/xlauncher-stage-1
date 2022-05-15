@@ -649,6 +649,13 @@ pub trait XLauncherStaking {
             apy_start.clone(),
             apy_end.clone(),
             pull_b_apy);
+
+        self.append_pull_settings_by_pull_id_and_apy_id(
+            pull_c_id,
+            apy_id.clone(),
+            apy_start.clone(),
+            apy_end.clone(),
+            pull_c_apy);
     }
 
     fn pull_settings_exist(&self,
