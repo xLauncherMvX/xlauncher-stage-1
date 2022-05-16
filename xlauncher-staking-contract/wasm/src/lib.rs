@@ -7,9 +7,19 @@
 elrond_wasm_node::wasm_endpoints! {
     xlauncher_staking
     (
+        appendPullSettings
+        claim
+        fundContract
+        getClientReport
+        getClientReportV2
+        getClientReportV3
         getClientState
-        getContractSettings
+        getTokenBalance
+        getVariableContractSettings
+        reinvest
         stake
+        unstake
+        updatePullSettings
     )
 }
 
