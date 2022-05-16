@@ -112,6 +112,29 @@
       }
     },
 
+    {
+      "step": "scCall",
+      "txId": "update-is-active-owner",
+      "tx": {
+        "from": "address:owner",
+        "to": "sc:xlauncher-staking",
+        "value": "0",
+        "function": "updateIsActiveField",
+        "arguments": [
+          "false"
+        ],
+        "gasLimit": "100,000,000",
+        "gasPrice": "0"
+      },
+      "expect": {
+        "out": [],
+        "status": "0",
+        "message": "",
+        "gas": "*",
+        "refund": "*"
+      }
+    },
+
 
 
     {
@@ -126,7 +149,7 @@
           }
         },
         "address:owner": {
-          "nonce": "1",
+          "nonce": "2",
           "balance": "0",
           "esdt": {
             "str:BCOIN-a00000": "100,000,000,000,000,000,000,000,000"
@@ -142,7 +165,7 @@
             "str:variableContractSettings": {
               "1-token_id": "nested:str:BCOIN-a00000",
               "2-min_amount": "biguint:250,000,000,000,000,000",
-              "3-contract_is_active": "true",
+              "3-contract_is_active": "false",
               "4-pull_items_vec_len": "u32:3",
               "5-first_pull_item": {
                 "1-id": "u32:1",
