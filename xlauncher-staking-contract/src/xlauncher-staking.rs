@@ -17,6 +17,13 @@ pub struct ClientPullState<M: ManagedTypeApi> {
     pub pull_amount: BigUint<M>,
 }
 
+
+#[derive(TypeAbi, TopEncode, TopDecode, ManagedVecItem, NestedEncode, NestedDecode, Clone)]
+pub struct UnstakeState<M: ManagedTypeApi> {
+    pub unstake_amount: BigUint<M>,
+    pub free_after_time_stamp: u64,
+}
+
 // how to initialize variables
 // token_id, min_amount
 //
@@ -31,7 +38,7 @@ pub struct ClientPullState<M: ManagedTypeApi> {
 pub struct VariableContractSettings<M: ManagedTypeApi> {
     pub token_id: TokenIdentifier<M>,
     pub min_amount: BigUint<M>,
-    pub no_rewords_time_span: u64,
+    pub unstake_lock_span: u64,
     pub contract_is_active: bool,
     pub pull_items: ManagedVec<M, Pull<M>>,
 }
@@ -149,7 +156,7 @@ pub trait XLauncherStaking {
                 min_amount: (min_amount),
                 pull_items: (pull_items),
                 contract_is_active: true,
-                no_rewords_time_span: days_10,
+                unstake_lock_span: days_10,
             };
             self.variable_contract_settings().set(&variable_settings)
         }
@@ -224,6 +231,22 @@ pub trait XLauncherStaking {
         state_vector.push(&new_pull_state);
     }
 
+    fn add_to_unstake_value(&self, time_stamp: u64, amount: BigUint) {
+        let client = self.blockchain().get_caller();
+        let settings = self.variable_contract_settings().get();
+        let unstake_lock_span :u64= settings.unstake_lock_span;
+        let free_after_time_stamp: u64 = time_stamp + unstake_lock_span;
+        if self.unstake_state(&client).is_empty() {
+            let unstake_state = UnstakeState {
+                unstake_amount: amount.clone(),
+                free_after_time_stamp,
+            };
+            sc_print!("unstake_amount={}, free_after_time_stamp={}",amount,free_after_time_stamp);
+            self.unstake_state(&client).set(&unstake_state);
+        } else {
+            sc_panic!("unstake has some value")
+        }
+    }
 
     #[endpoint(unstake)]
     fn unstake(&self,
@@ -311,13 +334,15 @@ pub trait XLauncherStaking {
             let total_value = total_items_value.clone() + total_rewards.clone();
             if total_value > BigUint::zero() {
                 //sc_panic!("unstake case 1 items total_value={}, current_time={}",total_value, current_time_stamp);
-                let token_id = self.get_contract_token_id();
+                /*let token_id = self.get_contract_token_id();
                 self.send().direct(
                     &client,
                     &token_id,
                     0,
                     &total_value,
-                    &[]);
+                    &[]);*/
+                self.add_to_unstake_value(current_time_stamp, total_value);
+                return;
             }
         }
 
@@ -965,4 +990,9 @@ pub trait XLauncherStaking {
     #[storage_mapper("clientState")]
     fn client_state(&self, client_address: &ManagedAddress)
                     -> VecMapper<ClientPullState<Self::Api>>;
+
+    #[view(getUnstakeState)]
+    #[storage_mapper("unstakeState")]
+    fn unstake_state(&self, client_address: &ManagedAddress)
+                     -> SingleValueMapper<UnstakeState<Self::Api>>;
 }

@@ -17,6 +17,11 @@ fn claim_successful_rs() {
 }
 
 #[test]
+fn unstake_case_1_a_rs() {
+    elrond_wasm_debug::mandos_rs("mandos/07-unstake-case-1-a.scen.json", world());
+}
+
+#[test]
 fn unstake_case_3_rs() {
     elrond_wasm_debug::mandos_rs("mandos/07-unstake-case-3.scen.json", world());
 }

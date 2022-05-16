@@ -10,7 +10,7 @@
         "contractCrate": {
             "name": "xlauncher-staking",
             "version": "0.1.0",
-            "git_version": "29156a0-modified"
+            "git_version": "9dd2168-modified"
         },
         "framework": {
             "name": "elrond-wasm",
@@ -320,6 +320,21 @@
                     "multi_result": true
                 }
             ]
+        },
+        {
+            "name": "getUnstakeState",
+            "mutability": "readonly",
+            "inputs": [
+                {
+                    "name": "client_address",
+                    "type": "Address"
+                }
+            ],
+            "outputs": [
+                {
+                    "type": "UnstakeState"
+                }
+            ]
         }
     ],
     "hasCallback": false,
@@ -417,6 +432,19 @@
                 }
             ]
         },
+        "UnstakeState": {
+            "type": "struct",
+            "fields": [
+                {
+                    "name": "unstake_amount",
+                    "type": "BigUint"
+                },
+                {
+                    "name": "free_after_time_stamp",
+                    "type": "u64"
+                }
+            ]
+        },
         "VariableContractSettings": {
             "type": "struct",
             "fields": [
@@ -429,7 +457,7 @@
                     "type": "BigUint"
                 },
                 {
-                    "name": "no_rewords_time_span",
+                    "name": "unstake_lock_span",
                     "type": "u64"
                 },
                 {

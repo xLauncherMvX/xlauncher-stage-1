@@ -15,6 +15,7 @@ elrond_wasm_node::wasm_endpoints! {
         getClientReportV3
         getClientState
         getTokenBalance
+        getUnstakeState
         getVariableContractSettings
         reinvest
         stake
