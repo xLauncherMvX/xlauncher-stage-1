@@ -226,6 +226,7 @@ pub trait XLauncherStaking {
     fn unstake(&self,
                pull_id: u32,
                amount: BigUint) /*-> MultiValueEncoded<MultiValue4<u32, u64, u64, BigUint>>*/ {
+        require!(self.contract_is_active(),"Contract is in maintenance");
         let mut multi_val_vec: MultiValueEncoded<MultiValue4<u32, u64, u64, BigUint>> = MultiValueEncoded::new();
 
         let client = self.blockchain().get_caller();
@@ -389,6 +390,7 @@ pub trait XLauncherStaking {
     #[endpoint(claim)]
     fn claim(&self,
              pull_id: u32) /*-> MultiValueEncoded<MultiValue5<BigUint, BigUint, u64, u64, u64>> */ {
+        require!(self.contract_is_active(),"Contract is in maintenance");
         let client = self.blockchain().get_caller();
         let current_time_stamp = self.blockchain().get_block_timestamp();
         let client_vector = self.client_state(&client);
@@ -464,6 +466,7 @@ pub trait XLauncherStaking {
     #[endpoint(reinvest)]
     fn reinvest(&self,
                 pull_id: u32) {
+        require!(self.contract_is_active(),"Contract is in maintenance");
         let client = self.blockchain().get_caller();
         let current_time_stamp = self.blockchain().get_block_timestamp();
         let mut client_vector = self.client_state(&client);
@@ -591,7 +594,7 @@ pub trait XLauncherStaking {
 
     #[only_owner]
     #[endpoint(switchIsActiveFieldValue)]
-    fn update_is_active_field(&self) {
+    fn switch_is_active_field_value(&self) {
         require!(! self.variable_contract_settings().is_empty(),"Contract was not initialized");
         let mut settings = self.variable_contract_settings().get();
         settings.contract_is_active = !settings.contract_is_active;
