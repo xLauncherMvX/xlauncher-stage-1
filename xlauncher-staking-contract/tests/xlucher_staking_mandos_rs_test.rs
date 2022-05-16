@@ -22,6 +22,16 @@ fn unstake_case_1_a_rs() {
 }
 
 #[test]
+fn unstake_case_2_a_rs() {
+    elrond_wasm_debug::mandos_rs("mandos/07-unstake-case-2-a.scen.json", world());
+}
+
+#[test]
+fn unstake_case_4_a_rs() {
+    elrond_wasm_debug::mandos_rs("mandos/07-unstake-case-4.scen.json", world());
+}
+
+#[test]
 fn unstake_case_3_rs() {
     elrond_wasm_debug::mandos_rs("mandos/07-unstake-case-3.scen.json", world());
 }

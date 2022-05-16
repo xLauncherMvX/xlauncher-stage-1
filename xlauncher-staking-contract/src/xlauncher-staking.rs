@@ -234,7 +234,7 @@ pub trait XLauncherStaking {
     fn add_to_unstake_value(&self, time_stamp: u64, amount: BigUint) {
         let client = self.blockchain().get_caller();
         let settings = self.variable_contract_settings().get();
-        let unstake_lock_span :u64= settings.unstake_lock_span;
+        let unstake_lock_span: u64 = settings.unstake_lock_span;
         let free_after_time_stamp: u64 = time_stamp + unstake_lock_span;
         if self.unstake_state(&client).is_empty() {
             let unstake_state = UnstakeState {
@@ -244,7 +244,11 @@ pub trait XLauncherStaking {
             sc_print!("unstake_amount={}, free_after_time_stamp={}",amount,free_after_time_stamp);
             self.unstake_state(&client).set(&unstake_state);
         } else {
-            sc_panic!("unstake has some value")
+            let mut unstake_state = self.unstake_state(&client).get();
+            unstake_state.free_after_time_stamp = free_after_time_stamp;
+            unstake_state.unstake_amount = unstake_state.unstake_amount + amount;
+            self.unstake_state(&client).set(&unstake_state);
+            sc_print!("unstake_amount={}, free_after_time_stamp={}",unstake_state.unstake_amount,unstake_state.free_after_time_stamp);
         }
     }
 
@@ -333,14 +337,6 @@ pub trait XLauncherStaking {
             }
             let total_value = total_items_value.clone() + total_rewards.clone();
             if total_value > BigUint::zero() {
-                //sc_panic!("unstake case 1 items total_value={}, current_time={}",total_value, current_time_stamp);
-                /*let token_id = self.get_contract_token_id();
-                self.send().direct(
-                    &client,
-                    &token_id,
-                    0,
-                    &total_value,
-                    &[]);*/
                 self.add_to_unstake_value(current_time_stamp, total_value);
                 return;
             }
@@ -368,13 +364,15 @@ pub trait XLauncherStaking {
             // compute how mutch we need to transfer in client wallet
             let total_case_2_value = amount.clone() + total_rewards.clone();
             if total_case_2_value > BigUint::zero() {
-                let token_id = self.get_contract_token_id();
+                /*let token_id = self.get_contract_token_id();
                 self.send().direct(
                     &client,
                     &token_id,
                     0,
                     &total_case_2_value,
-                    &[]);
+                    &[]);*/
+                self.add_to_unstake_value(current_time_stamp, total_case_2_value);
+                return;
             }
         }
 
@@ -397,15 +395,6 @@ pub trait XLauncherStaking {
             sc_panic!("No item located to remove id={}", id)
         }
     }
-
-    /* #[endpoint(claim)]
-     fn claim(&self,
-              _pull_id: u32) -> MultiValueEncoded<MultiValue3<BigUint, BigUint, u64>> {
-
-         let mut multi_claim_vec: MultiValueEncoded<MultiValue3<BigUint, BigUint, u64>> = MultiValueEncoded::new();
-
-         return multi_claim_vec;
-     }*/
 
     /**
     Multi value encoded fields

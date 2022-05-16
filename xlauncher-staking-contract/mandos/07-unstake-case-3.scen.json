@@ -155,7 +155,7 @@
           "nonce": "2",
           "balance": "0",
           "esdt": {
-            "str:BCOIN-a00000": "4502499999999999953760",
+            "str:BCOIN-a00000": "4000000000000000000000",
             "str:BCOIN-b00000": "5,000,000,000,000,000,000,000"
           }
         },
@@ -163,7 +163,7 @@
           "nonce": "*",
           "balance": "0",
           "esdt": {
-            "str:BCOIN-a00000": "497500000000000046240"
+            "str:BCOIN-a00000": "1000000000000000000000"
           },
           "storage": {
             "str:variableContractSettings": {
@@ -212,6 +212,10 @@
               "2-pull_time_stamp_entry": "u64:0",
               "3-pull_time_stamp_last_collection": "u64:23652000",
               "4-pull_amount": "biguint:500,000,000,000,000,000,000"
+            },
+            "str:unstakeState|address:client1": {
+              "0-unstake_amount": "biguint:502499999999999953760",
+              "1-free_after_time_stamp": "u64:24516000"
             }
           },
           "code": "file:../output/xlauncher-staking.wasm"
