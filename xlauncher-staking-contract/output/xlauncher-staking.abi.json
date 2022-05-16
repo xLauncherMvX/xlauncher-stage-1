@@ -10,7 +10,7 @@
         "contractCrate": {
             "name": "xlauncher-staking",
             "version": "0.1.0",
-            "git_version": "abffb4e-modified"
+            "git_version": "514f492-modified"
         },
         "framework": {
             "name": "elrond-wasm",
@@ -173,6 +173,18 @@
                 {
                     "name": "pull_id",
                     "type": "u32"
+                }
+            ],
+            "outputs": []
+        },
+        {
+            "name": "updateIsActiveField",
+            "onlyOwner": true,
+            "mutability": "mutable",
+            "inputs": [
+                {
+                    "name": "is_active",
+                    "type": "bool"
                 }
             ],
             "outputs": []

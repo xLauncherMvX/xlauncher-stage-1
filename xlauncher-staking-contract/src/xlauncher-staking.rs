@@ -201,6 +201,7 @@ pub trait XLauncherStaking {
              #[payment_amount] amount: BigUint,
              pull_id: u32,
     ) {
+        require!(self.contract_is_active(),"Contract is in maintenance");
         let settings: VariableContractSettings<Self::Api> = self.variable_contract_settings().get();
         require!(token_id.is_valid_esdt_identifier(), "invalid token_id");
         require!(settings.token_id == token_id, "not the same token id");
@@ -586,6 +587,23 @@ pub trait XLauncherStaking {
         let bu_seconds = BigUint::from(seconds);
         let rewards = (&bu_seconds * &bu_r_in_1_second) / BigUint::from(100_u64);
         return rewards;
+    }
+
+    #[only_owner]
+    #[endpoint(updateIsActiveField)]
+    fn update_is_active_field(&self, is_active: bool) {
+        require!(! self.variable_contract_settings().is_empty(),"Contract was not initialized");
+        let mut settings = self.variable_contract_settings().get();
+        if is_active != settings.contract_is_active {
+            settings.contract_is_active = is_active;
+            self.variable_contract_settings().set(settings);
+        }
+    }
+
+    fn contract_is_active(&self) -> bool {
+        require!(! self.variable_contract_settings().is_empty(),"Contract was not initialized");
+        let settings = self.variable_contract_settings().get();
+        return settings.contract_is_active;
     }
 
     #[only_owner]

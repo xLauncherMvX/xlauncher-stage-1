@@ -19,6 +19,7 @@ elrond_wasm_node::wasm_endpoints! {
         reinvest
         stake
         unstake
+        updateIsActiveField
         updatePullSettings
     )
 }

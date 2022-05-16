@@ -1,0 +1,218 @@
+{
+  "name": "xlauncher-staking",
+  "comment": "stake pull a",
+  "steps": [
+    {
+      "step": "externalSteps",
+      "path": "01-deploy.scen.json"
+    },
+    {
+      "step": "setState",
+      "currentBlockInfo": {
+        "blockTimestamp": "0",
+        "blockNonce": "522",
+        "blockRound": "533",
+        "blockEpoch": "544"
+      },
+      "accounts": {
+        "address:client1": {
+          "nonce": "0",
+          "balance": "0",
+          "esdt": {
+            "str:BCOIN-a00000": "5,000,000,000,000,000,000,000",
+            "str:BCOIN-b00000": "5,000,000,000,000,000,000,000"
+          }
+        }
+      }
+    },
+    {
+      "step": "scCall",
+      "txId": "stake-wrong-coin",
+      "tx": {
+        "from": "address:client1",
+        "to": "sc:xlauncher-staking",
+        "value": "0",
+        "function": "stake",
+        "esdtValue": [
+          {
+            "tokenIdentifier": "str:BCOIN-b00000",
+            "value": "1,000,000,000,000,000,000,000"
+          }
+        ],
+        "arguments": [
+          "1"
+        ],
+        "gasLimit": "100,000,000",
+        "gasPrice": "0"
+      },
+      "expect": {
+        "out": [],
+        "status": "4",
+        "message": "str:not the same token id",
+        "gas": "*",
+        "refund": "*"
+      }
+    },
+    {
+      "step": "scCall",
+      "txId": "stake-good-coin",
+      "tx": {
+        "from": "address:client1",
+        "to": "sc:xlauncher-staking",
+        "value": "0",
+        "function": "stake",
+        "esdtValue": [
+          {
+            "tokenIdentifier": "str:BCOIN-a00000",
+            "value": "1,000,000,000,000,000,000,000"
+          }
+        ],
+        "arguments": [
+          "1"
+        ],
+        "gasLimit": "100,000,000",
+        "gasPrice": "0"
+      },
+      "expect": {
+        "out": [],
+        "status": "0",
+        "message": "",
+        "gas": "*",
+        "refund": "*"
+      }
+    },
+    {
+      "step": "setState",
+      "comment": "set-block-time-stamp",
+      "currentBlockInfo": {
+        "blockTimestamp": "31536000"
+      }
+    },
+    {
+      "step": "scCall",
+      "txId": "appendPullSettings-new-id",
+      "tx": {
+        "from": "address:owner",
+        "to": "sc:xlauncher-staking",
+        "function": "updateIsActiveField",
+        "value": "0",
+        "gasLimit": "100,000,000",
+        "gasPrice": "0",
+        "arguments": [
+          "false"
+        ]
+      },
+      "expect": {
+        "out": [],
+        "status": "0",
+        "message": "",
+        "gas": "*",
+        "refund": "*"
+      }
+    },
+    {
+      "step": "scCall",
+      "txId": "stake-good-coin-second-time",
+      "tx": {
+        "from": "address:client1",
+        "to": "sc:xlauncher-staking",
+        "value": "0",
+        "function": "stake",
+        "esdtValue": [
+          {
+            "tokenIdentifier": "str:BCOIN-a00000",
+            "value": "1,000,000,000,000,000,000,000"
+          }
+        ],
+        "arguments": [
+          "1"
+        ],
+        "gasLimit": "100,000,000",
+        "gasPrice": "0"
+      },
+      "expect": {
+        "out": [],
+        "status": "4",
+        "message": "str:Contract is in maintenance",
+        "gas": "*",
+        "refund": "*"
+      }
+    },
+    {
+      "step": "checkState",
+      "accounts": {
+        "address:client1": {
+          "nonce": "3",
+          "balance": "0",
+          "esdt": {
+            "str:BCOIN-a00000": "4,000,000,000,000,000,000,000",
+            "str:BCOIN-b00000": "5,000,000,000,000,000,000,000"
+          }
+        },
+        "address:owner": {
+          "nonce": "2",
+          "balance": "0",
+          "esdt": {
+            "str:BCOIN-a00000": "100,000,000,000,000,000,000,000,000"
+          }
+        },
+        "sc:xlauncher-staking": {
+          "nonce": "*",
+          "balance": "0",
+          "esdt": {
+            "str:BCOIN-a00000": "1,000,000,000,000,000,000,000"
+          },
+          "storage": {
+            "str:variableContractSettings": {
+              "1-token_id": "nested:str:BCOIN-a00000",
+              "2-min_amount": "biguint:250,000,000,000,000,000",
+              "3-contract_is_active": "false",
+              "4-pull_items_vec_len": "u32:3",
+              "5-first_pull_item": {
+                "1-id": "u32:1",
+                "2-locking_time_span": "u64:0",
+                "3-apy_configuration_vec_len": "u32:1",
+                "4-first_apy_configuration": {
+                  "1-id": "u32:1",
+                  "2-apy": "u64:100",
+                  "3-start_timestamp": "u64:0",
+                  "4-end_timestamp": "u64:31536000"
+                }
+              },
+              "6-second_pull_item": {
+                "1-id": "u32:2",
+                "2-locking_time_span": "u64:5184000",
+                "3-apy_configuration_vec_len": "u32:1",
+                "4-first_apy_configuration": {
+                  "1-id": "u32:1",
+                  "2-apy": "u64:200",
+                  "3-start_timestamp": "u64:0",
+                  "4-end_timestamp": "u64:31536000"
+                }
+              },
+              "7-third_pull_item": {
+                "1-id": "u32:3",
+                "2-locking_time_span": "u64:15552000",
+                "3-apy_configuration_vec_len": "u32:1",
+                "4-first_apy_configuration": {
+                  "1-id": "u32:1",
+                  "2-apy": "u64:300",
+                  "3-start_timestamp": "u64:0",
+                  "4-end_timestamp": "u64:31536000"
+                }
+              }
+            },
+            "str:clientState|address:client1|str:.len": "1",
+            "str:clientState|address:client1|str:.item|u32:1": {
+              "1-pull_id": "u32:1",
+              "2-pull_time_stamp_entry": "u64:0",
+              "3-pull_time_stamp_last_collection": "u64:0",
+              "4-pull_amount": "biguint:1,000,000,000,000,000,000,000"
+            }
+          },
+          "code": "file:../output/xlauncher-staking.wasm"
+        }
+      }
+    }
+  ]
+}
