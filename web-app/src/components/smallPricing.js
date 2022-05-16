@@ -71,10 +71,20 @@ export default function Pricing({ contractByXlh }) {
   //get xlh balance
   const [dataAccount, setDataAccount] = useState([]);
 
+  //mainnet
+  // const apiLink = 'https://api.elrond.com/accounts/';  
+  // const apiToken = 'XLH-8daa50';  
+  // const customApi = apiLink+address+'/tokens/'+apiToken;
+
   //devnet
   // const apiLink = 'https://devnet-api.elrond.com/accounts/';
   // const apiToken = 'XLH-cb26c7';
   // const customApi = apiLink+address+'/tokens/'+apiToken;  
+
+  //devnet2
+  // const apiLink = 'https://devnet-api.elrond.com/accounts/';
+  // const apiToken = 'XLH-4f55ab';
+  // const customApi = apiLink+address+'/tokens/'+apiToken; 
 
   //testnet
   const apiLink = 'https://testnet-api.elrond.com/accounts/';  
@@ -107,9 +117,21 @@ export default function Pricing({ contractByXlh }) {
     maxAmountReached = true;
   }
 
-  useEffect(() => {
-    getBalanceAccount();
-  });
+  //Check if countdown is over
+  const [seedOpener, setOpener] = useState([]);
+
+  const getSeedOpen = async () => {
+    const currentDate = new Date();
+    const targetDate = new Date('May 04, 2022 14:53:00 GMT+03:00');
+    const diff = targetDate - currentDate;
+    
+    if(diff <= 0){
+      setOpener(true);
+    }else{
+      setOpener(false);
+    }   
+    console.log('countdown open: ' + seedOpener);      
+  }
 
   var egldAmountReached = false;
   var accountEgldConverted = account.balance/1000000000000000000;
@@ -127,29 +149,96 @@ export default function Pricing({ contractByXlh }) {
     console.log(xlhConverted + ' + ' + accountXlhConverted);
   }  
 
-  //if(isLoggedIn && !maxAmountReached && whitelisted){
+  //Check if max amount of tokens were sold
+  const [data, setData] = useState([]);
+  const getBalance = async () => {
+      try {
+          //const response = await fetch('https://api.elrond.com/accounts/erd1qqqqqqqqqqqqqpgqdy3tyfye72r2u8ahg7wwmm7yuu48vdqt4d6q27mvjm/tokens/XLH-8daa50', { 
+
+          //const response = await fetch('https://devnet-api.elrond.com/accounts/erd1qqqqqqqqqqqqqpgqf2ddf4cd3ycqde6d43ulkcjh46lqa5lnpa7qaej6t9/tokens/XLH-cb26c7', { 
+          //const response = await fetch('https://devnet-api.elrond.com/accounts/erd1qqqqqqqqqqqqqpgqhh5csdlkpxkt79zxnffrp9972tmnaq45f2ns7lsdph/tokens/XLH-4f55ab', { 
+
+
+          const response = await fetch('https://testnet-api.elrond.com/accounts/erd1qqqqqqqqqqqqqpgqrvc0vklltk8us4ftcf79cm3fhx7vtm72pa7q7zql3t/tokens/XLH-0be7d1', { 
+          headers: {
+              'Accept': 'application/json',
+          }
+      });
+      const json = await response.json();
+      setData(json.balance);
+      } catch (error) {
+      console.error(error);
+      }
+  }
+  getBalance();
+
+  var maxBalance = 4000000;
+  var balanceLeft = maxBalance - (data/1000000000000000000);
+  if(balanceLeft < 0 || !balanceLeft){
+      balanceLeft = 0;
+  }
+  var soldOut = false;
+  if(balanceLeft >= maxBalance - 10){
+    soldOut = true;
+  }
+
+  //Check if collect function was called
+  var collected = false;
+  if((data/1000000000000000000 == 0) || !data){
+    collected = true;
+  }
+
+  useEffect(() => {
+    getBalanceAccount();
+    getSeedOpen();
+    getBalance();
+  });
+
+  //Buy button section
   var buttonShow;
-  if(isLoggedIn && !maxAmountReached && !trans){
-    if(!xlhAmountReached){
-      if(egldAmountReached){
-        buttonShow = 
-        <Button
-          onClick={()=>contractByXlh(egldAmount)}
-          mt={10}
-          w={'full'}
-          bg={'yellow.400'}
-          color={'white'}
-          rounded={'xl'}
-          boxShadow={'0 5px 20px 0px rgb(72 187 120 / 43%)'}
-          _hover={{
-            bg: 'yellow.500',
-          }}
-          _focus={{
-            bg: 'yellow.500',
-          }}
-        >
-          Buy XLH
-        </Button>;
+  if(isLoggedIn && !maxAmountReached && whitelisted && !trans && seedOpener && !soldOut){
+    if(collected){
+      buttonShow = "";
+    }else{
+      if(!xlhAmountReached){
+        if(egldAmountReached){
+          buttonShow = 
+          <Button
+            onClick={()=>contractByXlh(egldAmount)}
+            mt={10}
+            w={'full'}
+            bg={'yellow.400'}
+            color={'white'}
+            rounded={'xl'}
+            boxShadow={'0 5px 20px 0px rgb(72 187 120 / 43%)'}
+            _hover={{
+              bg: 'yellow.500',
+            }}
+            _focus={{
+              bg: 'yellow.500',
+            }}
+          >
+            Buy XLH
+          </Button>;
+        }else{
+          buttonShow = 
+          <Button
+            mt={10}
+            w={'full'}
+            bg={'red.400'}
+            color={'white'}
+            rounded={'xl'}
+            boxShadow={'0 5px 20px 0px rgb(72 187 120 / 43%)'}
+            _hover={{
+              bg: 'red.500',
+            }}
+            _focus={{
+              bg: 'red.500',
+            }}
+          >
+            Insufficient EGLD
+          </Button>;
+        }
       }else{
         buttonShow = 
         <Button
@@ -166,28 +255,10 @@ export default function Pricing({ contractByXlh }) {
             bg: 'red.500',
           }}
         >
-          Insufficient XEGLD
+          XLH Limit Exceeded
         </Button>;
-      }
-    }else{
-      buttonShow = 
-      <Button
-        mt={10}
-        w={'full'}
-        bg={'red.400'}
-        color={'white'}
-        rounded={'xl'}
-        boxShadow={'0 5px 20px 0px rgb(72 187 120 / 43%)'}
-        _hover={{
-          bg: 'red.500',
-        }}
-        _focus={{
-          bg: 'red.500',
-        }}
-      >
-        XLH Limit Exceeded
-      </Button>;
-    }      
+      } 
+    }     
   }else{
     buttonShow = "";
   }
