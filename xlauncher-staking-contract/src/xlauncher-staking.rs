@@ -31,6 +31,7 @@ pub struct ClientPullState<M: ManagedTypeApi> {
 pub struct VariableContractSettings<M: ManagedTypeApi> {
     pub token_id: TokenIdentifier<M>,
     pub min_amount: BigUint<M>,
+    pub contract_is_active: bool,
     pub pull_items: ManagedVec<M, Pull<M>>,
 }
 
@@ -145,6 +146,7 @@ pub trait XLauncherStaking {
                 token_id: (token_id),
                 min_amount: (min_amount),
                 pull_items: (pull_items),
+                contract_is_active: true,
             };
             self.variable_contract_settings().set(&variable_settings)
         }
@@ -710,7 +712,7 @@ pub trait XLauncherStaking {
                 let _updated_pull_item = pull_items.set(i, &pull);
             }
         }
-        if value_added{
+        if value_added {
             var_setting.pull_items = pull_items;
             self.variable_contract_settings().set(var_setting)
         }
