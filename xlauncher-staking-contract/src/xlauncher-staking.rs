@@ -594,6 +594,7 @@ pub trait XLauncherStaking {
     fn update_is_active_field(&self, is_active: bool) {
         require!(! self.variable_contract_settings().is_empty(),"Contract was not initialized");
         let mut settings = self.variable_contract_settings().get();
+
         if is_active != settings.contract_is_active {
             settings.contract_is_active = is_active;
             self.variable_contract_settings().set(settings);

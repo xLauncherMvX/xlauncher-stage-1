@@ -30,3 +30,8 @@ fn update_pull_settings_rs() {
 fn append_pull_settings_rs() {
     elrond_wasm_debug::mandos_rs("mandos/10-append-pull-settings.scen.json", world());
 }
+
+#[test]
+fn not_active_stake_pull_a_rs() {
+    elrond_wasm_debug::mandos_rs("mandos/11-not-active-stake-pull-a.scen.json", world());
+}

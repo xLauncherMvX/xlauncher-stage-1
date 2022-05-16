@@ -90,10 +90,35 @@
     },
 
     {
+      "step": "scCall",
+      "txId": "update-is-active-not-owner",
+      "tx": {
+        "from": "address:client1",
+        "to": "sc:xlauncher-staking",
+        "value": "0",
+        "function": "updateIsActiveField",
+        "arguments": [
+          "false"
+        ],
+        "gasLimit": "100,000,000",
+        "gasPrice": "0"
+      },
+      "expect": {
+        "out": [],
+        "status": "4",
+        "message": "str:Endpoint can only be called by owner",
+        "gas": "*",
+        "refund": "*"
+      }
+    },
+
+
+
+    {
       "step": "checkState",
       "accounts": {
         "address:client1": {
-          "nonce": "2",
+          "nonce": "3",
           "balance": "0",
           "esdt": {
             "str:BCOIN-a00000": "4,000,000,000,000,000,000,000",
