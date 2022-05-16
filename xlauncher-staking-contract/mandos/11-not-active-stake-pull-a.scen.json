@@ -88,61 +88,12 @@
         "blockTimestamp": "31536000"
       }
     },
-    {
-      "step": "scCall",
-      "txId": "appendPullSettings-new-id",
-      "tx": {
-        "from": "address:owner",
-        "to": "sc:xlauncher-staking",
-        "function": "updateIsActiveField",
-        "value": "0",
-        "gasLimit": "100,000,000",
-        "gasPrice": "0",
-        "arguments": [
-          "false"
-        ]
-      },
-      "expect": {
-        "out": [],
-        "status": "0",
-        "message": "",
-        "gas": "*",
-        "refund": "*"
-      }
-    },
-    {
-      "step": "scCall",
-      "txId": "stake-good-coin-second-time",
-      "tx": {
-        "from": "address:client1",
-        "to": "sc:xlauncher-staking",
-        "value": "0",
-        "function": "stake",
-        "esdtValue": [
-          {
-            "tokenIdentifier": "str:BCOIN-a00000",
-            "value": "1,000,000,000,000,000,000,000"
-          }
-        ],
-        "arguments": [
-          "1"
-        ],
-        "gasLimit": "100,000,000",
-        "gasPrice": "0"
-      },
-      "expect": {
-        "out": [],
-        "status": "4",
-        "message": "str:Contract is in maintenance",
-        "gas": "*",
-        "refund": "*"
-      }
-    },
+
     {
       "step": "checkState",
       "accounts": {
         "address:client1": {
-          "nonce": "3",
+          "nonce": "2",
           "balance": "0",
           "esdt": {
             "str:BCOIN-a00000": "4,000,000,000,000,000,000,000",
@@ -150,7 +101,7 @@
           }
         },
         "address:owner": {
-          "nonce": "2",
+          "nonce": "1",
           "balance": "0",
           "esdt": {
             "str:BCOIN-a00000": "100,000,000,000,000,000,000,000,000"
@@ -166,7 +117,7 @@
             "str:variableContractSettings": {
               "1-token_id": "nested:str:BCOIN-a00000",
               "2-min_amount": "biguint:250,000,000,000,000,000",
-              "3-contract_is_active": "false",
+              "3-contract_is_active": "true",
               "4-pull_items_vec_len": "u32:3",
               "5-first_pull_item": {
                 "1-id": "u32:1",
