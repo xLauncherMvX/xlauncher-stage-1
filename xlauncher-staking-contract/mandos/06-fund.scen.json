@@ -61,13 +61,30 @@
       }
     },
     {
+      "step": "scCall",
+      "txId": "fund-contract",
+      "tx": {
+        "from": "address:owner",
+        "to": "sc:xlauncher-staking",
+        "function": "fundContract",
+        "esdtValue": [
+          {
+            "tokenIdentifier": "str:BCOIN-a00000",
+            "value": "100,000,000,000,000,000,000,000,000"
+          }
+        ],
+        "gasLimit": "100,000,000",
+        "gasPrice": "0"
+      }
+    },
+    {
       "step": "checkState",
       "accounts": {
         "address:owner": {
           "nonce": "*",
           "balance": "0",
           "esdt": {
-            "str:BCOIN-a00000": "100,000,000,000,000,000,000,000,000"
+            "str:BCOIN-a00000": "0"
           },
           "storage": {},
           "code": ""
@@ -75,6 +92,9 @@
         "sc:xlauncher-staking": {
           "nonce": "*",
           "balance": "0",
+          "esdt": {
+            "str:BCOIN-a00000": "100,000,000,000,000,000,000,000,000"
+          },
           "storage": {
             "str:variableContractSettings": {
               "1-token_id": "nested:str:BCOIN-a00000",
