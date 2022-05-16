@@ -9,6 +9,7 @@ elrond_wasm_node::wasm_endpoints! {
     (
         appendPullSettings
         claim
+        claimUnstakedValue
         fundContract
         getClientReport
         getClientReportV2

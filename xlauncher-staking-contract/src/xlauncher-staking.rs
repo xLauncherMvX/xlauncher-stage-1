@@ -252,6 +252,11 @@ pub trait XLauncherStaking {
         }
     }
 
+    #[endpoint(claimUnstakedValue)]
+    fn claim_unstaked_value(&self){
+        sc_panic!("hello claim_unstaked_value")
+    }
+
     #[endpoint(unstake)]
     fn unstake(&self,
                pull_id: u32,
@@ -322,12 +327,10 @@ pub trait XLauncherStaking {
                 }*/
             }
         }
-        sc_print!("amount={}, total_items_value={}", amount,total_items_value);
+        //sc_print!("amount={}, total_items_value={}", amount,total_items_value);
         require!(amount <= total_items_value , "total staking value smaller then requested\
          amount={}, val={}, c1={}, c2={}, c3={}",amount,total_items_value,lev_1_count, lev_2_count, lev_3_count);
-        /* if amount <= total_items_value {
-             return multi_val_vec;
-         }*/
+
 
         //case 1 selected amount is exact amount staked
         if total_items_value == amount {
@@ -476,8 +479,6 @@ pub trait XLauncherStaking {
                 &[]);
         }
 
-        //return claim_vector;
-        //return multi_claim_vec;
     }
 
     #[endpoint(reinvest)]
