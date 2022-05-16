@@ -37,9 +37,9 @@ export default function ScratchBare() {
   const [dataAccount, setDataAccount] = useState([]);
 
   //mainnet
-  const apiLink = 'https://api.elrond.com/accounts/';  
-  const apiToken = 'XLH-8daa50';  
-  const customApi = apiLink+address+'/tokens/'+apiToken;
+  // const apiLink = 'https://api.elrond.com/accounts/';  
+  // const apiToken = 'XLH-8daa50';  
+  // const customApi = apiLink+address+'/tokens/'+apiToken;
 
   //devnet
   // const apiLink = 'https://devnet-api.elrond.com/accounts/';
@@ -52,9 +52,9 @@ export default function ScratchBare() {
   // const customApi = apiLink+address+'/tokens/'+apiToken;  
 
   //testnet
-  // const apiLink = 'https://testnet-api.elrond.com/accounts/';  
-  // const apiToken = 'XLH-0be7d1';  
-  // const customApi = apiLink+address+'/tokens/'+apiToken;
+  const apiLink = 'https://testnet-api.elrond.com/accounts/';  
+  const apiToken = 'XLH-0be7d1';  
+  const customApi = apiLink+address+'/tokens/'+apiToken;
 
   const getBalanceAccount = async () => {
       try {

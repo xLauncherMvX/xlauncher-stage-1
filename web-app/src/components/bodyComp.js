@@ -36,13 +36,13 @@ export default function BodyComp() {
         "buy",
       ].join("@"),
       receiver:
-        "erd1qqqqqqqqqqqqqpgqdy3tyfye72r2u8ahg7wwmm7yuu48vdqt4d6q27mvjm",
+        //"erd1qqqqqqqqqqqqqpgqdy3tyfye72r2u8ahg7wwmm7yuu48vdqt4d6q27mvjm",
 
         //"erd1qqqqqqqqqqqqqpgqf2ddf4cd3ycqde6d43ulkcjh46lqa5lnpa7qaej6t9",
         //"erd1qqqqqqqqqqqqqpgqhh5csdlkpxkt79zxnffrp9972tmnaq45f2ns7lsdph",
 
 
-        //"erd1qqqqqqqqqqqqqpgqrvc0vklltk8us4ftcf79cm3fhx7vtm72pa7q7zql3t",
+        "erd1qqqqqqqqqqqqqpgqrvc0vklltk8us4ftcf79cm3fhx7vtm72pa7q7zql3t",
       gasLimit: 10_000_000,
     };
 
