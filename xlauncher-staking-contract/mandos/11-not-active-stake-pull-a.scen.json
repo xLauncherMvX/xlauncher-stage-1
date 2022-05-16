@@ -96,9 +96,8 @@
         "from": "address:client1",
         "to": "sc:xlauncher-staking",
         "value": "0",
-        "function": "updateIsActiveField",
+        "function": "switchIsActiveFieldValue",
         "arguments": [
-          "false"
         ],
         "gasLimit": "100,000,000",
         "gasPrice": "0"
@@ -119,9 +118,8 @@
         "from": "address:owner",
         "to": "sc:xlauncher-staking",
         "value": "0",
-        "function": "updateIsActiveField",
+        "function": "switchIsActiveFieldValue",
         "arguments": [
-          "false"
         ],
         "gasLimit": "100,000,000",
         "gasPrice": "0"
