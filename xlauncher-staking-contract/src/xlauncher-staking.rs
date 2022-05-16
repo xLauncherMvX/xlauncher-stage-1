@@ -31,6 +31,7 @@ pub struct ClientPullState<M: ManagedTypeApi> {
 pub struct VariableContractSettings<M: ManagedTypeApi> {
     pub token_id: TokenIdentifier<M>,
     pub min_amount: BigUint<M>,
+    pub no_rewords_time_span: u64,
     pub contract_is_active: bool,
     pub pull_items: ManagedVec<M, Pull<M>>,
 }
@@ -137,7 +138,8 @@ pub trait XLauncherStaking {
                 apy_c0_apy);
 
 
-            // variable settings
+            // 60 * 60 * 24 * 10 = 864000 (10 days)
+            let days_10 = 864000_u64;
             let mut pull_items: ManagedVec<Pull<Self::Api>> = ManagedVec::new();
             pull_items.push(pull_a);
             pull_items.push(pull_b);
@@ -147,6 +149,7 @@ pub trait XLauncherStaking {
                 min_amount: (min_amount),
                 pull_items: (pull_items),
                 contract_is_active: true,
+                no_rewords_time_span: days_10,
             };
             self.variable_contract_settings().set(&variable_settings)
         }
