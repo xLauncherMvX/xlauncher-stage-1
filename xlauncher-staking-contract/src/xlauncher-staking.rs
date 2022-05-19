@@ -22,7 +22,8 @@ pub struct ClientPullState<M: ManagedTypeApi> {
 
 #[derive(TypeAbi, TopEncode, TopDecode, ManagedVecItem, NestedEncode, NestedDecode, Clone)]
 pub struct UnstakeState<M: ManagedTypeApi> {
-    pub unstake_amount: BigUint<M>,
+    pub total_unstaked_amount: BigUint<M>,
+    pub requested_amount: BigUint<M>,
     pub free_after_time_stamp: u64,
 }
 
@@ -223,7 +224,6 @@ pub trait XLauncherStaking {
         state_vector.push(&new_pull_state);
         self.append_client_if_needed();
         self.increment_total_staked_value(amount.clone());
-
     }
 
     fn append_client_if_needed(&self) {
@@ -243,33 +243,40 @@ pub trait XLauncherStaking {
     }
 
     fn increment_total_staked_value(&self, amount: BigUint) {
-        sc_print!("incrementing value staked-amount={}",amount);
         if self.total_staked_value().is_empty() {
             self.total_staked_value().set(&amount);
-            sc_print!("incrementing value is_empty staked-amount={}",amount);
         } else {
             let old_amount = self.total_staked_value().get();
             let new_value = amount.clone() + old_amount.clone();
             self.total_staked_value().set(&new_value);
-            sc_print!("incrementing value not empty old_amount={}, amount={},new_value={}",old_amount,amount,new_value);
         }
     }
 
-    fn add_to_unstake_value(&self, time_stamp: u64, amount: BigUint) {
+    fn decrement_total_staked_value(&self, amount: BigUint) {
+        let old_amount = self.total_staked_value().get();
+        let new_value = old_amount.clone() - amount.clone();
+        self.total_staked_value().set(&new_value);
+    }
+
+    fn add_to_unstake_value(&self, time_stamp: u64, total_amount: BigUint, requested_amount: BigUint) {
         let client = self.blockchain().get_caller();
         let settings = self.variable_contract_settings().get();
         let unstake_lock_span: u64 = settings.unstake_lock_span;
         let free_after_time_stamp: u64 = time_stamp + unstake_lock_span;
         if self.unstake_state(&client).is_empty() {
             let unstake_state = UnstakeState {
-                unstake_amount: amount.clone(),
+                total_unstaked_amount: total_amount.clone(),
+                requested_amount,
                 free_after_time_stamp,
             };
             self.unstake_state(&client).set(&unstake_state);
         } else {
             let mut unstake_state = self.unstake_state(&client).get();
             unstake_state.free_after_time_stamp = free_after_time_stamp;
-            unstake_state.unstake_amount = unstake_state.unstake_amount + amount;
+            unstake_state.total_unstaked_amount = unstake_state.total_unstaked_amount + total_amount;
+
+            unstake_state.requested_amount = unstake_state.requested_amount + requested_amount;
+
             self.unstake_state(&client).set(&unstake_state);
         }
     }
@@ -288,15 +295,16 @@ pub trait XLauncherStaking {
             "current_time_stamp is smaller then free_after_time_stamp");
 
 
-        require!(BigUint::zero() < unstake_state.unstake_amount, "No funds available to claim");
+        require!(BigUint::zero() < unstake_state.total_unstaked_amount, "No funds available to claim");
         let token_id = self.get_contract_token_id();
         self.send().direct(
             &client,
             &token_id,
             0,
-            &unstake_state.unstake_amount,
+            &unstake_state.total_unstaked_amount,
             &[]);
         self.unstake_state(&client).clear();
+        self.decrement_total_staked_value(unstake_state.requested_amount);
     }
 
     #[endpoint(unstake)]
@@ -376,7 +384,7 @@ pub trait XLauncherStaking {
             }
             let total_value = total_items_value.clone() + total_rewards.clone();
             if total_value > BigUint::zero() {
-                self.add_to_unstake_value(current_time_stamp, total_value);
+                self.add_to_unstake_value(current_time_stamp, total_value, amount);
                 return;
             }
         }
@@ -410,7 +418,9 @@ pub trait XLauncherStaking {
                     0,
                     &total_case_2_value,
                     &[]);*/
-                self.add_to_unstake_value(current_time_stamp, total_case_2_value);
+                self.add_to_unstake_value(current_time_stamp,
+                                          total_case_2_value,
+                                          amount);
                 return;
             }
         }
@@ -542,19 +552,21 @@ pub trait XLauncherStaking {
                     client_item.pull_time_stamp_last_collection = current_time_stamp;
                     client_vector.set(i, &client_item);
                     total_rewards += item_rewards;
+                    sc_print!("total_rewards={}",total_rewards);
                 }
             }
         }
 
-        if total_rewards > 0_u64 {
+        if total_rewards > BigUint::zero() {
             let new_pull_state = ClientPullState {
                 pull_id: (pull_id),
                 pull_time_stamp_entry: (current_time_stamp),
                 pull_time_stamp_last_collection: (current_time_stamp),
-                pull_amount: total_rewards,
+                pull_amount: total_rewards.clone(),
             };
 
             client_vector.push(&new_pull_state);
+            self.increment_total_staked_value(total_rewards);
         }
     }
 

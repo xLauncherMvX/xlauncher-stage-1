@@ -10,7 +10,7 @@
         "contractCrate": {
             "name": "xlauncher-staking",
             "version": "0.1.0",
-            "git_version": "4a0bd34-modified"
+            "git_version": "4ae644e-modified"
         },
         "framework": {
             "name": "elrond-wasm",
@@ -478,7 +478,11 @@
             "type": "struct",
             "fields": [
                 {
-                    "name": "unstake_amount",
+                    "name": "total_unstaked_amount",
+                    "type": "BigUint"
+                },
+                {
+                    "name": "requested_amount",
                     "type": "BigUint"
                 },
                 {

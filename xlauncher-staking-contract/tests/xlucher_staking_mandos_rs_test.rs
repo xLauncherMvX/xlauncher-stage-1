@@ -60,3 +60,8 @@ fn not_active_stake_pull_a_rs() {
 fn claim_before_and_after_time_ends_rs() {
     elrond_wasm_debug::mandos_rs("mandos/12-claim-unstaked-before-and-after-time-ends.scen.json", world());
 }
+
+#[test]
+fn reinvest_case_2_rs(){
+    elrond_wasm_debug::mandos_rs("mandos/05-reinvest-case-2.scen.json", world());
+}

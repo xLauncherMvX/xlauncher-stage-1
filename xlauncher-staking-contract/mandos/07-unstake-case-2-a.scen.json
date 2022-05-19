@@ -214,9 +214,13 @@
               "4-pull_amount": "biguint:500,000,000,000,000,000,000"
             },
             "str:unstakeState|address:client1": {
-              "0-unstake_amount": "biguint:502499999999999953760",
-              "1-free_after_time_stamp": "u64:24516000"
-            }
+              "0-total_unstaked_amount": "biguint:502499999999999953760",
+              "1-requested_amount": "biguint:500,000,000,000,000,000,000",
+              "2-free_after_time_stamp": "u64:24516000"
+            },
+            "str:totalStakedValue": "1,000,000,000,000,000,000,000",
+            "str:clientList|str:.len": "1",
+            "str:clientList|str:.item|u32:1": "address:client1"
           },
           "code": "file:../output/xlauncher-staking.wasm"
         }

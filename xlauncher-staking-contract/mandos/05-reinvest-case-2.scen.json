@@ -84,7 +84,7 @@
     },
     {
       "step": "scCall",
-      "txId": "stake-good-coin-second-time",
+      "txId": "stake-good-coin",
       "tx": {
         "from": "address:client1",
         "to": "sc:xlauncher-staking",
@@ -218,7 +218,7 @@
               "3-pull_time_stamp_last_collection": "u64:23652000",
               "4-pull_amount": "biguint:2,499,999,999,999,953,760"
             },
-            "str:totalStakedValue": "2,499,999,999,999,953,760",
+            "str:totalStakedValue": "1,002,499,999,999,999,953,760",
             "str:clientList|str:.len": "1",
             "str:clientList|str:.item|u32:1": "address:client1"
           },
