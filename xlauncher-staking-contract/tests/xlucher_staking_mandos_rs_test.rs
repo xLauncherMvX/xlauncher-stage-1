@@ -50,3 +50,8 @@ fn append_pull_settings_rs() {
 fn not_active_stake_pull_a_rs() {
     elrond_wasm_debug::mandos_rs("mandos/11-not-active-stake-pull-a.scen.json", world());
 }
+
+#[test]
+fn claim_before_and_after_time_ends_rs() {
+    elrond_wasm_debug::mandos_rs("mandos/12-claim-unstaked-before-and-after-time-ends.scen.json", world());
+}

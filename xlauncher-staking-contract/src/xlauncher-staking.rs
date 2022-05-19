@@ -8,7 +8,9 @@ elrond_wasm::derive_imports!();
 
 
 
+/**
 
+ */
 #[derive(TypeAbi, TopEncode, TopDecode, ManagedVecItem, NestedEncode, NestedDecode, Clone)]
 pub struct ClientPullState<M: ManagedTypeApi> {
     pub pull_id: u32,
@@ -24,16 +26,6 @@ pub struct UnstakeState<M: ManagedTypeApi> {
     pub free_after_time_stamp: u64,
 }
 
-// how to initialize variables
-// token_id, min_amount
-//
-// pull_a_id, pull_a_locking_time_span
-// apy_a0_id, apy_a0_start, apy_a0_end, apy_a0_apy
-// apy_a1_id, apy_a1_start, apy_a1_end, apy_a1_apy
-//
-// pull_b_id, pull_b_locking_time_span
-// apy_b0_id, apy_b0_start, apy_b0_end, apy_b0_apy
-// apy_a1_id, apy_a1_start, apy_a1_end, apy_a1_apy
 #[derive(TypeAbi, TopEncode, TopDecode, ManagedVecItem, NestedEncode, NestedDecode)]
 pub struct VariableContractSettings<M: ManagedTypeApi> {
     pub token_id: TokenIdentifier<M>,
@@ -241,26 +233,44 @@ pub trait XLauncherStaking {
                 unstake_amount: amount.clone(),
                 free_after_time_stamp,
             };
-            sc_print!("unstake_amount={}, free_after_time_stamp={}",amount,free_after_time_stamp);
             self.unstake_state(&client).set(&unstake_state);
         } else {
             let mut unstake_state = self.unstake_state(&client).get();
             unstake_state.free_after_time_stamp = free_after_time_stamp;
             unstake_state.unstake_amount = unstake_state.unstake_amount + amount;
             self.unstake_state(&client).set(&unstake_state);
-            sc_print!("unstake_amount={}, free_after_time_stamp={}",unstake_state.unstake_amount,unstake_state.free_after_time_stamp);
         }
     }
 
     #[endpoint(claimUnstakedValue)]
-    fn claim_unstaked_value(&self){
-        sc_panic!("hello claim_unstaked_value")
+    fn claim_unstaked_value(&self) {
+        require!(self.contract_is_active(),"Contract is in maintenance");
+        let current_time_stamp: u64 = self.blockchain().get_block_timestamp();
+        let client = self.blockchain().get_caller();
+        require!(!self.unstake_state(&client).is_empty(), "No funds to claim");
+        let unstake_state = self.unstake_state(&client).get();
+
+        sc_print!("claim_unstaked_value_log: current_time_stamp={}, free_after_time_stamp={}"
+        , current_time_stamp, unstake_state.free_after_time_stamp);
+        require!( unstake_state.free_after_time_stamp < current_time_stamp,
+            "current_time_stamp is smaller then free_after_time_stamp");
+
+
+        require!(BigUint::zero() < unstake_state.unstake_amount, "No funds available to claim");
+        let token_id = self.get_contract_token_id();
+        self.send().direct(
+            &client,
+            &token_id,
+            0,
+            &unstake_state.unstake_amount,
+            &[]);
+        self.unstake_state(&client).clear();
     }
 
     #[endpoint(unstake)]
     fn unstake(&self,
                pull_id: u32,
-               amount: BigUint) /*-> MultiValueEncoded<MultiValue4<u32, u64, u64, BigUint>>*/ {
+               amount: BigUint) {
         require!(self.contract_is_active(),"Contract is in maintenance");
         let mut multi_val_vec: MultiValueEncoded<MultiValue4<u32, u64, u64, BigUint>> = MultiValueEncoded::new();
 
@@ -285,7 +295,6 @@ pub trait XLauncherStaking {
                 let client_item = client_vector.get(i);
                 let client_item_id = client_item.pull_id.clone();
 
-                //require!(client_item.pull_id == pull_id , "hard debug: client_item.pull_id={}, pull_id={}",client_item.pull_id, pull_id);
                 require!(client_item.pull_id == pull_id , "client_item.pull_id={}, pull_id={}",client_item_id, pull_id);
 
                 let unstake_time = locking_time_span + client_item.pull_time_stamp_entry;
@@ -307,8 +316,6 @@ pub trait XLauncherStaking {
                                                                      current_time_stamp);
                         total_items_value = total_items_value + client_item.pull_amount.clone();
                         total_rewards = total_rewards + item_rewords;
-                        sc_print!("k={}, amount={}, total_items_value={}",k, amount,total_items_value);
-
 
                         lev_3_count = lev_3_count + 1;
 
@@ -321,13 +328,10 @@ pub trait XLauncherStaking {
                             ))
                         );
                     }
-                } /*else {
-                    sc_panic!("client_item.pull_id={}, pull_id={}, unstake_time={},current_time_stamp={} total_items_value{}",
-                        client_item.pull_id, pull_id, unstake_time,current_time_stamp, total_items_value);
-                }*/
+                }
             }
         }
-        //sc_print!("amount={}, total_items_value={}", amount,total_items_value);
+
         require!(amount <= total_items_value , "total staking value smaller then requested\
          amount={}, val={}, c1={}, c2={}, c3={}",amount,total_items_value,lev_1_count, lev_2_count, lev_3_count);
 
@@ -443,11 +447,6 @@ pub trait XLauncherStaking {
                             rewords: config_rewords.clone(),
                             current_time_stamp: current_time_stamp.clone(),
                         };
-                        sc_print!("claimItem: pull_id={}, pull_amount={}, pull_time_stamp_entry={}, pull_time_stamp_last_collection={}, rewords={}, current_time_stamp={}",
-                            pull_id.clone(), client_item.pull_amount.clone(),
-                            client_item.pull_time_stamp_entry.clone(),
-                            client_item.pull_time_stamp_last_collection.clone(),
-                            config_rewords.clone(), current_time_stamp.clone());
 
                         multi_claim_vec.push(
                             MultiValue5::from((
@@ -468,7 +467,7 @@ pub trait XLauncherStaking {
                 }
             }
         }
-        sc_print!("total_rewards={}",total_rewards);
+
         if total_rewards > 0_u64 {
             let token_id = self.get_contract_token_id();
             self.send().direct(
@@ -478,7 +477,6 @@ pub trait XLauncherStaking {
                 &total_rewards,
                 &[]);
         }
-
     }
 
     #[endpoint(reinvest)]
