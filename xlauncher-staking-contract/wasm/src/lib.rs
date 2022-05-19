@@ -11,11 +11,13 @@ elrond_wasm_node::wasm_endpoints! {
         claim
         claimUnstakedValue
         fundContract
+        getClientList
         getClientReport
         getClientReportV2
         getClientReportV3
         getClientState
         getTokenBalance
+        getTotalStakedValue
         getUnstakeState
         getVariableContractSettings
         reinvest

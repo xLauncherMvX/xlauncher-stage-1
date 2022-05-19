@@ -217,10 +217,42 @@ pub trait XLauncherStaking {
             pull_id: (pull_id),
             pull_time_stamp_entry: (current_time_stamp),
             pull_time_stamp_last_collection: (current_time_stamp),
-            pull_amount: amount,
+            pull_amount: amount.clone(),
         };
 
         state_vector.push(&new_pull_state);
+        self.append_client_if_needed();
+        self.increment_total_staked_value(amount.clone());
+
+    }
+
+    fn append_client_if_needed(&self) {
+        let mut client_list = self.client_list();
+        let client = self.blockchain().get_caller();
+        if client_list.len() == 0 {
+            client_list.push(&client);
+        } else {
+            for i in 1..=client_list.len() {
+                let item = client_list.get(i);
+                if item == client {
+                    return;
+                }
+            }
+            client_list.push(&client);
+        }
+    }
+
+    fn increment_total_staked_value(&self, amount: BigUint) {
+        sc_print!("incrementing value staked-amount={}",amount);
+        if self.total_staked_value().is_empty() {
+            self.total_staked_value().set(&amount);
+            sc_print!("incrementing value is_empty staked-amount={}",amount);
+        } else {
+            let old_amount = self.total_staked_value().get();
+            let new_value = amount.clone() + old_amount.clone();
+            self.total_staked_value().set(&new_value);
+            sc_print!("incrementing value not empty old_amount={}, amount={},new_value={}",old_amount,amount,new_value);
+        }
     }
 
     fn add_to_unstake_value(&self, time_stamp: u64, amount: BigUint) {
@@ -993,4 +1025,13 @@ pub trait XLauncherStaking {
     #[storage_mapper("unstakeState")]
     fn unstake_state(&self, client_address: &ManagedAddress)
                      -> SingleValueMapper<UnstakeState<Self::Api>>;
+
+    #[view(getClientList)]
+    #[storage_mapper("clientList")]
+    fn client_list(&self) -> VecMapper<ManagedAddress>;
+
+
+    #[view(getTotalStakedValue)]
+    #[storage_mapper("totalStakedValue")]
+    fn total_staked_value(&self) -> SingleValueMapper<BigUint>;
 }

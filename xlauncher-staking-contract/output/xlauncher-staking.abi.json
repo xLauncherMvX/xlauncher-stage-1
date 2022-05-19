@@ -10,7 +10,7 @@
         "contractCrate": {
             "name": "xlauncher-staking",
             "version": "0.1.0",
-            "git_version": "826d597-modified"
+            "git_version": "4a0bd34-modified"
         },
         "framework": {
             "name": "elrond-wasm",
@@ -351,6 +351,27 @@
             "outputs": [
                 {
                     "type": "UnstakeState"
+                }
+            ]
+        },
+        {
+            "name": "getClientList",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "variadic<Address>",
+                    "multi_result": true
+                }
+            ]
+        },
+        {
+            "name": "getTotalStakedValue",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "BigUint"
                 }
             ]
         }

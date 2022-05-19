@@ -12,6 +12,11 @@ fn world() -> BlockchainMock {
 }
 
 #[test]
+fn stake_pull_a_rs() {
+    elrond_wasm_debug::mandos_rs("mandos/02-stake-pull-a.scen.json", world());
+}
+
+#[test]
 fn claim_successful_rs() {
     elrond_wasm_debug::mandos_rs("mandos/04-claim-case-7.scen.json", world());
 }

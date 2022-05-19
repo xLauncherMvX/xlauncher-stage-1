@@ -239,7 +239,10 @@
               "2-pull_time_stamp_entry": "u64:0",
               "3-pull_time_stamp_last_collection": "u64:31536000",
               "4-pull_amount": "biguint:1,000,000,000,000,000,000,000"
-            }
+            },
+            "str:totalStakedValue": "1000000000000000000000",
+            "str:clientList|str:.len": "1",
+            "str:clientList|str:.item|u32:1": "address:client1"
           },
           "code": "file:../output/xlauncher-staking.wasm"
         }
