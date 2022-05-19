@@ -10,7 +10,7 @@
         "contractCrate": {
             "name": "xlauncher-staking",
             "version": "0.1.0",
-            "git_version": "b2abd76-modified"
+            "git_version": "826d597-modified"
         },
         "framework": {
             "name": "elrond-wasm",
@@ -188,6 +188,18 @@
             "onlyOwner": true,
             "mutability": "mutable",
             "inputs": [],
+            "outputs": []
+        },
+        {
+            "name": "updateUnstakeLockSpan",
+            "onlyOwner": true,
+            "mutability": "mutable",
+            "inputs": [
+                {
+                    "name": "unstake_lock_span",
+                    "type": "u64"
+                }
+            ],
             "outputs": []
         },
         {

@@ -624,6 +624,16 @@ pub trait XLauncherStaking {
     }
 
     #[only_owner]
+    #[endpoint(updateUnstakeLockSpan)]
+    fn update_unstake_lock_span(&self, unstake_lock_span: u64) {
+        require!(! self.variable_contract_settings().is_empty(),"Contract was not initialized");
+        require!(0_u64 < unstake_lock_span, "Unstake lock span must be positive");
+        let mut settings = self.variable_contract_settings().get();
+        settings.unstake_lock_span = unstake_lock_span;
+        self.variable_contract_settings().set(settings);
+    }
+
+    #[only_owner]
     #[endpoint(updatePullSettings)]
     fn update_pull_settings(&self,
                             apy_id: u32,
