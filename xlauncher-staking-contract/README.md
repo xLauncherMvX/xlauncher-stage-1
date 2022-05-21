@@ -51,6 +51,9 @@ new ClientPullState and addit to the clientState wit the folowig field values
 - pull_time_stamp_entry = last_item.pull_time_stamp_entry
 - pull_time_stamp_last_collection = current_time_stamp
 
+### calculate_rewards_v2
+This is the function that is used to calculate the rewords for each instance of the `ClientPullState` items. It is a pure fuction and only cares about the provided fuction parameters. 
+
 ### claimUnstakedValue
 
 When we `claimUnstakedValue` we check the value stored in `unstakeState` and if the `current_time_stamp` is bigger
