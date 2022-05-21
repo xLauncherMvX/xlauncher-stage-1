@@ -71,7 +71,7 @@ deploy() {
 
 updateContract() {
   erdpy --verbose contract upgrade ${ADDRESS} --project=${PROJECT} --recall-nonce --pem=${PEM_FILE} \
-    --gas-limit=100000000 --send --outfile="${MY_LOGS}/update-${ENV_LOGS}.json" \
+    --gas-limit=150000000 --send --outfile="${MY_LOGS}/update-${ENV_LOGS}.json" \
     --proxy=${PROXY} --chain=${CHAINID} \
     --arguments "0x${TOKEN_ID_HEX}" ${MIN_AMOUNT} \
     ${PULL_A_ID} ${PULL_A_LOCKING_TIME_SPAN} ${APY_A0_ID} ${APY_A0_START} ${APY_A0_END} ${APY_A0_APY} \
