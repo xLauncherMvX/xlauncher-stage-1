@@ -40,21 +40,29 @@ We keep track of 2 values:
 - `total_items_value`: is the value that is stored in each `ClientPullState` item
 - `total_value`: is the total_items_value + rewords
 
-If total_items_value == amount we just move the total_value in the client `unstakeState` where the funds are locke for some number of days without rewords
+If total_items_value == amount we just move the total_value in the client `unstakeState` where the funds are locke for
+some number of days without rewords
 
-If amount < total_items_value we move the selected ammount to `unstakeState`, compute the difference left and create a new ClientPullState and addit to the clientState wit the folowig field values
+If amount < total_items_value we move the selected ammount to `unstakeState`, compute the difference left and create a
+new ClientPullState and addit to the clientState wit the folowig field values
+
 - pull_id = selected id
 - pull_amount = diff
 - pull_time_stamp_entry = last_item.pull_time_stamp_entry
 - pull_time_stamp_last_collection = current_time_stamp
 
 ### claimUnstakedValue
-When we `claimUnstakedValue` we check the value stored in `unstakeState` and if the `current_time_stamp` is bigger then `free_after_time_stamp` 
+
+When we `claimUnstakedValue` we check the value stored in `unstakeState` and if the `current_time_stamp` is bigger
+then `free_after_time_stamp`
+
 - send the `total_unstaked_amount` that includes also the computed rewords to the client wallet
-- deduct from the contract `totalStakedValue` the `requested_amount` 
+- deduct from the contract `totalStakedValue` the `requested_amount`
 
 ## admin ednpoitns
+
 The are the endpoints exposed only to the contract owner necesery for servicing and maintain the contract
+
 - `switchIsActiveFieldValue`
 - `updateUnstakeLockSpan`
 - `updatePullSettings`
