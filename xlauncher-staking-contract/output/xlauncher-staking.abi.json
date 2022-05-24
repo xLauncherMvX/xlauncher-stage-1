@@ -10,7 +10,7 @@
         "contractCrate": {
             "name": "xlauncher-staking",
             "version": "0.1.0",
-            "git_version": "106687a"
+            "git_version": "5f084c7-modified"
         },
         "framework": {
             "name": "elrond-wasm",
@@ -29,11 +29,11 @@
                 "type": "BigUint"
             },
             {
-                "name": "pull_a_id",
+                "name": "pool_a_id",
                 "type": "u32"
             },
             {
-                "name": "pull_a_locking_time_span",
+                "name": "pool_a_locking_time_span",
                 "type": "u64"
             },
             {
@@ -53,11 +53,11 @@
                 "type": "u64"
             },
             {
-                "name": "pull_b_id",
+                "name": "pool_b_id",
                 "type": "u32"
             },
             {
-                "name": "pull_b_locking_time_span",
+                "name": "pool_b_locking_time_span",
                 "type": "u64"
             },
             {
@@ -77,11 +77,11 @@
                 "type": "u64"
             },
             {
-                "name": "pull_c_id",
+                "name": "pool_c_id",
                 "type": "u32"
             },
             {
-                "name": "pull_c_locking_time_span",
+                "name": "pool_c_locking_time_span",
                 "type": "u64"
             },
             {
@@ -159,9 +159,6 @@
             "outputs": []
         },
         {
-            "docs": [
-                "\\n    Multi value encoded fields\\n    - pull value,\\n    - rewords,\\n    - entry time stamp,\\n    - time_stamp_last_colection\\n    - current time stamp\\n    *"
-            ],
             "name": "claim",
             "mutability": "mutable",
             "inputs": [
@@ -401,9 +398,6 @@
         },
         "ClientPullState": {
             "type": "struct",
-            "docs": [
-                "\\n\\n "
-            ],
             "fields": [
                 {
                     "name": "pull_id",
@@ -423,7 +417,7 @@
                 }
             ]
         },
-        "Pull": {
+        "Pool": {
             "type": "struct",
             "fields": [
                 {
@@ -512,7 +506,7 @@
                 },
                 {
                     "name": "pull_items",
-                    "type": "List<Pull>"
+                    "type": "List<Pool>"
                 }
             ]
         }

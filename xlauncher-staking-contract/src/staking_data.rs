@@ -24,11 +24,11 @@ pub struct VariableContractSettings<M: ManagedTypeApi> {
     pub min_amount: BigUint<M>,
     pub unstake_lock_span: u64,
     pub contract_is_active: bool,
-    pub pull_items: ManagedVec<M, Pull<M>>,
+    pub pull_items: ManagedVec<M, Pool<M>>,
 }
 
 #[derive(TypeAbi, TopEncode, TopDecode, ManagedVecItem, NestedEncode, NestedDecode)]
-pub struct Pull<M: ManagedTypeApi> {
+pub struct Pool<M: ManagedTypeApi> {
     pub id: u32,
     pub locking_time_span: u64,
     pub apy_configuration: ManagedVec<M, ApyConfiguration>,

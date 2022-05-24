@@ -7,39 +7,41 @@ elrond_wasm::imports!();
 elrond_wasm::derive_imports!();
 
 mod staking_data;
+
 use staking_data::*;
 
 #[elrond_wasm::contract]
 pub trait XLauncherStaking {
-
     // I think "pool" would be a more representative term for the scope of the contract, rather than pull
+    // - renamed to pool
     // It would also help by making the code more easy to read and understand
     // Try to maintain each pool individually, so maybe deploy with the generic parameters and have another endpoint to update the pools
     // This would make it easier to introduce new pools without requiring a contract upgrade
+    // - this is the underling design for for now we focus on present business requirements.
     #[init]
     fn init(&self,
             token_id: TokenIdentifier,
             min_amount: BigUint,
 
-            //pull a no lockout: 0
-            pull_a_id: u32,
-            pull_a_locking_time_span: u64,
+            //pool a no lockout: 0
+            pool_a_id: u32,
+            pool_a_locking_time_span: u64,
             apy_a0_id: u32,
             apy_a0_start: u64,
             apy_a0_end: u64,
             apy_a0_apy: u64,
 
             //pull b 60 days: 5184000
-            pull_b_id: u32,
-            pull_b_locking_time_span: u64,
+            pool_b_id: u32,
+            pool_b_locking_time_span: u64,
             apy_b0_id: u32,
             apy_b0_start: u64,
             apy_b0_end: u64,
             apy_b0_apy: u64,
 
             //pull c 180 days: 15552000
-            pull_c_id: u32,
-            pull_c_locking_time_span: u64,
+            pool_c_id: u32,
+            pool_c_locking_time_span: u64,
             apy_c0_id: u32,
             apy_c0_start: u64,
             apy_c0_end: u64,
@@ -51,25 +53,25 @@ pub trait XLauncherStaking {
         if self.variable_contract_settings().is_empty() {
             //we create the initial set of variable settings
 
-            let pull_a = self.build_pull(
-                pull_a_id,
-                pull_a_locking_time_span,
+            let pool_a = self.build_pool(
+                pool_a_id,
+                pool_a_locking_time_span,
                 apy_a0_id,
                 apy_a0_start,
                 apy_a0_end,
                 apy_a0_apy);
 
-            let pull_b = self.build_pull(
-                pull_b_id,
-                pull_b_locking_time_span,
+            let pool_b = self.build_pool(
+                pool_b_id,
+                pool_b_locking_time_span,
                 apy_b0_id,
                 apy_b0_start,
                 apy_b0_end,
                 apy_b0_apy);
 
-            let pull_c = self.build_pull(
-                pull_c_id,
-                pull_c_locking_time_span,
+            let pool_c = self.build_pool(
+                pool_c_id,
+                pool_c_locking_time_span,
                 apy_c0_id,
                 apy_c0_start,
                 apy_c0_end,
@@ -78,14 +80,14 @@ pub trait XLauncherStaking {
 
             // 60 * 60 * 24 * 10 = 864000 (10 days)
             let days_10 = 864000_u64;
-            let mut pull_items: ManagedVec<Pull<Self::Api>> = ManagedVec::new();
-            pull_items.push(pull_a);
-            pull_items.push(pull_b);
-            pull_items.push(pull_c);
+            let mut pool_items: ManagedVec<Pool<Self::Api>> = ManagedVec::new();
+            pool_items.push(pool_a);
+            pool_items.push(pool_b);
+            pool_items.push(pool_c);
             let variable_settings = VariableContractSettings {
                 token_id: (token_id),
                 min_amount: (min_amount),
-                pull_items: (pull_items),
+                pull_items: (pool_items),
                 contract_is_active: true,
                 unstake_lock_span: days_10,
             };
@@ -93,12 +95,12 @@ pub trait XLauncherStaking {
         }
     }
 
-    fn build_pull(self, pull_id: u32,
+    fn build_pool(self, pull_id: u32,
                   pull_locking_time_span: u64,
                   apy_0_id: u32,
                   apy_0_start: u64,
                   apy_0_end: u64,
-                  apy_0_apy: u64, ) -> Pull<Self::Api> {
+                  apy_0_apy: u64, ) -> Pool<Self::Api> {
         let mut pull_a_config_vector: ManagedVec<ApyConfiguration> = ManagedVec::new();
         let apy_a0 = ApyConfiguration {
             id: (apy_0_id),
@@ -109,7 +111,7 @@ pub trait XLauncherStaking {
         pull_a_config_vector.push(apy_a0);
 
 
-        let pull_a = Pull {
+        let pull_a = Pool {
             id: (pull_id),
             locking_time_span: (pull_locking_time_span),
             apy_configuration: (pull_a_config_vector),
@@ -117,13 +119,10 @@ pub trait XLauncherStaking {
         return pull_a;
     }
 
-    // NOTE
-    // Same as the presale contract
-    #[endpoint(fundContract)]
     #[payable("*")]
-    fn fund_contract(&self,
-                     #[payment_token] token_id: TokenIdentifier,
-                     #[payment] _payment: BigUint) {
+    #[endpoint(fundContract)]
+    fn fund_contract(&self) {
+        let token_id = self.call_value().token();
         let settings: VariableContractSettings<Self::Api> = self.variable_contract_settings().get();
         require!(token_id.is_valid_esdt_identifier(), "invalid token_id");
         require!(settings.token_id == token_id, "not the same token id");
@@ -131,6 +130,7 @@ pub trait XLauncherStaking {
 
     // NOTE
     // Same as the presale contract
+    // - postponed storing the amount in the storage (not very relevant for our 1st use case)
     #[view(getTokenBalance)]
     fn get_token_balance(&self) -> BigUint {
         let settings: VariableContractSettings<Self::Api> = self.variable_contract_settings().get();
@@ -139,21 +139,18 @@ pub trait XLauncherStaking {
         return balance;
     }
 
-    // NOTE
-    // Same as the presale contract for the payment
-    // Also, there should be a check for a valid pull_id as well, from the settings struct
-    // Otherwise, if an address stakes some tokens to a wrond pull_id, we can have undesired behaviour
     #[payable("*")]
     #[endpoint(stake)]
     fn stake(&self,
-             #[payment_token] token_id: TokenIdentifier,
-             #[payment_amount] amount: BigUint,
              pull_id: u32,
     ) {
+        let (amount, token_id) = self.call_value().payment_token_pair();
         require!(self.contract_is_active(),"Contract is in maintenance");
         let settings: VariableContractSettings<Self::Api> = self.variable_contract_settings().get();
         require!(token_id.is_valid_esdt_identifier(), "invalid token_id");
         require!(settings.token_id == token_id, "not the same token id");
+        require!(self.pull_exists(pull_id.clone()),"invalid pull_id={}",pull_id);
+
 
 
         let client = self.blockchain().get_caller();
@@ -176,6 +173,7 @@ pub trait XLauncherStaking {
     // As there is no need to iterate over the list of addresses (and we do this just to check the list), there is no need for a VecMapper
     // We can use WhitelistMapper to efficiently save the address in a list
     // If there is a plan to iterate over the elements of the list, we can instead use UnorderedSetMapper or SetMapper
+    // - todo refactor client list
     fn append_client_if_needed(&self) {
         let mut client_list = self.client_list();
         let client = self.blockchain().get_caller();
@@ -192,26 +190,12 @@ pub trait XLauncherStaking {
         }
     }
 
-    // NOTE
-    // There is no need check if the total staked value is 0, we can simply use the update method of mapper
-    // self.total_staked_value().update(|total| *total += &amount);
     fn increment_total_staked_value(&self, amount: BigUint) {
-        if self.total_staked_value().is_empty() {
-            self.total_staked_value().set(&amount);
-        } else {
-            let old_amount = self.total_staked_value().get();
-            let new_value = amount.clone() + old_amount.clone();
-            self.total_staked_value().set(&new_value);
-        }
+        self.total_staked_value().update(|total| *total += &amount);
     }
 
-    // NOTE
-    // Again, we can use the update method of the mapper
-    // self.total_staked_value().update(|total| *total -= &amount);
     fn decrement_total_staked_value(&self, amount: BigUint) {
-        let old_amount = self.total_staked_value().get();
-        let new_value = old_amount.clone() - amount.clone();
-        self.total_staked_value().set(&new_value);
+        self.total_staked_value().update(|total| *total -= &amount);
     }
 
     fn add_to_unstake_value(&self, time_stamp: u64, total_amount: BigUint, requested_amount: BigUint) {
@@ -364,24 +348,15 @@ pub trait XLauncherStaking {
             let mut updated_vector = self.client_state(&client);
             updated_vector.push(&last_tem);
 
-            // compute how mutch we need to transfer in client wallet
+            // compute how much we need to transfer in client wallet
             let total_case_2_value = amount.clone() + total_rewards.clone();
             if total_case_2_value > BigUint::zero() {
-                /*let token_id = self.get_contract_token_id();
-                self.send().direct(
-                    &client,
-                    &token_id,
-                    0,
-                    &total_case_2_value,
-                    &[]);*/
                 self.add_to_unstake_value(current_time_stamp,
                                           total_case_2_value,
                                           amount);
                 return;
             }
         }
-
-        // return multi_val_vec;
     }
 
     fn remove_client_item_from_storadge(&self, entry_time_stamp: &u64, client: &ManagedAddress) {
@@ -404,35 +379,28 @@ pub trait XLauncherStaking {
 
     // The staking rewards calculation is way too complicated and it has lots of iterations, that translates in higher gas costs for the tx
     // You could try to use events for previous claims and just focus on calculations from the current time forward
-    // Also, based on the scope of the staking contract, as it will havve more and more users, it will be more costly to save all users data
+    // Also, based on the scope of the staking contract, as it will have more and more users, it will be more costly to save all users data
     // You could try an approach based on the DEX implementation, using a META ESDT as staking_position. But this may take quite some time to refactor
+    // - we will go live with the current logic for now and work on a second version of this after we go live and I will explore
+    //   - learn how events could reduce gas costs in current logic
+    //   - employ DEX solution based on META ESTD staking_position
 
-    /**
-    Multi value encoded fields
-    - pull value,
-    - rewords,
-    - entry time stamp,
-    - time_stamp_last_colection
-    - current time stamp
-    **/
     #[endpoint(claim)]
     fn claim(&self,
-             pull_id: u32) /*-> MultiValueEncoded<MultiValue5<BigUint, BigUint, u64, u64, u64>> */ {
+             pull_id: u32) {
         require!(self.contract_is_active(),"Contract is in maintenance");
         let client = self.blockchain().get_caller();
         let current_time_stamp = self.blockchain().get_block_timestamp();
         let client_vector = self.client_state(&client);
-        let id_clone = pull_id.clone();
-        let config_vector = self.get_apy_config_vector(id_clone); // why not sending the cloned variable directly?
+        let config_vector = self.get_apy_config_vector(pull_id.clone());
         let mut total_rewards = BigUint::zero(); //total rewords
 
         let mut claim_vector: ManagedVec<ClaimItem<Self::Api>> = ManagedVec::new();
-        let mut multi_claim_vec: MultiValueEncoded<MultiValue5<BigUint, BigUint, u64, u64, u64>> = MultiValueEncoded::new();
 
         if client_vector.len() > 0 && config_vector.len() > 0 {
             for i in 1..=client_vector.len() {
                 let mut client_item = client_vector.get(i);
-                let mut item_rewards = BigUint::zero(); // item rewords
+                let mut item_rewords = BigUint::zero();
                 if client_item.pull_id == pull_id {
                     for k in 0..=(config_vector.len() - 1) {
                         let config_item = config_vector.get(k);
@@ -441,7 +409,7 @@ pub trait XLauncherStaking {
                                                                        config_item,
                                                                        current_time_stamp.clone());
                         if config_rewords > BigUint::zero() {
-                            item_rewards += config_rewords.clone();
+                            item_rewords += config_rewords.clone();
                         }
                         let claim_item = ClaimItem {
                             pull_id: (pull_id.clone()),
@@ -452,24 +420,13 @@ pub trait XLauncherStaking {
                             current_time_stamp: current_time_stamp.clone(),
                         };
 
-                        // NOTE
-                        // This is not used
-                        multi_claim_vec.push(
-                            MultiValue5::from((
-                                client_item.pull_amount.clone(),
-                                config_rewords.clone(),
-                                client_item.pull_time_stamp_entry.clone(),
-                                client_item.pull_time_stamp_last_collection.clone(),
-                                current_time_stamp.clone())));
-
                         claim_vector.push(claim_item)
                     }
                 }
-                if item_rewards > 0_u64 {
-                    //sc_panic!("Computed rewords = {}", item_rewords);
+                if item_rewords > 0_u64 {
                     client_item.pull_time_stamp_last_collection = current_time_stamp;
                     client_vector.set(i, &client_item);
-                    total_rewards += item_rewards;
+                    total_rewards += item_rewords;
                 }
             }
         }
@@ -485,7 +442,7 @@ pub trait XLauncherStaking {
         }
     }
 
-    
+
     #[endpoint(reinvest)]
     fn reinvest(&self,
                 pull_id: u32) {
@@ -513,7 +470,6 @@ pub trait XLauncherStaking {
                     }
                 }
                 if item_rewards > 0_u64 {
-                    //sc_panic!("Computed rewords = {}", item_rewords);
                     client_item.pull_time_stamp_last_collection = current_time_stamp;
                     client_vector.set(i, &client_item);
                     total_rewards += item_rewards;
@@ -538,8 +494,9 @@ pub trait XLauncherStaking {
     // NOTE
     // There is no max limit of how many tokens an user can receive, based on the total number of funding tokens
     // This means that the token has an infinite supply? If so, how do you know when to send more funds
-    // I think it would be better to have an exact amount of reward tokens saved per pool, and each user would receive staking rewards based on the weight of his postion
+    // I think it would be better to have an exact amount of reward tokens saved per pool, and each user would receive staking rewards based on the weight of his position
     // Also, you should deduplicate the code by removing the function calls from the if syntaxes and only letting the seconds variable calculation
+    // todo: we need to discuss about this. For now we distribute rewords only based on the value and the time staked. We will probably move over weight based rewords in the 3rd year
     fn calculate_rewards_v2(&self,
                             client_pull_state: ClientPullState<Self::Api>,
                             apy_configuration: ApyConfiguration,
@@ -582,7 +539,6 @@ pub trait XLauncherStaking {
 
         //case 3
         if s <= l && t <= e {
-            //sc_panic!("Case 3 not supported: s={}, e={} t={}, l={}",s,e,t,l);
             let seconds = t - l;
             let rewards = self.compute_seconds_rewards(&seconds,
                                                        bu_r_in_1_second);
@@ -651,6 +607,8 @@ pub trait XLauncherStaking {
     // I would recommend not to hardcode the pull_id variable and to give it as a parameter
     // That way, you could update each pool individually and independently
     // Also, this helps to reduce the overcomplicated code, by removing the for loops
+    // - very good suggestion. We stick with the current logic for now.
+    //(it make the update scripts simpler to manage at the startup phase of our company)
     #[only_owner]
     #[endpoint(updatePullSettings)]
     fn update_pull_settings(&self,
@@ -690,6 +648,7 @@ pub trait XLauncherStaking {
 
     // NOTE
     // The same as with update_pull_settings
+    // (same comment: we keep this logic for now)
     #[only_owner]
     #[endpoint(appendPullSettings)]
     fn append_pull_settings(&self,
@@ -729,6 +688,19 @@ pub trait XLauncherStaking {
             pull_c_apy);
     }
 
+    fn pull_exists(&self,
+                    pull_id:u32) -> bool{
+        let var_setting = self.variable_contract_settings().get();
+        let pull_items = var_setting.pull_items;
+        for i in 0..=(pull_items.len() - 1) {
+            let pull = pull_items.get(i);
+            if pull.id == pull_id {
+                return true;
+            }
+        }
+        return false;
+    }
+
     fn pull_settings_exist(&self,
                            pull_id: u32,
                            apy_id: u32, ) -> bool {
@@ -756,7 +728,6 @@ pub trait XLauncherStaking {
                                                   apy_end: u64,
                                                   apy: u64) {
 
-        //sc_panic!("hello append_pull_settings_by_pull_id_and_apy_id ")
         let mut var_setting = self.variable_contract_settings().get();
         let mut pull_items = var_setting.pull_items;
 
@@ -799,7 +770,6 @@ pub trait XLauncherStaking {
                 for k in 0..=(api_config_vector.len() - 1) {
                     let mut config_item = api_config_vector.get(k);
                     if config_item.id == apy_id {
-                        //sc_panic!("Hello specific item={}",apy_id)
                         config_item.start_timestamp = apy_start;
                         config_item.end_timestamp = apy_end;
                         config_item.apy = apy;
@@ -858,9 +828,10 @@ pub trait XLauncherStaking {
     // NOTE
     // The code is overcomplicated and very hard to follow. Also, it has multiple iterations so it takes longer to calculate
     // I recommend to save events for all the previous claims and to have the calculate_rewards function as a view, only for the pending rewards
+    // - todo: need to reed on events api (see if this is doable now or in the next iteration of the contract)
     #[view(getClientReport)]
     fn get_client_report(&self, client: ManagedAddress) -> ReportClinet<Self::Api> {
-        //let mut report_pull_items: ManagedVec<ReportClientPullPullItem<Self::Api>> = ManagedVec::new();
+
         let mut report = ReportClinet {
             total_amount: BigUint::zero(),
             total_rewords: BigUint::zero(),
