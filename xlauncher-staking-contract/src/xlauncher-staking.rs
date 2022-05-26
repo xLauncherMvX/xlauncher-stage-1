@@ -169,24 +169,11 @@ pub trait XLauncherStaking {
         self.increment_total_staked_value(amount.clone());
     }
 
-    // NOTE
-    // As there is no need to iterate over the list of addresses (and we do this just to check the list), there is no need for a VecMapper
-    // We can use WhitelistMapper to efficiently save the address in a list
-    // If there is a plan to iterate over the elements of the list, we can instead use UnorderedSetMapper or SetMapper
-    // - todo refactor client list
     fn append_client_if_needed(&self) {
-        let mut client_list = self.client_list();
+        let mut clients_set = self.client_list();
         let client = self.blockchain().get_caller();
-        if client_list.len() == 0 {
-            client_list.push(&client);
-        } else {
-            for i in 1..=client_list.len() {
-                let item = client_list.get(i);
-                if item == client {
-                    return;
-                }
-            }
-            client_list.push(&client);
+        if !clients_set.contains(&client) {
+            clients_set.insert(client);
         }
     }
 
@@ -993,7 +980,7 @@ pub trait XLauncherStaking {
     // Use WhitelistMapper instead                    
     #[view(getClientList)]
     #[storage_mapper("clientList")]
-    fn client_list(&self) -> VecMapper<ManagedAddress>;
+    fn client_list(&self) -> UnorderedSetMapper<ManagedAddress>;
 
 
     #[view(getTotalStakedValue)]
