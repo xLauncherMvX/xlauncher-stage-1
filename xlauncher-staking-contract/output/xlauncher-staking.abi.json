@@ -1,0 +1,431 @@
+{
+    "buildInfo": {
+        "rustc": {
+            "version": "1.60.0-nightly",
+            "commitHash": "ec4bcaac450279b029f3480b8b8f1b82ab36a5eb",
+            "commitDate": "2022-01-15",
+            "channel": "Nightly",
+            "short": "rustc 1.60.0-nightly (ec4bcaac4 2022-01-15)"
+        },
+        "contractCrate": {
+            "name": "xlauncher-staking",
+            "version": "0.1.0",
+            "git_version": "f6f7f9d"
+        },
+        "framework": {
+            "name": "elrond-wasm",
+            "version": "0.31.0"
+        }
+    },
+    "name": "XLauncherStaking",
+    "constructor": {
+        "inputs": [
+            {
+                "name": "token_id",
+                "type": "TokenIdentifier"
+            },
+            {
+                "name": "min_amount",
+                "type": "BigUint"
+            },
+            {
+                "name": "pull_a_id",
+                "type": "u32"
+            },
+            {
+                "name": "pull_a_locking_time_span",
+                "type": "u64"
+            },
+            {
+                "name": "apy_a0_id",
+                "type": "u32"
+            },
+            {
+                "name": "apy_a0_start",
+                "type": "u64"
+            },
+            {
+                "name": "apy_a0_end",
+                "type": "u64"
+            },
+            {
+                "name": "apy_a0_apy",
+                "type": "u64"
+            },
+            {
+                "name": "pull_b_id",
+                "type": "u32"
+            },
+            {
+                "name": "pull_b_locking_time_span",
+                "type": "u64"
+            },
+            {
+                "name": "apy_b0_id",
+                "type": "u32"
+            },
+            {
+                "name": "apy_b0_start",
+                "type": "u64"
+            },
+            {
+                "name": "apy_b0_end",
+                "type": "u64"
+            },
+            {
+                "name": "apy_b0_apy",
+                "type": "u64"
+            },
+            {
+                "name": "pull_c_id",
+                "type": "u32"
+            },
+            {
+                "name": "pull_c_locking_time_span",
+                "type": "u64"
+            },
+            {
+                "name": "apy_c0_id",
+                "type": "u32"
+            },
+            {
+                "name": "apy_c0_start",
+                "type": "u64"
+            },
+            {
+                "name": "apy_c0_end",
+                "type": "u64"
+            },
+            {
+                "name": "apy_c0_apy",
+                "type": "u64"
+            }
+        ],
+        "outputs": []
+    },
+    "endpoints": [
+        {
+            "name": "fundContract",
+            "mutability": "mutable",
+            "payableInTokens": [
+                "*"
+            ],
+            "inputs": [],
+            "outputs": []
+        },
+        {
+            "name": "getTokenBalance",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "BigUint"
+                }
+            ]
+        },
+        {
+            "name": "stake",
+            "mutability": "mutable",
+            "payableInTokens": [
+                "*"
+            ],
+            "inputs": [
+                {
+                    "name": "pull_id",
+                    "type": "u32"
+                }
+            ],
+            "outputs": []
+        },
+        {
+            "name": "unstake",
+            "mutability": "mutable",
+            "inputs": [
+                {
+                    "name": "pull_id",
+                    "type": "u32"
+                },
+                {
+                    "name": "amount",
+                    "type": "BigUint"
+                }
+            ],
+            "outputs": []
+        },
+        {
+            "docs": [
+                "\\n    Multi value encoded fields\\n    - pull value,\\n    - rewords,\\n    - entry time stamp,\\n    - time_stamp_last_colection\\n    - current time stamp\\n    *"
+            ],
+            "name": "claim",
+            "mutability": "mutable",
+            "inputs": [
+                {
+                    "name": "pull_id",
+                    "type": "u32"
+                }
+            ],
+            "outputs": []
+        },
+        {
+            "name": "reinvest",
+            "mutability": "mutable",
+            "inputs": [
+                {
+                    "name": "pull_id",
+                    "type": "u32"
+                }
+            ],
+            "outputs": []
+        },
+        {
+            "name": "updatePullSettings",
+            "onlyOwner": true,
+            "mutability": "mutable",
+            "inputs": [
+                {
+                    "name": "apy_id",
+                    "type": "u32"
+                },
+                {
+                    "name": "apy_start",
+                    "type": "u64"
+                },
+                {
+                    "name": "apy_end",
+                    "type": "u64"
+                },
+                {
+                    "name": "pull_a_apy",
+                    "type": "u64"
+                },
+                {
+                    "name": "pull_b_apy",
+                    "type": "u64"
+                },
+                {
+                    "name": "pull_c_apy",
+                    "type": "u64"
+                }
+            ],
+            "outputs": []
+        },
+        {
+            "name": "appendPullSettings",
+            "onlyOwner": true,
+            "mutability": "mutable",
+            "inputs": [
+                {
+                    "name": "apy_id",
+                    "type": "u32"
+                },
+                {
+                    "name": "apy_start",
+                    "type": "u64"
+                },
+                {
+                    "name": "apy_end",
+                    "type": "u64"
+                },
+                {
+                    "name": "pull_a_apy",
+                    "type": "u64"
+                },
+                {
+                    "name": "pull_b_apy",
+                    "type": "u64"
+                },
+                {
+                    "name": "pull_c_apy",
+                    "type": "u64"
+                }
+            ],
+            "outputs": []
+        },
+        {
+            "name": "getClientReport",
+            "mutability": "readonly",
+            "inputs": [
+                {
+                    "name": "client",
+                    "type": "Address"
+                }
+            ],
+            "outputs": [
+                {
+                    "type": "ReportClinet"
+                }
+            ]
+        },
+        {
+            "name": "getClientReportV2",
+            "mutability": "readonly",
+            "inputs": [
+                {
+                    "name": "client",
+                    "type": "Address"
+                }
+            ],
+            "outputs": [
+                {
+                    "type": "variadic<multi<u32,BigUint,BigUint>>",
+                    "multi_result": true
+                }
+            ]
+        },
+        {
+            "name": "getClientReportV3",
+            "mutability": "readonly",
+            "inputs": [
+                {
+                    "name": "client",
+                    "type": "Address"
+                }
+            ],
+            "outputs": [
+                {
+                    "type": "variadic<multi<u32,u64,u64,BigUint>>",
+                    "multi_result": true
+                }
+            ]
+        },
+        {
+            "name": "getVariableContractSettings",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "VariableContractSettings"
+                }
+            ]
+        },
+        {
+            "name": "getClientState",
+            "mutability": "readonly",
+            "inputs": [
+                {
+                    "name": "client_address",
+                    "type": "Address"
+                }
+            ],
+            "outputs": [
+                {
+                    "type": "variadic<ClientPullState>",
+                    "multi_result": true
+                }
+            ]
+        }
+    ],
+    "hasCallback": false,
+    "types": {
+        "ApyConfiguration": {
+            "type": "struct",
+            "fields": [
+                {
+                    "name": "id",
+                    "type": "u32"
+                },
+                {
+                    "name": "apy",
+                    "type": "u64"
+                },
+                {
+                    "name": "start_timestamp",
+                    "type": "u64"
+                },
+                {
+                    "name": "end_timestamp",
+                    "type": "u64"
+                }
+            ]
+        },
+        "ClientPullState": {
+            "type": "struct",
+            "fields": [
+                {
+                    "name": "pull_id",
+                    "type": "u32"
+                },
+                {
+                    "name": "pull_time_stamp_entry",
+                    "type": "u64"
+                },
+                {
+                    "name": "pull_time_stamp_last_collection",
+                    "type": "u64"
+                },
+                {
+                    "name": "pull_amount",
+                    "type": "BigUint"
+                }
+            ]
+        },
+        "Pull": {
+            "type": "struct",
+            "fields": [
+                {
+                    "name": "id",
+                    "type": "u32"
+                },
+                {
+                    "name": "locking_time_span",
+                    "type": "u64"
+                },
+                {
+                    "name": "apy_configuration",
+                    "type": "List<ApyConfiguration>"
+                }
+            ]
+        },
+        "ReportClientPullPullItem": {
+            "type": "struct",
+            "fields": [
+                {
+                    "name": "pull_id",
+                    "type": "u32"
+                },
+                {
+                    "name": "pull_amount",
+                    "type": "BigUint"
+                },
+                {
+                    "name": "rewords_amount",
+                    "type": "BigUint"
+                }
+            ]
+        },
+        "ReportClinet": {
+            "type": "struct",
+            "fields": [
+                {
+                    "name": "total_amount",
+                    "type": "BigUint"
+                },
+                {
+                    "name": "total_rewords",
+                    "type": "BigUint"
+                },
+                {
+                    "name": "report_pull_items",
+                    "type": "List<ReportClientPullPullItem>"
+                }
+            ]
+        },
+        "VariableContractSettings": {
+            "type": "struct",
+            "fields": [
+                {
+                    "name": "token_id",
+                    "type": "TokenIdentifier"
+                },
+                {
+                    "name": "min_amount",
+                    "type": "BigUint"
+                },
+                {
+                    "name": "pull_items",
+                    "type": "List<Pull>"
+                }
+            ]
+        }
+    }
+}

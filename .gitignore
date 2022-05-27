@@ -15,3 +15,4 @@ utils/devnet_owner_wallet.pem
 interaction-logs
 erdpy.data-storage.json
 
+web-app/yarn.lock

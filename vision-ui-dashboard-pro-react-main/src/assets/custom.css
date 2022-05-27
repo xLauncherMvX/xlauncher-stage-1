@@ -1,0 +1,148 @@
+.xlauncher-logo{
+    width: 30px;
+    height: 24px;
+}
+.xlauncher-logo2{
+    width: 40px;
+    height: 32px;
+}
+.xlh-logo-stake{
+    width: 45px;
+    height: 36px;
+}
+.farm-card{
+    background-color: #060b28f0;
+    padding: 20px;
+    border-radius: 25px;
+    margin-top: auto;
+    align-content: center;
+}
+.float-right{
+    float: right;
+}
+
+/* Login buttons */
+.dapp-core-ui-component .d-inline-flex {
+    display: inline-block !important;
+}
+.dapp-core-ui-component-2_noExtensionButtonContent {
+    color: #fff;
+    min-width: 200px;
+    background-color: #4318ff;
+    border-radius: 0.75rem;
+    border: none;
+    min-height: 2rem;
+    padding: 0.5rem 2.6rem;
+    font-size: 0.65rem;
+    font-family: "Plus Jakarta Display","Helvetica","Arial",sans-serif;
+    text-transform: uppercase;
+    font-weight: 700;
+    text-align: center;
+}
+.dapp-core-ui-component-2_noExtensionButtonContent:hover,
+.dapp-core-ui-component-2_noExtensionButtonContent:focus,
+.dapp-core-ui-component-2_noExtensionButtonContent:active {
+    background-color: #4318ff;
+    border: 1px solid white;
+}
+.dapp-core-ui-component .btn-primary {
+    color: #fff;
+    min-width: 200px;
+    background-color: #4318ff;
+    border-radius: 0.75rem;
+    min-height: 2rem;
+    padding: 0.5rem 2rem;
+    font-size: 0.65rem;
+    border: none;
+    font-family: "Plus Jakarta Display","Helvetica","Arial",sans-serif;
+    text-transform: uppercase;
+    font-weight: 700;
+    transition: all 0.5s ease-out;   
+    text-align: center; 
+}
+.dapp-core-ui-component .btn-primary:hover,
+dapp-core-ui-component .btn-primary:active {    
+    background-color: #4318ff;
+    border: 1px solid white;
+}
+.dapp-core-ui-component .btn-primary:focus, .dapp-core-ui-component .btn-primary.focus {
+        background-color: #4318ff;
+        border: 1px solid white;
+}
+.dapp-core-ui-component .btn-primary.disabled, .dapp-core-ui-component .btn-primary:disabled {
+    background-color: #4318ff;
+    border: 1px solid white;
+}
+.dapp-core-ui-component .btn-primary:not(:disabled):not(.disabled):active, .dapp-core-ui-component .btn-primary:not(:disabled):not(.disabled).active,
+.show > .dapp-core-ui-component .btn-primary.dropdown-toggle {
+    background-color: #4318ff;
+    border: 1px solid white;
+}
+.dapp-core-ui-component .btn-primary:not(:disabled):not(.disabled):active:focus, .dapp-core-ui-component .btn-primary:not(:disabled):not(.disabled).active:focus,
+.show > .dapp-core-ui-component .btn-primary.dropdown-toggle:focus {
+    box-shadow: 0 0 0 0.2rem rgba(61, 98, 203, 0.5); 
+}
+
+/* Modal connect section */
+.dapp-core-ui-component .modal-dialog{
+    position: relative;
+    width: auto;
+    margin: 0.5rem;
+    pointer-events: none;
+    margin-bottom: 50px;
+    background-color: transparent;
+    border: none;
+    top: 30px; 
+}
+@media (min-width: 576px) {
+    .dapp-core-ui-component .modal-dialog {
+        left: 10%;
+    }
+}
+@media (min-width: 750px) {
+    .dapp-core-ui-component .modal-dialog {
+        left: 15%;
+    }
+}
+@media (min-width: 900px) {
+    .dapp-core-ui-component .modal-dialog {
+        left: 30%;
+    }
+}
+@media (min-width: 1200px) {
+    .dapp-core-ui-component .modal-dialog {
+        left: 40%;
+    }
+}
+.dapp-core-ui-component .card { 
+    background-color: #060b28f0;
+    background-clip: border-box;
+    border: 1px solid black;
+    border-radius: 0.25rem;
+    padding: 5px;
+    z-index: 10;
+    color: white;
+    margin-top: 100px;
+    margin-bottom: 100px;
+}
+.dapp-core-ui-component .modal-content {
+    pointer-events: auto;
+    background-color: transparent;
+    border: none;
+    background-clip: padding-box;
+    border-radius: 0.3rem;
+    outline: 0;
+    z-index: 10;
+}
+.dapp-core-ui-component .modal-open {
+    overflow: auto !important;
+}
+.dapp-core-ui-component .modal-open .modal {
+    overflow: auto !important;
+}
+.modal-open {
+    overflow: auto !important;  
+}
+.modal-open .modal{
+    overflow: auto !important;  
+}
