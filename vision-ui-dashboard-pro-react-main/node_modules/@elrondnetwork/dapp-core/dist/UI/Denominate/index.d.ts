@@ -1,0 +1,15 @@
+/// <reference types="react" />
+export interface DenominateType {
+    value: string;
+    showLastNonZeroDecimal?: boolean;
+    showLabel?: boolean;
+    token?: string;
+    decimals?: number;
+    denomination?: number;
+    egldLabel?: string;
+    'data-testid'?: string;
+}
+declare const _default: ({ ...props }: {
+    [x: string]: any;
+}) => JSX.Element;
+export default _default;
