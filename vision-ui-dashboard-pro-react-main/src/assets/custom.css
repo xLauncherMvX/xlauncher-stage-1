@@ -89,33 +89,29 @@ dapp-core-ui-component .btn-primary:active {
     width: auto;
     margin: 0.5rem;
     pointer-events: none;
-    margin-bottom: 300px;
+    margin-bottom: 50px;
     background-color: transparent;
     border: none;
-    top: 150px; 
+    top: 30px; 
 }
 @media (min-width: 576px) {
     .dapp-core-ui-component .modal-dialog {
         left: 10%;
-        top: 100px;
     }
 }
 @media (min-width: 750px) {
     .dapp-core-ui-component .modal-dialog {
         left: 15%;
-        top: 125px;
     }
 }
 @media (min-width: 900px) {
     .dapp-core-ui-component .modal-dialog {
         left: 30%;
-        top: 150px;
     }
 }
 @media (min-width: 1200px) {
     .dapp-core-ui-component .modal-dialog {
         left: 40%;
-        top: 150px;
     }
 }
 .dapp-core-ui-component .card { 
@@ -126,8 +122,8 @@ dapp-core-ui-component .btn-primary:active {
     padding: 5px;
     z-index: 10;
     color: white;
-    margin-top: 60px;
-    margin-bottom: 350px;
+    margin-top: 100px;
+    margin-bottom: 100px;
 }
 .dapp-core-ui-component .modal-content {
     pointer-events: auto;
@@ -137,7 +133,6 @@ dapp-core-ui-component .btn-primary:active {
     border-radius: 0.3rem;
     outline: 0;
     z-index: 10;
-    bottom: 100px;
 }
 .dapp-core-ui-component .modal-open {
     overflow: auto !important;
