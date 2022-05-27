@@ -36,9 +36,19 @@ export default function ScratchBare() {
 
   const [dataAccount, setDataAccount] = useState([]);
 
+  //mainnet
+  // const apiLink = 'https://api.elrond.com/accounts/';  
+  // const apiToken = 'XLH-8daa50';  
+  // const customApi = apiLink+address+'/tokens/'+apiToken;
+
   //devnet
   // const apiLink = 'https://devnet-api.elrond.com/accounts/';
   // const apiToken = 'XLH-cb26c7';
+  // const customApi = apiLink+address+'/tokens/'+apiToken;  
+
+  //devnet2
+  // const apiLink = 'https://devnet-api.elrond.com/accounts/';
+  // const apiToken = 'XLH-4f55ab';
   // const customApi = apiLink+address+'/tokens/'+apiToken;  
 
   //testnet
@@ -74,7 +84,7 @@ export default function ScratchBare() {
   var balanceAccountFixed = new Intl.NumberFormat('ro-Ro', { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(balanceAccount);
 
   var fls = address.slice(0,5);
-  var lls = address.slice(58,62);
+  var lls = address.slice(56,62);
 
   let connectSection = timeToConnect ? (
     <Box as={Container} maxW="6xl" mt={14} p={4} align={'center'}>
@@ -152,16 +162,59 @@ export default function ScratchBare() {
     ""
   );
 
+  const openInNewTab = (url) => {
+    const newWindow = window.open(url, '_blank', 'noopener,noreferrer')
+    if (newWindow) newWindow.opener = null;
+  }
+
+  const openInSameTab = (url) => {
+    const newWindow = window.open(url, '_self', 'noopener,noreferrer')
+    if (newWindow) newWindow.opener = null;
+  }
+
+  let WhitelistButton = 
+  <Button 
+    className='btn btn-sm'
+    marginTop={'3'}
+    marginRight={'4'}
+    float = {'right'}
+    _hover={{
+      bg: 'green.500',
+    }}
+    _focus={{
+      bg: 'green.500',
+    }}
+    onClick={() => openInNewTab('https://docs.google.com/spreadsheets/d/14Qwk2ZfaFqwVVVD72kigKEnYNTIeYiVK/edit#gid=1344773073')}>
+      Whitelist
+  </Button>;
+
   return (
     <div>
-      <Flex backgroundColor={'blackAlpha.700'} padding={4}>
-        <ElrondLogo className='elrond-logo'/>        
+      <Flex backgroundColor={'blackAlpha.700'} padding={4}>            
+        <Button 
+        className='btn btn-xs btn-outline'
+        backgroundColor={'transparent'}
+        _hover={{
+          bg: 'transparent',
+        }}
+        _focus={{
+          bg: 'transparent',
+        }}
+        _active={{
+          bg: 'transparent',
+        }}
+        onClick={() => openInSameTab('https://x-launcher.com')}
+        >
+          <ElrondLogo className='elrond-logo'/>    
+        </Button>        
         <Spacer />
-        <Text mt={'3'} fontWeight={'bold'}>TESTNET</Text>
+        {/* <Text mt={'3'} fontWeight={'bold'}>DEVNET</Text> */}
+        {/* <Text mt={'3'} fontWeight={'bold'}>TESTNET</Text> */}
         <Spacer />
         {addressSection}
         {connectButton}
       </Flex>
+      {WhitelistButton}
       {connectLoggedinSection}  
       <CountdownTimer /> 
     </div>

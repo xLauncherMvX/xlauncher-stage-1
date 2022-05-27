@@ -124,6 +124,7 @@ body {
   font-size: 35px;
   font-weight: bold;
   margin-top: 30px;
+  margin-bottom: 20px;
 }
 .token-text-type {
   font-size: 75px;
@@ -219,4 +220,10 @@ body {
 .elrond-logo{
   width: 52px;
   height: 43px;
+}
+
+/* Leder modal */
+.dapp-core-ui-component .modal-content {
+  margin-bottom: 270px;
+  overflow-y: visible;
 }
