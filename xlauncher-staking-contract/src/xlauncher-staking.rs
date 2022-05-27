@@ -8,7 +8,9 @@ elrond_wasm::derive_imports!();
 
 
 
+/**
 
+ */
 #[derive(TypeAbi, TopEncode, TopDecode, ManagedVecItem, NestedEncode, NestedDecode, Clone)]
 pub struct ClientPullState<M: ManagedTypeApi> {
     pub pull_id: u32,
@@ -17,20 +19,20 @@ pub struct ClientPullState<M: ManagedTypeApi> {
     pub pull_amount: BigUint<M>,
 }
 
-// how to initialize variables
-// token_id, min_amount
-//
-// pull_a_id, pull_a_locking_time_span
-// apy_a0_id, apy_a0_start, apy_a0_end, apy_a0_apy
-// apy_a1_id, apy_a1_start, apy_a1_end, apy_a1_apy
-//
-// pull_b_id, pull_b_locking_time_span
-// apy_b0_id, apy_b0_start, apy_b0_end, apy_b0_apy
-// apy_a1_id, apy_a1_start, apy_a1_end, apy_a1_apy
+
+#[derive(TypeAbi, TopEncode, TopDecode, ManagedVecItem, NestedEncode, NestedDecode, Clone)]
+pub struct UnstakeState<M: ManagedTypeApi> {
+    pub total_unstaked_amount: BigUint<M>,
+    pub requested_amount: BigUint<M>,
+    pub free_after_time_stamp: u64,
+}
+
 #[derive(TypeAbi, TopEncode, TopDecode, ManagedVecItem, NestedEncode, NestedDecode)]
 pub struct VariableContractSettings<M: ManagedTypeApi> {
     pub token_id: TokenIdentifier<M>,
     pub min_amount: BigUint<M>,
+    pub unstake_lock_span: u64,
+    pub contract_is_active: bool,
     pub pull_items: ManagedVec<M, Pull<M>>,
 }
 
@@ -136,7 +138,8 @@ pub trait XLauncherStaking {
                 apy_c0_apy);
 
 
-            // variable settings
+            // 60 * 60 * 24 * 10 = 864000 (10 days)
+            let days_10 = 864000_u64;
             let mut pull_items: ManagedVec<Pull<Self::Api>> = ManagedVec::new();
             pull_items.push(pull_a);
             pull_items.push(pull_b);
@@ -145,6 +148,8 @@ pub trait XLauncherStaking {
                 token_id: (token_id),
                 min_amount: (min_amount),
                 pull_items: (pull_items),
+                contract_is_active: true,
+                unstake_lock_span: days_10,
             };
             self.variable_contract_settings().set(&variable_settings)
         }
@@ -199,6 +204,7 @@ pub trait XLauncherStaking {
              #[payment_amount] amount: BigUint,
              pull_id: u32,
     ) {
+        require!(self.contract_is_active(),"Contract is in maintenance");
         let settings: VariableContractSettings<Self::Api> = self.variable_contract_settings().get();
         require!(token_id.is_valid_esdt_identifier(), "invalid token_id");
         require!(settings.token_id == token_id, "not the same token id");
@@ -212,17 +218,100 @@ pub trait XLauncherStaking {
             pull_id: (pull_id),
             pull_time_stamp_entry: (current_time_stamp),
             pull_time_stamp_last_collection: (current_time_stamp),
-            pull_amount: amount,
+            pull_amount: amount.clone(),
         };
 
         state_vector.push(&new_pull_state);
+        self.append_client_if_needed();
+        self.increment_total_staked_value(amount.clone());
     }
 
+    fn append_client_if_needed(&self) {
+        let mut client_list = self.client_list();
+        let client = self.blockchain().get_caller();
+        if client_list.len() == 0 {
+            client_list.push(&client);
+        } else {
+            for i in 1..=client_list.len() {
+                let item = client_list.get(i);
+                if item == client {
+                    return;
+                }
+            }
+            client_list.push(&client);
+        }
+    }
+
+    fn increment_total_staked_value(&self, amount: BigUint) {
+        if self.total_staked_value().is_empty() {
+            self.total_staked_value().set(&amount);
+        } else {
+            let old_amount = self.total_staked_value().get();
+            let new_value = amount.clone() + old_amount.clone();
+            self.total_staked_value().set(&new_value);
+        }
+    }
+
+    fn decrement_total_staked_value(&self, amount: BigUint) {
+        let old_amount = self.total_staked_value().get();
+        let new_value = old_amount.clone() - amount.clone();
+        self.total_staked_value().set(&new_value);
+    }
+
+    fn add_to_unstake_value(&self, time_stamp: u64, total_amount: BigUint, requested_amount: BigUint) {
+        let client = self.blockchain().get_caller();
+        let settings = self.variable_contract_settings().get();
+        let unstake_lock_span: u64 = settings.unstake_lock_span;
+        let free_after_time_stamp: u64 = time_stamp + unstake_lock_span;
+        if self.unstake_state(&client).is_empty() {
+            let unstake_state = UnstakeState {
+                total_unstaked_amount: total_amount.clone(),
+                requested_amount,
+                free_after_time_stamp,
+            };
+            self.unstake_state(&client).set(&unstake_state);
+        } else {
+            let mut unstake_state = self.unstake_state(&client).get();
+            unstake_state.free_after_time_stamp = free_after_time_stamp;
+            unstake_state.total_unstaked_amount = unstake_state.total_unstaked_amount + total_amount;
+
+            unstake_state.requested_amount = unstake_state.requested_amount + requested_amount;
+
+            self.unstake_state(&client).set(&unstake_state);
+        }
+    }
+
+    #[endpoint(claimUnstakedValue)]
+    fn claim_unstaked_value(&self) {
+        require!(self.contract_is_active(),"Contract is in maintenance");
+        let current_time_stamp: u64 = self.blockchain().get_block_timestamp();
+        let client = self.blockchain().get_caller();
+        require!(!self.unstake_state(&client).is_empty(), "No funds to claim");
+        let unstake_state = self.unstake_state(&client).get();
+
+        sc_print!("claim_unstaked_value_log: current_time_stamp={}, free_after_time_stamp={}"
+        , current_time_stamp, unstake_state.free_after_time_stamp);
+        require!( unstake_state.free_after_time_stamp < current_time_stamp,
+            "current_time_stamp is smaller then free_after_time_stamp");
+
+
+        require!(BigUint::zero() < unstake_state.total_unstaked_amount, "No funds available to claim");
+        let token_id = self.get_contract_token_id();
+        self.send().direct(
+            &client,
+            &token_id,
+            0,
+            &unstake_state.total_unstaked_amount,
+            &[]);
+        self.unstake_state(&client).clear();
+        self.decrement_total_staked_value(unstake_state.requested_amount);
+    }
 
     #[endpoint(unstake)]
     fn unstake(&self,
                pull_id: u32,
-               amount: BigUint) /*-> MultiValueEncoded<MultiValue4<u32, u64, u64, BigUint>>*/ {
+               amount: BigUint) {
+        require!(self.contract_is_active(),"Contract is in maintenance");
         let mut multi_val_vec: MultiValueEncoded<MultiValue4<u32, u64, u64, BigUint>> = MultiValueEncoded::new();
 
         let client = self.blockchain().get_caller();
@@ -246,7 +335,6 @@ pub trait XLauncherStaking {
                 let client_item = client_vector.get(i);
                 let client_item_id = client_item.pull_id.clone();
 
-                //require!(client_item.pull_id == pull_id , "hard debug: client_item.pull_id={}, pull_id={}",client_item.pull_id, pull_id);
                 require!(client_item.pull_id == pull_id , "client_item.pull_id={}, pull_id={}",client_item_id, pull_id);
 
                 let unstake_time = locking_time_span + client_item.pull_time_stamp_entry;
@@ -268,8 +356,6 @@ pub trait XLauncherStaking {
                                                                      current_time_stamp);
                         total_items_value = total_items_value + client_item.pull_amount.clone();
                         total_rewards = total_rewards + item_rewords;
-                        sc_print!("k={}, amount={}, total_items_value={}",k, amount,total_items_value);
-
 
                         lev_3_count = lev_3_count + 1;
 
@@ -282,18 +368,13 @@ pub trait XLauncherStaking {
                             ))
                         );
                     }
-                } /*else {
-                    sc_panic!("client_item.pull_id={}, pull_id={}, unstake_time={},current_time_stamp={} total_items_value{}",
-                        client_item.pull_id, pull_id, unstake_time,current_time_stamp, total_items_value);
-                }*/
+                }
             }
         }
-        sc_print!("amount={}, total_items_value={}", amount,total_items_value);
+
         require!(amount <= total_items_value , "total staking value smaller then requested\
          amount={}, val={}, c1={}, c2={}, c3={}",amount,total_items_value,lev_1_count, lev_2_count, lev_3_count);
-        /* if amount <= total_items_value {
-             return multi_val_vec;
-         }*/
+
 
         //case 1 selected amount is exact amount staked
         if total_items_value == amount {
@@ -303,14 +384,8 @@ pub trait XLauncherStaking {
             }
             let total_value = total_items_value.clone() + total_rewards.clone();
             if total_value > BigUint::zero() {
-                //sc_panic!("unstake case 1 items total_value={}, current_time={}",total_value, current_time_stamp);
-                let token_id = self.get_contract_token_id();
-                self.send().direct(
-                    &client,
-                    &token_id,
-                    0,
-                    &total_value,
-                    &[]);
+                self.add_to_unstake_value(current_time_stamp, total_value, amount);
+                return;
             }
         }
 
@@ -336,13 +411,17 @@ pub trait XLauncherStaking {
             // compute how mutch we need to transfer in client wallet
             let total_case_2_value = amount.clone() + total_rewards.clone();
             if total_case_2_value > BigUint::zero() {
-                let token_id = self.get_contract_token_id();
+                /*let token_id = self.get_contract_token_id();
                 self.send().direct(
                     &client,
                     &token_id,
                     0,
                     &total_case_2_value,
-                    &[]);
+                    &[]);*/
+                self.add_to_unstake_value(current_time_stamp,
+                                          total_case_2_value,
+                                          amount);
+                return;
             }
         }
 
@@ -366,15 +445,6 @@ pub trait XLauncherStaking {
         }
     }
 
-    /* #[endpoint(claim)]
-     fn claim(&self,
-              _pull_id: u32) -> MultiValueEncoded<MultiValue3<BigUint, BigUint, u64>> {
-
-         let mut multi_claim_vec: MultiValueEncoded<MultiValue3<BigUint, BigUint, u64>> = MultiValueEncoded::new();
-
-         return multi_claim_vec;
-     }*/
-
     /**
     Multi value encoded fields
     - pull value,
@@ -386,6 +456,7 @@ pub trait XLauncherStaking {
     #[endpoint(claim)]
     fn claim(&self,
              pull_id: u32) /*-> MultiValueEncoded<MultiValue5<BigUint, BigUint, u64, u64, u64>> */ {
+        require!(self.contract_is_active(),"Contract is in maintenance");
         let client = self.blockchain().get_caller();
         let current_time_stamp = self.blockchain().get_block_timestamp();
         let client_vector = self.client_state(&client);
@@ -418,11 +489,6 @@ pub trait XLauncherStaking {
                             rewords: config_rewords.clone(),
                             current_time_stamp: current_time_stamp.clone(),
                         };
-                        sc_print!("claimItem: pull_id={}, pull_amount={}, pull_time_stamp_entry={}, pull_time_stamp_last_collection={}, rewords={}, current_time_stamp={}",
-                            pull_id.clone(), client_item.pull_amount.clone(),
-                            client_item.pull_time_stamp_entry.clone(),
-                            client_item.pull_time_stamp_last_collection.clone(),
-                            config_rewords.clone(), current_time_stamp.clone());
 
                         multi_claim_vec.push(
                             MultiValue5::from((
@@ -443,7 +509,7 @@ pub trait XLauncherStaking {
                 }
             }
         }
-        sc_print!("total_rewards={}",total_rewards);
+
         if total_rewards > 0_u64 {
             let token_id = self.get_contract_token_id();
             self.send().direct(
@@ -453,14 +519,12 @@ pub trait XLauncherStaking {
                 &total_rewards,
                 &[]);
         }
-
-        //return claim_vector;
-        //return multi_claim_vec;
     }
 
     #[endpoint(reinvest)]
     fn reinvest(&self,
                 pull_id: u32) {
+        require!(self.contract_is_active(),"Contract is in maintenance");
         let client = self.blockchain().get_caller();
         let current_time_stamp = self.blockchain().get_block_timestamp();
         let mut client_vector = self.client_state(&client);
@@ -488,19 +552,21 @@ pub trait XLauncherStaking {
                     client_item.pull_time_stamp_last_collection = current_time_stamp;
                     client_vector.set(i, &client_item);
                     total_rewards += item_rewards;
+                    sc_print!("total_rewards={}",total_rewards);
                 }
             }
         }
 
-        if total_rewards > 0_u64 {
+        if total_rewards > BigUint::zero() {
             let new_pull_state = ClientPullState {
                 pull_id: (pull_id),
                 pull_time_stamp_entry: (current_time_stamp),
                 pull_time_stamp_last_collection: (current_time_stamp),
-                pull_amount: total_rewards,
+                pull_amount: total_rewards.clone(),
             };
 
             client_vector.push(&new_pull_state);
+            self.increment_total_staked_value(total_rewards);
         }
     }
 
@@ -584,6 +650,31 @@ pub trait XLauncherStaking {
         let bu_seconds = BigUint::from(seconds);
         let rewards = (&bu_seconds * &bu_r_in_1_second) / BigUint::from(100_u64);
         return rewards;
+    }
+
+    #[only_owner]
+    #[endpoint(switchIsActiveFieldValue)]
+    fn switch_is_active_field_value(&self) {
+        require!(! self.variable_contract_settings().is_empty(),"Contract was not initialized");
+        let mut settings = self.variable_contract_settings().get();
+        settings.contract_is_active = !settings.contract_is_active;
+        self.variable_contract_settings().set(settings);
+    }
+
+    fn contract_is_active(&self) -> bool {
+        require!(! self.variable_contract_settings().is_empty(),"Contract was not initialized");
+        let settings = self.variable_contract_settings().get();
+        return settings.contract_is_active;
+    }
+
+    #[only_owner]
+    #[endpoint(updateUnstakeLockSpan)]
+    fn update_unstake_lock_span(&self, unstake_lock_span: u64) {
+        require!(! self.variable_contract_settings().is_empty(),"Contract was not initialized");
+        require!(0_u64 < unstake_lock_span, "Unstake lock span must be positive");
+        let mut settings = self.variable_contract_settings().get();
+        settings.unstake_lock_span = unstake_lock_span;
+        self.variable_contract_settings().set(settings);
     }
 
     #[only_owner]
@@ -710,7 +801,7 @@ pub trait XLauncherStaking {
                 let _updated_pull_item = pull_items.set(i, &pull);
             }
         }
-        if value_added{
+        if value_added {
             var_setting.pull_items = pull_items;
             self.variable_contract_settings().set(var_setting)
         }
@@ -941,4 +1032,18 @@ pub trait XLauncherStaking {
     #[storage_mapper("clientState")]
     fn client_state(&self, client_address: &ManagedAddress)
                     -> VecMapper<ClientPullState<Self::Api>>;
+
+    #[view(getUnstakeState)]
+    #[storage_mapper("unstakeState")]
+    fn unstake_state(&self, client_address: &ManagedAddress)
+                     -> SingleValueMapper<UnstakeState<Self::Api>>;
+
+    #[view(getClientList)]
+    #[storage_mapper("clientList")]
+    fn client_list(&self) -> VecMapper<ManagedAddress>;
+
+
+    #[view(getTotalStakedValue)]
+    #[storage_mapper("totalStakedValue")]
+    fn total_staked_value(&self) -> SingleValueMapper<BigUint>;
 }

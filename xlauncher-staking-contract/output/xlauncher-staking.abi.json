@@ -10,7 +10,7 @@
         "contractCrate": {
             "name": "xlauncher-staking",
             "version": "0.1.0",
-            "git_version": "f6f7f9d"
+            "git_version": "106687a"
         },
         "framework": {
             "name": "elrond-wasm",
@@ -138,6 +138,12 @@
             "outputs": []
         },
         {
+            "name": "claimUnstakedValue",
+            "mutability": "mutable",
+            "inputs": [],
+            "outputs": []
+        },
+        {
             "name": "unstake",
             "mutability": "mutable",
             "inputs": [
@@ -173,6 +179,25 @@
                 {
                     "name": "pull_id",
                     "type": "u32"
+                }
+            ],
+            "outputs": []
+        },
+        {
+            "name": "switchIsActiveFieldValue",
+            "onlyOwner": true,
+            "mutability": "mutable",
+            "inputs": [],
+            "outputs": []
+        },
+        {
+            "name": "updateUnstakeLockSpan",
+            "onlyOwner": true,
+            "mutability": "mutable",
+            "inputs": [
+                {
+                    "name": "unstake_lock_span",
+                    "type": "u64"
                 }
             ],
             "outputs": []
@@ -313,6 +338,42 @@
                     "multi_result": true
                 }
             ]
+        },
+        {
+            "name": "getUnstakeState",
+            "mutability": "readonly",
+            "inputs": [
+                {
+                    "name": "client_address",
+                    "type": "Address"
+                }
+            ],
+            "outputs": [
+                {
+                    "type": "UnstakeState"
+                }
+            ]
+        },
+        {
+            "name": "getClientList",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "variadic<Address>",
+                    "multi_result": true
+                }
+            ]
+        },
+        {
+            "name": "getTotalStakedValue",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "BigUint"
+                }
+            ]
         }
     ],
     "hasCallback": false,
@@ -340,6 +401,9 @@
         },
         "ClientPullState": {
             "type": "struct",
+            "docs": [
+                "\\n\\n "
+            ],
             "fields": [
                 {
                     "name": "pull_id",
@@ -410,6 +474,23 @@
                 }
             ]
         },
+        "UnstakeState": {
+            "type": "struct",
+            "fields": [
+                {
+                    "name": "total_unstaked_amount",
+                    "type": "BigUint"
+                },
+                {
+                    "name": "requested_amount",
+                    "type": "BigUint"
+                },
+                {
+                    "name": "free_after_time_stamp",
+                    "type": "u64"
+                }
+            ]
+        },
         "VariableContractSettings": {
             "type": "struct",
             "fields": [
@@ -420,6 +501,14 @@
                 {
                     "name": "min_amount",
                     "type": "BigUint"
+                },
+                {
+                    "name": "unstake_lock_span",
+                    "type": "u64"
+                },
+                {
+                    "name": "contract_is_active",
+                    "type": "bool"
                 },
                 {
                     "name": "pull_items",

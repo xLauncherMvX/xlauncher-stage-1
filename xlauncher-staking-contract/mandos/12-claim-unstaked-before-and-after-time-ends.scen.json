@@ -84,7 +84,7 @@
     },
     {
       "step": "scCall",
-      "txId": "stake-good-coin-second-time",
+      "txId": "stake-1",
       "tx": {
         "from": "address:client1",
         "to": "sc:xlauncher-staking",
@@ -118,14 +118,15 @@
     },
     {
       "step": "scCall",
-      "txId": "claim-case-2",
+      "txId": "unstake-case-3",
       "tx": {
         "from": "address:client1",
         "to": "sc:xlauncher-staking",
+        "function": "unstake",
         "value": "0",
-        "function": "claim",
         "arguments": [
-          "1"
+          "1",
+          "500,000,000,000,000,000,000"
         ],
         "gasLimit": "100,000,000",
         "gasPrice": "0"
@@ -141,19 +142,20 @@
     {
       "step": "setState",
       "currentBlockInfo": {
-        "blockTimestamp": "31536001"
+        "blockTimestamp": "47304000"
       }
     },
     {
       "step": "scCall",
-      "txId": "reinvest-case-4",
+      "txId": "unstake-case-4",
       "tx": {
         "from": "address:client1",
         "to": "sc:xlauncher-staking",
+        "function": "unstake",
         "value": "0",
-        "function": "reinvest",
         "arguments": [
-          "1"
+          "1",
+          "250,000,000,000,000,000,000"
         ],
         "gasLimit": "100,000,000",
         "gasPrice": "0"
@@ -162,6 +164,25 @@
         "out": [],
         "status": "0",
         "message": "",
+        "gas": "*",
+        "refund": "*"
+      }
+    },
+    {
+      "step": "scCall",
+      "txId": "claimUnstakedValue-before-allowed",
+      "tx": {
+        "from": "address:client1",
+        "to": "sc:xlauncher-staking",
+        "function": "claimUnstakedValue",
+        "value": "0",
+        "gasLimit": "100,000,000",
+        "gasPrice": "0"
+      },
+      "expect": {
+        "out": [],
+        "status": "4",
+        "message": "str:current_time_stamp is smaller then free_after_time_stamp",
         "gas": "*",
         "refund": "*"
       }
@@ -179,10 +200,10 @@
           "code": ""
         },
         "address:client1": {
-          "nonce": "3",
+          "nonce": "4",
           "balance": "0",
           "esdt": {
-            "str:BCOIN-a00000": "4,002,499,999,999,999,953,760",
+            "str:BCOIN-a00000": "4000000000000000000000",
             "str:BCOIN-b00000": "5,000,000,000,000,000,000,000"
           }
         },
@@ -190,7 +211,7 @@
           "nonce": "*",
           "balance": "0",
           "esdt": {
-            "str:BCOIN-a00000": "997,500,000,000,000,046,240"
+            "str:BCOIN-a00000": "1000000000000000000000"
           },
           "storage": {
             "str:variableContractSettings": {
@@ -233,20 +254,126 @@
                 }
               }
             },
-            "str:clientState|address:client1|str:.len": "2",
+            "str:clientState|address:client1|str:.len": "1",
             "str:clientState|address:client1|str:.item|u32:1": {
               "1-pull_id": "u32:1",
               "2-pull_time_stamp_entry": "u64:0",
-              "3-pull_time_stamp_last_collection": "u64:31536001",
-              "4-pull_amount": "biguint:1,000,000,000,000,000,000,000"
+              "3-pull_time_stamp_last_collection": "u64:47304000",
+              "4-pull_amount": "biguint:250,000,000,000,000,000,000"
             },
-            "str:clientState|address:client1|str:.item|u32:2": {
+            "str:unstakeState|address:client1": {
+              "0-total_unstaked_amount": "biguint:753749999999999930640",
+              "1-requested_amount": "biguint:750,000,000,000,000,000,000",
+              "2-free_after_time_stamp": "u64:48168000"
+            },
+            "str:totalStakedValue": "1,000,000,000,000,000,000,000",
+            "str:clientList|str:.len": "1",
+            "str:clientList|str:.item|u32:1": "address:client1"
+          },
+          "code": "file:../output/xlauncher-staking.wasm"
+        }
+      }
+    },
+    {
+      "step": "setState",
+      "currentBlockInfo": {
+        "blockTimestamp": "48168001"
+      }
+    },
+    {
+      "step": "scCall",
+      "txId": "claimUnstakedValue-after-allowed",
+      "tx": {
+        "from": "address:client1",
+        "to": "sc:xlauncher-staking",
+        "function": "claimUnstakedValue",
+        "value": "0",
+        "gasLimit": "100,000,000",
+        "gasPrice": "0"
+      },
+      "expect": {
+        "out": [],
+        "status": "0",
+        "message": "",
+        "gas": "*",
+        "refund": "*"
+      }
+    },
+    {
+      "step": "checkState",
+      "accounts": {
+        "address:owner": {
+          "nonce": "*",
+          "balance": "0",
+          "esdt": {
+            "str:BCOIN-a00000": "100,000,000,000,000,000,000,000,000"
+          },
+          "storage": {},
+          "code": ""
+        },
+        "address:client1": {
+          "nonce": "5",
+          "balance": "0",
+          "esdt": {
+            "str:BCOIN-a00000": "4753749999999999930640",
+            "str:BCOIN-b00000": "5,000,000,000,000,000,000,000"
+          }
+        },
+        "sc:xlauncher-staking": {
+          "nonce": "*",
+          "balance": "0",
+          "esdt": {
+            "str:BCOIN-a00000": "246250000000000069360"
+          },
+          "storage": {
+            "str:variableContractSettings": {
+              "1-token_id": "nested:str:BCOIN-a00000",
+              "2-min_amount": "biguint:250,000,000,000,000,000",
+              "3-no_rewords_time_span": "u64:864000",
+              "4-contract_is_active": "true",
+              "5-pull_items_vec_len": "u32:3",
+              "6-first_pull_item": {
+                "1-id": "u32:1",
+                "2-locking_time_span": "u64:0",
+                "3-apy_configuration_vec_len": "u32:1",
+                "4-first_apy_configuration": {
+                  "1-id": "u32:1",
+                  "2-apy": "u64:100",
+                  "3-start_timestamp": "u64:15768000",
+                  "4-end_timestamp": "u64:31536000"
+                }
+              },
+              "7-second_pull_item": {
+                "1-id": "u32:2",
+                "2-locking_time_span": "u64:5184000",
+                "3-apy_configuration_vec_len": "u32:1",
+                "4-first_apy_configuration": {
+                  "1-id": "u32:1",
+                  "2-apy": "u64:200",
+                  "3-start_timestamp": "u64:0",
+                  "4-end_timestamp": "u64:31536000"
+                }
+              },
+              "8-third_pull_item": {
+                "1-id": "u32:3",
+                "2-locking_time_span": "u64:15552000",
+                "3-apy_configuration_vec_len": "u32:1",
+                "4-first_apy_configuration": {
+                  "1-id": "u32:1",
+                  "2-apy": "u64:300",
+                  "3-start_timestamp": "u64:0",
+                  "4-end_timestamp": "u64:31536000"
+                }
+              }
+            },
+            "str:clientState|address:client1|str:.len": "1",
+            "str:clientState|address:client1|str:.item|u32:1": {
               "1-pull_id": "u32:1",
-              "2-pull_time_stamp_entry": "u64:31536001",
-              "3-pull_time_stamp_last_collection": "u64:31536001",
-              "4-pull_amount": "biguint:2,499,999,999,999,953,760"
+              "2-pull_time_stamp_entry": "u64:0",
+              "3-pull_time_stamp_last_collection": "u64:47304000",
+              "4-pull_amount": "biguint:250,000,000,000,000,000,000"
             },
-            "str:totalStakedValue": "1,002,499,999,999,999,953,760",
+            "str:totalStakedValue": "250,000,000,000,000,000,000",
             "str:clientList|str:.len": "1",
             "str:clientList|str:.item|u32:1": "address:client1"
           },

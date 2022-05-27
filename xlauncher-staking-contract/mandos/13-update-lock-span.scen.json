@@ -11,6 +11,13 @@
           "esdt": {
             "str:BCOIN-a00000": "100,000,000,000,000,000,000,000,000"
           }
+        },
+        "address:client1": {
+          "nonce": "0",
+          "balance": "0",
+          "esdt": {
+            "str:BCOIN-a00000": "5,000,000,000,000,000,000,000"
+          }
         }
       },
       "newAddresses": [
@@ -19,10 +26,7 @@
           "creatorNonce": "0",
           "newAddress": "sc:xlauncher-staking"
         }
-      ],
-      "currentBlockInfo": {
-        "blockTimestamp": "0"
-      }
+      ]
     },
     {
       "step": "scDeploy",
@@ -36,7 +40,7 @@
           "1",
           "0",
           "1",
-          "123",
+          "0",
           "31536000",
           "100",
           "2",
@@ -64,72 +68,40 @@
       }
     },
     {
-      "step": "setState",
-      "currentBlockInfo": {
-        "blockTimestamp": "0",
-        "blockNonce": "522",
-        "blockRound": "533",
-        "blockEpoch": "544"
-      },
-      "accounts": {
-        "address:client1": {
-          "nonce": "0",
-          "balance": "0",
-          "esdt": {
-            "str:BCOIN-a00000": "5,000,000,000,000,000,000,000",
-            "str:BCOIN-b00000": "5,000,000,000,000,000,000,000"
-          }
-        }
-      }
-    },
-    {
       "step": "scCall",
-      "txId": "stake-good-coin",
+      "txId": "update-lock-span-not-owner",
       "tx": {
         "from": "address:client1",
         "to": "sc:xlauncher-staking",
+        "function": "updateUnstakeLockSpan",
         "value": "0",
-        "function": "stake",
-        "esdtValue": [
-          {
-            "tokenIdentifier": "str:BCOIN-a00000",
-            "value": "1,000,000,000,000,000,000,000"
-          }
-        ],
-        "arguments": [
-          "1"
-        ],
         "gasLimit": "100,000,000",
-        "gasPrice": "0"
+        "gasPrice": "0",
+        "arguments": [
+          "600"
+        ]
       },
       "expect": {
         "out": [],
-        "status": "0",
-        "message": "",
+        "status": "4",
+        "message": "str:Endpoint can only be called by owner",
         "gas": "*",
         "refund": "*"
       }
     },
     {
-      "step": "setState",
-      "currentBlockInfo": {
-        "blockTimestamp": "1"
-      }
-    },
-    {
       "step": "scCall",
-      "txId": "unstake-case-1",
+      "txId": "update-lock-span-by-owner",
       "tx": {
-        "from": "address:client1",
+        "from": "address:owner",
         "to": "sc:xlauncher-staking",
-        "function": "unstake",
+        "function": "updateUnstakeLockSpan",
         "value": "0",
-        "arguments": [
-          "1",
-          "1,000,000,000,000,000,000,000"
-        ],
         "gasLimit": "100,000,000",
-        "gasPrice": "0"
+        "gasPrice": "0",
+        "arguments": [
+          "600"
+        ]
       },
       "expect": {
         "out": [],
@@ -142,6 +114,13 @@
     {
       "step": "checkState",
       "accounts": {
+        "address:client1": {
+          "nonce": "1",
+          "balance": "0",
+          "esdt": {
+            "str:BCOIN-a00000": "5,000,000,000,000,000,000,000"
+          }
+        },
         "address:owner": {
           "nonce": "*",
           "balance": "0",
@@ -154,14 +133,11 @@
         "sc:xlauncher-staking": {
           "nonce": "*",
           "balance": "0",
-          "esdt": {
-            "str:BCOIN-a00000": "1000000000000000000000"
-          },
           "storage": {
             "str:variableContractSettings": {
               "1-token_id": "nested:str:BCOIN-a00000",
               "2-min_amount": "biguint:250,000,000,000,000,000",
-              "3-unstake_lock_span": "u64:864000",
+              "3-unstake_lock_span": "u64:600",
               "4-contract_is_active": "true",
               "5-pull_items_vec_len": "u32:3",
               "6-first_pull_item": {
@@ -171,7 +147,7 @@
                 "4-first_apy_configuration": {
                   "1-id": "u32:1",
                   "2-apy": "u64:100",
-                  "3-start_timestamp": "u64:123",
+                  "3-start_timestamp": "u64:0",
                   "4-end_timestamp": "u64:31536000"
                 }
               },
@@ -197,25 +173,9 @@
                   "4-end_timestamp": "u64:31536000"
                 }
               }
-            },
-            "str:unstakeState|address:client1": {
-              "0-total_unstaked_amount": "biguint:1000000000000000000000",
-              "1-requested_amount": "biguint:1000000000000000000000",
-              "2-free_after_time_stamp": "u64:864001"
-            },
-            "str:totalStakedValue": "1000000000000000000000",
-            "str:clientList|str:.len": "1",
-            "str:clientList|str:.item|u32:1": "address:client1"
+            }
           },
           "code": "file:../output/xlauncher-staking.wasm"
-        },
-        "address:client1": {
-          "nonce": "2",
-          "balance": "0",
-          "esdt": {
-            "str:BCOIN-a00000": "4,000,000,000,000,000,000,000",
-            "str:BCOIN-b00000": "5,000,000,000,000,000,000,000"
-          }
         }
       }
     }

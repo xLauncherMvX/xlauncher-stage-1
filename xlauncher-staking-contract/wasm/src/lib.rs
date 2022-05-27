@@ -9,17 +9,23 @@ elrond_wasm_node::wasm_endpoints! {
     (
         appendPullSettings
         claim
+        claimUnstakedValue
         fundContract
+        getClientList
         getClientReport
         getClientReportV2
         getClientReportV3
         getClientState
         getTokenBalance
+        getTotalStakedValue
+        getUnstakeState
         getVariableContractSettings
         reinvest
         stake
+        switchIsActiveFieldValue
         unstake
         updatePullSettings
+        updateUnstakeLockSpan
     )
 }
 

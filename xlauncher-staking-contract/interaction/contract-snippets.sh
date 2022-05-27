@@ -71,7 +71,7 @@ deploy() {
 
 updateContract() {
   erdpy --verbose contract upgrade ${ADDRESS} --project=${PROJECT} --recall-nonce --pem=${PEM_FILE} \
-    --gas-limit=100000000 --send --outfile="${MY_LOGS}/update-${ENV_LOGS}.json" \
+    --gas-limit=150000000 --send --outfile="${MY_LOGS}/update-${ENV_LOGS}.json" \
     --proxy=${PROXY} --chain=${CHAINID} \
     --arguments "0x${TOKEN_ID_HEX}" ${MIN_AMOUNT} \
     ${PULL_A_ID} ${PULL_A_LOCKING_TIME_SPAN} ${APY_A0_ID} ${APY_A0_START} ${APY_A0_END} ${APY_A0_APY} \
@@ -105,7 +105,7 @@ stake() {
   pull_id="1"
   erdpy --verbose contract call ${ADDRESS} --recall-nonce \
     --pem=${PEM_FILE} \
-    --gas-limit=5000000 \
+    --gas-limit=8000000 \
     --proxy=${PROXY} --chain=${CHAINID} \
     --function="ESDTTransfer" \
     --arguments $token_id $amount $method_name $pull_id \
@@ -182,7 +182,7 @@ appendPullSettings() {
     --function="appendPullSettings" \
     --arguments ${APPEND_APY_ID} ${APPEND_APY_START} ${APPEND_APY_END} ${APPEND_APY_A} ${APPEND_APY_B} ${APPEND_APY_C} \
     --send \
-    --outfile="${MY_LOGS}/claim-${ENV_LOGS}.json"
+    --outfile="${MY_LOGS}/appendPullSettings-${ENV_LOGS}.json"
 }
 
 
@@ -203,5 +203,15 @@ updatePullSettings() {
     --function="updatePullSettings" \
     --arguments ${APPEND_APY_ID} ${APPEND_APY_START} ${APPEND_APY_END} ${APPEND_APY_A} ${APPEND_APY_B} ${APPEND_APY_C} \
     --send \
-    --outfile="${MY_LOGS}/claim-${ENV_LOGS}.json"
+    --outfile="${MY_LOGS}/updatePullSettings-${ENV_LOGS}.json"
+}
+
+switchIsActiveFieldValue(){
+  erdpy --verbose contract call ${ADDRESS} --recall-nonce \
+      --pem=${PEM_FILE} \
+      --gas-limit=8000000 \
+      --proxy=${PROXY} --chain=${CHAINID} \
+      --function="switchIsActiveFieldValue" \
+      --send \
+      --outfile="${MY_LOGS}/switchIsActiveFieldValue-${ENV_LOGS}.json"
 }
