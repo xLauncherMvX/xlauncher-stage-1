@@ -377,35 +377,8 @@ pub trait XLauncherStaking {
         require!(self.contract_is_active(),"Contract is in maintenance");
         let client = self.blockchain().get_caller();
         let current_time_stamp = self.blockchain().get_block_timestamp();
-        let client_vector = self.get_client_staked_items_by_pull_id(pull_id.clone());
-        let config_vector = self.get_apy_config_vector(pull_id.clone());
-        if (client_vector.len() == 0) || (config_vector.len() == 0) {
-            return;
-        }
 
-        let mut total_rewards = BigUint::zero(); //total rewords
-
-        for i in 0..=(client_vector.len()-1) {
-            let client_item = client_vector.get(i);
-            let mut item_rewords = BigUint::zero();
-            for k in 0..=(config_vector.len() - 1) {
-                let config_item = config_vector.get(k);
-
-                let config_rewords = self.calculate_rewards_v2(client_item.clone(),
-                                                               config_item,
-                                                               current_time_stamp.clone());
-                if config_rewords > BigUint::zero() {
-                    item_rewords += config_rewords.clone();
-                }
-
-            }
-
-            if item_rewords > 0_u64 {
-                self.update_staked_item_collection_time(client_item.pull_time_stamp_entry,
-                                                        current_time_stamp);
-                total_rewards += item_rewords;
-            }
-        }
+        let total_rewards = self.calculate_pull_rewords(pull_id, current_time_stamp);
 
         if total_rewards > 0_u64 {
             let token_id = self.get_contract_token_id();
@@ -425,36 +398,12 @@ pub trait XLauncherStaking {
         require!(self.contract_is_active(),"Contract is in maintenance");
         let client = self.blockchain().get_caller();
         let current_time_stamp = self.blockchain().get_block_timestamp();
-        let mut client_vector = self.client_state(&client);
-        let id_clone = pull_id.clone();
-        let config_vector = self.get_apy_config_vector(id_clone);
-        let mut total_rewards = BigUint::zero(); //total rewords
-        if client_vector.len() > 0 && config_vector.len() > 0 {
-            for i in 1..=client_vector.len() {
-                let mut client_item = client_vector.get(i);
-                let mut item_rewards = BigUint::zero(); // item rewords
-                if client_item.pull_id == pull_id {
-                    for k in 0..=(config_vector.len() - 1) {
-                        let config_item = config_vector.get(k);
 
-                        let config_rewords = self.calculate_rewards_v2(client_item.clone(),
-                                                                       config_item,
-                                                                       current_time_stamp);
-                        if config_rewords > BigUint::zero() {
-                            item_rewards += config_rewords;
-                        }
-                    }
-                }
-                if item_rewards > 0_u64 {
-                    client_item.pull_time_stamp_last_collection = current_time_stamp;
-                    client_vector.set(i, &client_item);
-                    total_rewards += item_rewards;
-                    sc_print!("total_rewards={}",total_rewards);
-                }
-            }
-        }
 
-        if total_rewards > BigUint::zero() {
+        let total_rewards = self.calculate_pull_rewords(pull_id, current_time_stamp);
+
+
+        if total_rewards > 0_u64 {
             let new_pull_state = ClientPullState {
                 pull_id: (pull_id),
                 pull_time_stamp_entry: (current_time_stamp),
@@ -462,9 +411,41 @@ pub trait XLauncherStaking {
                 pull_amount: total_rewards.clone(),
             };
 
-            client_vector.push(&new_pull_state);
+            self.client_state(&client).push(&new_pull_state);
             self.increment_total_staked_value(total_rewards);
         }
+    }
+
+    fn calculate_pull_rewords(&self, pull_id: u32, current_time_stamp: u64) -> BigUint {
+        let client_vector = self.get_client_staked_items_by_pull_id(pull_id.clone());
+        let config_vector = self.get_apy_config_vector(pull_id.clone());
+        if (client_vector.len() == 0) || (config_vector.len() == 0) {
+            return BigUint::zero();
+        }
+        let mut total_rewards = BigUint::zero(); //total rewords
+
+        for i in 0..=(client_vector.len() - 1) {
+            let client_item = client_vector.get(i);
+            let mut item_rewards = BigUint::zero(); // item rewords
+
+            for k in 0..=(config_vector.len() - 1) {
+                let config_item = config_vector.get(k);
+
+                let config_rewords = self.calculate_rewards_v2(client_item.clone(),
+                                                               config_item,
+                                                               current_time_stamp);
+                if config_rewords > BigUint::zero() {
+                    item_rewards += config_rewords;
+                }
+            }
+
+            if item_rewards > 0_u64 {
+                self.update_staked_item_collection_time(client_item.pull_time_stamp_entry,
+                                                        current_time_stamp);
+                total_rewards += item_rewards;
+            }
+        }
+        return total_rewards;
     }
 
     // NOTE
