@@ -152,7 +152,6 @@ pub trait XLauncherStaking {
         require!(self.pull_exists(pull_id.clone()),"invalid pull_id={}",pull_id);
 
 
-
         let client = self.blockchain().get_caller();
         let current_time_stamp = self.blockchain().get_block_timestamp();
         let mut state_vector = self.client_state(&client);
@@ -378,43 +377,33 @@ pub trait XLauncherStaking {
         require!(self.contract_is_active(),"Contract is in maintenance");
         let client = self.blockchain().get_caller();
         let current_time_stamp = self.blockchain().get_block_timestamp();
-        let client_vector = self.client_state(&client);
+        let client_vector = self.get_client_staked_items_by_pull_id(pull_id.clone());
         let config_vector = self.get_apy_config_vector(pull_id.clone());
+        if (client_vector.len() == 0) || (config_vector.len() == 0) {
+            return;
+        }
+
         let mut total_rewards = BigUint::zero(); //total rewords
 
-        let mut claim_vector: ManagedVec<ClaimItem<Self::Api>> = ManagedVec::new();
+        for i in 0..=(client_vector.len()-1) {
+            let client_item = client_vector.get(i);
+            let mut item_rewords = BigUint::zero();
+            for k in 0..=(config_vector.len() - 1) {
+                let config_item = config_vector.get(k);
 
-        if client_vector.len() > 0 && config_vector.len() > 0 {
-            for i in 1..=client_vector.len() {
-                let mut client_item = client_vector.get(i);
-                let mut item_rewords = BigUint::zero();
-                if client_item.pull_id == pull_id {
-                    for k in 0..=(config_vector.len() - 1) {
-                        let config_item = config_vector.get(k);
-
-                        let config_rewords = self.calculate_rewards_v2(client_item.clone(),
-                                                                       config_item,
-                                                                       current_time_stamp.clone());
-                        if config_rewords > BigUint::zero() {
-                            item_rewords += config_rewords.clone();
-                        }
-                        let claim_item = ClaimItem {
-                            pull_id: (pull_id.clone()),
-                            pull_amount: (client_item.pull_amount.clone()),
-                            pull_time_stamp_entry: (client_item.pull_time_stamp_entry.clone()),
-                            pull_time_stamp_last_collection: (client_item.pull_time_stamp_last_collection.clone()),
-                            rewords: config_rewords.clone(),
-                            current_time_stamp: current_time_stamp.clone(),
-                        };
-
-                        claim_vector.push(claim_item)
-                    }
+                let config_rewords = self.calculate_rewards_v2(client_item.clone(),
+                                                               config_item,
+                                                               current_time_stamp.clone());
+                if config_rewords > BigUint::zero() {
+                    item_rewords += config_rewords.clone();
                 }
-                if item_rewords > 0_u64 {
-                    client_item.pull_time_stamp_last_collection = current_time_stamp;
-                    client_vector.set(i, &client_item);
-                    total_rewards += item_rewords;
-                }
+
+            }
+
+            if item_rewords > 0_u64 {
+                self.update_staked_item_collection_time(client_item.pull_time_stamp_entry,
+                                                        current_time_stamp);
+                total_rewards += item_rewords;
             }
         }
 
@@ -676,7 +665,7 @@ pub trait XLauncherStaking {
     }
 
     fn pull_exists(&self,
-                    pull_id:u32) -> bool{
+                   pull_id: u32) -> bool {
         let var_setting = self.variable_contract_settings().get();
         let pull_items = var_setting.pull_items;
         for i in 0..=(pull_items.len() - 1) {
@@ -714,7 +703,6 @@ pub trait XLauncherStaking {
                                                   apy_start: u64,
                                                   apy_end: u64,
                                                   apy: u64) {
-
         let mut var_setting = self.variable_contract_settings().get();
         let mut pull_items = var_setting.pull_items;
 
@@ -790,6 +778,35 @@ pub trait XLauncherStaking {
         sc_panic!("Not valid pull_id={}",pull_id)
     }
 
+    fn get_client_staked_items_by_pull_id(&self, pull_id: u32) -> ManagedVec<ClientPullState<Self::Api>> {
+        let client = self.blockchain().get_caller();
+        let client_vector = self.client_state(&client);
+        let mut selected_items: ManagedVec<ClientPullState<Self::Api>> = ManagedVec::new();
+        if client_vector.len() > 0 {
+            for i in 1..=client_vector.len() {
+                let item = client_vector.get(i);
+                if item.pull_id == pull_id {
+                    selected_items.push(item);
+                    let len = selected_items.len();
+                    sc_print!("len={}",len);
+                }
+            }
+        }
+        return selected_items;
+    }
+
+    fn update_staked_item_collection_time(&self, entry_time_id: u64, current_time_stamp: u64) {
+        let client = self.blockchain().get_caller();
+        let client_vector = self.client_state(&client);
+        for i in 1..=client_vector.len() {
+            let mut item = client_vector.get(i);
+            if item.pull_time_stamp_entry == entry_time_id {
+                item.pull_time_stamp_last_collection = current_time_stamp;
+                client_vector.set(i, &item);
+            }
+        }
+    }
+
     fn get_pull_locking_time_span(&self, pull_id: u32) -> u64 {
         let var_setting = self.variable_contract_settings().get();
         let pull_items = var_setting.pull_items;
@@ -818,7 +835,6 @@ pub trait XLauncherStaking {
     // - todo: need to reed on events api (see if this is doable now or in the next iteration of the contract)
     #[view(getClientReport)]
     fn get_client_report(&self, client: ManagedAddress) -> ReportClinet<Self::Api> {
-
         let mut report = ReportClinet {
             total_amount: BigUint::zero(),
             total_rewords: BigUint::zero(),
@@ -829,7 +845,7 @@ pub trait XLauncherStaking {
         let client_vector = self.client_state(&client);
 
         if client_vector.len() == 0 {
-            //if clinet has no staked items we stop here
+            //if client has no staked items we stop here
             return report;
         }
 
