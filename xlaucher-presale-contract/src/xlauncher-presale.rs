@@ -3,6 +3,8 @@
 elrond_wasm::imports!();
 elrond_wasm::derive_imports!();
 
+use xlauncher_staking::ProxyTrait as _;
+
 const EGLD_DECIMALS_VALUE: u64 = 1_000_000_000_000_000_000;
 const ZERO: u64 = 0;
 
@@ -127,6 +129,9 @@ pub trait XLauncherPresale {
                 &[])
         }
     }
+
+    #[proxy]
+    fn contract_proxy(&self, sc_address: ManagedAddress) -> xlauncher_staking::Proxy<Self::Api>;
 
 
     // storage

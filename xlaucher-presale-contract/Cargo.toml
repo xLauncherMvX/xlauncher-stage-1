@@ -15,3 +15,6 @@ version = "0.31.1"
 
 [dev-dependencies.elrond-wasm-debug]
 version = "0.31.1"
+
+[dependencies.xlauncher-staking]
+path = "../xlauncher-staking-contract"

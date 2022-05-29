@@ -293,6 +293,7 @@ name = "xlauncher-presale"
 version = "0.1.0"
 dependencies = [
  "elrond-wasm",
+ "xlauncher-staking",
 ]
 
 [[package]]
@@ -302,4 +303,11 @@ dependencies = [
  "elrond-wasm-node",
  "elrond-wasm-output",
  "xlauncher-presale",
+]
+
+[[package]]
+name = "xlauncher-staking"
+version = "0.1.0"
+dependencies = [
+ "elrond-wasm",
 ]

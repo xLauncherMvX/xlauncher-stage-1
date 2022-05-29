@@ -717,6 +717,14 @@ version = "0.1.0"
 dependencies = [
  "elrond-wasm",
  "elrond-wasm-debug",
+ "xlauncher-staking",
+]
+
+[[package]]
+name = "xlauncher-staking"
+version = "0.1.0"
+dependencies = [
+ "elrond-wasm",
 ]
 
 [[package]]
