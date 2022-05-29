@@ -53,6 +53,72 @@ import StakingCard from "cards/StakingCard";
 //Elrond
 import { DappUI, logout, useGetAccountInfo } from '@elrondnetwork/dapp-core';
 
+import {
+  AbiRegistry,
+  Address,
+  Balance,
+  BigUIntValue,
+  BytesValue,
+  Interaction,
+  NetworkConfig,
+  ProxyProvider,
+  SmartContract,
+  SmartContractAbi,
+} from "@elrondnetwork/erdjs/out";
+import VuiButton from 'components/VuiButton';
+
+async function getTournamentInfoList() {
+  try {
+    let provider = new ProxyProvider("https://devnet-gateway.elrond.com");
+    await NetworkConfig.getDefault().sync(provider);
+
+    let stringAddress =
+      "erd1qqqqqqqqqqqqqpgqgufwtgw9ax4hvt6g956rxg7nw3u349ucd8sskgy2sm";
+    let address = new Address(stringAddress);
+
+    const abiLocation = `${process.env.PUBLIC_URL}/my-contract.abi.json`;
+
+    let abiRegistry = await AbiRegistry.load({
+      urls: [abiLocation],
+    });
+    let abi = new SmartContractAbi(abiRegistry, [`XLauncherStaking`]);
+
+    let contract = new SmartContract({
+      address: address,
+      abi: abi,
+    });
+
+    let interaction = contract.methods.getClientReport([
+      BytesValue.fromUTF8("tournament-01"),
+      BytesValue.fromUTF8("tournament-02")
+    ]);
+
+    let queryResponse = await contract.runQuery(
+      provider,
+      interaction.buildQuery()
+    );
+    let response = interaction.interpretQueryResponse(queryResponse);
+    let myType = response.firstValue.getType();
+
+    let myList = response.firstValue.valueOf();
+
+    let myReturnList  = [];
+
+    myList.forEach((element) => {
+      let bufferedId = element.tournament_id;
+
+      let stringVal = bufferedId.toString();
+      myReturnList.push(stringVal);
+
+      let signInPrice = element.sing_in_price.toFixed();
+    });
+    return myReturnList;
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+}
+
 function Farms() {
   //Elrond login
   
@@ -175,6 +241,10 @@ function Farms() {
             }}
             modalFarmName="Farm 3"
           />
+        </Grid>
+        <Grid item xs={12} md={6} lg={4} xl={4}>
+          <VuiButton>Get client status</VuiButton>
+          user address = {}
         </Grid>
       </Grid>
     </Main> 
