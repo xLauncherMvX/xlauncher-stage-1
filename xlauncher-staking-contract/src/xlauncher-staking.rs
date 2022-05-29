@@ -151,11 +151,11 @@ pub trait XLauncherStaking {
         let current_time_stamp = self.blockchain().get_block_timestamp();
         let mut state_vector = self.client_state(&client);
 
-        let new_pull_state = ClientPullState {
-            pull_id: (pull_id),
-            pull_time_stamp_entry: (current_time_stamp),
-            pull_time_stamp_last_collection: (current_time_stamp),
-            pull_amount: amount.clone(),
+        let new_pull_state = ClientPoolState {
+            pool_id: (pull_id),
+            pool_time_stamp_entry: (current_time_stamp),
+            pool_time_stamp_last_collection: (current_time_stamp),
+            pool_amount: amount.clone(),
         };
 
         state_vector.push(&new_pull_state);
@@ -230,7 +230,7 @@ pub trait XLauncherStaking {
 
     #[endpoint(unstake)]
     fn unstake(&self,
-               pull_id: u32,
+               pool_id: u32,
                amount: BigUint) {
         require!(self.contract_is_active(),"Contract is in maintenance");
 
@@ -238,23 +238,23 @@ pub trait XLauncherStaking {
         let current_time_stamp = self.blockchain().get_block_timestamp();
 
         let client_vector =
-            self.get_client_staked_items_by_pull_id(&pull_id, &client);
-        let config_vector = self.get_apy_config_vector(&pull_id);
+            self.get_client_staked_items_by_pull_id(&pool_id, &client);
+        let config_vector = self.get_apy_config_vector(&pool_id);
         if (client_vector.len() == 0) || (config_vector.len() == 0) {
             sc_panic!("client and config vector are empty");
         }
 
-        let locking_time_span = self.get_pull_locking_time_span(&pull_id);
+        let locking_time_span = self.get_pull_locking_time_span(&pool_id);
 
 
-        let mut selected_items: ManagedVec<ClientPullState<Self::Api>> = ManagedVec::new();
+        let mut selected_items: ManagedVec<ClientPoolState<Self::Api>> = ManagedVec::new();
         let mut total_items_value = BigUint::zero();
         let mut total_rewards = BigUint::zero();
 
 
         for i in 0..=(client_vector.len() - 1) {
             let client_item = client_vector.get(i);
-            let unstake_time = locking_time_span + client_item.pull_time_stamp_entry;
+            let unstake_time = locking_time_span + client_item.pool_time_stamp_entry;
 
             if unstake_time < current_time_stamp
                 && total_items_value < amount {
@@ -265,12 +265,11 @@ pub trait XLauncherStaking {
                     let item_rewords = self.calculate_rewards_v2(client_item.clone(),
                                                                  config_item,
                                                                  &current_time_stamp);
-                    total_items_value = total_items_value + client_item.pull_amount.clone();
+                    total_items_value = total_items_value + client_item.pool_amount.clone();
                     total_rewards = total_rewards + item_rewords;
                 }
             }
         }
-
 
         require!(amount <= total_items_value , "total staking value smaller then requested \
          amount={}, val={}",amount,total_items_value);
@@ -280,8 +279,8 @@ pub trait XLauncherStaking {
         if total_items_value == amount {
             for i in 0..=(selected_items.len() - 1) {
                 let item = selected_items.get(i);
-                self.remove_client_item_from_storage(&pull_id,
-                                                     &item.pull_time_stamp_entry,
+                self.remove_client_item_from_storage(&pool_id,
+                                                     &item.pool_time_stamp_entry,
                                                      &client);
             }
             let total_value = total_items_value.clone() + total_rewards.clone();
@@ -295,8 +294,8 @@ pub trait XLauncherStaking {
         if amount < total_items_value {
             for i in 0..=(selected_items.len() - 1) {
                 let item = selected_items.get(i);
-                self.remove_client_item_from_storage(&pull_id,
-                                                     &item.pull_time_stamp_entry,
+                self.remove_client_item_from_storage(&pool_id,
+                                                     &item.pool_time_stamp_entry,
                                                      &client);
             }
 
@@ -305,8 +304,8 @@ pub trait XLauncherStaking {
 
             // change the amount with what is left over and the last time collection
             let diff = total_items_value.clone() - amount.clone();
-            last_tem.pull_amount = diff;
-            last_tem.pull_time_stamp_last_collection = current_time_stamp;
+            last_tem.pool_amount = diff;
+            last_tem.pool_time_stamp_last_collection = current_time_stamp;
 
             // push back this lastItem to the user staked vector;
             let mut updated_vector = self.client_state(&client);
@@ -331,8 +330,8 @@ pub trait XLauncherStaking {
         let mut client_vector = self.client_state(&client);
         for i in 1..=client_vector.len() {
             let item = client_vector.get(i);
-            if item.pull_time_stamp_entry == *entry_time_stamp
-                && item.pull_id == *pool_id {
+            if item.pool_time_stamp_entry == *entry_time_stamp
+                && item.pool_id == *pool_id {
                 id = i;
                 break;
             }
@@ -378,11 +377,11 @@ pub trait XLauncherStaking {
 
 
         if total_rewards > 0_u64 {
-            let new_pull_state = ClientPullState {
-                pull_id: (pull_id),
-                pull_time_stamp_entry: (current_time_stamp),
-                pull_time_stamp_last_collection: (current_time_stamp),
-                pull_amount: total_rewards.clone(),
+            let new_pull_state = ClientPoolState {
+                pool_id: (pull_id),
+                pool_time_stamp_entry: (current_time_stamp),
+                pool_time_stamp_last_collection: (current_time_stamp),
+                pool_amount: total_rewards.clone(),
             };
 
             self.client_state(&client).push(&new_pull_state);
@@ -419,7 +418,7 @@ pub trait XLauncherStaking {
 
             if item_rewards > BigUint::zero() {
                 self.update_staked_item_collection_time(pull_id,
-                                                        &client_item.pull_time_stamp_entry,
+                                                        &client_item.pool_time_stamp_entry,
                                                         &current_time_stamp,
                                                         client);
                 total_rewards += item_rewards;
@@ -429,19 +428,19 @@ pub trait XLauncherStaking {
     }
 
     fn calculate_rewards_v2(&self,
-                            client_pull_state: ClientPullState<Self::Api>,
+                            client_pull_state: ClientPoolState<Self::Api>,
                             apy_configuration: ApyConfiguration,
                             current_time_stamp: &u64) -> BigUint {
         let s = apy_configuration.start_timestamp;
         let e = apy_configuration.end_timestamp;
-        let l = client_pull_state.pull_time_stamp_last_collection;
+        let l = client_pull_state.pool_time_stamp_last_collection;
         let t = *current_time_stamp;
 
         let seconds_in_year: u64 = 60 * 60 * 24 * 365;
         let pull_apy: u64 = apy_configuration.apy;
         let bu_s_in_year = BigUint::from(seconds_in_year); // seconds in year as BigUint
         let bu_apy = BigUint::from(pull_apy); // pull api as BigUint
-        let bu_amount = client_pull_state.pull_amount.clone(); // pull amount as BigUint
+        let bu_amount = client_pull_state.pool_amount.clone(); // pull amount as BigUint
         let bu_hundred = BigUint::from(100u64); // 100 as BigUint
         let bu_r_in_year = (&bu_amount * &bu_apy) / &bu_hundred; // rewords in one year as BigUint
         let bu_r_in_1_second = &bu_r_in_year / &bu_s_in_year; // rewords in one second as BigUint
@@ -725,13 +724,13 @@ pub trait XLauncherStaking {
         sc_panic!("Not valid pull_id={}",pull_id)
     }
 
-    fn get_client_staked_items_by_pull_id(&self, pull_id: &u32, client: &ManagedAddress) -> ManagedVec<ClientPullState<Self::Api>> {
+    fn get_client_staked_items_by_pull_id(&self, pool_id: &u32, client: &ManagedAddress) -> ManagedVec<ClientPoolState<Self::Api>> {
         let client_vector = self.client_state(&client);
-        let mut selected_items: ManagedVec<ClientPullState<Self::Api>> = ManagedVec::new();
+        let mut selected_items: ManagedVec<ClientPoolState<Self::Api>> = ManagedVec::new();
         if client_vector.len() > 0 {
             for i in 1..=client_vector.len() {
                 let item = client_vector.get(i);
-                if item.pull_id == *pull_id {
+                if item.pool_id == *pool_id {
                     selected_items.push(item);
                     let len = selected_items.len();
                     sc_print!("len={}",len);
@@ -749,8 +748,8 @@ pub trait XLauncherStaking {
         let client_vector = self.client_state(&client);
         for i in 1..=client_vector.len() {
             let mut item = client_vector.get(i);
-            if item.pull_time_stamp_entry == *entry_time_id && item.pull_id == *pool_id {
-                item.pull_time_stamp_last_collection = *current_time_stamp;
+            if item.pool_time_stamp_entry == *entry_time_id && item.pool_id == *pool_id {
+                item.pool_time_stamp_last_collection = *current_time_stamp;
                 client_vector.set(i, &item);
             }
         }
@@ -804,8 +803,8 @@ pub trait XLauncherStaking {
             let pull = pull_items.get(i);
             let pul_id = pull.id;
             let mut rep_item = ReportClientPullPullItem {
-                pull_id: pul_id.clone(),
-                pull_amount: BigUint::zero(),
+                pool_id: pul_id.clone(),
+                pool_amount: BigUint::zero(),
                 rewords_amount: BigUint::zero(),
             };
             for pc in 0..=(pull.apy_configuration.len() - 1) {
@@ -813,8 +812,8 @@ pub trait XLauncherStaking {
                 for c in 1..=client_vector.len() {
                     let pc_clone = pc_val.clone();
                     let client_item = client_vector.get(c);
-                    if client_item.pull_id == pul_id {
-                        rep_item.pull_amount = rep_item.pull_amount.clone() + client_item.pull_amount.clone();
+                    if client_item.pool_id == pul_id {
+                        rep_item.pool_amount = rep_item.pool_amount.clone() + client_item.pool_amount.clone();
                         let item_reword = self.calculate_rewards_v2(client_item.clone(),
                                                                     pc_clone,
                                                                     &current_time_stamp);
@@ -822,9 +821,9 @@ pub trait XLauncherStaking {
                     }
                 }
             }
-            report.total_amount = report.total_amount.clone() + rep_item.pull_amount.clone();
+            report.total_amount = report.total_amount.clone() + rep_item.pool_amount.clone();
             report.total_rewords = report.total_rewords.clone() + rep_item.rewords_amount.clone();
-            if rep_item.pull_amount > 0 {
+            if rep_item.pool_amount > BigUint::zero() {
                 count = count + 1;
                 report.report_pull_items.push(rep_item);
             }
@@ -856,20 +855,20 @@ pub trait XLauncherStaking {
         let mut count = 0;
         let pull_items = var_setting.pull_items;
         for i in 0..=(pull_items.len() - 1) {
-            let pull = pull_items.get(i);
-            let pul_id = pull.id;
+            let pool = pull_items.get(i);
+            let pool_id = pool.id;
             let mut rep_item = ReportClientPullPullItem {
-                pull_id: pul_id.clone(),
-                pull_amount: BigUint::zero(),
+                pool_id: pool_id.clone(),
+                pool_amount: BigUint::zero(),
                 rewords_amount: BigUint::zero(),
             };
-            for pc in 0..=(pull.apy_configuration.len() - 1) {
-                let pc_val = pull.apy_configuration.get(pc);
+            for pc in 0..=(pool.apy_configuration.len() - 1) {
+                let pc_val = pool.apy_configuration.get(pc);
                 for c in 1..=client_vector.len() {
                     let pc_clone = pc_val.clone();
                     let client_item = client_vector.get(c);
-                    if client_item.pull_id == pul_id {
-                        rep_item.pull_amount = rep_item.pull_amount.clone() + client_item.pull_amount.clone();
+                    if client_item.pool_id == pool_id {
+                        rep_item.pool_amount = rep_item.pool_amount.clone() + client_item.pool_amount.clone();
                         let item_reword = self.calculate_rewards_v2(client_item.clone(),
                                                                     pc_clone,
                                                                     &current_time_stamp);
@@ -877,14 +876,14 @@ pub trait XLauncherStaking {
                     }
                 }
             }
-            report.total_amount = report.total_amount.clone() + rep_item.pull_amount.clone();
+            report.total_amount = report.total_amount.clone() + rep_item.pool_amount.clone();
             report.total_rewords = report.total_rewords.clone() + rep_item.rewords_amount.clone();
-            if rep_item.pull_amount > BigUint::zero() {
+            if rep_item.pool_amount > BigUint::zero() {
                 count = count + 1;
                 multi_val_vec.push(
                     MultiValue3::from((
-                        pul_id.clone(),
-                        rep_item.pull_amount.clone(),
+                        pool_id.clone(),
+                        rep_item.pool_amount.clone(),
                         rep_item.rewords_amount.clone()
                     )));
                 report.report_pull_items.push(rep_item);
@@ -913,10 +912,10 @@ pub trait XLauncherStaking {
 
             multi_val_vec.push(
                 MultiValue4::from((
-                    client_item.pull_id,
-                    client_item.pull_time_stamp_entry,
-                    client_item.pull_time_stamp_last_collection,
-                    client_item.pull_amount
+                    client_item.pool_id,
+                    client_item.pool_time_stamp_entry,
+                    client_item.pool_time_stamp_last_collection,
+                    client_item.pool_amount
                 ))
             );
         }
@@ -934,7 +933,7 @@ pub trait XLauncherStaking {
     #[view(getClientState)]
     #[storage_mapper("clientState")]
     fn client_state(&self, client_address: &ManagedAddress)
-                    -> VecMapper<ClientPullState<Self::Api>>;
+                    -> VecMapper<ClientPoolState<Self::Api>>;
 
     #[view(getUnstakeState)]
     #[storage_mapper("unstakeState")]

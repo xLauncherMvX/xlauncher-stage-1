@@ -10,7 +10,7 @@
         "contractCrate": {
             "name": "xlauncher-staking",
             "version": "0.1.0",
-            "git_version": "34f31da-modified"
+            "git_version": "8e527be-modified"
         },
         "framework": {
             "name": "elrond-wasm",
@@ -148,7 +148,7 @@
             "mutability": "mutable",
             "inputs": [
                 {
-                    "name": "pull_id",
+                    "name": "pool_id",
                     "type": "u32"
                 },
                 {
@@ -331,7 +331,7 @@
             ],
             "outputs": [
                 {
-                    "type": "variadic<ClientPullState>",
+                    "type": "variadic<ClientPoolState>",
                     "multi_result": true
                 }
             ]
@@ -396,23 +396,23 @@
                 }
             ]
         },
-        "ClientPullState": {
+        "ClientPoolState": {
             "type": "struct",
             "fields": [
                 {
-                    "name": "pull_id",
+                    "name": "pool_id",
                     "type": "u32"
                 },
                 {
-                    "name": "pull_time_stamp_entry",
+                    "name": "pool_time_stamp_entry",
                     "type": "u64"
                 },
                 {
-                    "name": "pull_time_stamp_last_collection",
+                    "name": "pool_time_stamp_last_collection",
                     "type": "u64"
                 },
                 {
-                    "name": "pull_amount",
+                    "name": "pool_amount",
                     "type": "BigUint"
                 }
             ]
@@ -438,11 +438,11 @@
             "type": "struct",
             "fields": [
                 {
-                    "name": "pull_id",
+                    "name": "pool_id",
                     "type": "u32"
                 },
                 {
-                    "name": "pull_amount",
+                    "name": "pool_amount",
                     "type": "BigUint"
                 },
                 {

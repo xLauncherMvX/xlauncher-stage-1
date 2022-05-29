@@ -3,11 +3,11 @@ use elrond_wasm::{api::ManagedTypeApi, types::{BigUint, TokenIdentifier, Managed
 elrond_wasm::derive_imports!();
 
 #[derive(TypeAbi, TopEncode, TopDecode, ManagedVecItem, NestedEncode, NestedDecode, Clone)]
-pub struct ClientPullState<M: ManagedTypeApi> {
-    pub pull_id: u32,
-    pub pull_time_stamp_entry: u64,
-    pub pull_time_stamp_last_collection: u64,
-    pub pull_amount: BigUint<M>,
+pub struct ClientPoolState<M: ManagedTypeApi> {
+    pub pool_id: u32,
+    pub pool_time_stamp_entry: u64,
+    pub pool_time_stamp_last_collection: u64,
+    pub pool_amount: BigUint<M>,
 }
 
 
@@ -52,17 +52,17 @@ pub struct ReportClinet<M: ManagedTypeApi> {
 
 #[derive(TypeAbi, TopEncode, TopDecode, ManagedVecItem, NestedEncode, NestedDecode, Clone)]
 pub struct ReportClientPullPullItem<M: ManagedTypeApi> {
-    pub pull_id: u32,
-    pub pull_amount: BigUint<M>,
+    pub pool_id: u32,
+    pub pool_amount: BigUint<M>,
     pub rewords_amount: BigUint<M>,
 }
 
 #[derive(TypeAbi, TopEncode, TopDecode, ManagedVecItem, NestedEncode, NestedDecode)]
 pub struct ClaimItem<M: ManagedTypeApi> {
-    pub pull_id: u32,
+    pub pool_id: u32,
     pub current_time_stamp: u64,
-    pub pull_time_stamp_entry: u64,
-    pub pull_time_stamp_last_collection: u64,
-    pub pull_amount: BigUint<M>,
+    pub pool_time_stamp_entry: u64,
+    pub pool_time_stamp_last_collection: u64,
+    pub pool_amount: BigUint<M>,
     pub rewords: BigUint<M>,
 }
