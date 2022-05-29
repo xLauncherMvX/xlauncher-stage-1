@@ -62,6 +62,11 @@ fn claim_before_and_after_time_ends_rs() {
 }
 
 #[test]
-fn reinvest_case_2_rs(){
+fn claim_case_2() {
+    elrond_wasm_debug::mandos_rs("mandos/04-claim-case-2.scen.json", world());
+}
+
+#[test]
+fn reinvest_case_2_rs() {
     elrond_wasm_debug::mandos_rs("mandos/05-reinvest-case-2.scen.json", world());
 }
