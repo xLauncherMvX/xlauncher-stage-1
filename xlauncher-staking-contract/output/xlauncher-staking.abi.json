@@ -10,7 +10,7 @@
         "contractCrate": {
             "name": "xlauncher-staking",
             "version": "0.1.0",
-            "git_version": "8e527be-modified"
+            "git_version": "21e00a6-modified"
         },
         "framework": {
             "name": "elrond-wasm",
@@ -505,7 +505,7 @@
                     "type": "bool"
                 },
                 {
-                    "name": "pull_items",
+                    "name": "pool_items",
                     "type": "List<Pool>"
                 }
             ]

@@ -82,7 +82,7 @@ pub trait XLauncherStaking {
             let variable_settings = VariableContractSettings {
                 token_id: (token_id),
                 min_amount: (min_amount),
-                pull_items: (pool_items),
+                pool_items: (pool_items),
                 contract_is_active: true,
                 unstake_lock_span: days_10,
             };
@@ -611,12 +611,12 @@ pub trait XLauncherStaking {
     }
 
     fn pull_exists(&self,
-                   pull_id: u32) -> bool {
+                   pool_id: u32) -> bool {
         let var_setting = self.variable_contract_settings().get();
-        let pull_items = var_setting.pull_items;
-        for i in 0..=(pull_items.len() - 1) {
-            let pull = pull_items.get(i);
-            if pull.id == pull_id {
+        let pool_items = var_setting.pool_items;
+        for i in 0..=(pool_items.len() - 1) {
+            let pull = pool_items.get(i);
+            if pull.id == pool_id {
                 return true;
             }
         }
@@ -624,13 +624,13 @@ pub trait XLauncherStaking {
     }
 
     fn pull_settings_exist(&self,
-                           pull_id: u32,
+                           pool_id: u32,
                            apy_id: u32, ) -> bool {
         let var_setting = self.variable_contract_settings().get();
-        let pull_items = var_setting.pull_items;
-        for i in 0..=(pull_items.len() - 1) {
-            let pull = pull_items.get(i);
-            if pull.id == pull_id {
+        let pool_items = var_setting.pool_items;
+        for i in 0..=(pool_items.len() - 1) {
+            let pull = pool_items.get(i);
+            if pull.id == pool_id {
                 let api_config_vector = pull.apy_configuration;
                 for k in 0..=(api_config_vector.len() - 1) {
                     let config_item = api_config_vector.get(k);
@@ -650,11 +650,11 @@ pub trait XLauncherStaking {
                                                   apy_end: u64,
                                                   apy: u64) {
         let mut var_setting = self.variable_contract_settings().get();
-        let mut pull_items = var_setting.pull_items;
+        let mut pool_items = var_setting.pool_items;
 
         let mut value_added = false;
-        for i in 0..=(pull_items.len() - 1) {
-            let mut pull = pull_items.get(i);
+        for i in 0..=(pool_items.len() - 1) {
+            let mut pull = pool_items.get(i);
             if pull.id == pull_id {
                 let mut api_config_vector = pull.apy_configuration;
                 let apy_config = ApyConfiguration {
@@ -666,11 +666,11 @@ pub trait XLauncherStaking {
                 api_config_vector.push(apy_config);
                 value_added = true;
                 pull.apy_configuration = api_config_vector;
-                let _updated_pull_item = pull_items.set(i, &pull);
+                let _updated_pull_item = pool_items.set(i, &pull);
             }
         }
         if value_added {
-            var_setting.pull_items = pull_items;
+            var_setting.pool_items = pool_items;
             self.variable_contract_settings().set(var_setting)
         }
     }
@@ -682,10 +682,10 @@ pub trait XLauncherStaking {
                                                   apy_end: u64,
                                                   apy: u64) {
         let mut var_setting = self.variable_contract_settings().get();
-        let mut pull_items = var_setting.pull_items;
+        let mut pool_items = var_setting.pool_items;
         let mut settings_located = false;
-        for i in 0..=(pull_items.len() - 1) {
-            let mut pull = pull_items.get(i);
+        for i in 0..=(pool_items.len() - 1) {
+            let mut pull = pool_items.get(i);
             if pull.id == pull_id {
                 let mut api_config_vector = pull.apy_configuration;
                 for k in 0..=(api_config_vector.len() - 1) {
@@ -699,11 +699,11 @@ pub trait XLauncherStaking {
                     let _updated_config_item = api_config_vector.set(k, &config_item);
                 }
                 pull.apy_configuration = api_config_vector;
-                let _updated_pull_item = pull_items.set(i, &pull);
+                let _updated_pull_item = pool_items.set(i, &pull);
             }
         }
         if settings_located {
-            var_setting.pull_items = pull_items;
+            var_setting.pool_items = pool_items;
             self.variable_contract_settings().set(var_setting)
         }
     }
@@ -712,10 +712,10 @@ pub trait XLauncherStaking {
 
     fn get_apy_config_vector(&self, pull_id: &u32) -> ManagedVec<ApyConfiguration> {
         let var_setting = self.variable_contract_settings().get();
-        let pull_items = var_setting.pull_items;
+        let pool_items = var_setting.pool_items;
 
-        for i in 0..=(pull_items.len() - 1) {
-            let pull = pull_items.get(i);
+        for i in 0..=(pool_items.len() - 1) {
+            let pull = pool_items.get(i);
             if pull.id == *pull_id {
                 let api_config = pull.apy_configuration;
                 return api_config;
@@ -757,10 +757,10 @@ pub trait XLauncherStaking {
 
     fn get_pull_locking_time_span(&self, pull_id: &u32) -> u64 {
         let var_setting = self.variable_contract_settings().get();
-        let pull_items = var_setting.pull_items;
+        let pool_items = var_setting.pool_items;
 
-        for i in 0..=(pull_items.len() - 1) {
-            let pull = pull_items.get(i);
+        for i in 0..=(pool_items.len() - 1) {
+            let pull = pool_items.get(i);
             if pull.id == *pull_id {
                 let locking_time_span = pull.locking_time_span;
                 return locking_time_span;
@@ -798,9 +798,9 @@ pub trait XLauncherStaking {
         }
 
         let mut count = 0;
-        let pull_items = var_setting.pull_items;
-        for i in 0..=(pull_items.len() - 1) {
-            let pull = pull_items.get(i);
+        let pool_items = var_setting.pool_items;
+        for i in 0..=(pool_items.len() - 1) {
+            let pull = pool_items.get(i);
             let pul_id = pull.id;
             let mut rep_item = ReportClientPullPullItem {
                 pool_id: pul_id.clone(),
@@ -853,9 +853,9 @@ pub trait XLauncherStaking {
         }
 
         let mut count = 0;
-        let pull_items = var_setting.pull_items;
-        for i in 0..=(pull_items.len() - 1) {
-            let pool = pull_items.get(i);
+        let pool_items = var_setting.pool_items;
+        for i in 0..=(pool_items.len() - 1) {
+            let pool = pool_items.get(i);
             let pool_id = pool.id;
             let mut rep_item = ReportClientPullPullItem {
                 pool_id: pool_id.clone(),
