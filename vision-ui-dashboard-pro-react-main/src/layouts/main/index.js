@@ -58,13 +58,6 @@ import { FaShoppingCart } from "react-icons/fa";
 import { BsGlobe } from "react-icons/bs";
 import { IoWallet, IoDocumentText } from "react-icons/io5";
 
-//Ciio custom components
-import TeamProfileCard from "examples/Cards/TeamCards/TeamProfileCard2";
-
-//elrond
-import { DappProvider} from '@elrondnetwork/dapp-core';
-const environment = 'testnet';
-
 function Main(props) {
   const { values } = breakpoints;
   const [controller, dispatch] = useVisionUIController();
@@ -101,50 +94,44 @@ function Main(props) {
       return null;
     });
 
-    return (
-        <DappProvider
-            environment={environment}
-            customNetworkConfig={{ name: 'customConfig', apiTimeout: 6000 }}
-            completedTransactionsDelay={200}
-        >
-            <DashboardLayout>
-                <CssBaseline />  
-                <Globe
-                    display={{ xs: "none", md: "block" }}
-                    position="absolute"
-                    top="10%"
-                    left="30%"
-                    mt={{ xs: -12, lg: 1 }}
-                    mr={{ xs: 0, md: -10, lg: 10 }}
-                    canvasStyle={{ marginTop: "3rem"}}
-                />
-                <DashboardNavbar/> 
-                <Sidenav
-                    color="info"
-                    brandName="XLauncher"
-                    routes={routes}
-                    onMouseEnter={handleOnMouseEnter}
-                    onMouseLeave={handleOnMouseLeave}
-                />    
-                <Grid container>
-                    <Grid item lg={12}>
-                        <VuiBox mb={7} p={1}>
-                            <VuiTypography
-                                variant={window.innerWidth < values.sm ? "h3" : "h2"}
-                                textTransform="capitalize"
-                                fontWeight="bold"
-                                color="white"
-                            >
-                                {props.name}
-                            </VuiTypography>
-                        </VuiBox>                    
-                    </Grid>
-                    <Grid item lg={12}>
-                        {props.children}
-                    </Grid>                
-                </Grid>          
-            </DashboardLayout>
-        </DappProvider>
+    return (        
+      <DashboardLayout>
+          <CssBaseline />  
+          <Globe
+              display={{ xs: "none", md: "block" }}
+              position="absolute"
+              top="10%"
+              left="30%"
+              mt={{ xs: -12, lg: 1 }}
+              mr={{ xs: 0, md: -10, lg: 10 }}
+              canvasStyle={{ marginTop: "3rem"}}
+          />
+          <DashboardNavbar/> 
+          <Sidenav
+              color="info"
+              brandName="XLauncher"
+              routes={routes}
+              onMouseEnter={handleOnMouseEnter}
+              onMouseLeave={handleOnMouseLeave}
+          />    
+          <Grid container>
+              <Grid item lg={12}>
+                  <VuiBox mb={7} p={1}>
+                      <VuiTypography
+                          variant={window.innerWidth < values.sm ? "h3" : "h2"}
+                          textTransform="capitalize"
+                          fontWeight="bold"
+                          color="white"
+                      >
+                          {props.name}
+                      </VuiTypography>
+                  </VuiBox>                    
+              </Grid>
+              <Grid item lg={12}>
+                  {props.children}
+              </Grid>                
+          </Grid>          
+      </DashboardLayout>
     );
 }
 
