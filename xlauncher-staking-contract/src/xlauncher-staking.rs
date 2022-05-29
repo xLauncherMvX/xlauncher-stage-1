@@ -420,7 +420,7 @@ pub trait XLauncherStaking {
         let client_vector = self.get_client_staked_items_by_pull_id(pull_id.clone());
         let config_vector = self.get_apy_config_vector(pull_id.clone());
         if (client_vector.len() == 0) || (config_vector.len() == 0) {
-            return BigUint::zero();
+            sc_panic!("client and config vector are empty");
         }
         let mut total_rewards = BigUint::zero(); //total rewords
 
@@ -463,9 +463,6 @@ pub trait XLauncherStaking {
         let l = client_pull_state.pull_time_stamp_last_collection;
         let t = current_time_stamp;
 
-        // NOTE
-        // This check does nothing
-        if current_time_stamp < apy_configuration.end_timestamp {}
         let seconds_in_year: u64 = 60 * 60 * 24 * 365;
         let pull_apy: u64 = apy_configuration.apy;
         let bu_s_in_year = BigUint::from(seconds_in_year); // seconds in year as BigUint
@@ -474,7 +471,6 @@ pub trait XLauncherStaking {
         let bu_hundred = BigUint::from(100u64); // 100 as BigUint
         let bu_r_in_year = (&bu_amount * &bu_apy) / &bu_hundred; // rewords in one year as BigUint
         let bu_r_in_1_second = &bu_r_in_year / &bu_s_in_year; // rewords in one second as BigUint
-
 
         //case zero
         if t < l {
@@ -522,7 +518,6 @@ pub trait XLauncherStaking {
                                                        bu_r_in_1_second);
             return rewards;
         }
-
 
         sc_panic!("Case not supported: s={}, e={} t={}, l={}",s,e,t,l);
     }
