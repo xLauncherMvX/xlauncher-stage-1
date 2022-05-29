@@ -244,8 +244,8 @@ pub trait XLauncherStaking {
         let current_time_stamp = self.blockchain().get_block_timestamp();
 
         let client_vector = self.client_state(&client);
-        let config_vector = self.get_apy_config_vector(pull_id.clone());
-        let locking_time_span = self.get_pull_locking_time_span(pull_id.clone());
+        let config_vector = self.get_apy_config_vector(&pull_id);
+        let locking_time_span = self.get_pull_locking_time_span(&pull_id);
 
 
         let mut selected_items: ManagedVec<ClientPullState<Self::Api>> = ManagedVec::new();
@@ -279,7 +279,7 @@ pub trait XLauncherStaking {
                         let config_item = config_vector.get(k);
                         let item_rewords = self.calculate_rewards_v2(client_item.clone(),
                                                                      config_item,
-                                                                     current_time_stamp);
+                                                                     &current_time_stamp);
                         total_items_value = total_items_value + client_item.pull_amount.clone();
                         total_rewards = total_rewards + item_rewords;
 
@@ -378,7 +378,7 @@ pub trait XLauncherStaking {
         let client = self.blockchain().get_caller();
         let current_time_stamp = self.blockchain().get_block_timestamp();
 
-        let total_rewards = self.calculate_pull_rewords(pull_id, current_time_stamp);
+        let total_rewards = self.calculate_pull_rewords(&pull_id, &current_time_stamp, &client);
 
         if total_rewards > 0_u64 {
             let token_id = self.get_contract_token_id();
@@ -400,7 +400,7 @@ pub trait XLauncherStaking {
         let current_time_stamp = self.blockchain().get_block_timestamp();
 
 
-        let total_rewards = self.calculate_pull_rewords(pull_id, current_time_stamp);
+        let total_rewards = self.calculate_pull_rewords(&pull_id, &current_time_stamp, &client);
 
 
         if total_rewards > 0_u64 {
@@ -416,9 +416,13 @@ pub trait XLauncherStaking {
         }
     }
 
-    fn calculate_pull_rewords(&self, pull_id: u32, current_time_stamp: u64) -> BigUint {
-        let client_vector = self.get_client_staked_items_by_pull_id(pull_id.clone());
-        let config_vector = self.get_apy_config_vector(pull_id.clone());
+    fn calculate_pull_rewords(&self,
+                              pull_id: &u32,
+                              current_time_stamp: &u64,
+                              client: &ManagedAddress) -> BigUint {
+        let client_vector =
+            self.get_client_staked_items_by_pull_id(pull_id, &client);
+        let config_vector = self.get_apy_config_vector(pull_id);
         if (client_vector.len() == 0) || (config_vector.len() == 0) {
             sc_panic!("client and config vector are empty");
         }
@@ -439,9 +443,11 @@ pub trait XLauncherStaking {
                 }
             }
 
-            if item_rewards > 0_u64 {
-                self.update_staked_item_collection_time(client_item.pull_time_stamp_entry,
-                                                        current_time_stamp);
+            if item_rewards > BigUint::zero() {
+                self.update_staked_item_collection_time(pull_id,
+                                                        &client_item.pull_time_stamp_entry,
+                                                        &current_time_stamp,
+                                                        client);
                 total_rewards += item_rewards;
             }
         }
@@ -457,11 +463,11 @@ pub trait XLauncherStaking {
     fn calculate_rewards_v2(&self,
                             client_pull_state: ClientPullState<Self::Api>,
                             apy_configuration: ApyConfiguration,
-                            current_time_stamp: u64) -> BigUint {
+                            current_time_stamp: &u64) -> BigUint {
         let s = apy_configuration.start_timestamp;
         let e = apy_configuration.end_timestamp;
         let l = client_pull_state.pull_time_stamp_last_collection;
-        let t = current_time_stamp;
+        let t = *current_time_stamp;
 
         let seconds_in_year: u64 = 60 * 60 * 24 * 365;
         let pull_apy: u64 = apy_configuration.apy;
@@ -740,13 +746,13 @@ pub trait XLauncherStaking {
 
     // getters
 
-    fn get_apy_config_vector(&self, pull_id: u32) -> ManagedVec<ApyConfiguration> {
+    fn get_apy_config_vector(&self, pull_id: &u32) -> ManagedVec<ApyConfiguration> {
         let var_setting = self.variable_contract_settings().get();
         let pull_items = var_setting.pull_items;
 
         for i in 0..=(pull_items.len() - 1) {
             let pull = pull_items.get(i);
-            if pull.id == pull_id {
+            if pull.id == *pull_id {
                 let api_config = pull.apy_configuration;
                 return api_config;
             }
@@ -754,14 +760,13 @@ pub trait XLauncherStaking {
         sc_panic!("Not valid pull_id={}",pull_id)
     }
 
-    fn get_client_staked_items_by_pull_id(&self, pull_id: u32) -> ManagedVec<ClientPullState<Self::Api>> {
-        let client = self.blockchain().get_caller();
+    fn get_client_staked_items_by_pull_id(&self, pull_id: &u32, client: &ManagedAddress) -> ManagedVec<ClientPullState<Self::Api>> {
         let client_vector = self.client_state(&client);
         let mut selected_items: ManagedVec<ClientPullState<Self::Api>> = ManagedVec::new();
         if client_vector.len() > 0 {
             for i in 1..=client_vector.len() {
                 let item = client_vector.get(i);
-                if item.pull_id == pull_id {
+                if item.pull_id == *pull_id {
                     selected_items.push(item);
                     let len = selected_items.len();
                     sc_print!("len={}",len);
@@ -771,25 +776,28 @@ pub trait XLauncherStaking {
         return selected_items;
     }
 
-    fn update_staked_item_collection_time(&self, entry_time_id: u64, current_time_stamp: u64) {
-        let client = self.blockchain().get_caller();
+    fn update_staked_item_collection_time(&self,
+                                          pool_id: &u32,
+                                          entry_time_id: &u64,
+                                          current_time_stamp: &u64,
+                                          client: &ManagedAddress) {
         let client_vector = self.client_state(&client);
         for i in 1..=client_vector.len() {
             let mut item = client_vector.get(i);
-            if item.pull_time_stamp_entry == entry_time_id {
-                item.pull_time_stamp_last_collection = current_time_stamp;
+            if item.pull_time_stamp_entry == *entry_time_id && item.pull_id == *pool_id {
+                item.pull_time_stamp_last_collection = *current_time_stamp;
                 client_vector.set(i, &item);
             }
         }
     }
 
-    fn get_pull_locking_time_span(&self, pull_id: u32) -> u64 {
+    fn get_pull_locking_time_span(&self, pull_id: &u32) -> u64 {
         let var_setting = self.variable_contract_settings().get();
         let pull_items = var_setting.pull_items;
 
         for i in 0..=(pull_items.len() - 1) {
             let pull = pull_items.get(i);
-            if pull.id == pull_id {
+            if pull.id == *pull_id {
                 let locking_time_span = pull.locking_time_span;
                 return locking_time_span;
             }
@@ -844,7 +852,7 @@ pub trait XLauncherStaking {
                         rep_item.pull_amount = rep_item.pull_amount.clone() + client_item.pull_amount.clone();
                         let item_reword = self.calculate_rewards_v2(client_item.clone(),
                                                                     pc_clone,
-                                                                    current_time_stamp);
+                                                                    &current_time_stamp);
                         rep_item.rewords_amount = rep_item.rewords_amount.clone() + item_reword;
                     }
                 }
@@ -899,14 +907,14 @@ pub trait XLauncherStaking {
                         rep_item.pull_amount = rep_item.pull_amount.clone() + client_item.pull_amount.clone();
                         let item_reword = self.calculate_rewards_v2(client_item.clone(),
                                                                     pc_clone,
-                                                                    current_time_stamp);
+                                                                    &current_time_stamp);
                         rep_item.rewords_amount = rep_item.rewords_amount.clone() + item_reword;
                     }
                 }
             }
             report.total_amount = report.total_amount.clone() + rep_item.pull_amount.clone();
             report.total_rewords = report.total_rewords.clone() + rep_item.rewords_amount.clone();
-            if rep_item.pull_amount > 0 {
+            if rep_item.pull_amount > BigUint::zero() {
                 count = count + 1;
                 multi_val_vec.push(
                     MultiValue3::from((
