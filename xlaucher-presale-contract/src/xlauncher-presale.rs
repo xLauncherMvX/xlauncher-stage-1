@@ -111,7 +111,7 @@ pub trait XLauncherPresale {
         let my_token_id = self.token_id().get();
         let token_balance = self.blockchain().get_sc_balance(&my_token_id, 0);
 
-        let big_zero: BigUint = BigUint::from(0u32);
+        let big_zero: BigUint = BigUint::zero();
         if big_zero < token_balance {
             self.send().direct(
                 &owner,
