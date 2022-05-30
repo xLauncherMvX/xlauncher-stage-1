@@ -105,6 +105,8 @@ async function getClientReportData() {
 
     let myType = response.firstValue.getType();
 
+    console.log("myType: " + myType);
+
     let myList = response.firstValue.valueOf();
 
     let myReturnList  = [];
