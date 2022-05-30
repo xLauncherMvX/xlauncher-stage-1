@@ -14,6 +14,10 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Visionware.
 
 */
+//Display an object in a stylized way in console
+//console.log(JSON.stringify(contract, null, 2));
+
+
 import * as React from 'react';
 import { useState, useEffect, useMemo } from "react";
 
@@ -66,12 +70,12 @@ import {
   SmartContractAbi,
 } from "@elrondnetwork/erdjs/out";
 
-async function getClientReportData() {
+async function getClientReportData(userAddress) {
   try {
-    let provider = new ProxyProvider("https://devnet-gateway.elrond.com");
+    let provider = new ProxyProvider('https://devnet-gateway.elrond.com');
     await NetworkConfig.getDefault().sync(provider);
 
-    let stringAddress = "erd1qqqqqqqqqqqqqpgq8psegqjjuagja4tkq3wkjswxl50v6unfpa7qjr0p9g";
+    let stringAddress = "erd1qqqqqqqqqqqqqpgqvfp2xkxhwvrvrcrxzs6e3vz4sz2ms7m0pa7qkrd5ll";
     let address = new Address(stringAddress);
 
     const abiLocation = `${process.env.PUBLIC_URL}/xlauncher-staking.abi.json`;
@@ -86,42 +90,43 @@ async function getClientReportData() {
       abi: abi,
     });
 
-    let interaction = contract.methods.getClientReport([
-      BytesValue.fromUTF8("erd179xw6t04ug48m74jzyw9zq028hv66jhqayelzpzvgds0ptnzmckq2jf07f")
-    ]);
-
-    console.log("interaction: " + interaction);
+    let interaction = contract.methods.getClientReport(
+      [BytesValue.fromUTF8(userAddress)]
+    );
 
     let queryResponse = await contract.runQuery(
       provider,
       interaction.buildQuery()
     );
 
-    console.log("queryResponse: " + queryResponse);
+
+    console.log("queryResponse " + queryResponse);
+    // console.log("queryResponse: " + JSON.stringify(queryResponse, null, 2));
     
     let response = interaction.interpretQueryResponse(queryResponse);
 
-    console.log("response: " + response);
+    // console.log("response: " + response);
+    // console.log("response: " + JSON.stringify(response, null, 2));
 
-    let myType = response.firstValue.getType();
+    // let myType = response.firstValue.getType();
 
-    console.log("myType: " + myType);
+    // console.log("myType: " + myType);
 
     let myList = response.firstValue.valueOf();
 
-    let myReturnList  = [];
+    // let myReturnList  = [];
 
     console.log("myList: " + myList);
 
-    myList.forEach((element) => {
-      let bufferedId = element.tournament_id;
+    // myList.forEach((element) => {
+    //   let bufferedId = element.tournament_id;
 
-      let stringVal = bufferedId.toString();
-      myReturnList.push(stringVal);
+    //   let stringVal = bufferedId.toString();
+    //   myReturnList.push(stringVal);
 
-      let signInPrice = element.sing_in_price.toFixed();
-    });
-    return myReturnList;
+    //   let signInPrice = element.sing_in_price.toFixed();
+    // });
+    // return myReturnList;
   } catch (error) {
     console.log(error);
     return [];
@@ -134,8 +139,8 @@ function Farms() {
   const isLoggedIn = Boolean(address);
   const [timeToConnect, setTimeToConnect] = React.useState(false);
 
-  console.log(getClientReportData());
-  
+  console.log("address " + address);
+    
   return (  
     <Main name="Staking">
       <Grid container spacing={3}>
@@ -255,6 +260,11 @@ function Farms() {
             }}
             modalFarmName="Farm 3"
           />
+        </Grid>
+        <Grid item xs={12} md={6} lg={4} xl={4}>
+          <VuiButton onClick={()=>getClientReportData(address)}>
+            Test
+          </VuiButton>
         </Grid>
       </Grid>
     </Main> 
