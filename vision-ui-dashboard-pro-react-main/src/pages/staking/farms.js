@@ -36,6 +36,7 @@ import VuiTypography from "components/VuiTypography";
 import MiniStatisticsCard from "examples/Cards/StatisticsCards/MiniStatisticsCard";
 import Footer from "examples/FooterXLH";
 import Globe from "examples/Globe";
+import VuiButton from 'components/VuiButton';
 
 // Plugins custom css
 import "assets/theme/base/plugins.css";
@@ -52,9 +53,86 @@ import StakingCard from "cards/StakingCard";
 
 //Elrond
 import { DappUI, logout, useGetAccountInfo } from '@elrondnetwork/dapp-core';
+import {
+  AbiRegistry,
+  Address,
+  Balance,
+  BigUIntValue,
+  BytesValue,
+  Interaction,
+  NetworkConfig,
+  ProxyProvider,
+  SmartContract,
+  SmartContractAbi,
+} from "@elrondnetwork/erdjs/out";
+
+async function getClientReportData() {
+  try {
+    let provider = new ProxyProvider("https://devnet-gateway.elrond.com");
+    await NetworkConfig.getDefault().sync(provider);
+
+    let stringAddress = "erd1qqqqqqqqqqqqqpgq8psegqjjuagja4tkq3wkjswxl50v6unfpa7qjr0p9g";
+    let address = new Address(stringAddress);
+
+    const abiLocation = `${process.env.PUBLIC_URL}/xlauncher-staking.abi.json`;
+
+    let abiRegistry = await AbiRegistry.load({
+      urls: [abiLocation],
+    });
+    let abi = new SmartContractAbi(abiRegistry, [`XLauncherStaking`]);
+
+    let contract = new SmartContract({
+      address: address,
+      abi: abi,
+    });
+
+    let interaction = contract.methods.getClientReport([
+      BytesValue.fromUTF8("erd179xw6t04ug48m74jzyw9zq028hv66jhqayelzpzvgds0ptnzmckq2jf07f")
+    ]);
+
+    console.log("interaction: " + interaction);
+
+    let queryResponse = await contract.runQuery(
+      provider,
+      interaction.buildQuery()
+    );
+
+    console.log("queryResponse: " + queryResponse);
+    
+    let response = interaction.interpretQueryResponse(queryResponse);
+
+    console.log("response: " + response);
+
+    let myType = response.firstValue.getType();
+
+    let myList = response.firstValue.valueOf();
+
+    let myReturnList  = [];
+
+    console.log("myList: " + myList);
+
+    myList.forEach((element) => {
+      let bufferedId = element.tournament_id;
+
+      let stringVal = bufferedId.toString();
+      myReturnList.push(stringVal);
+
+      let signInPrice = element.sing_in_price.toFixed();
+    });
+    return myReturnList;
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+}
 
 function Farms() {
   //Elrond login
+  const { address, account } = useGetAccountInfo();
+  const isLoggedIn = Boolean(address);
+  const [timeToConnect, setTimeToConnect] = React.useState(false);
+
+  console.log(getClientReportData());
   
   return (  
     <Main name="Staking">
