@@ -251,6 +251,58 @@
     },
 
     {
+      "step": "scCall",
+      "txId": "claim-2-1",
+      "tx": {
+        "from": "address:client1",
+        "to": "sc:xlauncher-staking",
+        "value": "0",
+        "function": "claim",
+        "arguments": [
+          "2"
+        ],
+        "gasLimit": "100,000,000",
+        "gasPrice": "0"
+      },
+      "expect": {
+        "out": [],
+        "status": "0",
+        "message": "",
+        "gas": "*",
+        "refund": "*"
+      }
+    },
+
+    {
+      "step": "scCall",
+      "txId": "stake-2-2",
+      "tx": {
+        "from": "address:client1",
+        "to": "sc:xlauncher-staking",
+        "value": "0",
+        "function": "stake",
+        "esdtValue": [
+          {
+            "tokenIdentifier": "str:BCOIN-a00000",
+            "value": "19999999999999945440"
+          }
+        ],
+        "arguments": [
+          "2"
+        ],
+        "gasLimit": "100,000,000",
+        "gasPrice": "0"
+      },
+      "expect": {
+        "out": [],
+        "status": "0",
+        "message": "",
+        "gas": "*",
+        "refund": "*"
+      }
+    },
+
+    {
       "step": "checkState",
       "accounts": {
         "address:owner": {
@@ -334,7 +386,7 @@
                 }
               }
             },
-            "str:clientState|address:client1|str:.len": "4",
+            "str:clientState|address:client1|str:.len": "5",
             "str:clientState|address:client1|str:.item|u32:1": {
               "1-pull_id": "u32:1",
               "2-pull_time_stamp_entry": "u64:15768000",
@@ -344,7 +396,7 @@
             "str:clientState|address:client1|str:.item|u32:2": {
               "1-pull_id": "u32:2",
               "2-pull_time_stamp_entry": "u64:15768000",
-              "3-pull_time_stamp_last_collection": "u64:15768000",
+              "3-pull_time_stamp_last_collection": "u64:31536000",
               "4-pull_amount": "biguint:1,000,000,000,000,000,000,000"
             },
             "str:clientState|address:client1|str:.item|u32:3": {
@@ -359,7 +411,13 @@
               "3-pull_time_stamp_last_collection": "u64:31536000",
               "4-pull_amount": "biguint:9999999999999972720"
             },
-            "str:totalStakedValue": "3009999999999999972720",
+            "str:clientState|address:client1|str:.item|u32:5": {
+              "1-pull_id": "u32:2",
+              "2-pull_time_stamp_entry": "u64:31536000",
+              "3-pull_time_stamp_last_collection": "u64:31536000",
+              "4-pull_amount": "biguint:19999999999999945440"
+            },
+            "str:totalStakedValue": "3029999999999999918160",
             "str:clientList|str:.len": "1",
             "str:clientList|str:.index|address:client1": "1",
             "str:clientList|str:.item|u32:1": "address:client1"
