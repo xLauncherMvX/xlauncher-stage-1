@@ -741,7 +741,29 @@
         "refund": "*"
       }
     },
-
+    {
+      "step": "scCall",
+      "txId": "unstake-1-1",
+      "tx": {
+        "from": "address:client1",
+        "to": "sc:xlauncher-staking",
+        "function": "unstake",
+        "value": "0",
+        "arguments": [
+          "1",
+          "2030099999999999556800"
+        ],
+        "gasLimit": "100,000,000",
+        "gasPrice": "0"
+      },
+      "expect": {
+        "out": [],
+        "status": "0",
+        "message": "",
+        "gas": "*",
+        "refund": "*"
+      }
+    },
     {
       "step": "checkState",
       "accounts": {
