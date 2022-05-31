@@ -85,3 +85,8 @@ fn reinvest_case_2_rs() {
 fn complex_ex_1() {
     elrond_wasm_debug::mandos_rs("mandos/14-complex-ex-1.scen.json", world());
 }
+
+#[test]
+fn complex_ex_2() {
+    elrond_wasm_debug::mandos_rs("mandos/14-complex-ex-2.scen.json", world());
+}

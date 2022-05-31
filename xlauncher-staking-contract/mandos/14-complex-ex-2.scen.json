@@ -483,6 +483,173 @@
           "code": "file:../output/xlauncher-staking.wasm"
         }
       }
+    },
+
+    {
+      "step": "setState",
+      "currentBlockInfo": {
+        "blockTimestamp": "63072000"
+      }
+    },
+
+    {
+      "step": "scCall",
+      "txId": "unstake-1-1",
+      "tx": {
+        "from": "address:client1",
+        "to": "sc:xlauncher-staking",
+        "function": "unstake",
+        "value": "0",
+        "arguments": [
+          "1",
+          "2030099999999999556800"
+        ],
+        "gasLimit": "100,000,000",
+        "gasPrice": "0"
+      },
+      "expect": {
+        "out": [],
+        "status": "0",
+        "message": "",
+        "gas": "*",
+        "refund": "*"
+      }
+    },
+
+    {
+      "step": "checkState",
+      "accounts": {
+        "address:owner": {
+          "nonce": "*",
+          "balance": "0",
+          "esdt": {
+            "str:BCOIN-a00000": "100,000,000,000,000,000,000,000,000"
+          },
+          "storage": {},
+          "code": ""
+        },
+        "address:client1": {
+          "nonce": "*",
+          "balance": "0",
+          "esdt": {
+            "str:BCOIN-a00000": "2000000000000000000000"
+          }
+        },
+        "sc:xlauncher-staking": {
+          "nonce": "*",
+          "balance": "0",
+          "esdt": {
+            "str:BCOIN-a00000": "3000000000000000000000"
+          },
+          "storage": {
+            "str:variableContractSettings": {
+              "1-token_id": "nested:str:BCOIN-a00000",
+              "2-min_amount": "biguint:250,000,000,000,000,000",
+              "3-no_rewords_time_span": "u64:864000",
+              "4-contract_is_active": "true",
+              "5-pull_items_vec_len": "u32:3",
+              "6-first_pull_item": {
+                "1-id": "u32:1",
+                "2-locking_time_span": "u64:0",
+                "3-apy_configuration_vec_len": "u32:2",
+                "4-first_apy_configuration": {
+                  "1-id": "u32:1",
+                  "2-apy": "u64:200",
+                  "3-start_timestamp": "u64:0",
+                  "4-end_timestamp": "u64:31536000"
+                },
+                "5-second_apy_configuration": {
+                  "1-id": "u32:2",
+                  "2-apy": "u64:100",
+                  "3-start_timestamp": "u64:31536000",
+                  "4-end_timestamp": "u64:63072000"
+                }
+              },
+              "7-second_pull_item": {
+                "1-id": "u32:2",
+                "2-locking_time_span": "u64:0",
+                "3-apy_configuration_vec_len": "u32:2",
+                "4-first_apy_configuration": {
+                  "1-id": "u32:1",
+                  "2-apy": "u64:400",
+                  "3-start_timestamp": "u64:0",
+                  "4-end_timestamp": "u64:31536000"
+                },
+                "5-second_apy_configuration": {
+                  "1-id": "u32:2",
+                  "2-apy": "u64:200",
+                  "3-start_timestamp": "u64:31536000",
+                  "4-end_timestamp": "u64:63072000"
+                }
+              },
+              "8-third_pull_item": {
+                "1-id": "u32:3",
+                "2-locking_time_span": "u64:0",
+                "3-apy_configuration_vec_len": "u32:2",
+                "4-first_apy_configuration": {
+                  "1-id": "u32:1",
+                  "2-apy": "u64:800",
+                  "3-start_timestamp": "u64:0",
+                  "4-end_timestamp": "u64:31536000"
+                },
+                "5-second_apy_configuration": {
+                  "1-id": "u32:2",
+                  "2-apy": "u64:400",
+                  "3-start_timestamp": "u64:31536000",
+                  "4-end_timestamp": "u64:63072000"
+                }
+              }
+            },
+            "str:clientState|address:client1|str:.len": "6",
+            "str:clientState|address:client1|str:.item|u32:2": {
+              "1-pull_id": "u32:2",
+              "2-pull_time_stamp_entry": "u64:15768000",
+              "3-pull_time_stamp_last_collection": "u64:47304000",
+              "4-pull_amount": "biguint:1,000,000,000,000,000,000,000"
+            },
+            "str:clientState|address:client1|str:.item|u32:3": {
+              "1-pull_id": "u32:3",
+              "2-pull_time_stamp_entry": "u64:15768000",
+              "3-pull_time_stamp_last_collection": "u64:47304000",
+              "4-pull_amount": "biguint:1,000,000,000,000,000,000,000"
+            },
+            "str:clientState|address:client1|str:.item|u32:5": {
+              "1-pull_id": "u32:2",
+              "2-pull_time_stamp_entry": "u64:31536000",
+              "3-pull_time_stamp_last_collection": "u64:47304000",
+              "4-pull_amount": "biguint:19999999999999945440"
+            },
+            "str:clientState|address:client1|str:.item|u32:6": {
+              "1-pull_id": "u32:3",
+              "2-pull_time_stamp_entry": "u64:31536000",
+              "3-pull_time_stamp_last_collection": "u64:47304000",
+              "4-pull_amount": "biguint:39999999999999890880"
+            },
+            "str:clientState|address:client1|str:.item|u32:4": {
+              "1-pull_id": "u32:2",
+              "2-pull_time_stamp_entry": "u64:47304000",
+              "3-pull_time_stamp_last_collection": "u64:47304000",
+              "4-pull_amount": "biguint:10199999999999880720"
+            },
+            "str:clientState|address:client1|str:.item|u32:1": {
+              "1-pull_id": "u32:3",
+              "2-pull_time_stamp_entry": "u64:47304000",
+              "3-pull_time_stamp_last_collection": "u64:47304000",
+              "4-pull_amount": "biguint:20799999999999892800"
+            },
+            "str:totalStakedValue": "3106049999999999388240",
+            "str:clientList|str:.len": "1",
+            "str:clientList|str:.index|address:client1": "1",
+            "str:clientList|str:.item|u32:1": "address:client1",
+            "str:unstakeState|address:client1": {
+              "0-total_unstaked_amount": "biguint:2035175249999999360720",
+              "1-requested_amount": "biguint:2030099999999999556800",
+              "2-free_after_time_stamp": "u64:63936000"
+            }
+          },
+          "code": "file:../output/xlauncher-staking.wasm"
+        }
+      }
     }
   ]
 }
