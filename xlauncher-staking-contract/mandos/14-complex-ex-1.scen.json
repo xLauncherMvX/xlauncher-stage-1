@@ -81,6 +81,7 @@
         }
       }
     },
+
     {
       "step": "scCall",
       "txId": "stake-good-coin-second-time",
@@ -109,62 +110,8 @@
         "refund": "*"
       }
     },
-    {
-      "step": "setState",
-      "currentBlockInfo": {
-        "blockTimestamp": "23652000"
-      }
-    },
-    {
-      "step": "scCall",
-      "txId": "claim-case-2",
-      "tx": {
-        "from": "address:client1",
-        "to": "sc:xlauncher-staking",
-        "value": "0",
-        "function": "claim",
-        "arguments": [
-          "1"
-        ],
-        "gasLimit": "100,000,000",
-        "gasPrice": "0"
-      },
-      "expect": {
-        "out": [],
-        "status": "0",
-        "message": "",
-        "gas": "*",
-        "refund": "*"
-      }
-    },
-    {
-      "step": "setState",
-      "currentBlockInfo": {
-        "blockTimestamp": "31536000"
-      }
-    },
-    {
-      "step": "scCall",
-      "txId": "claim-case-3",
-      "tx": {
-        "from": "address:client1",
-        "to": "sc:xlauncher-staking",
-        "value": "0",
-        "function": "claim",
-        "arguments": [
-          "1"
-        ],
-        "gasLimit": "100,000,000",
-        "gasPrice": "0"
-      },
-      "expect": {
-        "out": [],
-        "status": "0",
-        "message": "",
-        "gas": "*",
-        "refund": "*"
-      }
-    },
+
+
     {
       "step": "checkState",
       "accounts": {
@@ -178,17 +125,17 @@
           "code": ""
         },
         "address:client1": {
-          "nonce": "3",
+          "nonce": "1",
           "balance": "0",
           "esdt": {
-            "str:BCOIN-a00000": "4019999999999999945440"
+            "str:BCOIN-a00000": "4000000000000000000000"
           }
         },
         "sc:xlauncher-staking": {
           "nonce": "*",
           "balance": "0",
           "esdt": {
-            "str:BCOIN-a00000": "980000000000000054560"
+            "str:BCOIN-a00000": "1000000000000000000000"
           },
           "storage": {
             "str:variableContractSettings": {
@@ -235,7 +182,7 @@
             "str:clientState|address:client1|str:.item|u32:1": {
               "1-pull_id": "u32:1",
               "2-pull_time_stamp_entry": "u64:0",
-              "3-pull_time_stamp_last_collection": "u64:31536000",
+              "3-pull_time_stamp_last_collection": "u64:0",
               "4-pull_amount": "biguint:1,000,000,000,000,000,000,000"
             },
             "str:totalStakedValue": "1000000000000000000000",

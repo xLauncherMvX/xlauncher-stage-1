@@ -451,7 +451,7 @@ pub trait XLauncherStaking {
         }
 
         //case 1
-        if t < s {
+        if t <= s {
             return BigUint::zero();
         }
 
