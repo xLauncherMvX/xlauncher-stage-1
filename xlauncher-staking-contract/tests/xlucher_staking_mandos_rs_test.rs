@@ -70,3 +70,18 @@ fn claim_case_2() {
 fn reinvest_case_2_rs() {
     elrond_wasm_debug::mandos_rs("mandos/05-reinvest-case-2.scen.json", world());
 }
+
+/**
+* Test complex example 01
+* period1 apy values: 200,400,800
+* period2 apy values: 100,200,800
+* s1----------------------------------e1,s2----------------------------------------------e2
+*  <--1 year ------------------------->    <---- 1 year----------------------------------->
+*  0---------15768000----------------31536000-----------------47304000----------------63072000
+*  <--0.5 years---c1stake(1,2,3)------------------------c1Collect+invest----0.5years------>
+*
+*/
+#[test]
+fn complex_ex_1() {
+    elrond_wasm_debug::mandos_rs("mandos/14-complex-ex-1.scen.json", world());
+}
