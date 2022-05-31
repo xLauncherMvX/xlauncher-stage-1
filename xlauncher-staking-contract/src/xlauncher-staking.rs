@@ -184,7 +184,6 @@ pub trait XLauncherStaking {
         let settings = self.variable_contract_settings().get();
         let unstake_lock_span: u64 = settings.unstake_lock_span;
         let free_after_time_stamp: u64 = time_stamp + unstake_lock_span;
-        sc_print!("unstake log: total_unstaked_amont={}, requested={}, free_after={}",total_amount.clone(),requested_amount.clone(), free_after_time_stamp.clone());
         if self.unstake_state(&client).is_empty() {
             let unstake_state = UnstakeState {
                 total_unstaked_amount: total_amount.clone(),

@@ -80,13 +80,31 @@ fn reinvest_case_2_rs() {
 *  0---------15768000----------------31536000-----------------47304000----------------63072000
 *  <--0.5 years---c1stake(1,2,3)-------(c+i 1,2,3)--------------(c+i 1,2,3)----0.5years------>
 *
+* The flow
+* - deploy
+* - append contract settings period
+* - move to 15768000
+* - stake in all pools
+* - move to 31536000
+* - claim + stake in all pools
+* - move to 47304000
+* - claim + stake in all pools
+* - move to 63072000
+* - unstake all from pool 1
 */
 #[test]
 fn complex_ex_1() {
     elrond_wasm_debug::mandos_rs("mandos/14-complex-ex-1.scen.json", world());
 }
 
+// it uses direct reinvest and at the end unstakes all pool 1
 #[test]
 fn complex_ex_2() {
     elrond_wasm_debug::mandos_rs("mandos/14-complex-ex-2.scen.json", world());
+}
+
+// it uses direct reinvest and at the end unstakes almost all from pool 3 except for 10000000000000000 xlh
+#[test]
+fn complex_ex_3() {
+    elrond_wasm_debug::mandos_rs("mandos/14-complex-ex-3.scen.json", world());
 }
