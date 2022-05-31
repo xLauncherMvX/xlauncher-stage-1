@@ -272,7 +272,7 @@ pub trait XLauncherStaking {
         }
 
         require!(amount <= total_items_value , "total staking value smaller then requested \
-         amount={}, val={}",amount,total_items_value);
+         amount={}, val={}, rewards={}",amount,total_items_value,total_rewards);
 
 
         //case 1 selected amount is exact amount staked
@@ -732,8 +732,6 @@ pub trait XLauncherStaking {
                 let item = client_vector.get(i);
                 if item.pool_id == *pool_id {
                     selected_items.push(item);
-                    let len = selected_items.len();
-                    sc_print!("len={}",len);
                 }
             }
         }

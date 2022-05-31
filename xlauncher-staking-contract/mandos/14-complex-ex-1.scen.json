@@ -848,56 +848,38 @@
                 }
               }
             },
-            "str:clientState|address:client1|str:.len": "9",
+            "str:clientState|address:client1|str:.len": "6",
             "str:clientState|address:client1|str:.item|u32:1": {
-              "1-pull_id": "u32:1",
+              "1-pull_id": "u32:2",
               "2-pull_time_stamp_entry": "u64:15768000",
               "3-pull_time_stamp_last_collection": "u64:63072000",
               "4-pull_amount": "biguint:1,000,000,000,000,000,000,000"
             },
             "str:clientState|address:client1|str:.item|u32:2": {
-              "1-pull_id": "u32:2",
+              "1-pull_id": "u32:3",
               "2-pull_time_stamp_entry": "u64:15768000",
               "3-pull_time_stamp_last_collection": "u64:63072000",
               "4-pull_amount": "biguint:1,000,000,000,000,000,000,000"
             },
             "str:clientState|address:client1|str:.item|u32:3": {
-              "1-pull_id": "u32:3",
-              "2-pull_time_stamp_entry": "u64:15768000",
-              "3-pull_time_stamp_last_collection": "u64:63072000",
-              "4-pull_amount": "biguint:1,000,000,000,000,000,000,000"
-            },
-            "str:clientState|address:client1|str:.item|u32:4": {
-              "1-pull_id": "u32:1",
-              "2-pull_time_stamp_entry": "u64:31536000",
-              "3-pull_time_stamp_last_collection": "u64:63072000",
-              "4-pull_amount": "biguint:9999999999999972720"
-            },
-            "str:clientState|address:client1|str:.item|u32:5": {
               "1-pull_id": "u32:2",
               "2-pull_time_stamp_entry": "u64:31536000",
               "3-pull_time_stamp_last_collection": "u64:63072000",
               "4-pull_amount": "biguint:19999999999999945440"
             },
-            "str:clientState|address:client1|str:.item|u32:6": {
+            "str:clientState|address:client1|str:.item|u32:4": {
               "1-pull_id": "u32:3",
               "2-pull_time_stamp_entry": "u64:31536000",
               "3-pull_time_stamp_last_collection": "u64:63072000",
               "4-pull_amount": "biguint:39999999999999890880"
             },
-            "str:clientState|address:client1|str:.item|u32:7": {
-              "1-pull_id": "u32:1",
-              "2-pull_time_stamp_entry": "u64:47304000",
-              "3-pull_time_stamp_last_collection": "u64:63072000",
-              "4-pull_amount": "biguint:5049999999999805680"
-            },
-            "str:clientState|address:client1|str:.item|u32:8": {
+            "str:clientState|address:client1|str:.item|u32:5": {
               "1-pull_id": "u32:2",
               "2-pull_time_stamp_entry": "u64:47304000",
               "3-pull_time_stamp_last_collection": "u64:63072000",
               "4-pull_amount": "biguint:10199999999999880720"
             },
-            "str:clientState|address:client1|str:.item|u32:9": {
+            "str:clientState|address:client1|str:.item|u32:6": {
               "1-pull_id": "u32:3",
               "2-pull_time_stamp_entry": "u64:47304000",
               "3-pull_time_stamp_last_collection": "u64:63072000",
@@ -906,7 +888,12 @@
             "str:totalStakedValue": "3106049999999999388240",
             "str:clientList|str:.len": "1",
             "str:clientList|str:.index|address:client1": "1",
-            "str:clientList|str:.item|u32:1": "address:client1"
+            "str:clientList|str:.item|u32:1": "address:client1",
+            "str:unstakeState|address:client1": {
+              "0-total_unstaked_amount": "biguint:2030099999999999556800",
+              "1-requested_amount": "biguint:2030099999999999556800",
+              "2-free_after_time_stamp": "u64:63936000"
+            }
           },
           "code": "file:../output/xlauncher-staking.wasm"
         }
