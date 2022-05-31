@@ -506,6 +506,13 @@
       }
     },
     {
+      "step": "setState",
+      "currentBlockInfo": {
+        "blockTimestamp": "63072000"
+      }
+    },
+
+    {
       "step": "checkState",
       "accounts": {
         "address:owner": {
