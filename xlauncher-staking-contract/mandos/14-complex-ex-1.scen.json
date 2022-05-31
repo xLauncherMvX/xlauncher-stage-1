@@ -849,13 +849,13 @@
               }
             },
             "str:clientState|address:client1|str:.len": "6",
-            "str:clientState|address:client1|str:.item|u32:1": {
+            "str:clientState|address:client1|str:.item|u32:2": {
               "1-pull_id": "u32:2",
               "2-pull_time_stamp_entry": "u64:15768000",
               "3-pull_time_stamp_last_collection": "u64:63072000",
               "4-pull_amount": "biguint:1,000,000,000,000,000,000,000"
             },
-            "str:clientState|address:client1|str:.item|u32:2": {
+            "str:clientState|address:client1|str:.item|u32:1": {
               "1-pull_id": "u32:3",
               "2-pull_time_stamp_entry": "u64:15768000",
               "3-pull_time_stamp_last_collection": "u64:63072000",
