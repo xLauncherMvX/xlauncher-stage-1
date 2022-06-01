@@ -286,8 +286,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
                 </VuiBox>
                 <VuiTypography
                   variant="button"
-                  textGradient={true}
-                  color="logo"
+                  color="white"
                   fontSize={14}
                   letterSpacing={2}
                   fontWeight="medium"

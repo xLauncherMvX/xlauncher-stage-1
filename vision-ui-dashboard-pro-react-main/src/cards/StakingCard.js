@@ -151,7 +151,7 @@ function StakingCard({title, lockedTime, myXLH, apr, myRewards, stake, claim, re
                 color={claim.color}
                 size={claim.size}
                 sx={{ minWidth: "90px" }}
-                onClick={claim.action}
+                onClick={() => claim.action}
                 fullWidth
               >
                 {claim.label}
@@ -167,7 +167,7 @@ function StakingCard({title, lockedTime, myXLH, apr, myRewards, stake, claim, re
                   color={reinvest.color}
                   size={reinvest.size}
                   sx={{ minWidth: "90px" }}
-                  onClick={reinvest.action}
+                  onClick={() => reinvest.action}
                   fullWidth
                 >
                   {reinvest.label}
@@ -180,7 +180,7 @@ function StakingCard({title, lockedTime, myXLH, apr, myRewards, stake, claim, re
                   color={unstake.color}
                   size={unstake.size}
                   sx={{ minWidth: "90px" }}
-                  onClick={unstake.action}
+                  onClick={() => unstake.action}
                   fullWidth
                 >
                   {unstake.label}
@@ -237,7 +237,7 @@ function StakingCard({title, lockedTime, myXLH, apr, myRewards, stake, claim, re
                           variant="outlined"
                           color="light"
                           size="medium"
-                          onClick={stake.max}
+                          onClick={() => stake.max}
                           fullWidth
                         >
                           Max
