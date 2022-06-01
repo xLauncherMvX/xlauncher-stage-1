@@ -18,8 +18,7 @@
 //console.log(JSON.stringify(contract, null, 2));
 
 
-import * as React from 'react';
-import { useState, useEffect, useMemo } from "react";
+import React, {useState, useEffect} from 'react';
 
 // react-router components
 import { Route, Switch, Redirect, useLocation } from "react-router-dom";
@@ -60,6 +59,7 @@ import { DappUI, logout, useGetAccountInfo } from '@elrondnetwork/dapp-core';
 import {
   AbiRegistry,
   Address,
+  AddressValue,
   Balance,
   BigUIntValue,
   BytesValue,
@@ -69,78 +69,137 @@ import {
   SmartContract,
   SmartContractAbi,
 } from "@elrondnetwork/erdjs/out";
-
-async function getClientReportData(userAddress) {
-  try {
-    let provider = new ProxyProvider('https://devnet-gateway.elrond.com');
-    await NetworkConfig.getDefault().sync(provider);
-
-    let stringAddress = "erd1qqqqqqqqqqqqqpgqvfp2xkxhwvrvrcrxzs6e3vz4sz2ms7m0pa7qkrd5ll";
-    let address = new Address(stringAddress);
-
-    const abiLocation = `${process.env.PUBLIC_URL}/xlauncher-staking.abi.json`;
-
-    let abiRegistry = await AbiRegistry.load({
-      urls: [abiLocation],
-    });
-    let abi = new SmartContractAbi(abiRegistry, [`XLauncherStaking`]);
-
-    let contract = new SmartContract({
-      address: address,
-      abi: abi,
-    });
-
-    let interaction = contract.methods.getClientReport(
-      [BytesValue.fromUTF8(userAddress)]
-    );
-
-    let queryResponse = await contract.runQuery(
-      provider,
-      interaction.buildQuery()
-    );
+import { element } from 'prop-types';
 
 
-    console.log("queryResponse " + queryResponse);
-    // console.log("queryResponse: " + JSON.stringify(queryResponse, null, 2));
-    
-    let response = interaction.interpretQueryResponse(queryResponse);
 
-    // console.log("response: " + response);
-    // console.log("response: " + JSON.stringify(response, null, 2));
-
-    // let myType = response.firstValue.getType();
-
-    // console.log("myType: " + myType);
-
-    let myList = response.firstValue.valueOf();
-
-    // let myReturnList  = [];
-
-    console.log("myList: " + myList);
-
-    // myList.forEach((element) => {
-    //   let bufferedId = element.tournament_id;
-
-    //   let stringVal = bufferedId.toString();
-    //   myReturnList.push(stringVal);
-
-    //   let signInPrice = element.sing_in_price.toFixed();
-    // });
-    // return myReturnList;
-  } catch (error) {
-    console.log(error);
-    return [];
-  }
-}
-
-function Farms() {
+ function Farms() {
   //Elrond login
   const { address, account } = useGetAccountInfo();
   const isLoggedIn = Boolean(address);
-  const [timeToConnect, setTimeToConnect] = React.useState(false);
+  const [clientReportData, setClientReportData] = useState(["-","-","-","-","-","-","-","-"]);
 
-  console.log("address " + address);
+  useEffect(() => {     
+    async function getClientReportData() {
+      try {
+        let providerCRD = new ProxyProvider('https://devnet-gateway.elrond.com');
+        await NetworkConfig.getDefault().sync(providerCRD);
     
+        let stringAddressCRD = "erd1qqqqqqqqqqqqqpgqvfp2xkxhwvrvrcrxzs6e3vz4sz2ms7m0pa7qkrd5ll";
+        let addressCRD = new Address(stringAddressCRD);
+    
+        const abiLocationCRD = `${process.env.PUBLIC_URL}/xlauncher-staking.abi.json`;
+    
+        let abiRegistryCRD = await AbiRegistry.load({
+          urls: [abiLocationCRD],
+        });
+        let abiCRD = new SmartContractAbi(abiRegistryCRD, [`XLauncherStaking`]);
+    
+        let contractCRD = new SmartContract({
+          address: addressCRD,
+          abi: abiCRD,
+        });
+    
+        let interactionCRD = contractCRD.methods.getClientReport(
+          [new AddressValue(new Address(address))]
+        );
+    
+        let queryResponseCRD = await contractCRD.runQuery(
+          providerCRD,
+          interactionCRD.buildQuery()
+        );
+        
+        let responseCRD = interactionCRD.interpretQueryResponse(queryResponseCRD);
+        let myList = responseCRD.firstValue.valueOf();
+    
+        let amountFormat = 1000000000000000000;
+        let totalAmount = myList["total_amount"].toFixed(2) / amountFormat;
+        let totalRewards = myList["total_rewords"].toFixed(2) / amountFormat;
+    
+        let farm1Amount = 0;
+        let farm1Rewards = 0;
+        let farm2Amount = 0;
+        let farm2Rewards = 0;
+        let farm3Amount = 0;
+        let farm3Rewards = 0;
+        
+        if(myList["report_pull_items"]){
+          if(myList["report_pull_items"][0]){
+            if(myList["report_pull_items"][0]["pool_id"] == "1"){
+              farm1Amount = myList["report_pull_items"][0]["pool_amount"].toFixed() / amountFormat;
+              farm1Rewards = myList["report_pull_items"][0]["rewords_amount"].toFixed() / amountFormat;
+            }else if(myList["report_pull_items"][0]["pool_id"] == "2"){
+              farm2Amount = myList["report_pull_items"][0]["pool_amount"].toFixed() / amountFormat;
+              farm2Rewards = myList["report_pull_items"][0]["rewords_amount"].toFixed() / amountFormat;
+            }else if(myList["report_pull_items"][0]["pool_id"] == "3"){
+              farm3Amount = myList["report_pull_items"][0]["pool_amount"].toFixed() / amountFormat;
+              farm3Rewards = myList["report_pull_items"][0]["rewords_amount"].toFixed() / amountFormat;
+            }
+          }
+          if(myList["report_pull_items"][1]){
+            if(myList["report_pull_items"][1]["pool_id"] == "1"){
+              farm1Amount = myList["report_pull_items"][1]["pool_amount"].toFixed() / amountFormat;
+              farm1Rewards = myList["report_pull_items"][1]["rewords_amount"].toFixed() / amountFormat;
+            }else if(myList["report_pull_items"][1]["pool_id"] == "2"){
+              farm2Amount = myList["report_pull_items"][1]["pool_amount"].toFixed() / amountFormat;
+              farm2Rewards = myList["report_pull_items"][1]["rewords_amount"].toFixed() / amountFormat;
+            }else if(myList["report_pull_items"][1]["pool_id"] == "3"){
+              farm3Amount = myList["report_pull_items"][1]["pool_amount"].toFixed() / amountFormat;
+              farm3Rewards = myList["report_pull_items"][1]["rewords_amount"].toFixed() / amountFormat;
+            }
+          }
+          if(myList["report_pull_items"][2]){
+            if(myList["report_pull_items"][2]["pool_id"] == "1"){
+              farm1Amount = myList["report_pull_items"][2]["pool_amount"].toFixed() / amountFormat;
+              farm1Rewards = myList["report_pull_items"][2]["rewords_amount"].toFixed() / amountFormat;
+            }else if(myList["report_pull_items"][2]["pool_id"] == "2"){
+              farm2Amount = myList["report_pull_items"][2]["pool_amount"].toFixed() / amountFormat;
+              farm2Rewards = myList["report_pull_items"][2]["rewords_amount"].toFixed() / amountFormat;
+            }else if(myList["report_pull_items"][2]["pool_id"] == "3"){
+              farm3Amount = myList["report_pull_items"][2]["pool_amount"].toFixed() / amountFormat;
+              farm3Rewards = myList["report_pull_items"][2]["rewords_amount"].toFixed() / amountFormat;
+            }
+          }   
+        }
+        
+        let totalAmountF = parseFloat(totalAmount).toFixed(2);
+        let totalRewardsF = parseFloat(totalRewards).toFixed(2);
+        let farm1AmountF = parseFloat(farm1Amount).toFixed(2);
+        let farm1RewardsF = parseFloat(farm1Rewards).toFixed(2);
+        let farm2AmountF = parseFloat(farm2Amount).toFixed(2);
+        let farm2RewardsF = parseFloat(farm2Rewards).toFixed(2);
+        let farm3AmountF = parseFloat(farm3Amount).toFixed(2);
+        let farm3RewardsF = parseFloat(farm3Rewards).toFixed(2);
+    
+        let myReturnList = [
+          new Intl.NumberFormat('ro-Ro', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(totalAmountF),
+          new Intl.NumberFormat('ro-Ro', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(totalRewardsF),
+          new Intl.NumberFormat('ro-Ro', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(farm1AmountF),
+          new Intl.NumberFormat('ro-Ro', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(farm1RewardsF),
+          new Intl.NumberFormat('ro-Ro', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(farm2AmountF),
+          new Intl.NumberFormat('ro-Ro', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(farm2RewardsF),
+          new Intl.NumberFormat('ro-Ro', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(farm3AmountF),
+          new Intl.NumberFormat('ro-Ro', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(farm3RewardsF)
+        ];
+    
+        console.log("myReturnList " + myReturnList);
+        setClientReportData(myReturnList);  
+      } catch (error) {
+        console.log(error);
+      }
+    }  
+    if(isLoggedIn){
+      getClientReportData(); 
+    }  
+  }, []);
+
+  console.log("clientReportData1 " + clientReportData);  
+  
+  console.log("clientReportData2 " + clientReportData);
+  
+
+  
+
   return (  
     <Main name="Staking">
       <Grid container spacing={3}>
@@ -149,8 +208,8 @@ function Farms() {
             title="Farm 1"
             lockedTime="0 days locked"
             apr="40%"
-            myXLH={3000}
-            myRewards={300}
+            myXLH={clientReportData[2]}
+            myRewards={clientReportData[3]}
             xlhBalance={10000}
             stake={{
               size: "small",
@@ -188,8 +247,8 @@ function Farms() {
             title="Farm 2"
             lockedTime="60 days locked"
             apr="110%"
-            myXLH={3000}
-            myRewards={300}
+            myXLH={clientReportData[4]}
+            myRewards={clientReportData[5]}
             xlhBalance={10000}
             stake={{
               size: "small",
@@ -227,8 +286,8 @@ function Farms() {
             title="Farm 3"
             lockedTime="180 days locked"
             apr="180%"
-            myXLH={3000}
-            myRewards={300}
+            myXLH={clientReportData[6]}
+            myRewards={clientReportData[7]}
             xlhBalance={10000}
             stake={{
               size: "small",
@@ -260,11 +319,6 @@ function Farms() {
             }}
             modalFarmName="Farm 3"
           />
-        </Grid>
-        <Grid item xs={12} md={6} lg={4} xl={4}>
-          <VuiButton onClick={()=>getClientReportData(address)}>
-            Test
-          </VuiButton>
         </Grid>
       </Grid>
     </Main> 
