@@ -827,7 +827,7 @@ pub trait XLauncherStaking {
         }
     }
 
-    // NEWNOTE
+    // NEWNOTE (response: we keep the current way of storing this value for this contract)
     // If you consider it is easy to modify, maybe save the pools in a separate storage with the pool_id as the key
     // This way, you would not need a for loop again to get the locking_time_span variable
     // This still works, but it overcomplicates the code. Even if you don't modify this now, it's good to think about this in the future.
@@ -1023,8 +1023,6 @@ pub trait XLauncherStaking {
         client_address: &ManagedAddress,
     ) -> SingleValueMapper<UnstakeState<Self::Api>>;
 
-    // NOTE
-    // Use WhitelistMapper instead
     #[view(getClientList)]
     #[storage_mapper("clientList")]
     fn client_list(&self) -> UnorderedSetMapper<ManagedAddress>;
