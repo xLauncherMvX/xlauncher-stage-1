@@ -240,10 +240,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
 
   return (
     <SidenavRoot {...rest} variant="permanent" ownerState={{ miniSidenav, transparentSidenav }}>
-      <Scrollbars
-        autoHide
-        autoHideTimeout={1000}
-      >
+      <Scrollbars>
         <VuiBox
           display="flex"
           sx={{ flexDirection: "column", justifyContent: "space-between", height: "100%" }}
