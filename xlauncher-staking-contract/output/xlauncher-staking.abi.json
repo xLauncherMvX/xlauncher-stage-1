@@ -10,7 +10,7 @@
         "contractCrate": {
             "name": "xlauncher-staking",
             "version": "0.1.0",
-            "git_version": "2ab5a7e-modified"
+            "git_version": "ee917b5-modified"
         },
         "framework": {
             "name": "elrond-wasm",
@@ -131,7 +131,7 @@
             ],
             "inputs": [
                 {
-                    "name": "pull_id",
+                    "name": "pool_id",
                     "type": "u32"
                 }
             ],
@@ -163,7 +163,7 @@
             "mutability": "mutable",
             "inputs": [
                 {
-                    "name": "pull_id",
+                    "name": "pool_id",
                     "type": "u32"
                 }
             ],
@@ -174,7 +174,7 @@
             "mutability": "mutable",
             "inputs": [
                 {
-                    "name": "pull_id",
+                    "name": "pool_id",
                     "type": "u32"
                 }
             ],
@@ -200,7 +200,7 @@
             "outputs": []
         },
         {
-            "name": "updatePullSettings",
+            "name": "updatePoolSettings",
             "onlyOwner": true,
             "mutability": "mutable",
             "inputs": [
@@ -217,22 +217,22 @@
                     "type": "u64"
                 },
                 {
-                    "name": "pull_a_apy",
+                    "name": "pool_a_apy",
                     "type": "u64"
                 },
                 {
-                    "name": "pull_b_apy",
+                    "name": "pool_b_apy",
                     "type": "u64"
                 },
                 {
-                    "name": "pull_c_apy",
+                    "name": "pool_c_apy",
                     "type": "u64"
                 }
             ],
             "outputs": []
         },
         {
-            "name": "appendPullSettings",
+            "name": "appendPoolSettings",
             "onlyOwner": true,
             "mutability": "mutable",
             "inputs": [
@@ -249,15 +249,15 @@
                     "type": "u64"
                 },
                 {
-                    "name": "pull_a_apy",
+                    "name": "pool_a_apy",
                     "type": "u64"
                 },
                 {
-                    "name": "pull_b_apy",
+                    "name": "pool_b_apy",
                     "type": "u64"
                 },
                 {
-                    "name": "pull_c_apy",
+                    "name": "pool_c_apy",
                     "type": "u64"
                 }
             ],
@@ -434,7 +434,7 @@
                 }
             ]
         },
-        "ReportClientPullPullItem": {
+        "ReportClientPoolPoolItem": {
             "type": "struct",
             "fields": [
                 {
@@ -446,7 +446,7 @@
                     "type": "BigUint"
                 },
                 {
-                    "name": "rewords_amount",
+                    "name": "rewards_amount",
                     "type": "BigUint"
                 }
             ]
@@ -459,12 +459,12 @@
                     "type": "BigUint"
                 },
                 {
-                    "name": "total_rewords",
+                    "name": "total_rewards",
                     "type": "BigUint"
                 },
                 {
-                    "name": "report_pull_items",
-                    "type": "List<ReportClientPullPullItem>"
+                    "name": "report_pool_items",
+                    "type": "List<ReportClientPoolPoolItem>"
                 }
             ]
         },

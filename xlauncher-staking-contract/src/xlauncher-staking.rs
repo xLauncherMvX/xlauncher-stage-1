@@ -317,9 +317,7 @@ pub trait XLauncherStaking {
         }
 
         //case 2 amount is a bit smaller then total_items_value
-        // NEWNOTE
-        // else if - no need for the compiler to do the extra check
-        if amount < total_items_value {
+        else if amount < total_items_value {
             for i in 0..=(selected_items.len() - 1) {
                 let item = selected_items.get(i);
                 self.remove_client_item_from_storage(
@@ -852,12 +850,8 @@ pub trait XLauncherStaking {
         return settings.token_id;
     }
 
-    // report
+    // reports
 
-    // NOTE
-    // The code is overcomplicated and very hard to follow. Also, it has multiple iterations so it takes longer to calculate
-    // I recommend to save events for all the previous claims and to have the calculate_rewards function as a view, only for the pending rewards
-    // - todo: need to reed on events api (see if this is doable now or in the next iteration of the contract)
     #[view(getClientReport)]
     fn get_client_report(&self, client: ManagedAddress) -> ReportClinet<Self::Api> {
         let mut report = ReportClinet {
@@ -990,7 +984,7 @@ pub trait XLauncherStaking {
         let client_vector = self.client_state(&client);
 
         if client_vector.len() == 0 {
-            //if clinet has no staked items we stop here
+            //if client has no staked items we stop here
             //return report;
             return multi_val_vec;
         }
