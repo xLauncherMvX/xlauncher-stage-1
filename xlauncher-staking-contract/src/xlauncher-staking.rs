@@ -251,6 +251,9 @@ pub trait XLauncherStaking {
     // Again, very complicated method with lots of conditions You could continue to use this function or you could refactor it
     // You said there will be a merge function. You could use this to first merge all users positions and only work with that merged position for both cases
     // This way you could remove lots of conditions, which would make the function easier to read and maintain
+    // (response: for now lets use it in this state. I'm definitely considering refactoring this in the future.
+    // The merge method will not affect the current logic since will merge only positions that can be unstaked.
+    // It will reduce gass cost overall for future transactions)
     #[endpoint(unstake)]
     fn unstake(&self, pool_id: u32, amount: BigUint) {
         require!(self.contract_is_active(), "Contract is in maintenance");
@@ -810,6 +813,9 @@ pub trait XLauncherStaking {
     // Also, right now we have a double loop - first in the calculate_pool_rewards() function and for each client_state item there, 
     // we loop again the entire client_state vector here
     // Maybe send the ClientPoolState as an argument here and just update it directly, without entering a new loop - as you already loop the vector beforehand
+    // (response: I do not have access to the entire vector but only to a filtered section of it. Calling set on that memory section will not update the store
+    // calculate_pool_rewords has a handle only to ManagedVec<ClientPoolState<?>,?> build in memory
+    // Question: Is this comment still relevant for the current code state?)
     fn update_staked_item_collection_time(
         &self,
         pool_id: &u32,
@@ -827,10 +833,11 @@ pub trait XLauncherStaking {
         }
     }
 
-    // NEWNOTE (response: we keep the current way of storing this value for this contract)
+    // NEWNOTE
     // If you consider it is easy to modify, maybe save the pools in a separate storage with the pool_id as the key
     // This way, you would not need a for loop again to get the locking_time_span variable
     // This still works, but it overcomplicates the code. Even if you don't modify this now, it's good to think about this in the future.
+    // (response: we keep the current way of storing this value for this contract)
     fn get_pool_locking_time_span(&self, pool_id: &u32) -> u64 {
         let var_setting = self.variable_contract_settings().get();
         let pool_items = var_setting.pool_items;
