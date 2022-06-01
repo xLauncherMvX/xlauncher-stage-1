@@ -37,7 +37,7 @@ import "assets/theme/base/plugins.css";
 
 //Elrond core
 import { DappProvider} from '@elrondnetwork/dapp-core';
-const environment = 'testnet';
+const environment = 'devnet';
 
 export default function App() {
   const [controller] = useVisionUIController();
