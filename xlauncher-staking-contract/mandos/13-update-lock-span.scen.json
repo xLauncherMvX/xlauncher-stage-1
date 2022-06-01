@@ -139,8 +139,8 @@
               "2-min_amount": "biguint:250,000,000,000,000,000",
               "3-unstake_lock_span": "u64:600",
               "4-contract_is_active": "true",
-              "5-pull_items_vec_len": "u32:3",
-              "6-first_pull_item": {
+              "5-pool_items_vec_len": "u32:3",
+              "6-first_pool_item": {
                 "1-id": "u32:1",
                 "2-locking_time_span": "u64:0",
                 "3-apy_configuration_vec_len": "u32:1",
@@ -151,7 +151,7 @@
                   "4-end_timestamp": "u64:31536000"
                 }
               },
-              "7-second_pull_item": {
+              "7-second_pool_item": {
                 "1-id": "u32:2",
                 "2-locking_time_span": "u64:5184000",
                 "3-apy_configuration_vec_len": "u32:1",
@@ -162,7 +162,7 @@
                   "4-end_timestamp": "u64:31536000"
                 }
               },
-              "8-third_pull_item": {
+              "8-third_pool_item": {
                 "1-id": "u32:3",
                 "2-locking_time_span": "u64:15552000",
                 "3-apy_configuration_vec_len": "u32:1",

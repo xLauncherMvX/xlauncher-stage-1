@@ -1,4 +1,7 @@
-use elrond_wasm::{api::ManagedTypeApi, types::{BigUint, TokenIdentifier, ManagedVec}};
+use elrond_wasm::{
+    api::ManagedTypeApi,
+    types::{BigUint, ManagedVec, TokenIdentifier},
+};
 
 elrond_wasm::derive_imports!();
 
@@ -9,7 +12,6 @@ pub struct ClientPoolState<M: ManagedTypeApi> {
     pub pool_time_stamp_last_collection: u64,
     pub pool_amount: BigUint<M>,
 }
-
 
 #[derive(TypeAbi, TopEncode, TopDecode, ManagedVecItem, NestedEncode, NestedDecode, Clone)]
 pub struct UnstakeState<M: ManagedTypeApi> {
@@ -46,15 +48,15 @@ pub struct ApyConfiguration {
 #[derive(TypeAbi, TopEncode, TopDecode, ManagedVecItem, NestedEncode, NestedDecode, Clone)]
 pub struct ReportClinet<M: ManagedTypeApi> {
     pub total_amount: BigUint<M>,
-    pub total_rewords: BigUint<M>,
-    pub report_pull_items: ManagedVec<M, ReportClientPullPullItem<M>>,
+    pub total_rewards: BigUint<M>,
+    pub report_pool_items: ManagedVec<M, ReportClientPoolPoolItem<M>>,
 }
 
 #[derive(TypeAbi, TopEncode, TopDecode, ManagedVecItem, NestedEncode, NestedDecode, Clone)]
-pub struct ReportClientPullPullItem<M: ManagedTypeApi> {
+pub struct ReportClientPoolPoolItem<M: ManagedTypeApi> {
     pub pool_id: u32,
     pub pool_amount: BigUint<M>,
-    pub rewords_amount: BigUint<M>,
+    pub rewards_amount: BigUint<M>,
 }
 
 #[derive(TypeAbi, TopEncode, TopDecode, ManagedVecItem, NestedEncode, NestedDecode)]
@@ -64,5 +66,5 @@ pub struct ClaimItem<M: ManagedTypeApi> {
     pub pool_time_stamp_entry: u64,
     pub pool_time_stamp_last_collection: u64,
     pub pool_amount: BigUint<M>,
-    pub rewords: BigUint<M>,
+    pub rewards: BigUint<M>,
 }

@@ -12,8 +12,8 @@ fn world() -> BlockchainMock {
 }
 
 #[test]
-fn stake_pull_a_rs() {
-    elrond_wasm_debug::mandos_rs("mandos/02-stake-pull-a.scen.json", world());
+fn stake_pool_a_rs() {
+    elrond_wasm_debug::mandos_rs("mandos/02-stake-pool-a.scen.json", world());
 }
 
 #[test]
@@ -42,18 +42,18 @@ fn unstake_case_3_rs() {
 }
 
 #[test]
-fn update_pull_settings_rs() {
-    elrond_wasm_debug::mandos_rs("mandos/09-update-pull-settings.scen.json", world());
+fn update_pool_settings_rs() {
+    elrond_wasm_debug::mandos_rs("mandos/09-update-pool-settings.scen.json", world());
 }
 
 #[test]
-fn append_pull_settings_rs() {
-    elrond_wasm_debug::mandos_rs("mandos/10-append-pull-settings.scen.json", world());
+fn append_pool_settings_rs() {
+    elrond_wasm_debug::mandos_rs("mandos/10-append-pool-settings.scen.json", world());
 }
 
 #[test]
-fn not_active_stake_pull_a_rs() {
-    elrond_wasm_debug::mandos_rs("mandos/11-not-active-stake-pull-a.scen.json", world());
+fn not_active_stake_pool_a_rs() {
+    elrond_wasm_debug::mandos_rs("mandos/11-not-active-stake-pool-a.scen.json", world());
 }
 
 #[test]

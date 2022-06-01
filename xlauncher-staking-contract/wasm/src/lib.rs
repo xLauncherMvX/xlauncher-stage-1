@@ -7,7 +7,7 @@
 elrond_wasm_node::wasm_endpoints! {
     xlauncher_staking
     (
-        appendPullSettings
+        appendPoolSettings
         claim
         claimUnstakedValue
         fundContract
@@ -24,7 +24,7 @@ elrond_wasm_node::wasm_endpoints! {
         stake
         switchIsActiveFieldValue
         unstake
-        updatePullSettings
+        updatePoolSettings
         updateUnstakeLockSpan
     )
 }

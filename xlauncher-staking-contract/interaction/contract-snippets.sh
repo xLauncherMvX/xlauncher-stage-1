@@ -102,38 +102,38 @@ stake() {
   method_name="0x$(echo -n 'stake' | xxd -p -u | tr -d '\n')"
   token_id="0x$(echo -n ${TOKEN_ID} | xxd -p -u | tr -d '\n')"
   amount="1${MY_DECIMALS}"
-  pull_id="1"
+  pool_id="1"
   erdpy --verbose contract call ${ADDRESS} --recall-nonce \
     --pem=${PEM_FILE} \
     --gas-limit=8000000 \
     --proxy=${PROXY} --chain=${CHAINID} \
     --function="ESDTTransfer" \
-    --arguments $token_id $amount $method_name $pull_id \
+    --arguments $token_id $amount $method_name $pool_id \
     --send \
     --outfile="${MY_LOGS}/stake-${ENV_LOGS}.json"
 }
 
 claim() {
-  pull_id="1"
+  pool_id="1"
   erdpy --verbose contract call ${ADDRESS} --recall-nonce \
     --pem=${PEM_FILE} \
     --gas-limit=8000000 \
     --proxy=${PROXY} --chain=${CHAINID} \
     --function="claim" \
-    --arguments ${pull_id} \
+    --arguments ${pool_id} \
     --send \
     --outfile="${MY_LOGS}/claim-${ENV_LOGS}.json"
 }
 
 unstake() {
-  pull_id="1"
+  pool_id="1"
   amount="1${MY_DECIMALS}"
   erdpy --verbose contract call ${ADDRESS} --recall-nonce \
     --pem=${PEM_FILE} \
     --gas-limit=8000000 \
     --proxy=${PROXY} --chain=${CHAINID} \
     --function="unstake" \
-    --arguments ${pull_id} ${amount} \
+    --arguments ${pool_id} ${amount} \
     --send \
     --outfile="${MY_LOGS}/unstake-${ENV_LOGS}.json"
 }
@@ -165,7 +165,7 @@ getClientState() {
     --proxy=${PROXY}
 }
 
-appendPullSettings() {
+appendPoolSettings() {
 
   # relevant variables
   #    APPEND_APY_ID
@@ -179,14 +179,14 @@ appendPullSettings() {
     --pem=${PEM_FILE} \
     --gas-limit=8000000 \
     --proxy=${PROXY} --chain=${CHAINID} \
-    --function="appendPullSettings" \
+    --function="appendPoolSettings" \
     --arguments ${APPEND_APY_ID} ${APPEND_APY_START} ${APPEND_APY_END} ${APPEND_APY_A} ${APPEND_APY_B} ${APPEND_APY_C} \
     --send \
-    --outfile="${MY_LOGS}/appendPullSettings-${ENV_LOGS}.json"
+    --outfile="${MY_LOGS}/appendPoolSettings-${ENV_LOGS}.json"
 }
 
 
-updatePullSettings() {
+updatePoolSettings() {
 
   # relevant variables
   #    APPEND_APY_ID
@@ -200,10 +200,10 @@ updatePullSettings() {
     --pem=${PEM_FILE} \
     --gas-limit=8000000 \
     --proxy=${PROXY} --chain=${CHAINID} \
-    --function="updatePullSettings" \
+    --function="updatePoolSettings" \
     --arguments ${APPEND_APY_ID} ${APPEND_APY_START} ${APPEND_APY_END} ${APPEND_APY_A} ${APPEND_APY_B} ${APPEND_APY_C} \
     --send \
-    --outfile="${MY_LOGS}/updatePullSettings-${ENV_LOGS}.json"
+    --outfile="${MY_LOGS}/updatePoolSettings-${ENV_LOGS}.json"
 }
 
 switchIsActiveFieldValue(){
