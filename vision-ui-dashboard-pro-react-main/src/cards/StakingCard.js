@@ -226,9 +226,6 @@ function StakingCard({title, lockedTime, myXLH, apr, myRewards, stake, claim, re
                         type="number" 
                         placeholder="Amount" 
                         size="medium"
-                        InputProps={{
-                          inputProps: { min: 0, max: {xlhBalance} },
-                        }}
                       >                    
                       </VuiInput>
                     </Grid>
@@ -261,7 +258,7 @@ function StakingCard({title, lockedTime, myXLH, apr, myRewards, stake, claim, re
                         color="info"
                         size="small"
                         sx={{ minWidth: "90px" }}
-                        onClick={stake.action}
+                        onClick={() => stake.action}
                         fullWidth
                       >
                         Stake
