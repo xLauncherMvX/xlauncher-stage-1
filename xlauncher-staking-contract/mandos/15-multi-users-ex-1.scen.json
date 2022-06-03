@@ -963,7 +963,30 @@
         "refund": "*"
       }
     },
-
+    {
+      "step": "scCall",
+      "txId": "unstake-3-1-c2",
+      "tx": {
+        "from": "address:client2",
+        "to": "sc:xlauncher-staking",
+        "function": "unstake",
+        "value": "0",
+        "arguments": [
+          "3",
+          "2121589999999999567360"
+        ],
+        "gasLimit": "100,000,000",
+        "gasPrice": "0"
+      },
+      "expect": {
+        "out": [],
+        "status": "0",
+        "message": "",
+        "gas": "*",
+        "refund": "*"
+      }
+    },
+    
     {
       "step": "checkState",
       "accounts": {
@@ -975,7 +998,7 @@
           }
         },
         "address:client2": {
-          "nonce": "15",
+          "nonce": "16",
           "balance": "0",
           "esdt": {
             "str:BCOIN-a00000": "3000000000000000000000"
@@ -1090,7 +1113,7 @@
               "3-pool_time_stamp_last_collection": "u64:47304000",
               "4-pool_amount": "biguint:20799999999999892800"
             },
-            "str:clientState|address:client2|str:.len": "9",
+            "str:clientState|address:client2|str:.len": "7",
             "str:clientState|address:client2|str:.item|u32:1": {
               "1-pool_id": "u32:1",
               "2-pool_time_stamp_entry": "u64:15768000",
@@ -1099,12 +1122,6 @@
             },
             "str:clientState|address:client2|str:.item|u32:2": {
               "1-pool_id": "u32:2",
-              "2-pool_time_stamp_entry": "u64:15768000",
-              "3-pool_time_stamp_last_collection": "u64:47304000",
-              "4-pool_amount": "biguint:1,000,000,000,000,000,000,000"
-            },
-            "str:clientState|address:client2|str:.item|u32:3": {
-              "1-pool_id": "u32:3",
               "2-pool_time_stamp_entry": "u64:15768000",
               "3-pool_time_stamp_last_collection": "u64:47304000",
               "4-pool_amount": "biguint:1,000,000,000,000,000,000,000"
@@ -1121,29 +1138,23 @@
               "3-pool_time_stamp_last_collection": "u64:47304000",
               "4-pool_amount": "biguint:19999999999999945440"
             },
-            "str:clientState|address:client2|str:.item|u32:6": {
-              "1-pool_id": "u32:3",
-              "2-pool_time_stamp_entry": "u64:31536000",
-              "3-pool_time_stamp_last_collection": "u64:47304000",
-              "4-pool_amount": "biguint:39999999999999890880"
-            },
-            "str:clientState|address:client2|str:.item|u32:7": {
+            "str:clientState|address:client2|str:.item|u32:3": {
               "1-pool_id": "u32:1",
               "2-pool_time_stamp_entry": "u64:47304000",
               "3-pool_time_stamp_last_collection": "u64:47304000",
               "4-pool_amount": "biguint:5049999999999805680"
             },
-            "str:clientState|address:client2|str:.item|u32:8": {
+            "str:clientState|address:client2|str:.item|u32:6": {
               "1-pool_id": "u32:2",
               "2-pool_time_stamp_entry": "u64:47304000",
               "3-pool_time_stamp_last_collection": "u64:47304000",
               "4-pool_amount": "biguint:10199999999999880720"
             },
-            "str:clientState|address:client2|str:.item|u32:9": {
+            "str:clientState|address:client2|str:.item|u32:7": {
               "1-pool_id": "u32:3",
               "2-pool_time_stamp_entry": "u64:47304000",
-              "3-pool_time_stamp_last_collection": "u64:47304000",
-              "4-pool_amount": "biguint:20799999999999892800"
+              "3-pool_time_stamp_last_collection": "u64:63072000",
+              "4-pool_amount": "biguint:10000000000000000"
             },
             "str:totalStakedValue": "6212099999999998776480",
             "str:clientList|str:.len": "2",
@@ -1154,6 +1165,11 @@
             "str:unstakeState|address:client1": {
               "0-total_unstaked_amount": "biguint:2035175249999999360720",
               "1-requested_amount": "biguint:2030099999999999556800",
+              "2-free_after_time_stamp": "u64:63936000"
+            },
+            "str:unstakeState|address:client2": {
+              "0-total_unstaked_amount": "biguint:2142805999999999426480",
+              "1-requested_amount": "biguint:2121589999999999567360",
               "2-free_after_time_stamp": "u64:63936000"
             }
           },
