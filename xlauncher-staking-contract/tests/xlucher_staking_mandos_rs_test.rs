@@ -108,3 +108,8 @@ fn complex_ex_2() {
 fn complex_ex_3() {
     elrond_wasm_debug::mandos_rs("mandos/14-complex-ex-3.scen.json", world());
 }
+
+#[test]
+fn multi_users_ex_1() {
+    elrond_wasm_debug::mandos_rs("mandos/15-multi-users-ex-1.scen.json", world());
+}
