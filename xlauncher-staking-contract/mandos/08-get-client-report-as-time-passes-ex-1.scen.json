@@ -36,7 +36,7 @@
           "1",
           "0",
           "1",
-          "15768000",
+          "0",
           "31536000",
           "100",
           "2",
@@ -110,12 +110,6 @@
       }
     },
     {
-      "step": "setState",
-      "currentBlockInfo": {
-        "blockTimestamp": "100000000"
-      }
-    },
-    {
       "step": "checkState",
       "accounts": {
         "address:owner": {
@@ -154,7 +148,7 @@
                 "4-first_apy_configuration": {
                   "1-id": "u32:1",
                   "2-apy": "u64:100",
-                  "3-start_timestamp": "u64:15768000",
+                  "3-start_timestamp": "u64:0",
                   "4-end_timestamp": "u64:31536000"
                 }
               },
@@ -198,26 +192,33 @@
       }
     },
     {
+      "step": "setState",
+      "currentBlockInfo": {
+        "blockTimestamp": "1"
+      }
+    },
+    {
       "step": "scQuery",
       "txId": "get-client-report",
       "tx": {
         "to": "sc:xlauncher-staking",
         "function": "getClientReport",
         "arguments": [
-          "address:client1", "1"
+          "address:client1",
+          "1"
         ]
       },
       "expect": {
         "status": "0",
         "out": [
           {
-            "1-total_amount": "biguint:1,000,000,000,000,000,000,000",
-            "2-total_rewards": "biguint:2499999999999953760",
+            "1-total_amount": "biguint:1000000000000000000",
+            "2-total_rewards": "biguint:317097919",
             "3-report_pool_items_vec_len": "u32:1",
             "4-first_report_pool_item": {
               "1-pool_id": "u32:1",
-              "2-pool_amount": "biguint:1,000,000,000,000,000,000,000",
-              "3-rewards_amount": "biguint:2499999999999953760"
+              "2-pool_amount": "biguint:1000000000000000000",
+              "3-rewards_amount": "biguint:317097919"
             }
           }
         ],
@@ -227,7 +228,7 @@
     {
       "step": "setState",
       "currentBlockInfo": {
-        "blockTimestamp": "23652001"
+        "blockTimestamp": "2"
       }
     },
     {
@@ -237,20 +238,21 @@
         "to": "sc:xlauncher-staking",
         "function": "getClientReport",
         "arguments": [
-          "address:client1", "1"
+          "address:client1",
+          "1"
         ]
       },
       "expect": {
         "status": "0",
         "out": [
           {
-            "1-total_amount": "biguint:1,000,000,000,000,000,000,000",
-            "2-total_rewards": "biguint:2500000317097873597",
+            "1-total_amount": "biguint:1000000000000000000",
+            "2-total_rewards": "biguint:634195839",
             "3-report_pool_items_vec_len": "u32:1",
             "4-first_report_pool_item": {
               "1-pool_id": "u32:1",
-              "2-pool_amount": "biguint:1,000,000,000,000,000,000,000",
-              "3-rewards_amount": "biguint:2500000317097873597"
+              "2-pool_amount": "biguint:1000000000000000000",
+              "3-rewards_amount": "biguint:634195839"
             }
           }
         ],
