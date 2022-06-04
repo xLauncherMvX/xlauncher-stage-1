@@ -113,3 +113,8 @@ fn complex_ex_3() {
 fn multi_users_ex_1() {
     elrond_wasm_debug::mandos_rs("mandos/15-multi-users-ex-1.scen.json", world());
 }
+
+#[test]
+fn when_time_passes_ex_1() {
+    elrond_wasm_debug::mandos_rs("mandos/08-get-client-report-as-time-passes-ex-1.scen.json", world());
+}

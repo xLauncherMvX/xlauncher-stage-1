@@ -899,6 +899,7 @@ pub trait XLauncherStaking {
                             &current_time_stamp,
                         );
                         rep_item.rewards_amount = rep_item.rewards_amount.clone() + item_reward;
+                        sc_print!("pool_id={}, rewords_amount={}",client_item.pool_id.clone(), rep_item.rewards_amount.clone())
                     }
                 }
             }
@@ -909,7 +910,6 @@ pub trait XLauncherStaking {
                 report.report_pool_items.push(rep_item);
             }
         }
-
         return report;
     }
 
