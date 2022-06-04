@@ -55,7 +55,13 @@ import Main from "layouts/main";
 import StakingCard from "cards/StakingCard";
 
 //Elrond
-import { DappUI, logout, useGetAccountInfo } from '@elrondnetwork/dapp-core';
+import {
+  DappUI,
+  logout,
+  refreshAccount,
+  transactionServices,
+  useGetAccountInfo
+} from '@elrondnetwork/dapp-core';
 import {
   AbiRegistry,
   Address,
@@ -71,12 +77,14 @@ import {
 } from "@elrondnetwork/erdjs/out";
 import { element } from 'prop-types';
 
+const { SignTransactionsModals, TransactionsToastList, NotificationModal } = DappUI;
+const { sendTransactions } = transactionServices;
 
-
- function Farms() {
+function Farms() {
   //Elrond login
   const { address, account } = useGetAccountInfo();
   const isLoggedIn = Boolean(address);
+  const [transactionSessionId, setTransactionSessionId] = React.useState(null);
   const [clientReportData, setClientReportData] = useState(["-","-","-","-","-","-","-","-"]);
 
   const getClientReportData = async () => {
@@ -187,10 +195,47 @@ import { element } from 'prop-types';
       console.log(error);
     }
   }
-
   if(isLoggedIn){
     getClientReportData();
   }  
+  //arguments $token_id $amount $method_name $pull_id \
+  const stakeXLH = async () => {
+    console.log("Formatting transaction");
+    const createStakeTransaction = {
+      data: [
+        Buffer.from("stake").toString("hex"),
+        Buffer.from("XLH-cb26c7").toString("hex"),
+        "1000000000000000000",
+        "1"        
+      ].join("@"),
+      receiver:
+        "erd1qqqqqqqqqqqqqpgqvfp2xkxhwvrvrcrxzs6e3vz4sz2ms7m0pa7qkrd5ll",
+      gasLimit: 10_000_000,
+    };
+
+    await refreshAccount();
+
+    const { sessionId /*, error*/ } = await sendTransactions({
+      transactions: [createStakeTransaction],
+      transactionsDisplayInfo: {
+        processingMessage: "Processing Ping transaction",
+        errorMessage: "An error has occured during Ping",
+        successMessage: "Ping transaction successful",
+      },
+      redirectAfterSign: false,
+    });
+    if (sessionId != null) {
+      console.log("sessionId", sessionId);
+      setTransactionSessionId(sessionId);
+    }
+
+  };
+
+
+
+
+
+
   useEffect(() => {     
     if(isLoggedIn){
       getClientReportData(); 
@@ -199,6 +244,9 @@ import { element } from 'prop-types';
 
   return (  
     <Main name="Staking">
+      <TransactionsToastList />
+      <NotificationModal />
+      <SignTransactionsModals className='custom-class-for-modals' />
       <Grid container spacing={3}>
         <Grid item xs={12} md={6} lg={4} xl={4}>
           <StakingCard       
@@ -316,6 +364,11 @@ import { element } from 'prop-types';
             }}
             modalFarmName="Farm 3"
           />
+        </Grid>
+        <Grid item xs={12} md={6} lg={4} xl={4}>
+          <VuiButton onClick={()=> stakeXLH()}>
+            Stake
+          </VuiButton>
         </Grid>
       </Grid>
     </Main> 
