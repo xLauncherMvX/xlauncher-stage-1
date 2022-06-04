@@ -861,7 +861,6 @@ pub trait XLauncherStaking {
 
     #[view(getClientReport)]
     fn get_client_report(&self, client: ManagedAddress, client_time_stamp: u64) -> ReportClinet<Self::Api> {
-        sc_print!("Client time stamp={}",client_time_stamp);
         let mut report = ReportClinet {
             total_amount: BigUint::zero(),
             total_rewards: BigUint::zero(),
@@ -909,7 +908,11 @@ pub trait XLauncherStaking {
                 count = count + 1;
                 report.report_pool_items.push(rep_item);
             }
+
         }
+        sc_print!("client_time_stamp={}",client_time_stamp);
+        sc_print!("current_time_stamp={}",current_time_stamp);
+        sc_print!("total_rewards={}",report.total_rewards);
         return report;
     }
 
