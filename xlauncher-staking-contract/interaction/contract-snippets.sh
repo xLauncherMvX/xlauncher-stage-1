@@ -52,7 +52,7 @@ printCurrentEnv() {
 
 deploy() {
   erdpy --verbose contract deploy --project=${PROJECT} --recall-nonce --pem=${PEM_FILE} \
-    --gas-limit=100000000 --send --outfile="${MY_LOGS}/deploy-${ENV_LOGS}.json" \
+    --gas-limit=200000000 --send --outfile="${MY_LOGS}/deploy-${ENV_LOGS}.json" \
     --proxy=${PROXY} --chain=${CHAINID} \
     --arguments "0x${TOKEN_ID_HEX}" ${MIN_AMOUNT} \
     ${PULL_A_ID} ${PULL_A_LOCKING_TIME_SPAN} ${APY_A0_ID} ${APY_A0_START} ${APY_A0_END} ${APY_A0_APY} \
@@ -142,7 +142,7 @@ getClientReport() {
   # erdpy wallet bech32 --decode erd1mhhnd3ux2duwc9824dhelherdj3gvzn04erdw29l8cyr5z8fpa7quda68z
   timestamp=$(date +%s)
   erdpy --verbose contract query ${ADDRESS} --function="getClientReport" \
-    --arguments 0xddef36c7865378ec14eaab6f9fdf236ca2860a6fae46d728bf3e083a08e90f7c ${timestamp}\
+    --arguments 0xddef36c7865378ec14eaab6f9fdf236ca2860a6fae46d728bf3e083a08e90f7c 1\
     --proxy=${PROXY}
 }
 
