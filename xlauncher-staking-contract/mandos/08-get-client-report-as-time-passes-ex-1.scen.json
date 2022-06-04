@@ -214,12 +214,12 @@
         "out": [
           {
             "1-total_amount": "biguint:1,000,000,000,000,000,000,000",
-            "2-total_rewards": "biguint:2,499,999,999,999,953,760",
+            "2-total_rewards": "biguint:2499999999999953760",
             "3-report_pool_items_vec_len": "u32:1",
             "4-first_report_pool_item": {
               "1-pool_id": "u32:1",
               "2-pool_amount": "biguint:1,000,000,000,000,000,000,000",
-              "3-rewards_amount": "biguint:2,499,999,999,999,953,760"
+              "3-rewards_amount": "biguint:2499999999999953760"
             }
           }
         ],
@@ -229,7 +229,7 @@
     {
       "step": "setState",
       "currentBlockInfo": {
-        "blockTimestamp": "23652000"
+        "blockTimestamp": "23652001"
       }
     },
     {
@@ -247,12 +247,12 @@
         "out": [
           {
             "1-total_amount": "biguint:1,000,000,000,000,000,000,000",
-            "2-total_rewards": "biguint:2,499,999,999,999,953,760",
+            "2-total_rewards": "biguint:2500000317097873597",
             "3-report_pool_items_vec_len": "u32:1",
             "4-first_report_pool_item": {
               "1-pool_id": "u32:1",
               "2-pool_amount": "biguint:1,000,000,000,000,000,000,000",
-              "3-rewards_amount": "biguint:2,499,999,999,999,953,760"
+              "3-rewards_amount": "biguint:2500000317097873597"
             }
           }
         ],
