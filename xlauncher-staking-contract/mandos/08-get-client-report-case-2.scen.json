@@ -123,7 +123,8 @@
         "to": "sc:xlauncher-staking",
         "function": "getClientReport",
         "arguments": [
-          "address:client1"
+          "address:client1",
+          "1"
         ]
       },
       "expect": {
