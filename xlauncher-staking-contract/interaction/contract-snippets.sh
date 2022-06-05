@@ -143,7 +143,7 @@ getClientReport() {
   timestamp=$(date +%s)
   echo "query timestamp=${timestamp}"
   erdpy --verbose contract query ${ADDRESS} --function="getClientReport" \
-    --arguments 0xddef36c7865378ec14eaab6f9fdf236ca2860a6fae46d728bf3e083a08e90f7c ${timestamp}\
+    --arguments 0xddef36c7865378ec14eaab6f9fdf236ca2860a6fae46d728bf3e083a08e90f7c \
     --proxy=${PROXY}
 }
 

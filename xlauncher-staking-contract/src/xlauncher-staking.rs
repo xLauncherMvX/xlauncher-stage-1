@@ -860,7 +860,7 @@ pub trait XLauncherStaking {
     // reports
 
     #[view(getClientReport)]
-    fn get_client_report(&self, client: ManagedAddress, client_time_stamp: u64) -> ReportClinet<Self::Api> {
+    fn get_client_report(&self, client: ManagedAddress) -> ReportClinet<Self::Api> {
         let mut report = ReportClinet {
             total_amount: BigUint::zero(),
             total_rewards: BigUint::zero(),
@@ -910,7 +910,6 @@ pub trait XLauncherStaking {
             }
 
         }
-        sc_print!("client_time_stamp={}",client_time_stamp);
         sc_print!("current_time_stamp={}",current_time_stamp);
         sc_print!("total_rewards={}",report.total_rewards);
         return report;
