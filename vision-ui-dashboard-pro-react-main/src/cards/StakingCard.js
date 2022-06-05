@@ -57,12 +57,13 @@ const style = {
   p: 4
 };
 
-function StakingCard({title, lockedTime, myXLH, apr, myRewards, stake, claim, reinvest, unstake, modalFarmName, xlhBalance}) {
+function StakingCard({xlhAmountSValue, method, maxMethod, onChangeMethod, title, lockedTime, myXLH, apr, myRewards, stake, claim, reinvest, unstake, modalFarmName, xlhBalance}) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [visible, setVisible] = React.useState(false);
   
+
   return (
     <Card sx={{ minHeight: "250px" }}>
       <VuiBox>
@@ -223,9 +224,16 @@ function StakingCard({title, lockedTime, myXLH, apr, myRewards, stake, claim, re
                   <Grid container spacing={2}>
                     <Grid item xs={9}>
                       <VuiInput 
-                        type="number" 
+                        value={xlhAmountSValue}
+                        onKeyPress={(event) => {
+                          if (!/[0-9]/.test(event.key)) {
+                            event.preventDefault();
+                          }
+                        }}
+                        onChange={onChangeMethod}                        
                         placeholder="Amount" 
                         size="medium"
+                        
                       >                    
                       </VuiInput>
                     </Grid>
@@ -234,7 +242,7 @@ function StakingCard({title, lockedTime, myXLH, apr, myRewards, stake, claim, re
                           variant="outlined"
                           color="light"
                           size="medium"
-                          onClick={() => stake.max}
+                          onClick={maxMethod}
                           fullWidth
                         >
                           Max
@@ -249,7 +257,12 @@ function StakingCard({title, lockedTime, myXLH, apr, myRewards, stake, claim, re
                       marginLeft="13px"
                       marginTop="2px"
                     >
-                      Balance: {xlhBalance} XLH
+                      Balance: 
+                      {new Intl.NumberFormat("ro-Ro", {
+                        minimumFractionDigits: 2, 
+                        maximumFractionDigits: 2,
+                      }).format(xlhBalance)} 
+                      XLH
                   </VuiTypography>   
                   <Grid container spacing={1} mt={5}>
                     <Grid item xs={12} md={6} lg={6}>
@@ -258,7 +271,7 @@ function StakingCard({title, lockedTime, myXLH, apr, myRewards, stake, claim, re
                         color="info"
                         size="small"
                         sx={{ minWidth: "90px" }}
-                        onClick={() => stake.action}
+                        onClick={method}
                         fullWidth
                       >
                         Stake
