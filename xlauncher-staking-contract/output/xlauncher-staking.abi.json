@@ -10,7 +10,7 @@
         "contractCrate": {
             "name": "xlauncher-staking",
             "version": "0.1.0",
-            "git_version": "21e00a6-modified"
+            "git_version": "9b8c9ca-modified"
         },
         "framework": {
             "name": "elrond-wasm",
@@ -131,7 +131,7 @@
             ],
             "inputs": [
                 {
-                    "name": "pull_id",
+                    "name": "pool_id",
                     "type": "u32"
                 }
             ],
@@ -163,7 +163,7 @@
             "mutability": "mutable",
             "inputs": [
                 {
-                    "name": "pull_id",
+                    "name": "pool_id",
                     "type": "u32"
                 }
             ],
@@ -174,7 +174,7 @@
             "mutability": "mutable",
             "inputs": [
                 {
-                    "name": "pull_id",
+                    "name": "pool_id",
                     "type": "u32"
                 }
             ],
@@ -200,7 +200,7 @@
             "outputs": []
         },
         {
-            "name": "updatePullSettings",
+            "name": "updatePoolSettings",
             "onlyOwner": true,
             "mutability": "mutable",
             "inputs": [
@@ -217,22 +217,22 @@
                     "type": "u64"
                 },
                 {
-                    "name": "pull_a_apy",
+                    "name": "pool_a_apy",
                     "type": "u64"
                 },
                 {
-                    "name": "pull_b_apy",
+                    "name": "pool_b_apy",
                     "type": "u64"
                 },
                 {
-                    "name": "pull_c_apy",
+                    "name": "pool_c_apy",
                     "type": "u64"
                 }
             ],
             "outputs": []
         },
         {
-            "name": "appendPullSettings",
+            "name": "appendPoolSettings",
             "onlyOwner": true,
             "mutability": "mutable",
             "inputs": [
@@ -249,15 +249,15 @@
                     "type": "u64"
                 },
                 {
-                    "name": "pull_a_apy",
+                    "name": "pool_a_apy",
                     "type": "u64"
                 },
                 {
-                    "name": "pull_b_apy",
+                    "name": "pool_b_apy",
                     "type": "u64"
                 },
                 {
-                    "name": "pull_c_apy",
+                    "name": "pool_c_apy",
                     "type": "u64"
                 }
             ],
@@ -306,6 +306,22 @@
             "outputs": [
                 {
                     "type": "variadic<multi<u32,u64,u64,BigUint>>",
+                    "multi_result": true
+                }
+            ]
+        },
+        {
+            "name": "getApiConfigReport1",
+            "mutability": "readonly",
+            "inputs": [
+                {
+                    "name": "pool_id",
+                    "type": "u32"
+                }
+            ],
+            "outputs": [
+                {
+                    "type": "variadic<multi<u32,u64,u64,u64,u64>>",
                     "multi_result": true
                 }
             ]
@@ -434,7 +450,7 @@
                 }
             ]
         },
-        "ReportClientPullPullItem": {
+        "ReportClientPoolPoolItem": {
             "type": "struct",
             "fields": [
                 {
@@ -446,7 +462,7 @@
                     "type": "BigUint"
                 },
                 {
-                    "name": "rewords_amount",
+                    "name": "rewards_amount",
                     "type": "BigUint"
                 }
             ]
@@ -459,12 +475,12 @@
                     "type": "BigUint"
                 },
                 {
-                    "name": "total_rewords",
+                    "name": "total_rewards",
                     "type": "BigUint"
                 },
                 {
-                    "name": "report_pull_items",
-                    "type": "List<ReportClientPullPullItem>"
+                    "name": "report_pool_items",
+                    "type": "List<ReportClientPoolPoolItem>"
                 }
             ]
         },
