@@ -169,7 +169,6 @@ getClientState() {
 
 getVariableContractSettings() {
   erdpy --verbose contract query ${ADDRESS} --function="getVariableContractSettings" \
-    --arguments 0xddef36c7865378ec14eaab6f9fdf236ca2860a6fae46d728bf3e083a08e90f7c \
     --proxy=${PROXY}
 }
 
@@ -222,4 +221,11 @@ switchIsActiveFieldValue(){
       --function="switchIsActiveFieldValue" \
       --send \
       --outfile="${MY_LOGS}/switchIsActiveFieldValue-${ENV_LOGS}.json"
+}
+
+
+getApiConfigReport1(){
+  erdpy --verbose contract query ${ADDRESS} --function="getApiConfigReport1" \
+      --arguments 1 \
+      --proxy=${PROXY}
 }

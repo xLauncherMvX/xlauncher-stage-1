@@ -11,6 +11,7 @@ elrond_wasm_node::wasm_endpoints! {
         claim
         claimUnstakedValue
         fundContract
+        getApiConfigReport1
         getClientList
         getClientReport
         getClientReportV2

@@ -10,7 +10,7 @@
         "contractCrate": {
             "name": "xlauncher-staking",
             "version": "0.1.0",
-            "git_version": "975269c-modified"
+            "git_version": "9b8c9ca-modified"
         },
         "framework": {
             "name": "elrond-wasm",
@@ -306,6 +306,22 @@
             "outputs": [
                 {
                     "type": "variadic<multi<u32,u64,u64,BigUint>>",
+                    "multi_result": true
+                }
+            ]
+        },
+        {
+            "name": "getApiConfigReport1",
+            "mutability": "readonly",
+            "inputs": [
+                {
+                    "name": "pool_id",
+                    "type": "u32"
+                }
+            ],
+            "outputs": [
+                {
+                    "type": "variadic<multi<u32,u64,u64,u64,u64>>",
                     "multi_result": true
                 }
             ]

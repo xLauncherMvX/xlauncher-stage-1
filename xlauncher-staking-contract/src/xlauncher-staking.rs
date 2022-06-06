@@ -908,7 +908,6 @@ pub trait XLauncherStaking {
                 count = count + 1;
                 report.report_pool_items.push(rep_item);
             }
-
         }
         sc_print!("current_time_stamp={}",current_time_stamp);
         sc_print!("total_rewards={}",report.total_rewards);
@@ -1009,6 +1008,29 @@ pub trait XLauncherStaking {
             )));
         }
 
+        return multi_val_vec;
+    }
+
+    #[view(getApiConfigReport1)]
+    fn get_api_config_report_1(
+        &self,
+        pool_id: &u32,
+    ) -> MultiValueEncoded<MultiValue5<u32, u64, u64, u64, u64>> {
+        let mut multi_val_vec: MultiValueEncoded<MultiValue5<u32, u64, u64, u64, u64>> =
+            MultiValueEncoded::new();
+        let config_vector = self.get_apy_config_vector(pool_id);
+        let current_time_stamp = self.blockchain().get_block_timestamp();
+        for k in 0..=(config_vector.len() - 1) {
+            let config_item = config_vector.get(k);
+
+            multi_val_vec.push(MultiValue5::from((
+                config_item.id,
+                config_item.apy,
+                config_item.start_timestamp,
+                config_item.end_timestamp,
+                current_time_stamp
+            )))
+        }
         return multi_val_vec;
     }
 
