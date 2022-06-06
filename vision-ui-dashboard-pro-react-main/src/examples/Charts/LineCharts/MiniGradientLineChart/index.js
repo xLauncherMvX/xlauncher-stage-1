@@ -59,8 +59,7 @@ MiniGradientLineChart.defaultProps = {
 MiniGradientLineChart.propTypes = {
   title: PropTypes.string,
   description: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
-  height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  chart: PropTypes.oneOfType({}),
+  height: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
 };
 
 export default MiniGradientLineChart;

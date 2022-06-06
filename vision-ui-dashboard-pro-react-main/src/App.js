@@ -35,6 +35,13 @@ import { useVisionUIController } from "context";
 // Plugins custom css
 import "assets/theme/base/plugins.css";
 
+//Elrond core
+import { DappProvider} from '@elrondnetwork/dapp-core';
+
+//Env config
+import xConfigs from 'configs/envConfig.json';
+const environment = xConfigs["environment"];
+
 export default function App() {
   const [controller] = useVisionUIController();
   const { direction } = controller;
@@ -64,13 +71,19 @@ export default function App() {
       return null;
     });
 
-  return (
-    <ThemeProvider theme={theme}> 
-        <Switch>
-          {getRoutes(routes)}
-          {/* <Redirect from="*" to="/dashboards/home" /> */}
-          <Redirect from="*" to="/staking/farms" />
-        </Switch>
-    </ThemeProvider>
-  );
+    return (
+      <ThemeProvider theme={theme}> 
+        <DappProvider
+            environment={environment}
+            customNetworkConfig={{ name: 'customConfig', apiTimeout: 6000 }}
+            completedTransactionsDelay={200}
+          >
+            <Switch>
+              {getRoutes(routes)}
+              {/* <Redirect from="*" to="/dashboards/home" /> */}
+              <Redirect from="*" to="/staking/farms" />
+            </Switch>
+          </DappProvider>
+      </ThemeProvider>
+    );
 }
