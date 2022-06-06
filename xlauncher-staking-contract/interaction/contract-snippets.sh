@@ -202,6 +202,12 @@ updatePoolSettings() {
   #    APPEND_APY_A
   #    APPEND_APY_B
   #    APPEND_APY_C
+    APPEND_APY_ID="1"
+    APPEND_APY_START=$(date -d '2022-05-12 00:00:00' +"%s")
+    APPEND_APY_END=$(date -d '2022-06-30 00:00:00' +"%s")
+    APPEND_APY_A="100"
+    APPEND_APY_B="200"
+    APPEND_APY_C="300"
 
   erdpy --verbose contract call ${ADDRESS} --recall-nonce \
     --pem=${PEM_FILE} \
