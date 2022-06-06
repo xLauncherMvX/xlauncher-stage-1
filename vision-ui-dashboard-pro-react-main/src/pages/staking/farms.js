@@ -96,10 +96,7 @@ function Farms() {
 
   //Elrond login
   const { address, account } = useGetAccountInfo();
-  const isLoggedIn = Boolean(address);
-  const [transactionSessionId, setTransactionSessionId] = React.useState(null);
-  const [transactionSessionIdU, setTransactionSessionIdU] = React.useState(null);
-  const [transactionSessionIdC, setTransactionSessionIdC] = React.useState(null);
+  const isLoggedIn = Boolean(address);  
   const [clientReportData, setClientReportData] = useState(["-", "-", "-", "-", "-", "-", "-", "-"]);
 
   //Get Account Balance
@@ -130,6 +127,7 @@ function Farms() {
   }
 
   //Stake Function
+  const [transactionSessionId, setTransactionSessionId] = React.useState(null);
   const stakeXLH = async (farmId, xlhAmount) => {
     console.log("Formatting stake transaction");
 
@@ -184,6 +182,7 @@ function Farms() {
   }
 
   //Unstake Function
+  const [transactionSessionIdU, setTransactionSessionIdU] = React.useState(null);
   const unstakeXLH = async (farmIdU, xlhAmountU) => {
     console.log("Formatting unstake transaction");
 
@@ -235,6 +234,7 @@ function Farms() {
   }
 
    //Claim Function
+   const [transactionSessionIdC, setTransactionSessionIdC] = React.useState(null);
    const claimXLH = async (farmIdC) => {
     console.log("Formatting claim transaction");
 
@@ -266,6 +266,42 @@ function Farms() {
     if (sessionIdC != null) {
       console.log("sessionIdC ", sessionIdC);
       setTransactionSessionIdC(sessionIdC);
+    }
+  };
+
+   //Reinvest Function
+   const [transactionSessionIdR, setTransactionSessionIdR] = React.useState(null);
+   const reinvestXLH = async (farmIdR) => {
+    console.log("Formatting reinvest transaction");
+
+    let RData = TransactionPayload.contractCall()
+    .setFunction(new ContractFunction("reinvest"))
+    .setArgs([
+        new BigUIntValue(new BigNumber(farmIdR))
+    ])
+    .build().toString()
+
+    const createReinvestTransaction = {
+      value: "0",
+      data: RData,
+      receiver: xStakeAddress,
+      gasLimit: 10_000_000,
+    };
+
+    await refreshAccount();
+
+    const { sessionIdR /*, error*/ } = await sendTransactions({
+      transactions: [createReinvestTransaction],
+      transactionsDisplayInfo: {
+        processingMessage: "Reinvest Transaction",
+        errorMessage: "An error has occured during Reinvest Transaction",
+        successMessage: "Reinvest Transaction successful",
+      },
+      redirectAfterSign: false,
+    });
+    if (sessionIdR != null) {
+      console.log("sessionIdR ", sessionIdR);
+      setTransactionSessionIdR(sessionIdR);
     }
   };
   
@@ -313,6 +349,7 @@ function Farms() {
             onChangeMethodU = {e => onTodoChangeU(e.target.value)}
             xlhAmountValueU = {xlhAmountU}
             methodC = {() => claimXLH(1)}
+            methodR = {() => reinvestXLH(1)}
             stake={{
               size: "small",
               color: "info",
@@ -329,8 +366,7 @@ function Farms() {
               color: "success",
               label: "Reinvest",
               hint:
-                "Individual rewards can be reinvested every 120 minutes with a minimum of 25XLH",
-              action: "",
+                "Individual rewards can be reinvested every 120 minutes with a minimum of 25XLH"
             }}
             unstake={{
               size: "small",
@@ -358,6 +394,7 @@ function Farms() {
             onChangeMethodU = {e => onTodoChangeU(e.target.value)}
             xlhAmountValueU = {xlhAmountU}
             methodC = {() => claimXLH(2)}
+            methodR = {() => reinvestXLH(2)}
             stake={{
               size: "small",
               color: "info",
@@ -374,8 +411,7 @@ function Farms() {
               color: "success",
               label: "Reinvest",
               hint:
-                "Individual rewards can be reinvested every 120 minutes with a minimum of 25XLH",
-              action: "",
+                "Individual rewards can be reinvested every 120 minutes with a minimum of 25XLH"
             }}
             unstake={{
               size: "small",
@@ -403,6 +439,7 @@ function Farms() {
             onChangeMethodU = {e => onTodoChangeU(e.target.value)}
             xlhAmountValueU = {xlhAmountU}
             methodC = {() => claimXLH(3)}
+            methodR = {() => reinvestXLH(3)}
             stake={{
               size: "small",
               color: "info",
@@ -419,8 +456,7 @@ function Farms() {
               color: "success",
               label: "Reinvest",
               hint:
-                "Individual rewards can be reinvested every 120 minutes with a minimum of 25XLH",
-              action: "",
+                "Individual rewards can be reinvested every 120 minutes with a minimum of 25XLH"
             }}
             unstake={{
               size: "small",

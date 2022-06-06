@@ -61,6 +61,7 @@ function StakingCard({
   methodS, maxMethodS, onChangeMethodS, xlhAmountValueS, 
   methodU, maxMethodU, onChangeMethodU, xlhAmountValueU, 
   methodC,
+  methodR,
   title, lockedTime, myXLH, apr, myRewards, stake, claim, reinvest, unstake, modalFarmName, xlhBalance
 }) 
 {
@@ -176,7 +177,7 @@ function StakingCard({
                   color={reinvest.color}
                   size={reinvest.size}
                   sx={{ minWidth: "90px" }}
-                  onClick={() => reinvest.action}
+                  onClick={methodR}
                   fullWidth
                 >
                   {reinvest.label}
