@@ -60,8 +60,8 @@ const style = {
 function StakingCard({
   methodS, maxMethodS, onChangeMethodS, xlhAmountValueS, 
   methodU, maxMethodU, onChangeMethodU, xlhAmountValueU, 
-  title, lockedTime, myXLH, apr, 
-  myRewards, stake, claim, reinvest, unstake, modalFarmName, xlhBalance
+  methodC,
+  title, lockedTime, myXLH, apr, myRewards, stake, claim, reinvest, unstake, modalFarmName, xlhBalance
 }) 
 {
   const [open, setOpen] = React.useState(false);
@@ -160,7 +160,7 @@ function StakingCard({
                 color={claim.color}
                 size={claim.size}
                 sx={{ minWidth: "90px" }}
-                onClick={() => claim.action}
+                onClick={methodC}
                 fullWidth
               >
                 {claim.label}

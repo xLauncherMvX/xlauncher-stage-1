@@ -99,6 +99,7 @@ function Farms() {
   const isLoggedIn = Boolean(address);
   const [transactionSessionId, setTransactionSessionId] = React.useState(null);
   const [transactionSessionIdU, setTransactionSessionIdU] = React.useState(null);
+  const [transactionSessionIdC, setTransactionSessionIdC] = React.useState(null);
   const [clientReportData, setClientReportData] = useState(["-", "-", "-", "-", "-", "-", "-", "-"]);
 
   //Get Account Balance
@@ -120,6 +121,7 @@ function Farms() {
   }
   if(isLoggedIn) {
     getBalanceAccount();
+    console.log("balanceAccount " + balanceAccount);
   }
       
   var balanceXLH = balanceAccount/1000000000000000000;
@@ -231,6 +233,41 @@ function Farms() {
     setXlhAmountU(balanceXLH);
     onTodoChangeU(balanceXLH);
   }
+
+   //Claim Function
+   const claimXLH = async (farmIdC) => {
+    console.log("Formatting claim transaction");
+
+    let CData = TransactionPayload.contractCall()
+    .setFunction(new ContractFunction("claim"))
+    .setArgs([
+        new BigUIntValue(new BigNumber(farmIdC))
+    ])
+    .build().toString()
+
+    const createClaimTransaction = {
+      value: "0",
+      data: CData,
+      receiver: xStakeAddress,
+      gasLimit: 10_000_000,
+    };
+
+    await refreshAccount();
+
+    const { sessionIdC /*, error*/ } = await sendTransactions({
+      transactions: [createClaimTransaction],
+      transactionsDisplayInfo: {
+        processingMessage: "Claim Transaction",
+        errorMessage: "An error has occured during Claim Transaction",
+        successMessage: "Claim Transaction successful",
+      },
+      redirectAfterSign: false,
+    });
+    if (sessionIdC != null) {
+      console.log("sessionIdC ", sessionIdC);
+      setTransactionSessionIdC(sessionIdC);
+    }
+  };
   
 
   //useEffectFunc
@@ -275,6 +312,7 @@ function Farms() {
             maxMethodU = {() => setMaxAmountU()}
             onChangeMethodU = {e => onTodoChangeU(e.target.value)}
             xlhAmountValueU = {xlhAmountU}
+            methodC = {() => claimXLH(1)}
             stake={{
               size: "small",
               color: "info",
@@ -284,8 +322,7 @@ function Farms() {
               size: "small",
               color: "primary",
               label: "Claim",
-              hint: "Individual rewards can be claimed every 120 minutes with a minimum of 25XLH",
-              action: "",
+              hint: "Individual rewards can be claimed every 120 minutes with a minimum of 25XLH"
             }}
             reinvest={{
               size: "small",
@@ -299,8 +336,7 @@ function Farms() {
               size: "small",
               color: "dark",
               label: "Unstake",
-              hint: "The Unstake will last 10 days",
-              action: "",
+              hint: "The Unstake will last 10 days"
             }}
             modalFarmName="Farm 1"
           />
@@ -321,6 +357,7 @@ function Farms() {
             maxMethodU = {() => setMaxAmountU()}
             onChangeMethodU = {e => onTodoChangeU(e.target.value)}
             xlhAmountValueU = {xlhAmountU}
+            methodC = {() => claimXLH(2)}
             stake={{
               size: "small",
               color: "info",
@@ -330,8 +367,7 @@ function Farms() {
               size: "small",
               color: "primary",
               label: "Claim",
-              hint: "Individual rewards can be claimed every 120 minutes with a minimum of 25XLH",
-              action: "",
+              hint: "Individual rewards can be claimed every 120 minutes with a minimum of 25XLH"
             }}
             reinvest={{
               size: "small",
@@ -345,8 +381,7 @@ function Farms() {
               size: "small",
               color: "dark",
               label: "Unstake",
-              hint: "Unstake will last 10 days",
-              action: "",
+              hint: "Unstake will last 10 days"
             }}
             modalFarmName="Farm 2"
           />
@@ -367,6 +402,7 @@ function Farms() {
             maxMethodU = {() => setMaxAmountU()}
             onChangeMethodU = {e => onTodoChangeU(e.target.value)}
             xlhAmountValueU = {xlhAmountU}
+            methodC = {() => claimXLH(3)}
             stake={{
               size: "small",
               color: "info",
@@ -376,8 +412,7 @@ function Farms() {
               size: "small",
               color: "primary",
               label: "Claim",
-              hint: "Individual rewards can be claimed every 120 minutes with a minimum of 25XLH",
-              action: "",
+              hint: "Individual rewards can be claimed every 120 minutes with a minimum of 25XLH"
             }}
             reinvest={{
               size: "small",
@@ -391,14 +426,13 @@ function Farms() {
               size: "small",
               color: "dark",
               label: "Unstake",
-              hint: "Unstake will last 10 days",
-              action: "",
+              hint: "Unstake will last 10 days"
             }}
             modalFarmName="Farm 3"
           />
         </Grid>
         {/* <Grid item xs={12} md={6} lg={4} xl={4}>
-          <VuiButton onClick={() => unstakeXLH()}>Unstake</VuiButton>
+          <VuiButton onClick={() => claimXLH(1)}>Claim</VuiButton>
         </Grid> */}
       </Grid>
     </Main>
