@@ -98,6 +98,7 @@ function Farms() {
   const { address, account } = useGetAccountInfo();
   const isLoggedIn = Boolean(address);
   const [transactionSessionId, setTransactionSessionId] = React.useState(null);
+  const [transactionSessionIdU, setTransactionSessionIdU] = React.useState(null);
   const [clientReportData, setClientReportData] = useState(["-", "-", "-", "-", "-", "-", "-", "-"]);
 
   //Get Account Balance
@@ -169,17 +170,68 @@ function Farms() {
   //Set the amount of xlh for staking from the input or max button
   const [xlhAmountS, setXlhAmountS] = React.useState(0);
 
-  function onTodoChange(value){
+  function onTodoChangeS(value){
     setXlhAmountS(value);
     console.log('value ' + value); 
   }
 
-  const setMaxAmount = () => {
+  const setMaxAmountS = () => {
     setXlhAmountS(balanceXLH);
-    onTodoChange(balanceXLH);
+    onTodoChangeS(balanceXLH);
     console.log("balanceXLH " + balanceXLH);
   }
 
+  //Unstake Function
+  const unstakeXLH = async (farmIdU, xlhAmountU) => {
+    console.log("Formatting unstake transaction");
+
+    let multiplierU = 1000000000000000000;
+    let finalXLHAmountU = xlhAmountU * multiplierU;
+    let UData = TransactionPayload.contractCall()
+    .setFunction(new ContractFunction("unstake"))
+    .setArgs([
+        new BigUIntValue(new BigNumber(farmIdU)),
+        new BigUIntValue(new BigNumber(finalXLHAmountU)),
+    ])
+    .build().toString()
+
+    const createUnstakeTransaction = {
+      value: "0",
+      data: UData,
+      receiver: xStakeAddress,
+      gasLimit: 10_000_000,
+    };
+
+    await refreshAccount();
+
+    const { sessionIdU /*, error*/ } = await sendTransactions({
+      transactions: [createUnstakeTransaction],
+      transactionsDisplayInfo: {
+        processingMessage: "Unstake Transaction",
+        errorMessage: "An error has occured during Unstake Transaction",
+        successMessage: "Unstake Transaction successful",
+      },
+      redirectAfterSign: false,
+    });
+    if (sessionIdU != null) {
+      console.log("sessionIdU ", sessionIdU);
+      setTransactionSessionIdU(sessionIdU);
+    }
+  };
+
+  //Set the amount of xlh for unstaking from the input or max button
+  const [xlhAmountU, setXlhAmountU] = React.useState(0);
+
+  function onTodoChangeU(value){
+    setXlhAmountU(value);
+    console.log('value ' + value); 
+  }
+
+  const setMaxAmountU = () => {
+    setXlhAmountU(balanceXLH);
+    onTodoChangeU(balanceXLH);
+  }
+  
 
   //useEffectFunc
   useEffect(() => {
@@ -214,17 +266,19 @@ function Farms() {
             apr="40%"
             myXLH={clientReportData[2]}
             myRewards={clientReportData[3]}
-            xlhBalance={balanceXLH}
-            maxMethod = {() => setMaxAmount()}
-            method = {() => stakeXLH(1, xlhAmountS)}
-            onChangeMethod = {e => onTodoChange(e.target.value)}
-            xlhAmountSValue = {xlhAmountS}
+            xlhBalance={balanceXLH}            
+            methodS = {() => stakeXLH(1, xlhAmountS)}
+            maxMethodS = {() => setMaxAmountS()}
+            onChangeMethodS = {e => onTodoChangeS(e.target.value)}
+            xlhAmountValueS = {xlhAmountS}
+            methodU = {() => unstakeXLH(1, xlhAmountU)}
+            maxMethodU = {() => setMaxAmountU()}
+            onChangeMethodU = {e => onTodoChangeU(e.target.value)}
+            xlhAmountValueU = {xlhAmountU}
             stake={{
               size: "small",
               color: "info",
-              label: "Stake",
-              action: "",
-              max: "",
+              label: "Stake"
             }}
             claim={{
               size: "small",
@@ -259,15 +313,18 @@ function Farms() {
             myXLH={clientReportData[4]}
             myRewards={clientReportData[5]}
             xlhBalance={balanceXLH}
-            maxMethod = {() => setMaxAmount()}
-            method = {() => stakeXLH(2, xlhAmountS)}
-            onChangeMethod = {e => onTodoChange(e.target.value)}
-            xlhAmountSValue = {xlhAmountS}
+            methodS = {() => stakeXLH(2, xlhAmountS)}
+            maxMethodS = {() => setMaxAmountS()}
+            onChangeMethodS = {e => onTodoChangeS(e.target.value)}
+            xlhAmountValueS = {xlhAmountS}
+            methodU = {() => unstakeXLH(2, xlhAmountU)}
+            maxMethodU = {() => setMaxAmountU()}
+            onChangeMethodU = {e => onTodoChangeU(e.target.value)}
+            xlhAmountValueU = {xlhAmountU}
             stake={{
               size: "small",
               color: "info",
-              label: "Stake",              
-              max: "",
+              label: "Stake"
             }}
             claim={{
               size: "small",
@@ -302,16 +359,18 @@ function Farms() {
             myXLH={clientReportData[6]}
             myRewards={clientReportData[7]}
             xlhBalance={balanceXLH}
-            maxMethod = {() => setMaxAmount()}
-            method = {() => stakeXLH(3, xlhAmountS)}
-            onChangeMethod = {e => onTodoChange(e.target.value)}
-            xlhAmountSValue = {xlhAmountS}
+            methodS = {() => stakeXLH(3, xlhAmountS)}
+            maxMethodS = {() => setMaxAmountS()}
+            onChangeMethodS = {e => onTodoChangeS(e.target.value)}
+            xlhAmountValueS = {xlhAmountS}
+            methodU = {() => unstakeXLH(3, xlhAmountU)}
+            maxMethodU = {() => setMaxAmountU()}
+            onChangeMethodU = {e => onTodoChangeU(e.target.value)}
+            xlhAmountValueU = {xlhAmountU}
             stake={{
               size: "small",
               color: "info",
-              label: "Stake",
-              action: "",
-              max: "",
+              label: "Stake"
             }}
             claim={{
               size: "small",
@@ -339,7 +398,7 @@ function Farms() {
           />
         </Grid>
         {/* <Grid item xs={12} md={6} lg={4} xl={4}>
-          <VuiButton onClick={() => stakeXLH(1, 500)}>Stake</VuiButton>
+          <VuiButton onClick={() => unstakeXLH()}>Unstake</VuiButton>
         </Grid> */}
       </Grid>
     </Main>

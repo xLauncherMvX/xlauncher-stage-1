@@ -57,12 +57,20 @@ const style = {
   p: 4
 };
 
-function StakingCard({xlhAmountSValue, method, maxMethod, onChangeMethod, title, lockedTime, myXLH, apr, myRewards, stake, claim, reinvest, unstake, modalFarmName, xlhBalance}) {
+function StakingCard({
+  methodS, maxMethodS, onChangeMethodS, xlhAmountValueS, 
+  methodU, maxMethodU, onChangeMethodU, xlhAmountValueU, 
+  title, lockedTime, myXLH, apr, 
+  myRewards, stake, claim, reinvest, unstake, modalFarmName, xlhBalance
+}) 
+{
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const [visible, setVisible] = React.useState(false);
-  
+  const [openU, setOpenU] = React.useState(false);
+  const handleOpenU = () => setOpenU(true);
+  const handleCloseU = () => setOpenU(false);
+  const [visible, setVisible] = React.useState(false);  
 
   return (
     <Card sx={{ minHeight: "250px" }}>
@@ -181,7 +189,7 @@ function StakingCard({xlhAmountSValue, method, maxMethod, onChangeMethod, title,
                   color={unstake.color}
                   size={unstake.size}
                   sx={{ minWidth: "90px" }}
-                  onClick={() => unstake.action}
+                  onClick={handleOpenU}
                   fullWidth
                 >
                   {unstake.label}
@@ -190,6 +198,7 @@ function StakingCard({xlhAmountSValue, method, maxMethod, onChangeMethod, title,
             </Grid>
           </Grid>
         }
+        {/* Modal Stake */}
         <Modal
           aria-labelledby="transition-modal-title"
           aria-describedby="transition-modal-description"
@@ -224,13 +233,13 @@ function StakingCard({xlhAmountSValue, method, maxMethod, onChangeMethod, title,
                   <Grid container spacing={2}>
                     <Grid item xs={9}>
                       <VuiInput 
-                        value={xlhAmountSValue}
+                        value={xlhAmountValueS}
                         onKeyPress={(event) => {
                           if (!/[0-9]/.test(event.key)) {
                             event.preventDefault();
                           }
                         }}
-                        onChange={onChangeMethod}                        
+                        onChange={onChangeMethodS}                        
                         placeholder="Amount" 
                         size="medium"
                         
@@ -242,7 +251,7 @@ function StakingCard({xlhAmountSValue, method, maxMethod, onChangeMethod, title,
                           variant="outlined"
                           color="light"
                           size="medium"
-                          onClick={maxMethod}
+                          onClick={maxMethodS}
                           fullWidth
                         >
                           Max
@@ -271,7 +280,7 @@ function StakingCard({xlhAmountSValue, method, maxMethod, onChangeMethod, title,
                         color="info"
                         size="small"
                         sx={{ minWidth: "90px" }}
-                        onClick={method}
+                        onClick={methodS}
                         fullWidth
                       >
                         Stake
@@ -284,6 +293,97 @@ function StakingCard({xlhAmountSValue, method, maxMethod, onChangeMethod, title,
                         size="small"
                         sx={{ minWidth: "90px" }}
                         onClick={handleClose}
+                        fullWidth
+                      >
+                        Cancel
+                      </VuiButton>     
+                    </Grid>
+                  </Grid>
+                </VuiBox>
+              </VuiBox>              
+            </Box>
+          </Fade>
+        </Modal>
+        {/* Modal Unstake */}
+        <Modal
+          aria-labelledby="transition-modal-title"
+          aria-describedby="transition-modal-description"
+          open={openU}
+          onClose={handleCloseU}
+          closeAfterTransition
+          BackdropComponent={Backdrop}
+          BackdropProps={{
+            timeout: 500,
+          }}
+        >
+          <Fade in={openU}>
+            <Box sx={style}>
+              <VuiBox sx={{ minHeight: "250px" }} className="farm-card">
+                <VuiBox display="flex" mb="12px" alignItems="center">
+                  <Tooltip key="logo" title="XLH" placement="bottom">
+                    <XLauncherLogo className='xlh-logo-stake'/>
+                  </Tooltip>
+                  <VuiBox ml="16px" display="flex" flexDirection="column" lineHeight={0}>
+                    <VuiTypography
+                      fontSize={16}
+                      fontWeight="medium"
+                      color="white"
+                      textTransform="capitalize"
+                      id="transition-modal-title"
+                    >
+                     Unstake XLH from {modalFarmName}
+                    </VuiTypography>
+                  </VuiBox>
+                </VuiBox>
+                <VuiBox id="transition-modal-description" sx={{ mt: 5 }}>    
+                  <Grid container spacing={2}>
+                    <Grid item xs={9}>
+                      <VuiInput 
+                        value={xlhAmountValueU}
+                        onKeyPress={(event) => {
+                          if (!/[0-9]/.test(event.key)) {
+                            event.preventDefault();
+                          }
+                        }}
+                        onChange={onChangeMethodU}                        
+                        placeholder="Amount" 
+                        size="medium"
+                        
+                      >                    
+                      </VuiInput>
+                    </Grid>
+                    {/* <Grid item xs={2}>
+                      <VuiButton
+                          variant="outlined"
+                          color="light"
+                          size="medium"
+                          onClick={maxMethodU}
+                          fullWidth
+                        >
+                          Max
+                      </VuiButton> 
+                    </Grid> */}
+                  </Grid>
+                  <Grid container spacing={1} mt={5}>
+                    <Grid item xs={12} md={6} lg={6}>
+                      <VuiButton
+                        variant="contained"
+                        color="info"
+                        size="small"
+                        sx={{ minWidth: "90px" }}
+                        onClick={methodU}
+                        fullWidth
+                      >
+                        Unstake
+                      </VuiButton>     
+                    </Grid>
+                    <Grid item xs={12} md={6} lg={6}>
+                      <VuiButton
+                        variant="outlined"
+                        color="light"
+                        size="small"
+                        sx={{ minWidth: "90px" }}
+                        onClick={handleCloseU}
                         fullWidth
                       >
                         Cancel
