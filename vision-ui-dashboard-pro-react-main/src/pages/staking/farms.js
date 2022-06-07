@@ -99,6 +99,149 @@ function Farms() {
   const isLoggedIn = Boolean(address);  
   const [clientReportData, setClientReportData] = useState(["-", "-", "-", "-", "-", "-", "-", "-"]);
 
+
+  const getClientReportData = async () => {
+    try {
+      let providerCRD = new ProxyProvider(xProvider);
+      await NetworkConfig.getDefault().sync(providerCRD);
+
+      let stringAddressCRD = xStakeAddress;
+      let addressCRD = new Address(stringAddressCRD);
+
+      const abiLocationCRD = `${process.env.PUBLIC_URL}/xlauncher-staking.abi.json`;
+
+      let abiRegistryCRD = await AbiRegistry.load({
+        urls: [abiLocationCRD],
+      });
+      let abiCRD = new SmartContractAbi(abiRegistryCRD, [`XLauncherStaking`]);
+
+      let contractCRD = new SmartContract({
+        address: addressCRD,
+        abi: abiCRD,
+      });
+
+      let interactionCRD = contractCRD.methods.getClientReport([
+        new AddressValue(new Address(address)),
+      ]);
+
+      let queryResponseCRD = await contractCRD.runQuery(providerCRD, interactionCRD.buildQuery());
+
+      let responseCRD = interactionCRD.interpretQueryResponse(queryResponseCRD);
+      let myList = responseCRD.firstValue.valueOf();
+      //console.log("myList " + JSON.stringify(myList, null, 2));
+
+      let amountFormat = 1000000000000000000;
+      let totalAmount = myList["total_amount"].toFixed(2) / amountFormat;
+      let totalRewards = myList["total_rewords"].toFixed(2) / amountFormat;
+
+      let farm1Amount = 0;
+      let farm1Rewards = 0;
+      let farm2Amount = 0;
+      let farm2Rewards = 0;
+      let farm3Amount = 0;
+      let farm3Rewards = 0;
+
+      if (myList["report_pull_items"]) {
+        if (myList["report_pull_items"][0]) {
+          if (myList["report_pull_items"][0]["pool_id"] == "1") {
+            farm1Amount = myList["report_pull_items"][0]["pool_amount"].toFixed() / amountFormat;
+            farm1Rewards =
+              myList["report_pull_items"][0]["rewords_amount"].toFixed() / amountFormat;
+          } else if (myList["report_pull_items"][0]["pool_id"] == "2") {
+            farm2Amount = myList["report_pull_items"][0]["pool_amount"].toFixed() / amountFormat;
+            farm2Rewards =
+              myList["report_pull_items"][0]["rewords_amount"].toFixed() / amountFormat;
+          } else if (myList["report_pull_items"][0]["pool_id"] == "3") {
+            farm3Amount = myList["report_pull_items"][0]["pool_amount"].toFixed() / amountFormat;
+            farm3Rewards =
+              myList["report_pull_items"][0]["rewords_amount"].toFixed() / amountFormat;
+          }
+        }
+        if (myList["report_pull_items"][1]) {
+          if (myList["report_pull_items"][1]["pool_id"] == "1") {
+            farm1Amount = myList["report_pull_items"][1]["pool_amount"].toFixed() / amountFormat;
+            farm1Rewards =
+              myList["report_pull_items"][1]["rewords_amount"].toFixed() / amountFormat;
+          } else if (myList["report_pull_items"][1]["pool_id"] == "2") {
+            farm2Amount = myList["report_pull_items"][1]["pool_amount"].toFixed() / amountFormat;
+            farm2Rewards =
+              myList["report_pull_items"][1]["rewords_amount"].toFixed() / amountFormat;
+          } else if (myList["report_pull_items"][1]["pool_id"] == "3") {
+            farm3Amount = myList["report_pull_items"][1]["pool_amount"].toFixed() / amountFormat;
+            farm3Rewards =
+              myList["report_pull_items"][1]["rewords_amount"].toFixed() / amountFormat;
+          }
+        }
+        if (myList["report_pull_items"][2]) {
+          if (myList["report_pull_items"][2]["pool_id"] == "1") {
+            farm1Amount = myList["report_pull_items"][2]["pool_amount"].toFixed() / amountFormat;
+            farm1Rewards =
+              myList["report_pull_items"][2]["rewords_amount"].toFixed() / amountFormat;
+          } else if (myList["report_pull_items"][2]["pool_id"] == "2") {
+            farm2Amount = myList["report_pull_items"][2]["pool_amount"].toFixed() / amountFormat;
+            farm2Rewards =
+              myList["report_pull_items"][2]["rewords_amount"].toFixed() / amountFormat;
+          } else if (myList["report_pull_items"][2]["pool_id"] == "3") {
+            farm3Amount = myList["report_pull_items"][2]["pool_amount"].toFixed() / amountFormat;
+            farm3Rewards =
+              myList["report_pull_items"][2]["rewords_amount"].toFixed() / amountFormat;
+          }
+        }
+      }
+
+      let totalAmountF = parseFloat(totalAmount).toFixed(2);
+      let totalRewardsF = parseFloat(totalRewards).toFixed(2);
+      let farm1AmountF = parseFloat(farm1Amount).toFixed(2);
+      let farm1RewardsF = parseFloat(farm1Rewards).toFixed(2);
+      let farm2AmountF = parseFloat(farm2Amount).toFixed(2);
+      let farm2RewardsF = parseFloat(farm2Rewards).toFixed(2);
+      let farm3AmountF = parseFloat(farm3Amount).toFixed(2);
+      let farm3RewardsF = parseFloat(farm3Rewards).toFixed(2);
+
+      let myReturnList = [
+        new Intl.NumberFormat("ro-Ro", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        }).format(totalAmountF),
+        new Intl.NumberFormat("ro-Ro", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        }).format(totalRewardsF),
+        new Intl.NumberFormat("ro-Ro", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        }).format(farm1AmountF),
+        new Intl.NumberFormat("ro-Ro", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        }).format(farm1RewardsF),
+        new Intl.NumberFormat("ro-Ro", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        }).format(farm2AmountF),
+        new Intl.NumberFormat("ro-Ro", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        }).format(farm2RewardsF),
+        new Intl.NumberFormat("ro-Ro", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        }).format(farm3AmountF),
+        new Intl.NumberFormat("ro-Ro", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        }).format(farm3RewardsF),
+      ];
+
+      setClientReportData(myReturnList);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  if (isLoggedIn) {
+    getClientReportData(); 
+  }
+
   //Get Account Balance
   const [balanceAccount, setBalanceAccount] = useState([0]); 
   const customApi = xApiLink+address+'/tokens/'+xToken;
@@ -118,7 +261,7 @@ function Farms() {
   }
   if(isLoggedIn) {
     getBalanceAccount();
-    console.log("balanceAccount " + balanceAccount);
+    // console.log("balanceAccount " + balanceAccount);
   }
       
   var balanceXLH = balanceAccount/1000000000000000000;
@@ -168,16 +311,37 @@ function Farms() {
   };
 
   //Set the amount of xlh for staking from the input or max button
-  const [xlhAmountS, setXlhAmountS] = React.useState(0);
+  const [xlhAmountS1, setXlhAmountS1] = React.useState(0);
+  const [xlhAmountS2, setXlhAmountS2] = React.useState(0);
+  const [xlhAmountS3, setXlhAmountS3] = React.useState(0);
 
-  function onTodoChangeS(value){
-    setXlhAmountS(value);
+  function onTodoChangeS1(value){
+    setXlhAmountS1(value);
     console.log('value ' + value); 
   }
+  const setMaxAmountS1 = () => {
+    setXlhAmountS1(balanceXLH);
+    onTodoChangeS1(balanceXLH);
+    console.log("balanceXLH " + balanceXLH);
+  }
 
-  const setMaxAmountS = () => {
-    setXlhAmountS(balanceXLH);
-    onTodoChangeS(balanceXLH);
+  function onTodoChangeS2(value){
+    setXlhAmountS2(value);
+    console.log('value ' + value); 
+  }
+  const setMaxAmountS2 = () => {
+    setXlhAmountS2(balanceXLH);
+    onTodoChangeS2(balanceXLH);
+    console.log("balanceXLH " + balanceXLH);
+  }
+
+  function onTodoChangeS3(value){
+    setXlhAmountS3(value);
+    console.log('value ' + value); 
+  }
+  const setMaxAmountS3 = () => {
+    setXlhAmountS3(balanceXLH);
+    onTodoChangeS3(balanceXLH);
     console.log("balanceXLH " + balanceXLH);
   }
 
@@ -228,9 +392,9 @@ function Farms() {
     console.log('value ' + value); 
   }
 
-  const setMaxAmountU = () => {
-    setXlhAmountU(balanceXLH);
-    onTodoChangeU(balanceXLH);
+  const setMaxAmountU = (maxU) => {
+    setXlhAmountU(maxU);
+    onTodoChangeU(maxU);
   }
 
    //Claim Function
@@ -305,11 +469,10 @@ function Farms() {
     }
   };
   
-
   //useEffectFunc
   useEffect(() => {
     if (isLoggedIn) {
-      getBalanceAccount();
+      getClientReportData(); 
     }
   }, []);
   
@@ -340,12 +503,12 @@ function Farms() {
             myXLH={clientReportData[2]}
             myRewards={clientReportData[3]}
             xlhBalance={balanceXLH}            
-            methodS = {() => stakeXLH(1, xlhAmountS)}
-            maxMethodS = {() => setMaxAmountS()}
-            onChangeMethodS = {e => onTodoChangeS(e.target.value)}
-            xlhAmountValueS = {xlhAmountS}
+            methodS = {() => stakeXLH(1, xlhAmountS1)}
+            maxMethodS = {() => setMaxAmountS1()}
+            onChangeMethodS = {e => onTodoChangeS1(e.target.value)}
+            xlhAmountValueS = {xlhAmountS1}
             methodU = {() => unstakeXLH(1, xlhAmountU)}
-            maxMethodU = {() => setMaxAmountU()}
+            maxMethodU = {() => setMaxAmountU(clientReportData[2])}
             onChangeMethodU = {e => onTodoChangeU(e.target.value)}
             xlhAmountValueU = {xlhAmountU}
             methodC = {() => claimXLH(1)}
@@ -385,12 +548,12 @@ function Farms() {
             myXLH={clientReportData[4]}
             myRewards={clientReportData[5]}
             xlhBalance={balanceXLH}
-            methodS = {() => stakeXLH(2, xlhAmountS)}
-            maxMethodS = {() => setMaxAmountS()}
-            onChangeMethodS = {e => onTodoChangeS(e.target.value)}
-            xlhAmountValueS = {xlhAmountS}
+            methodS = {() => stakeXLH(2, xlhAmountS2)}
+            maxMethodS = {() => setMaxAmountS2()}
+            onChangeMethodS = {e => onTodoChangeS2(e.target.value)}
+            xlhAmountValueS = {xlhAmountS2}
             methodU = {() => unstakeXLH(2, xlhAmountU)}
-            maxMethodU = {() => setMaxAmountU()}
+            maxMethodU = {() => setMaxAmountU(clientReportData[4])}
             onChangeMethodU = {e => onTodoChangeU(e.target.value)}
             xlhAmountValueU = {xlhAmountU}
             methodC = {() => claimXLH(2)}
@@ -430,12 +593,12 @@ function Farms() {
             myXLH={clientReportData[6]}
             myRewards={clientReportData[7]}
             xlhBalance={balanceXLH}
-            methodS = {() => stakeXLH(3, xlhAmountS)}
-            maxMethodS = {() => setMaxAmountS()}
-            onChangeMethodS = {e => onTodoChangeS(e.target.value)}
-            xlhAmountValueS = {xlhAmountS}
+            methodS = {() => stakeXLH(3, xlhAmountS3)}
+            maxMethodS = {() => setMaxAmountS3()}
+            onChangeMethodS = {e => onTodoChangeS3(e.target.value)}
+            xlhAmountValueS = {xlhAmountS3}
             methodU = {() => unstakeXLH(3, xlhAmountU)}
-            maxMethodU = {() => setMaxAmountU()}
+            maxMethodU = {() => setMaxAmountU(clientReportData[6])}
             onChangeMethodU = {e => onTodoChangeU(e.target.value)}
             xlhAmountValueU = {xlhAmountU}
             methodC = {() => claimXLH(3)}

@@ -15,7 +15,7 @@
 
 */
 
-import * as React from 'react';
+import React, { useState, useEffect } from "react";
 
 // react-router components
 import { Link } from "react-router-dom";
@@ -59,7 +59,7 @@ const style = {
 
 function StakingCard({
   methodS, maxMethodS, onChangeMethodS, xlhAmountValueS, 
-  methodU, maxMethodU, onChangeMethodU, xlhAmountValueU, 
+  methodU, maxMethodU, onChangeMethodU, xlhAmountValueU,
   methodC,
   methodR,
   title, lockedTime, myXLH, apr, myRewards, stake, claim, reinvest, unstake, modalFarmName, xlhBalance
@@ -353,7 +353,7 @@ function StakingCard({
                       >                    
                       </VuiInput>
                     </Grid>
-                    {/* <Grid item xs={2}>
+                    <Grid item xs={2}>
                       <VuiButton
                           variant="outlined"
                           color="light"
@@ -363,8 +363,18 @@ function StakingCard({
                         >
                           Max
                       </VuiButton> 
-                    </Grid> */}
+                    </Grid>
                   </Grid>
+                  <VuiTypography
+                      fontSize={12}
+                      color="white"
+                      textTransform="capitalize"
+                      marginBottom="5px"
+                      marginLeft="13px"
+                      marginTop="2px"
+                    >
+                      Total Staked: {myXLH} XLH
+                  </VuiTypography>  
                   <Grid container spacing={1} mt={5}>
                     <Grid item xs={12} md={6} lg={6}>
                       <VuiButton
