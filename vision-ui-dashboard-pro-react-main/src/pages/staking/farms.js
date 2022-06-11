@@ -103,147 +103,144 @@ function Farms() {
   let xMultiplier = 1000000000000000000;
 
 
-  // const getClientReportData = async () => {
-  //   try {
-  //     let providerCRD = new ProxyProvider(xProvider);
-  //     await NetworkConfig.getDefault().sync(providerCRD);
+  const getClientReportData = async () => {
+    try {
+      let providerCRD = new ProxyProvider(xProvider);
+      await NetworkConfig.getDefault().sync(providerCRD);
 
-  //     let stringAddressCRD = xStakeAddress;
-  //     let addressCRD = new Address(stringAddressCRD);
+      let stringAddressCRD = xStakeAddress;
+      let addressCRD = new Address(stringAddressCRD);
 
-  //     const abiLocationCRD = `${process.env.PUBLIC_URL}/xlauncher-staking.abi.json`;
+      const abiLocationCRD = `${process.env.PUBLIC_URL}/xlauncher-staking.abi.json`;
 
-  //     let abiRegistryCRD = await AbiRegistry.load({
-  //       urls: [abiLocationCRD],
-  //     });
-  //     let abiCRD = new SmartContractAbi(abiRegistryCRD, [`XLauncherStaking`]);
+      let abiRegistryCRD = await AbiRegistry.load({
+        urls: [abiLocationCRD],
+      });
+      let abiCRD = new SmartContractAbi(abiRegistryCRD, [`XLauncherStaking`]);
 
-  //     let contractCRD = new SmartContract({
-  //       address: addressCRD,
-  //       abi: abiCRD,
-  //     });
+      let contractCRD = new SmartContract({
+        address: addressCRD,
+        abi: abiCRD,
+      });
 
-  //     let interactionCRD = contractCRD.methods.getClientReport([
-  //       new AddressValue(new Address(address)),
-  //     ]);
+      let interactionCRD = contractCRD.methods.getClientReport([
+        new AddressValue(new Address(address)),
+      ]);
 
-  //     let queryResponseCRD = await contractCRD.runQuery(providerCRD, interactionCRD.buildQuery());
+      let queryResponseCRD = await contractCRD.runQuery(providerCRD, interactionCRD.buildQuery());
 
-  //     let responseCRD = interactionCRD.interpretQueryResponse(queryResponseCRD);
-  //     let myList = responseCRD.firstValue.valueOf();
-  //     //console.log("myList " + JSON.stringify(myList, null, 2));
+      let responseCRD = interactionCRD.interpretQueryResponse(queryResponseCRD);
+      let myList = responseCRD.firstValue.valueOf();
+      //console.log("myList " + JSON.stringify(myList, null, 2));
 
-  //     let amountFormat = 1000000000000000000;
-  //     let totalAmount = myList["total_amount"].toFixed(2) / amountFormat;
-  //     let totalRewards = myList["total_rewords"].toFixed(2) / amountFormat;
+      let amountFormat = 1000000000000000000;
+      let totalAmount = myList["total_amount"].toFixed(2) / amountFormat;
+      let totalRewards = myList["total_rewords"].toFixed(2) / amountFormat;
 
-  //     let farm1Amount = 0;
-  //     let farm1Rewards = 0;
-  //     let farm2Amount = 0;
-  //     let farm2Rewards = 0;
-  //     let farm3Amount = 0;
-  //     let farm3Rewards = 0;
+      let farm1Amount = 0;
+      let farm1Rewards = 0;
+      let farm2Amount = 0;
+      let farm2Rewards = 0;
+      let farm3Amount = 0;
+      let farm3Rewards = 0;
 
-  //     if (myList["report_pull_items"]) {
-  //       if (myList["report_pull_items"][0]) {
-  //         if (myList["report_pull_items"][0]["pool_id"] == "1") {
-  //           farm1Amount = myList["report_pull_items"][0]["pool_amount"].toFixed() / amountFormat;
-  //           farm1Rewards =
-  //             myList["report_pull_items"][0]["rewords_amount"].toFixed() / amountFormat;
-  //         } else if (myList["report_pull_items"][0]["pool_id"] == "2") {
-  //           farm2Amount = myList["report_pull_items"][0]["pool_amount"].toFixed() / amountFormat;
-  //           farm2Rewards =
-  //             myList["report_pull_items"][0]["rewords_amount"].toFixed() / amountFormat;
-  //         } else if (myList["report_pull_items"][0]["pool_id"] == "3") {
-  //           farm3Amount = myList["report_pull_items"][0]["pool_amount"].toFixed() / amountFormat;
-  //           farm3Rewards =
-  //             myList["report_pull_items"][0]["rewords_amount"].toFixed() / amountFormat;
-  //         }
-  //       }
-  //       if (myList["report_pull_items"][1]) {
-  //         if (myList["report_pull_items"][1]["pool_id"] == "1") {
-  //           farm1Amount = myList["report_pull_items"][1]["pool_amount"].toFixed() / amountFormat;
-  //           farm1Rewards =
-  //             myList["report_pull_items"][1]["rewords_amount"].toFixed() / amountFormat;
-  //         } else if (myList["report_pull_items"][1]["pool_id"] == "2") {
-  //           farm2Amount = myList["report_pull_items"][1]["pool_amount"].toFixed() / amountFormat;
-  //           farm2Rewards =
-  //             myList["report_pull_items"][1]["rewords_amount"].toFixed() / amountFormat;
-  //         } else if (myList["report_pull_items"][1]["pool_id"] == "3") {
-  //           farm3Amount = myList["report_pull_items"][1]["pool_amount"].toFixed() / amountFormat;
-  //           farm3Rewards =
-  //             myList["report_pull_items"][1]["rewords_amount"].toFixed() / amountFormat;
-  //         }
-  //       }
-  //       if (myList["report_pull_items"][2]) {
-  //         if (myList["report_pull_items"][2]["pool_id"] == "1") {
-  //           farm1Amount = myList["report_pull_items"][2]["pool_amount"].toFixed() / amountFormat;
-  //           farm1Rewards =
-  //             myList["report_pull_items"][2]["rewords_amount"].toFixed() / amountFormat;
-  //         } else if (myList["report_pull_items"][2]["pool_id"] == "2") {
-  //           farm2Amount = myList["report_pull_items"][2]["pool_amount"].toFixed() / amountFormat;
-  //           farm2Rewards =
-  //             myList["report_pull_items"][2]["rewords_amount"].toFixed() / amountFormat;
-  //         } else if (myList["report_pull_items"][2]["pool_id"] == "3") {
-  //           farm3Amount = myList["report_pull_items"][2]["pool_amount"].toFixed() / amountFormat;
-  //           farm3Rewards =
-  //             myList["report_pull_items"][2]["rewords_amount"].toFixed() / amountFormat;
-  //         }
-  //       }
-  //     }
+      if (myList["report_pull_items"]) {
+        if (myList["report_pull_items"][0]) {
+          if (myList["report_pull_items"][0]["pool_id"] == "1") {
+            farm1Amount = myList["report_pull_items"][0]["pool_amount"].toFixed() / amountFormat;
+            farm1Rewards =
+              myList["report_pull_items"][0]["rewords_amount"].toFixed() / amountFormat;
+          } else if (myList["report_pull_items"][0]["pool_id"] == "2") {
+            farm2Amount = myList["report_pull_items"][0]["pool_amount"].toFixed() / amountFormat;
+            farm2Rewards =
+              myList["report_pull_items"][0]["rewords_amount"].toFixed() / amountFormat;
+          } else if (myList["report_pull_items"][0]["pool_id"] == "3") {
+            farm3Amount = myList["report_pull_items"][0]["pool_amount"].toFixed() / amountFormat;
+            farm3Rewards =
+              myList["report_pull_items"][0]["rewords_amount"].toFixed() / amountFormat;
+          }
+        }
+        if (myList["report_pull_items"][1]) {
+          if (myList["report_pull_items"][1]["pool_id"] == "1") {
+            farm1Amount = myList["report_pull_items"][1]["pool_amount"].toFixed() / amountFormat;
+            farm1Rewards =
+              myList["report_pull_items"][1]["rewords_amount"].toFixed() / amountFormat;
+          } else if (myList["report_pull_items"][1]["pool_id"] == "2") {
+            farm2Amount = myList["report_pull_items"][1]["pool_amount"].toFixed() / amountFormat;
+            farm2Rewards =
+              myList["report_pull_items"][1]["rewords_amount"].toFixed() / amountFormat;
+          } else if (myList["report_pull_items"][1]["pool_id"] == "3") {
+            farm3Amount = myList["report_pull_items"][1]["pool_amount"].toFixed() / amountFormat;
+            farm3Rewards =
+              myList["report_pull_items"][1]["rewords_amount"].toFixed() / amountFormat;
+          }
+        }
+        if (myList["report_pull_items"][2]) {
+          if (myList["report_pull_items"][2]["pool_id"] == "1") {
+            farm1Amount = myList["report_pull_items"][2]["pool_amount"].toFixed() / amountFormat;
+            farm1Rewards =
+              myList["report_pull_items"][2]["rewords_amount"].toFixed() / amountFormat;
+          } else if (myList["report_pull_items"][2]["pool_id"] == "2") {
+            farm2Amount = myList["report_pull_items"][2]["pool_amount"].toFixed() / amountFormat;
+            farm2Rewards =
+              myList["report_pull_items"][2]["rewords_amount"].toFixed() / amountFormat;
+          } else if (myList["report_pull_items"][2]["pool_id"] == "3") {
+            farm3Amount = myList["report_pull_items"][2]["pool_amount"].toFixed() / amountFormat;
+            farm3Rewards =
+              myList["report_pull_items"][2]["rewords_amount"].toFixed() / amountFormat;
+          }
+        }
+      }
 
-  //     let totalAmountF = parseFloat(totalAmount).toFixed(2);
-  //     let totalRewardsF = parseFloat(totalRewards).toFixed(2);
-  //     let farm1AmountF = parseFloat(farm1Amount).toFixed(2);
-  //     let farm1RewardsF = parseFloat(farm1Rewards).toFixed(2);
-  //     let farm2AmountF = parseFloat(farm2Amount).toFixed(2);
-  //     let farm2RewardsF = parseFloat(farm2Rewards).toFixed(2);
-  //     let farm3AmountF = parseFloat(farm3Amount).toFixed(2);
-  //     let farm3RewardsF = parseFloat(farm3Rewards).toFixed(2);
+      let totalAmountF = parseFloat(totalAmount).toFixed(2);
+      let totalRewardsF = parseFloat(totalRewards).toFixed(2);
+      let farm1AmountF = parseFloat(farm1Amount).toFixed(2);
+      let farm1RewardsF = parseFloat(farm1Rewards).toFixed(2);
+      let farm2AmountF = parseFloat(farm2Amount).toFixed(2);
+      let farm2RewardsF = parseFloat(farm2Rewards).toFixed(2);
+      let farm3AmountF = parseFloat(farm3Amount).toFixed(2);
+      let farm3RewardsF = parseFloat(farm3Rewards).toFixed(2);
 
-  //     let myReturnList = [
-  //       new Intl.NumberFormat("ro-Ro", {
-  //         minimumFractionDigits: 2,
-  //         maximumFractionDigits: 2,
-  //       }).format(totalAmountF),
-  //       new Intl.NumberFormat("ro-Ro", {
-  //         minimumFractionDigits: 2,
-  //         maximumFractionDigits: 2,
-  //       }).format(totalRewardsF),
-  //       new Intl.NumberFormat("ro-Ro", {
-  //         minimumFractionDigits: 2,
-  //         maximumFractionDigits: 2,
-  //       }).format(farm1AmountF),
-  //       new Intl.NumberFormat("ro-Ro", {
-  //         minimumFractionDigits: 2,
-  //         maximumFractionDigits: 2,
-  //       }).format(farm1RewardsF),
-  //       new Intl.NumberFormat("ro-Ro", {
-  //         minimumFractionDigits: 2,
-  //         maximumFractionDigits: 2,
-  //       }).format(farm2AmountF),
-  //       new Intl.NumberFormat("ro-Ro", {
-  //         minimumFractionDigits: 2,
-  //         maximumFractionDigits: 2,
-  //       }).format(farm2RewardsF),
-  //       new Intl.NumberFormat("ro-Ro", {
-  //         minimumFractionDigits: 2,
-  //         maximumFractionDigits: 2,
-  //       }).format(farm3AmountF),
-  //       new Intl.NumberFormat("ro-Ro", {
-  //         minimumFractionDigits: 2,
-  //         maximumFractionDigits: 2,
-  //       }).format(farm3RewardsF),
-  //     ];
+      let myReturnList = [
+        new Intl.NumberFormat("ro-Ro", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        }).format(totalAmountF),
+        new Intl.NumberFormat("ro-Ro", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        }).format(totalRewardsF),
+        new Intl.NumberFormat("ro-Ro", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        }).format(farm1AmountF),
+        new Intl.NumberFormat("ro-Ro", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        }).format(farm1RewardsF),
+        new Intl.NumberFormat("ro-Ro", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        }).format(farm2AmountF),
+        new Intl.NumberFormat("ro-Ro", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        }).format(farm2RewardsF),
+        new Intl.NumberFormat("ro-Ro", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        }).format(farm3AmountF),
+        new Intl.NumberFormat("ro-Ro", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        }).format(farm3RewardsF),
+      ];
 
-  //     setClientReportData(myReturnList);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-  // if (isLoggedIn) {
-  //   getClientReportData(); 
-  // }
+      setClientReportData(myReturnList);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const [clientStateData2, setClientStateData2] = useState([]);
   const [clientStateData3, setClientStateData3] = useState([]);
@@ -599,7 +596,7 @@ function Farms() {
   //useEffectFunc
   useEffect(() => {
     if (isLoggedIn) {
-      //getClientReportData(); 
+      getClientReportData(); 
       getClientStateData();
     }
   });

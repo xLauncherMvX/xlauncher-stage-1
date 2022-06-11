@@ -36,6 +36,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Icon from '@mui/material/Icon';
 import { Scrollbars } from "react-custom-scrollbars";
 
+// Scrollbar configs
+import {
+  renderThumb,
+  renderTrack,
+  renderView
+} from "examples/Scrollbar";
+
 // Vision UI Dashboard PRO React components
 import VuiBox from "components/VuiBox";
 import VuiTypography from "components/VuiTypography";
@@ -83,8 +90,6 @@ function StakingCard({
   if(!openL){
     openL = false;
   }
-
-  console.log("lockedRewards " + lockedRewards);
 
   return (
     <Card sx={{ minHeight: "250px" }}>
@@ -450,14 +455,14 @@ function StakingCard({
                       textTransform="capitalize"
                       id="transition-modal-title3"
                     >
-                      Locked XLH from {modalFarmName}
+                      Locked XLH in {modalFarmName}
                     </VuiTypography>
                   </VuiBox>
-                </VuiBox>
-                <VuiBox id="transition-modal-description3" sx={{ mt: 5 }}>   
-                  <Grid container>
-                    <Grid item xs={12}>
-                      {lockedRewards}
+                </VuiBox>                
+                <VuiBox id="transition-modal-description3" sx={{ mt: 5 }}>  
+                  <Grid container height={"100%"}>
+                    <Grid item xs={12}>                    
+                      {lockedRewards}                    
                     </Grid>
                   </Grid>
                   <Grid container spacing={1} mt={5}>   
