@@ -219,6 +219,19 @@ updatePoolSettings() {
     --outfile="${MY_LOGS}/updatePoolSettings-${ENV_LOGS}.json"
 }
 
+updateUnstakeLockSpan(){
+  # 60 * 5 = 300 (5 minutes)
+  UNSTAKE_LOCK_SPAN="300"
+  erdpy --verbose contract call ${ADDRESS} --recall-nonce \
+      --pem=${PEM_FILE} \
+      --gas-limit=8000000 \
+      --proxy=${PROXY} --chain=${CHAINID} \
+      --function="updateUnstakeLockSpan" \
+      --arguments ${UNSTAKE_LOCK_SPAN} \
+      --send \
+      --outfile="${MY_LOGS}/updateUnstakeLockSpan-${ENV_LOGS}.json"
+}
+
 switchIsActiveFieldValue(){
   erdpy --verbose contract call ${ADDRESS} --recall-nonce \
       --pem=${PEM_FILE} \
