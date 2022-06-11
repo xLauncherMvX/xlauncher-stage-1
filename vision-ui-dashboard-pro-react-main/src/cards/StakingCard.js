@@ -34,6 +34,7 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Icon from '@mui/material/Icon';
+import { Scrollbars } from "react-custom-scrollbars";
 
 // Vision UI Dashboard PRO React components
 import VuiBox from "components/VuiBox";
@@ -44,6 +45,11 @@ import VuiInput from "components/VuiInput";
 import { ReactComponent as XLauncherLogo } from "assets/images/logo.svg";
 import "assets/custom.css";
 import { IoHome } from "react-icons/io5";
+
+import { faAnglesDown } from '@fortawesome/free-solid-svg-icons/faAnglesDown';
+import { faAnglesUp } from '@fortawesome/free-solid-svg-icons/faAnglesUp';
+import { faInfo } from '@fortawesome/free-solid-svg-icons/faInfo';
+import { faCircleInfo } from '@fortawesome/free-solid-svg-icons/faCircleInfo';
 
 const style = {
   position: 'absolute',
@@ -58,43 +64,45 @@ const style = {
 };
 
 function StakingCard({
-  methodS, maxMethodS, onChangeMethodS, xlhAmountValueS, 
-  methodU, maxMethodU, onChangeMethodU, xlhAmountValueU,
+  methodS, maxMethodS, onChangeMethodS, xlhAmountValueS, openS, handleOpenS, handleCloseS, 
+  methodU, maxMethodU, onChangeMethodU, xlhAmountValueU, openU, handleOpenU, handleCloseU, 
   methodC,
   methodR,
+  lockedRewards, openL, handleOpenL, handleCloseL, 
   title, lockedTime, myXLH, apr, myRewards, stake, claim, reinvest, unstake, modalFarmName, xlhBalance
 }) 
-{
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-  const [openU, setOpenU] = React.useState(false);
-  const handleOpenU = () => setOpenU(true);
-  const handleCloseU = () => setOpenU(false);
+{  
   const [visible, setVisible] = React.useState(false);  
+  
+  if(!openS){
+    openS = false;
+  }
+  if(!openU){
+    openU = false;
+  }
+  if(!openL){
+    openL = false;
+  }
+
+  console.log("lockedRewards " + lockedRewards);
 
   return (
     <Card sx={{ minHeight: "250px" }}>
-      <VuiBox>
-        <VuiButton
-          variant="text"
-          size="small"
-          color="light"
-          onClick={() => setVisible(!visible)}
-          className="float-right"
-        >
-          {visible ? 
-          (
-            <Tooltip key="visible" title="Hide extra" placement="bottom">
-              <Typography sx={{fontSize: 25, marginTop: -1, marginRight: -5, color: 'white'}}>&#9651;</Typography>
-            </Tooltip>
-          ) : 
-          (
-            <Tooltip key="invisible" title="Show extra" placement="bottom">
-              <Typography sx={{fontSize: 25, marginTop: -1, marginRight: -5}}>&#9661;</Typography>
-            </Tooltip>
-          )}          
-        </VuiButton>
+      <VuiBox>        
+      {visible ? 
+      (
+        <Tooltip key="invisible" title="Hide extra" placement="bottom">
+          <IconButton className="float-right" onClick={() => setVisible(!visible)}>          
+            <FontAwesomeIcon fontSize={"medium"} icon={faAnglesUp} color="white" />
+          </IconButton>
+        </Tooltip>
+      ):(
+        <Tooltip key="invisible2" title="Show extra" placement="bottom">
+          <IconButton className="float-right" onClick={() => setVisible(!visible)}>          
+            <FontAwesomeIcon fontSize={"medium"} icon={faAnglesDown} color="white"  />
+          </IconButton>
+        </Tooltip>
+      )}
         <VuiBox display="flex" mb="12px" alignItems="center">
           <Tooltip key="logo" title="XLH" placement="bottom">
             <XLauncherLogo className='xlh-logo-stake'/>
@@ -134,13 +142,21 @@ function StakingCard({
             {myXLH}
           </VuiTypography>
         </VuiBox>
-        <VuiBox display="flex" justifyContent="space-between" alignItems="center">
+        <VuiBox display="flex" justifyContent="space-between" alignItems="center" mb="-5px">
           <VuiTypography component="span" fontSize={14} fontWeight="regular" color="text">
             My Earned XLH:
           </VuiTypography>
           <VuiTypography fontSize={14} fontWeight="regular" color="white">
             {myRewards}
           </VuiTypography>
+        </VuiBox>
+        <VuiBox display="flex" justifyContent="space-between" alignItems="center" mb="-8px">
+          <VuiTypography component="span" fontSize={14} fontWeight="regular" color="text">
+            My Locked XLH:
+          </VuiTypography>
+          <IconButton onClick={handleOpenL}>          
+            <FontAwesomeIcon fontSize={"medium"} icon={faCircleInfo} color="white"/>
+          </IconButton>
         </VuiBox>
         <Divider light />
         <Grid container spacing={1}>
@@ -149,7 +165,7 @@ function StakingCard({
               color={stake.color}
               size={stake.size}
               sx={{ minWidth: "90px" }}
-              onClick={handleOpen}
+              onClick={handleOpenS}
               fullWidth
             >
               {stake.label}
@@ -203,15 +219,15 @@ function StakingCard({
         <Modal
           aria-labelledby="transition-modal-title"
           aria-describedby="transition-modal-description"
-          open={open}
-          onClose={handleClose}
+          open={openS}
+          onClose={handleCloseS}
           closeAfterTransition
           BackdropComponent={Backdrop}
           BackdropProps={{
             timeout: 500,
           }}
         >
-          <Fade in={open}>
+          <Fade in={openS}>
             <Box sx={style}>
               <VuiBox sx={{ minHeight: "250px" }} className="farm-card">
                 <VuiBox display="flex" mb="12px" alignItems="center">
@@ -236,7 +252,7 @@ function StakingCard({
                       <VuiInput 
                         value={xlhAmountValueS}
                         onKeyPress={(event) => {
-                          if (!/[0-9]/.test(event.key)) {
+                          if (!/[0-9.]/.test(event.key)) {
                             event.preventDefault();
                           }
                         }}
@@ -293,7 +309,7 @@ function StakingCard({
                         color="light"
                         size="small"
                         sx={{ minWidth: "90px" }}
-                        onClick={handleClose}
+                        onClick={handleCloseS}
                         fullWidth
                       >
                         Cancel
@@ -307,8 +323,8 @@ function StakingCard({
         </Modal>
         {/* Modal Unstake */}
         <Modal
-          aria-labelledby="transition-modal-title"
-          aria-describedby="transition-modal-description"
+          aria-labelledby="transition-modal-title2"
+          aria-describedby="transition-modal-description2"
           open={openU}
           onClose={handleCloseU}
           closeAfterTransition
@@ -321,7 +337,7 @@ function StakingCard({
             <Box sx={style}>
               <VuiBox sx={{ minHeight: "250px" }} className="farm-card">
                 <VuiBox display="flex" mb="12px" alignItems="center">
-                  <Tooltip key="logo" title="XLH" placement="bottom">
+                  <Tooltip key="logo2" title="XLH" placement="bottom">
                     <XLauncherLogo className='xlh-logo-stake'/>
                   </Tooltip>
                   <VuiBox ml="16px" display="flex" flexDirection="column" lineHeight={0}>
@@ -330,19 +346,19 @@ function StakingCard({
                       fontWeight="medium"
                       color="white"
                       textTransform="capitalize"
-                      id="transition-modal-title"
+                      id="transition-modal-title2"
                     >
                      Unstake XLH from {modalFarmName}
                     </VuiTypography>
                   </VuiBox>
                 </VuiBox>
-                <VuiBox id="transition-modal-description" sx={{ mt: 5 }}>    
+                <VuiBox id="transition-modal-description2" sx={{ mt: 5 }}>    
                   <Grid container spacing={2}>
                     <Grid item xs={9}>
                       <VuiInput 
                         value={xlhAmountValueU}
                         onKeyPress={(event) => {
-                          if (!/[0-9]/.test(event.key)) {
+                          if (!/[0-9.]/.test(event.key)) {
                             event.preventDefault();
                           }
                         }}
@@ -407,6 +423,64 @@ function StakingCard({
             </Box>
           </Fade>
         </Modal>
+        {/* Modal Locked Rewards */}
+        <Modal
+          aria-labelledby="transition-modal-title3"
+          aria-describedby="transition-modal-description3"
+          open={openL}
+          onClose={handleCloseL}
+          closeAfterTransition
+          BackdropComponent={Backdrop}
+          BackdropProps={{
+            timeout: 500,
+          }}
+        >
+          <Fade in={openL}>
+            <Box sx={style}>
+              <VuiBox sx={{ minHeight: "250px" }} className="farm-card">
+                <VuiBox display="flex" mb="12px" alignItems="center">
+                  <Tooltip key="logo3" title="XLH" placement="bottom">
+                    <XLauncherLogo className='xlh-logo-stake'/>
+                  </Tooltip>
+                  <VuiBox ml="16px" display="flex" flexDirection="column" lineHeight={0}>
+                    <VuiTypography
+                      fontSize={16}
+                      fontWeight="medium"
+                      color="white"
+                      textTransform="capitalize"
+                      id="transition-modal-title3"
+                    >
+                      Locked XLH from {modalFarmName}
+                    </VuiTypography>
+                  </VuiBox>
+                </VuiBox>
+                <VuiBox id="transition-modal-description3" sx={{ mt: 5 }}>   
+                  <Grid container>
+                    <Grid item xs={12}>
+                      {lockedRewards}
+                    </Grid>
+                  </Grid>
+                  <Grid container spacing={1} mt={5}>   
+                                  
+                    <Grid item xs={12} md={12} lg={12}>
+                      <VuiButton
+                        variant="outlined"
+                        color="light"
+                        size="small"
+                        sx={{ minWidth: "90px" }}
+                        onClick={handleCloseL}
+                        fullWidth
+                      >
+                        Close
+                      </VuiButton>     
+                    </Grid>
+                  </Grid>
+                </VuiBox>
+              </VuiBox>
+              
+            </Box>
+          </Fade>
+        </Modal>               
       </VuiBox>
     </Card>
   );

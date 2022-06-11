@@ -90,9 +90,11 @@ dapp-core-ui-component .btn-primary:active {
     margin: 0.5rem;
     pointer-events: none;
     margin-bottom: 50px;
-    background-color: transparent;
-    border: none;
+    background-color: #060b28f0;
+    color: white;
+    border: 1px solid #17a2b8;
     top: 30px; 
+    border-radius: 5%;
 }
 @media (min-width: 576px) {
     .dapp-core-ui-component .modal-dialog {
