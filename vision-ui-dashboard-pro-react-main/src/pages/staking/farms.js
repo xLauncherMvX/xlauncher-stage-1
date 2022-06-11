@@ -715,7 +715,8 @@ function Farms() {
             openL = {openL1}
             handleOpenL = {handleOpenL1}
             handleCloseL = {handleCloseL}  
-            methodCU = {() => claimUXLH(1)}               
+            methodCU = {() => claimUXLH(1)}   
+            isLoggedIn = {isLoggedIn}            
           />
         </Grid>
         <Grid item xs={12} md={6} lg={4} xl={4}>
@@ -777,7 +778,8 @@ function Farms() {
             openL = {openL2}
             handleOpenL = {handleOpenL2}
             handleCloseL = {handleCloseL} 
-            methodCU = {() => claimUXLH(2)}       
+            methodCU = {() => claimUXLH(2)}
+            isLoggedIn = {isLoggedIn}         
           />
         </Grid>
         <Grid item xs={12} md={6} lg={4} xl={4}>
@@ -840,6 +842,7 @@ function Farms() {
             handleOpenL = {handleOpenL3}
             handleCloseL = {handleCloseL}  
             methodCU = {() => claimUXLH(3)} 
+            isLoggedIn = {isLoggedIn}  
           />
         </Grid>
       </Grid>

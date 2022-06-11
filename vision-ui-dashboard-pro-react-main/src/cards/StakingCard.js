@@ -77,7 +77,7 @@ function StakingCard({
   reinvest, methodR,
   claimUnstake, methodCU,
   lockedRewards, openL, handleOpenL, handleCloseL, 
-  title, lockedTime, myXLH, apr, myRewards, modalFarmName, xlhBalance
+  title, lockedTime, myXLH, apr, myRewards, modalFarmName, xlhBalance, isLoggedIn
 }) 
 {  
   const [visible, setVisible] = React.useState(false);  
@@ -92,23 +92,97 @@ function StakingCard({
     openL = false;
   }
 
+  let visibleSection;
+  if(visible){
+    visibleSection = 
+      <Tooltip key="invisible" title="Hide extra" placement="bottom">
+        <IconButton className="float-right" onClick={() => setVisible(!visible)}>          
+          <FontAwesomeIcon fontSize={"medium"} icon={faAnglesUp} color="white" />
+        </IconButton>
+      </Tooltip>
+    ;
+  }else{
+    visibleSection = 
+      <Tooltip key="invisible2" title="Show extra" placement="bottom">
+        <IconButton className="float-right" onClick={() => setVisible(!visible)}>          
+          <FontAwesomeIcon fontSize={"medium"} icon={faAnglesDown} color="white"  />
+        </IconButton>
+      </Tooltip>
+    ;
+  }
+
+  let visibleLoggedInSection;
+  if(isLoggedIn){
+    visibleLoggedInSection = visibleSection;
+  }else{
+    visibleLoggedInSection = " ";
+  }
+
+  let buttonsLoggedInSection;
+  if(isLoggedIn){
+    buttonsLoggedInSection = 
+      <Grid container spacing={1}>
+        <Grid item xs={12} md={6} lg={6}>
+          <VuiButton
+            color={stake.color}
+            size={stake.size}
+            sx={{ minWidth: "90px" }}
+            onClick={handleOpenS}
+            fullWidth
+          >
+            {stake.label}
+          </VuiButton>
+        </Grid>
+        <Grid item xs={12} md={6} lg={6}>
+          <Tooltip key="claim" title={claim.hint} placement="bottom">
+            <VuiButton
+              color={claim.color}
+              size={claim.size}
+              sx={{ minWidth: "90px" }}
+              onClick={methodC}
+              fullWidth
+            >
+              {claim.label}
+            </VuiButton>
+          </Tooltip>
+        </Grid>     
+      </Grid>
+    ;
+  }else{
+    buttonsLoggedInSection = 
+      <Grid container spacing={1}>
+        <Grid item xs={12} md={6} lg={6}>
+          <VuiButton
+            color={stake.color}
+            size={stake.size}
+            sx={{ minWidth: "90px" }}            
+            fullWidth
+            disabled
+          >
+            {stake.label}
+          </VuiButton>
+        </Grid>
+        <Grid item xs={12} md={6} lg={6}>
+          <Tooltip key="claim" title={claim.hint} placement="bottom">
+            <VuiButton
+              color={claim.color}
+              size={claim.size}
+              sx={{ minWidth: "90px" }}
+              fullWidth
+              disabled
+            >
+              {claim.label}
+            </VuiButton>
+          </Tooltip>
+        </Grid>     
+      </Grid>
+    ;
+  }
+
   return (
     <Card sx={{ minHeight: "250px" }}>
       <VuiBox>        
-      {visible ? 
-      (
-        <Tooltip key="invisible" title="Hide extra" placement="bottom">
-          <IconButton className="float-right" onClick={() => setVisible(!visible)}>          
-            <FontAwesomeIcon fontSize={"medium"} icon={faAnglesUp} color="white" />
-          </IconButton>
-        </Tooltip>
-      ):(
-        <Tooltip key="invisible2" title="Show extra" placement="bottom">
-          <IconButton className="float-right" onClick={() => setVisible(!visible)}>          
-            <FontAwesomeIcon fontSize={"medium"} icon={faAnglesDown} color="white"  />
-          </IconButton>
-        </Tooltip>
-      )}
+        {visibleLoggedInSection}
         <VuiBox display="flex" mb="12px" alignItems="center">
           <Tooltip key="logo" title="XLH" placement="bottom">
             <XLauncherLogo className='xlh-logo-stake'/>
@@ -165,32 +239,7 @@ function StakingCard({
           </IconButton>
         </VuiBox>
         <Divider light />
-        <Grid container spacing={1}>
-          <Grid item xs={12} md={6} lg={6}>
-            <VuiButton
-              color={stake.color}
-              size={stake.size}
-              sx={{ minWidth: "90px" }}
-              onClick={handleOpenS}
-              fullWidth
-            >
-              {stake.label}
-            </VuiButton>
-          </Grid>
-          <Grid item xs={12} md={6} lg={6}>
-            <Tooltip key="claim" title={claim.hint} placement="bottom">
-              <VuiButton
-                color={claim.color}
-                size={claim.size}
-                sx={{ minWidth: "90px" }}
-                onClick={methodC}
-                fullWidth
-              >
-                {claim.label}
-              </VuiButton>
-            </Tooltip>
-          </Grid>     
-        </Grid>
+        {buttonsLoggedInSection}
         {visible && 
           <Grid container spacing={1} mt={0}>
             <Grid item xs={12} md={6} lg={6}>
