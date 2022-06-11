@@ -71,12 +71,13 @@ const style = {
 };
 
 function StakingCard({
-  methodS, maxMethodS, onChangeMethodS, xlhAmountValueS, openS, handleOpenS, handleCloseS, 
-  methodU, maxMethodU, onChangeMethodU, xlhAmountValueU, openU, handleOpenU, handleCloseU, 
-  methodC,
-  methodR,
+  stake, methodS, maxMethodS, onChangeMethodS, xlhAmountValueS, openS, handleOpenS, handleCloseS, 
+  unstake, methodU, maxMethodU, onChangeMethodU, xlhAmountValueU, openU, handleOpenU, handleCloseU, 
+  claim, methodC,
+  reinvest, methodR,
+  claimUnstake, methodCU,
   lockedRewards, openL, handleOpenL, handleCloseL, 
-  title, lockedTime, myXLH, apr, myRewards, stake, claim, reinvest, unstake, modalFarmName, xlhBalance
+  title, lockedTime, myXLH, apr, myRewards, modalFarmName, xlhBalance
 }) 
 {  
   const [visible, setVisible] = React.useState(false);  
@@ -215,6 +216,19 @@ function StakingCard({
                   fullWidth
                 >
                   {unstake.label}
+                </VuiButton>
+              </Tooltip>
+            </Grid>
+            <Grid item xs={12} md={6} lg={6}>
+              <Tooltip key="claimUnstake" title={claimUnstake.hint} placement="bottom">
+                <VuiButton
+                  color={claimUnstake.color}
+                  size={claimUnstake.size}
+                  sx={{ minWidth: "90px" }}
+                  onClick={methodCU}
+                  fullWidth
+                >
+                  {claimUnstake.label}
                 </VuiButton>
               </Tooltip>
             </Grid>

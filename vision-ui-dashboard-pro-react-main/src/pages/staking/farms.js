@@ -580,6 +580,42 @@ function Farms() {
     }
   };
 
+  //Claim Unstake Function
+  const [transactionSessionIdCU, setTransactionSessionIdCU] = React.useState(null);
+  const claimUXLH = async (farmIdCU) => {
+   console.log("Formatting claim unstake transaction");
+
+   let CUData = TransactionPayload.contractCall()
+   .setFunction(new ContractFunction("claimUnstakedValue"))
+  //  .setArgs([
+  //      new BigUIntValue(new BigNumber(farmIdCU))
+  //  ])
+   .build().toString()
+
+   const createClaimUTransaction = {
+     value: "0",
+     data: CUData,
+     receiver: xStakeAddress,
+     gasLimit: 20_000_000,
+   };
+
+   await refreshAccount();
+
+   const { sessionIdCU /*, error*/ } = await sendTransactions({
+     transactions: [createClaimUTransaction],
+     transactionsDisplayInfo: {
+       processingMessage: "Claim Unstake Transaction",
+       errorMessage: "An error has occured during Claim Unstake Transaction",
+       successMessage: "Claim Unstake Transaction successful",
+     },
+     redirectAfterSign: false,
+   });
+   if (sessionIdCU != null) {
+     console.log("sessionIdCU ", sessionIdCU);
+     setTransactionSessionIdCU(sessionIdCU);
+   }
+ };
+
   //
   const [openL1, setOpenL1] = useState(false);
   const [openL2, setOpenL2] = useState(false);
@@ -652,7 +688,13 @@ function Farms() {
               color: "dark",
               label: "Unstake",
               hint: "The Unstake will last 10 days"
-            }}      
+            }} 
+            claimUnstake={{
+              size: "small",
+              color: "primary",
+              label: "Claim Unstake",
+              hint: "Individual rewards can be claimed 10 days after unstake tranzaction"
+            }}     
             methodS = {() => stakeXLH(1, xlhAmountS)}
             maxMethodS = {() => setMaxAmountS()}
             onChangeMethodS = {e => onTodoChangeS(e.target.value)}
@@ -672,7 +714,8 @@ function Farms() {
             lockedRewards=""
             openL = {openL1}
             handleOpenL = {handleOpenL1}
-            handleCloseL = {handleCloseL}                
+            handleCloseL = {handleCloseL}  
+            methodCU = {() => claimUXLH(1)}               
           />
         </Grid>
         <Grid item xs={12} md={6} lg={4} xl={4}>
@@ -707,6 +750,12 @@ function Farms() {
               label: "Unstake",
               hint: "Unstake will last 10 days"
             }}
+            claimUnstake={{
+              size: "small",
+              color: "primary",
+              label: "Claim Unstake",
+              hint: "Individual rewards can be claimed 10 days after unstake tranzaction"
+            }}  
             modalFarmName="Farm 2"
             methodS = {() => stakeXLH(2, xlhAmountS)}
             maxMethodS = {() => setMaxAmountS()}
@@ -727,7 +776,8 @@ function Farms() {
             lockedRewards={client2}   
             openL = {openL2}
             handleOpenL = {handleOpenL2}
-            handleCloseL = {handleCloseL}        
+            handleCloseL = {handleCloseL} 
+            methodCU = {() => claimUXLH(2)}       
           />
         </Grid>
         <Grid item xs={12} md={6} lg={4} xl={4}>
@@ -762,6 +812,12 @@ function Farms() {
               label: "Unstake",
               hint: "Unstake will last 10 days"
             }}
+            claimUnstake={{
+              size: "small",
+              color: "primary",
+              label: "Claim Unstake",
+              hint: "Individual rewards can be claimed 10 days after unstake tranzaction"
+            }}  
             modalFarmName="Farm 3"
             methodS = {() => stakeXLH(3, xlhAmountS)}
             maxMethodS = {() => setMaxAmountS()}
@@ -783,6 +839,7 @@ function Farms() {
             openL = {openL3}
             handleOpenL = {handleOpenL3}
             handleCloseL = {handleCloseL}  
+            methodCU = {() => claimUXLH(3)} 
           />
         </Grid>
       </Grid>
