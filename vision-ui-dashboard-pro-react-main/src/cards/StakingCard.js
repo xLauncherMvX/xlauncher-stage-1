@@ -75,7 +75,7 @@ function StakingCard({
   unstake, methodU, maxMethodU, onChangeMethodU, xlhAmountValueU, openU, handleOpenU, handleCloseU, 
   claim, methodC,
   reinvest, methodR,
-  claimUnstake, methodCU,
+  claimUnstake, methodCU, unstakedAmount,
   lockedRewards, openL, handleOpenL, handleCloseL, 
   title, lockedTime, myXLH, apr, myRewards, modalFarmName, xlhBalance, isLoggedIn
 }) 
@@ -263,6 +263,7 @@ function StakingCard({
                   sx={{ minWidth: "90px" }}
                   onClick={handleOpenU}
                   fullWidth
+                  disabled={unstake.disabled}
                 >
                   {unstake.label}
                 </VuiButton>
@@ -457,7 +458,7 @@ function StakingCard({
                       marginLeft="13px"
                       marginTop="2px"
                     >
-                      Total Staked: {myXLH} XLH
+                      Total Staked: {unstakedAmount} XLH
                   </VuiTypography>  
                   <Grid container spacing={1} mt={5}>
                     <Grid item xs={12} md={6} lg={6}>
