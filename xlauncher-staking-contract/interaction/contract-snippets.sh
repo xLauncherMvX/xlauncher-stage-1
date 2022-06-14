@@ -220,7 +220,7 @@ appendPeriod3PoolSettings() {
 
   erdpy --verbose contract call ${ADDRESS} --recall-nonce \
     --pem=${PEM_FILE} \
-    --gas-limit=8000000 \
+    --gas-limit=9000000 \
     --proxy=${PROXY} --chain=${CHAINID} \
     --function="appendPoolSettings" \
     --arguments ${APPEND_APY_ID} ${APPEND_APY_START} ${APPEND_APY_END} ${APPEND_APY_A} ${APPEND_APY_B} ${APPEND_APY_C} \
@@ -239,7 +239,7 @@ appendPeriod4PoolSettings() {
 
   erdpy --verbose contract call ${ADDRESS} --recall-nonce \
     --pem=${PEM_FILE} \
-    --gas-limit=8000000 \
+    --gas-limit=10000000 \
     --proxy=${PROXY} --chain=${CHAINID} \
     --function="appendPoolSettings" \
     --arguments ${APPEND_APY_ID} ${APPEND_APY_START} ${APPEND_APY_END} ${APPEND_APY_A} ${APPEND_APY_B} ${APPEND_APY_C} \
@@ -258,7 +258,7 @@ appendPeriod5PoolSettings() {
 
   erdpy --verbose contract call ${ADDRESS} --recall-nonce \
     --pem=${PEM_FILE} \
-    --gas-limit=8000000 \
+    --gas-limit=11000000 \
     --proxy=${PROXY} --chain=${CHAINID} \
     --function="appendPoolSettings" \
     --arguments ${APPEND_APY_ID} ${APPEND_APY_START} ${APPEND_APY_END} ${APPEND_APY_A} ${APPEND_APY_B} ${APPEND_APY_C} \
