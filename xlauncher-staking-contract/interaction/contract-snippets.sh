@@ -209,6 +209,62 @@ appendPeriod2PoolSettings() {
     --outfile="${MY_LOGS}/appendPoolSettings-${ENV_LOGS}.json"
 }
 
+appendPeriod3PoolSettings() {
+
+  APPEND_APY_ID="3"
+  APPEND_APY_START=$(date -d '2022-07-18 00:00:01' +"%s")
+  APPEND_APY_END=$(date -d '2022-08-08 00:00:00' +"%s")
+  APPEND_APY_A="3000"
+  APPEND_APY_B="9000"
+  APPEND_APY_C="15000"
+
+  erdpy --verbose contract call ${ADDRESS} --recall-nonce \
+    --pem=${PEM_FILE} \
+    --gas-limit=8000000 \
+    --proxy=${PROXY} --chain=${CHAINID} \
+    --function="appendPoolSettings" \
+    --arguments ${APPEND_APY_ID} ${APPEND_APY_START} ${APPEND_APY_END} ${APPEND_APY_A} ${APPEND_APY_B} ${APPEND_APY_C} \
+    --send \
+    --outfile="${MY_LOGS}/appendPoolSettings-${ENV_LOGS}.json"
+}
+
+appendPeriod4PoolSettings() {
+
+  APPEND_APY_ID="4"
+  APPEND_APY_START=$(date -d '2022-08-08 00:00:01' +"%s")
+  APPEND_APY_END=$(date -d '2022-08-29 00:00:00' +"%s")
+  APPEND_APY_A="2500"
+  APPEND_APY_B="7500"
+  APPEND_APY_C="12500"
+
+  erdpy --verbose contract call ${ADDRESS} --recall-nonce \
+    --pem=${PEM_FILE} \
+    --gas-limit=8000000 \
+    --proxy=${PROXY} --chain=${CHAINID} \
+    --function="appendPoolSettings" \
+    --arguments ${APPEND_APY_ID} ${APPEND_APY_START} ${APPEND_APY_END} ${APPEND_APY_A} ${APPEND_APY_B} ${APPEND_APY_C} \
+    --send \
+    --outfile="${MY_LOGS}/appendPoolSettings-${ENV_LOGS}.json"
+}
+
+appendPeriod5PoolSettings() {
+
+  APPEND_APY_ID="5"
+  APPEND_APY_START=$(date -d '2022-08-29 00:00:01' +"%s")
+  APPEND_APY_END=$(date -d '2023-05-12 00:00:00' +"%s")
+  APPEND_APY_A="2500"
+  APPEND_APY_B="7500"
+  APPEND_APY_C="12500"
+
+  erdpy --verbose contract call ${ADDRESS} --recall-nonce \
+    --pem=${PEM_FILE} \
+    --gas-limit=8000000 \
+    --proxy=${PROXY} --chain=${CHAINID} \
+    --function="appendPoolSettings" \
+    --arguments ${APPEND_APY_ID} ${APPEND_APY_START} ${APPEND_APY_END} ${APPEND_APY_A} ${APPEND_APY_B} ${APPEND_APY_C} \
+    --send \
+    --outfile="${MY_LOGS}/appendPoolSettings-${ENV_LOGS}.json"
+}
 
 
 
