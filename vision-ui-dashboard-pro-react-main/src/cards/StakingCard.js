@@ -141,6 +141,7 @@ function StakingCard({
               sx={{ minWidth: "90px" }}
               onClick={methodC}
               fullWidth
+              disabled={claim.disabled}
             >
               {claim.label}
             </VuiButton>
@@ -241,7 +242,7 @@ function StakingCard({
         <Divider light />
         {buttonsLoggedInSection}
         {visible && 
-          <Grid container spacing={1} mt={0}>
+          <Grid container spacing={1} mt={0}>   
             <Grid item xs={12} md={6} lg={6}>
               <Tooltip key="reinvest" title={reinvest.hint} placement="bottom">
                 <VuiButton
@@ -250,11 +251,12 @@ function StakingCard({
                   sx={{ minWidth: "90px" }}
                   onClick={methodR}
                   fullWidth
+                  disabled={reinvest.disabled}
                 >
                   {reinvest.label}
                 </VuiButton>
               </Tooltip>
-            </Grid>
+            </Grid>         
             <Grid item xs={12} md={6} lg={6}>
               <Tooltip key="unstake" title={unstake.hint} placement="bottom">
                 <VuiButton
@@ -277,6 +279,7 @@ function StakingCard({
                   sx={{ minWidth: "90px" }}
                   onClick={methodCU}
                   fullWidth
+                  disabled={claimUnstake.disabled}
                 >
                   {claimUnstake.label}
                 </VuiButton>

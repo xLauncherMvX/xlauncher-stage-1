@@ -85,6 +85,12 @@ import xConfigs from 'configs/envConfig.json';
 const { SignTransactionsModals, TransactionsToastList, NotificationModal } = DappUI;
 const { sendTransactions } = transactionServices;
 
+function calc0(theform) {
+  var with1Decimal = theform.toString().match(/^-?\d+(?:\\d{0})?/)[0];
+  var value = with1Decimal;
+  return value;
+}
+
 function calc1(theform) {
   var with1Decimal = theform.toString().match(/^-?\d+(?:\.\d{0,1})?/)[0];
   var value = with1Decimal;
@@ -114,144 +120,152 @@ function Farms() {
   let xMultiplier = 1000000000000000000;
 
 
-  // const getClientReportData = async () => {
-  //   try {
-  //     let providerCRD = new ProxyProvider(xProvider);
-  //     await NetworkConfig.getDefault().sync(providerCRD);
+  const getClientReportData = async () => {
+    try {
+      let providerCRD = new ProxyProvider(xProvider);
+      await NetworkConfig.getDefault().sync(providerCRD);
 
-  //     let stringAddressCRD = xStakeAddress;
-  //     let addressCRD = new Address(stringAddressCRD);
+      let stringAddressCRD = xStakeAddress;
+      let addressCRD = new Address(stringAddressCRD);
 
-  //     const abiLocationCRD = `${process.env.PUBLIC_URL}/xlauncher-staking.abi.json`;
+      const abiLocationCRD = `${process.env.PUBLIC_URL}/xlauncher-staking.abi.json`;
 
-  //     let abiRegistryCRD = await AbiRegistry.load({
-  //       urls: [abiLocationCRD],
-  //     });
-  //     let abiCRD = new SmartContractAbi(abiRegistryCRD, [`XLauncherStaking`]);
+      let abiRegistryCRD = await AbiRegistry.load({
+        urls: [abiLocationCRD],
+      });
+      let abiCRD = new SmartContractAbi(abiRegistryCRD, [`XLauncherStaking`]);
 
-  //     let contractCRD = new SmartContract({
-  //       address: addressCRD,
-  //       abi: abiCRD,
-  //     });
+      let contractCRD = new SmartContract({
+        address: addressCRD,
+        abi: abiCRD,
+      });
 
-  //     let interactionCRD = contractCRD.methods.getClientReport([
-  //       new AddressValue(new Address(address)),
-  //     ]);
+      let interactionCRD = contractCRD.methods.getClientReport([
+        new AddressValue(new Address(address)),
+      ]);
 
-  //     let queryResponseCRD = await contractCRD.runQuery(providerCRD, interactionCRD.buildQuery());
+      let queryResponseCRD = await contractCRD.runQuery(providerCRD, interactionCRD.buildQuery());
 
-  //     let responseCRD = interactionCRD.interpretQueryResponse(queryResponseCRD);
-  //     let myList = responseCRD.firstValue.valueOf();
-  //     //console.log("myList " + JSON.stringify(myList, null, 2));
+      let responseCRD = interactionCRD.interpretQueryResponse(queryResponseCRD);
+      let myList = responseCRD.firstValue.valueOf();
+      //console.log("myList " + JSON.stringify(myList, null, 2));
 
-  //     let amountFormat = 1000000000000000000;
-  //     let totalAmount = myList["total_amount"].toFixed(2) / amountFormat;
-  //     let totalRewards = myList["total_rewords"].toFixed(2) / amountFormat;
+      let amountFormat = 1000000000000000000;
+      let totalAmount = myList["total_amount"].toFixed(2) / amountFormat;
+      let totalRewards = myList["total_rewords"].toFixed(2) / amountFormat;
 
-  //     let farm1Amount = 0;
-  //     let farm1Rewards = 0;
-  //     let farm2Amount = 0;
-  //     let farm2Rewards = 0;
-  //     let farm3Amount = 0;
-  //     let farm3Rewards = 0;
+      let farm1Amount = 0;
+      let farm1Rewards = 0;
+      let farm2Amount = 0;
+      let farm2Rewards = 0;
+      let farm3Amount = 0;
+      let farm3Rewards = 0;
 
-  //     if (myList["report_pull_items"]) {
-  //       if (myList["report_pull_items"][0]) {
-  //         if (myList["report_pull_items"][0]["pool_id"] == "1") {
-  //           farm1Amount = myList["report_pull_items"][0]["pool_amount"].toFixed() / amountFormat;
-  //           farm1Rewards =
-  //             myList["report_pull_items"][0]["rewords_amount"].toFixed() / amountFormat;
-  //         } else if (myList["report_pull_items"][0]["pool_id"] == "2") {
-  //           farm2Amount = myList["report_pull_items"][0]["pool_amount"].toFixed() / amountFormat;
-  //           farm2Rewards =
-  //             myList["report_pull_items"][0]["rewords_amount"].toFixed() / amountFormat;
-  //         } else if (myList["report_pull_items"][0]["pool_id"] == "3") {
-  //           farm3Amount = myList["report_pull_items"][0]["pool_amount"].toFixed() / amountFormat;
-  //           farm3Rewards =
-  //             myList["report_pull_items"][0]["rewords_amount"].toFixed() / amountFormat;
-  //         }
-  //       }
-  //       if (myList["report_pull_items"][1]) {
-  //         if (myList["report_pull_items"][1]["pool_id"] == "1") {
-  //           farm1Amount = myList["report_pull_items"][1]["pool_amount"].toFixed() / amountFormat;
-  //           farm1Rewards =
-  //             myList["report_pull_items"][1]["rewords_amount"].toFixed() / amountFormat;
-  //         } else if (myList["report_pull_items"][1]["pool_id"] == "2") {
-  //           farm2Amount = myList["report_pull_items"][1]["pool_amount"].toFixed() / amountFormat;
-  //           farm2Rewards =
-  //             myList["report_pull_items"][1]["rewords_amount"].toFixed() / amountFormat;
-  //         } else if (myList["report_pull_items"][1]["pool_id"] == "3") {
-  //           farm3Amount = myList["report_pull_items"][1]["pool_amount"].toFixed() / amountFormat;
-  //           farm3Rewards =
-  //             myList["report_pull_items"][1]["rewords_amount"].toFixed() / amountFormat;
-  //         }
-  //       }
-  //       if (myList["report_pull_items"][2]) {
-  //         if (myList["report_pull_items"][2]["pool_id"] == "1") {
-  //           farm1Amount = myList["report_pull_items"][2]["pool_amount"].toFixed() / amountFormat;
-  //           farm1Rewards =
-  //             myList["report_pull_items"][2]["rewords_amount"].toFixed() / amountFormat;
-  //         } else if (myList["report_pull_items"][2]["pool_id"] == "2") {
-  //           farm2Amount = myList["report_pull_items"][2]["pool_amount"].toFixed() / amountFormat;
-  //           farm2Rewards =
-  //             myList["report_pull_items"][2]["rewords_amount"].toFixed() / amountFormat;
-  //         } else if (myList["report_pull_items"][2]["pool_id"] == "3") {
-  //           farm3Amount = myList["report_pull_items"][2]["pool_amount"].toFixed() / amountFormat;
-  //           farm3Rewards =
-  //             myList["report_pull_items"][2]["rewords_amount"].toFixed() / amountFormat;
-  //         }
-  //       }
-  //     }
+      if (myList["report_pull_items"]) {
+        if (myList["report_pull_items"][0]) {
+          if (myList["report_pull_items"][0]["pool_id"] == "1") {
+            farm1Amount = myList["report_pull_items"][0]["pool_amount"].toFixed() / amountFormat;
+            farm1Rewards =
+              myList["report_pull_items"][0]["rewords_amount"].toFixed() / amountFormat;
+          } else if (myList["report_pull_items"][0]["pool_id"] == "2") {
+            farm2Amount = myList["report_pull_items"][0]["pool_amount"].toFixed() / amountFormat;
+            farm2Rewards =
+              myList["report_pull_items"][0]["rewords_amount"].toFixed() / amountFormat;
+          } else if (myList["report_pull_items"][0]["pool_id"] == "3") {
+            farm3Amount = myList["report_pull_items"][0]["pool_amount"].toFixed() / amountFormat;
+            farm3Rewards =
+              myList["report_pull_items"][0]["rewords_amount"].toFixed() / amountFormat;
+          }
+        }
+        if (myList["report_pull_items"][1]) {
+          if (myList["report_pull_items"][1]["pool_id"] == "1") {
+            farm1Amount = myList["report_pull_items"][1]["pool_amount"].toFixed() / amountFormat;
+            farm1Rewards =
+              myList["report_pull_items"][1]["rewords_amount"].toFixed() / amountFormat;
+          } else if (myList["report_pull_items"][1]["pool_id"] == "2") {
+            farm2Amount = myList["report_pull_items"][1]["pool_amount"].toFixed() / amountFormat;
+            farm2Rewards =
+              myList["report_pull_items"][1]["rewords_amount"].toFixed() / amountFormat;
+          } else if (myList["report_pull_items"][1]["pool_id"] == "3") {
+            farm3Amount = myList["report_pull_items"][1]["pool_amount"].toFixed() / amountFormat;
+            farm3Rewards =
+              myList["report_pull_items"][1]["rewords_amount"].toFixed() / amountFormat;
+          }
+        }
+        if (myList["report_pull_items"][2]) {
+          if (myList["report_pull_items"][2]["pool_id"] == "1") {
+            farm1Amount = myList["report_pull_items"][2]["pool_amount"].toFixed() / amountFormat;
+            farm1Rewards =
+              myList["report_pull_items"][2]["rewords_amount"].toFixed() / amountFormat;
+          } else if (myList["report_pull_items"][2]["pool_id"] == "2") {
+            farm2Amount = myList["report_pull_items"][2]["pool_amount"].toFixed() / amountFormat;
+            farm2Rewards =
+              myList["report_pull_items"][2]["rewords_amount"].toFixed() / amountFormat;
+          } else if (myList["report_pull_items"][2]["pool_id"] == "3") {
+            farm3Amount = myList["report_pull_items"][2]["pool_amount"].toFixed() / amountFormat;
+            farm3Rewards =
+              myList["report_pull_items"][2]["rewords_amount"].toFixed() / amountFormat;
+          }
+        }
+      }
 
-  //     let totalAmountF = parseFloat(totalAmount).toFixed(2);
-  //     let totalRewardsF = parseFloat(totalRewards).toFixed(2);
-  //     let farm1AmountF = parseFloat(farm1Amount).toFixed(2);
-  //     let farm1RewardsF = parseFloat(farm1Rewards).toFixed(2);
-  //     let farm2AmountF = parseFloat(farm2Amount).toFixed(2);
-  //     let farm2RewardsF = parseFloat(farm2Rewards).toFixed(2);
-  //     let farm3AmountF = parseFloat(farm3Amount).toFixed(2);
-  //     let farm3RewardsF = parseFloat(farm3Rewards).toFixed(2);
+      let totalAmountF = parseFloat(totalAmount).toFixed(2);
+      let totalRewardsF = parseFloat(totalRewards).toFixed(2);
+      let farm1AmountF = parseFloat(farm1Amount).toFixed(2);
+      let farm1RewardsF = parseFloat(farm1Rewards).toFixed(2);
+      let farm2AmountF = parseFloat(farm2Amount).toFixed(2);
+      let farm2RewardsF = parseFloat(farm2Rewards).toFixed(2);
+      let farm3AmountF = parseFloat(farm3Amount).toFixed(2);
+      let farm3RewardsF = parseFloat(farm3Rewards).toFixed(2);
 
-  //     let myReturnList = [
-  //       new Intl.NumberFormat("ro-Ro", {
-  //         minimumFractionDigits: 2,
-  //         maximumFractionDigits: 2,
-  //       }).format(totalAmountF),
-  //       new Intl.NumberFormat("ro-Ro", {
-  //         minimumFractionDigits: 2,
-  //         maximumFractionDigits: 2,
-  //       }).format(totalRewardsF),
-  //       new Intl.NumberFormat("ro-Ro", {
-  //         minimumFractionDigits: 2,
-  //         maximumFractionDigits: 2,
-  //       }).format(farm1AmountF),
-  //       new Intl.NumberFormat("ro-Ro", {
-  //         minimumFractionDigits: 2,
-  //         maximumFractionDigits: 2,
-  //       }).format(farm1RewardsF),
-  //       new Intl.NumberFormat("ro-Ro", {
-  //         minimumFractionDigits: 2,
-  //         maximumFractionDigits: 2,
-  //       }).format(farm2AmountF),
-  //       new Intl.NumberFormat("ro-Ro", {
-  //         minimumFractionDigits: 2,
-  //         maximumFractionDigits: 2,
-  //       }).format(farm2RewardsF),
-  //       new Intl.NumberFormat("ro-Ro", {
-  //         minimumFractionDigits: 2,
-  //         maximumFractionDigits: 2,
-  //       }).format(farm3AmountF),
-  //       new Intl.NumberFormat("ro-Ro", {
-  //         minimumFractionDigits: 2,
-  //         maximumFractionDigits: 2,
-  //       }).format(farm3RewardsF),
-  //     ];
+      let myReturnList = [
+        new Intl.NumberFormat("ro-Ro", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        }).format(totalAmountF),
+        new Intl.NumberFormat("ro-Ro", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        }).format(totalRewardsF),
+        new Intl.NumberFormat("ro-Ro", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        }).format(farm1AmountF),
+        new Intl.NumberFormat("ro-Ro", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        }).format(farm1RewardsF),
+        new Intl.NumberFormat("ro-Ro", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        }).format(farm2AmountF),
+        new Intl.NumberFormat("ro-Ro", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        }).format(farm2RewardsF),
+        new Intl.NumberFormat("ro-Ro", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        }).format(farm3AmountF),
+        new Intl.NumberFormat("ro-Ro", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        }).format(farm3RewardsF),
+        totalAmountF, 
+        totalRewardsF,
+        farm1AmountF, 
+        farm1RewardsF, 
+        farm2AmountF, 
+        farm2RewardsF, 
+        farm3AmountF,
+        farm3RewardsF
+      ];
 
-  //     setClientReportData(myReturnList);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+      setClientReportData(myReturnList);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const [clientStateData2, setClientStateData2] = useState([]);
   const [clientStateData3, setClientStateData3] = useState([]);
@@ -647,13 +661,23 @@ function Farms() {
   let unlockedTime2 = "Unstake";
   const timestamp = Date.now();
   const options2 = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
+  clientStateData2.sort((a,b) => a.pool_time_stamp_entry < b.pool_time_stamp_entry? 1 : -1);
   Object.values(clientStateData2).map(item2 => {
     let entry2  = (parseFloat(item2.pool_time_stamp_entry) + 5184000) * 1000;
-    let unlockedTimeItem2 = (entry2 - timestamp) / 86400000;
-    if(calc1(unlockedTimeItem2) <= 0){
+    let unlockedTimeItemDays2 = (entry2 - timestamp) / 86400000;
+    let unlockedTimeItemHours2 = (entry2 - timestamp) / 3600000;
+    let unlockedTimeItemMinutes2 = (entry2 - timestamp) / 60000;
+    let unlockedTimeItemSeconds2 = (entry2 - timestamp) / 1000;
+    if(calc1(unlockedTimeItemMinutes2) <= 0){
       unlockedTime2 = "Unstake";
-    }else{
-      unlockedTime2 = "Unstake (" + calc1(unlockedTimeItem2) + ")";
+    }else if(calc1(unlockedTimeItemMinutes2) > 0 && calc1(unlockedTimeItemMinutes2) < 1){
+      unlockedTime2 = "Unstake (" + calc0(unlockedTimeItemSeconds2) + "S)";
+    }else if(calc1(unlockedTimeItemMinutes2) >= 1 && calc1(unlockedTimeItemMinutes2) < 60){
+      unlockedTime2 = "Unstake (" + calc1(unlockedTimeItemMinutes2) + "M)";
+    }else if(calc1(unlockedTimeItemMinutes2) >= 60 && calc1(unlockedTimeItemMinutes2) < 1440){
+      unlockedTime2 = "Unstake (" + calc1(unlockedTimeItemHours2) + "H)";
+    }else if(calc1(unlockedTimeItemMinutes2) >= 1440){
+      unlockedTime2 = "Unstake (" + calc1(unlockedTimeItemDays2) + "D)";
     }    
     if(entry2 <= timestamp){
       unstakedEntry2 = "Available from " + new Date(entry2).toLocaleDateString("en-GB", options2);
@@ -667,26 +691,129 @@ function Farms() {
   let unstakedEntry3 = "";
   let unlockedUnstake3 = true;
   let unlockedTime3 = "Unstake";
+  clientStateData3.sort((a,b) => a.pool_time_stamp_entry < b.pool_time_stamp_entry? 1 : -1);
   Object.values(clientStateData3).map(item3 => {
     let entry3  = (parseFloat(item3.pool_time_stamp_entry) + 15552000) * 1000;
-    let unlockedTimeItem3 = (entry3 - timestamp) / 86400000;
-    if(calc1(unlockedTimeItem3) <= 0){
+
+    let unlockedTimeItemDays3 = (entry3 - timestamp) / 86400000;
+    let unlockedTimeItemHours3 = (entry3 - timestamp) / 3600000;
+    let unlockedTimeItemMinutes3 = (entry3 - timestamp) / 60000;
+    let unlockedTimeItemSeconds3 = (entry3 - timestamp) / 1000;
+    if(calc1(unlockedTimeItemMinutes3) <= 0){
       unlockedTime3 = "Unstake";
-    }else{
-      unlockedTime3 = "Unstake (" + calc1(unlockedTimeItem3) + ")";
-    }    
+    }else if(calc1(unlockedTimeItemMinutes3) > 0 && calc1(unlockedTimeItemMinutes3) < 1){
+      unlockedTime3 = "Unstake (" + calc0(unlockedTimeItemSeconds3) + "S)";
+    }else if(calc1(unlockedTimeItemMinutes3) >= 1 && calc1(unlockedTimeItemMinutes3) < 60){
+      unlockedTime3 = "Unstake (" + calc1(unlockedTimeItemMinutes3) + "M)";
+    }else if(calc1(unlockedTimeItemMinutes3) >= 60 && calc1(unlockedTimeItemMinutes3) < 1440){
+      unlockedTime3 = "Unstake (" + calc1(unlockedTimeItemHours3) + "H)";
+    }else if(calc1(unlockedTimeItemMinutes3) >= 1440){
+      unlockedTime3 = "Unstake (" + calc1(unlockedTimeItemDays3) + "D)";
+    }   
     if(entry3 <= timestamp){
       unstakedEntry3 = "Available from " + new Date(entry3).toLocaleDateString("en-GB", options2);
       unstakedAmount3 += parseFloat(item3.pool_amount) / xMultiplier;
       unlockedUnstake3 = false;
     } 
   });
-  
+
+  const [claimUnstakedAmount, setClaimUnstakedAmount] = useState(0);
+  const [claimUnstakedEntry, setClaimUnstakedEntry] = useState("");
+  const [claimUnlockedUnstake, setClaimUnlockedUnstake] = useState(true);
+  const [claimUnlockedTime, setClaimUnlockedTime] = useState("Complete Unstake");
+  const getClientUnstakeStateData = async () => {
+    try {
+      let providerCUSD = new ProxyProvider(xProvider);
+      await NetworkConfig.getDefault().sync(providerCUSD);
+
+      let stringAddressCUSD = xStakeAddress;
+      let addressCUSD = new Address(stringAddressCUSD);
+
+      const abiLocationCUSD = `${process.env.PUBLIC_URL}/xlauncher-staking.abi.json`;
+
+      let abiRegistryCUSD = await AbiRegistry.load({
+        urls: [abiLocationCUSD],
+      });
+      let abiCUSD = new SmartContractAbi(abiRegistryCUSD, [`XLauncherStaking`]);
+
+      let contractCUSD = new SmartContract({
+        address: addressCUSD,
+        abi: abiCUSD,
+      });
+
+      let interactionCUSD = contractCUSD.methods.getUnstakeState([
+        new AddressValue(new Address(address)),
+      ]);
+
+      let queryResponseCUSD = await contractCUSD.runQuery(providerCUSD, interactionCUSD.buildQuery());
+
+      let responseCUSD = interactionCUSD.interpretQueryResponse(queryResponseCUSD);
+      let myListCUSD = responseCUSD.firstValue.valueOf();
+      //console.log("myListCUSD " + JSON.stringify(myListCUSD, null, 2));
+
+      let entryCU  = (parseFloat(myListCUSD.free_after_time_stamp)) * 1000;
+      let unlockedTimeItemCUDays = (entryCU - timestamp) / 86400000;
+      let unlockedTimeItemCUHours = (entryCU - timestamp) / 3600000;
+      let unlockedTimeItemCUMinutes = (entryCU - timestamp) / 60000;
+      let unlockedTimeItemCUSeconds = (entryCU - timestamp) / 1000;
+      if(calc1(unlockedTimeItemCUMinutes) <= 0){
+        setClaimUnlockedTime("Complete Unstake");
+      }else if(calc1(unlockedTimeItemCUMinutes) > 0 && calc1(unlockedTimeItemCUMinutes) < 1){
+        setClaimUnlockedTime("Complete Unstake (" + calc0(unlockedTimeItemCUSeconds) + "S)");
+      }else if(calc1(unlockedTimeItemCUMinutes) >= 1 && calc1(unlockedTimeItemCUMinutes) < 60){
+        setClaimUnlockedTime("Complete Unstake (" + calc1(unlockedTimeItemCUMinutes) + "M)");
+      }else if(calc1(unlockedTimeItemCUMinutes) >= 60 && calc1(unlockedTimeItemCUMinutes) < 1440){
+        setClaimUnlockedTime("Complete Unstake (" + calc1(unlockedTimeItemCUHours) + "H)");
+      }else if(calc1(unlockedTimeItemCUMinutes) >= 1440){
+        setClaimUnlockedTime("Complete Unstake (" + calc1(unlockedTimeItemCUDays) + "D)");
+      } 
+
+      if(entryCU <= timestamp){
+        let AmountCU = parseFloat(myListCUSD.requested_amount) / xMultiplier;
+        setClaimUnstakedAmount(AmountCU);
+        let EntryCUTips = "Available from " + new Date(entryCU).toLocaleDateString("en-GB", options2); 
+        setClaimUnstakedEntry(EntryCUTips);       
+        setClaimUnlockedUnstake(false);
+      } 
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  //Disable claim function if xlh amount is too small
+  let disabledClaim1 = true;
+  let disabledClaim2 = true;
+  let disabledClaim3 = true;
+  if(clientReportData[11] >= 2){
+    disabledClaim1 = false;
+  }
+  if(clientReportData[13] >= 2){
+    disabledClaim2 = false;
+  }
+  if(clientReportData[15] >= 2){
+    disabledClaim3 = false;
+  }
+
+  //Disable reinvest function if xlh amount is too small
+  let disabledReinvest1 = true;
+  let disabledReinvest2 = true;
+  let disabledReinvest3 = true;
+  if(clientReportData[11] >= 2){
+    disabledReinvest1 = false;
+  }
+  if(clientReportData[13] >= 2){
+    disabledReinvest2 = false;
+  }
+  if(clientReportData[15] >= 2){
+    disabledReinvest3 = false;
+  }
+
   //useEffectFunc
   useEffect(() => {
     if (isLoggedIn) {
-      //getClientReportData(); 
+      getClientReportData(); 
       getClientStateData();
+      getClientUnstakeStateData();
     }
   });
   
@@ -728,27 +855,29 @@ function Farms() {
               size: "small",
               color: "primary",
               label: "Claim",
-              hint: "Individual rewards can be claimed with a minimum of 25XLH"
+              hint: "Individual rewards can be claimed with a minimum of 25XLH",
+              disabled: disabledClaim1
             }}
             reinvest={{
               size: "small",
               color: "success",
               label: "Reinvest",
-              hint:
-                "Individual rewards can be reinvested with a minimum of 25XLH"
+              hint: "Individual rewards can be reinvested with a minimum of 25XLH",
+              disabled: disabledReinvest1
             }}
             unstake={{
               size: "small",
               color: "dark",
               label: "Unstake",
-              hint: "Available",
+              hint: "Individual rewards can be claimed 10 days after unstake tranzaction",
               disabled: false
             }} 
             claimUnstake={{
               size: "small",
-              color: "primary",
-              label: "Claim Unstake",
-              hint: "Individual rewards can be claimed 10 days after unstake tranzaction"
+              color: "dark",
+              label: claimUnlockedTime,
+              hint: claimUnstakedEntry,
+              disabled: claimUnlockedUnstake
             }}     
             methodS = {() => stakeXLH(1, xlhAmountS)}
             maxMethodS = {() => setMaxAmountS()}
@@ -792,27 +921,29 @@ function Farms() {
               size: "small",
               color: "primary",
               label: "Claim",
-              hint: "Individual rewards can be claimed with a minimum of 25XLH"
+              hint: "Individual rewards can be claimed with a minimum of 25XLH",
+              disabled: disabledClaim2
             }}
             reinvest={{
               size: "small",
               color: "success",
               label: "Reinvest",
-              hint:
-                "Individual rewards can be reinvested with a minimum of 25XLH"
+              hint: "Individual rewards can be reinvested with a minimum of 25XLH",
+              disabled: disabledReinvest2
             }}
             unstake={{
               size: "small",
               color: "dark",
               label: unlockedTime2,
-              hint: unstakedEntry2,
+              hint: "Individual rewards can be claimed 10 days after unstake tranzaction",
               disabled: unlockedUnstake2
             }}
             claimUnstake={{
               size: "small",
-              color: "primary",
-              label: "Claim Unstake",
-              hint: "Individual rewards can be claimed 10 days after unstake tranzaction"
+              color: "dark",
+              label: claimUnlockedTime,
+              hint: claimUnstakedEntry,
+              disabled: claimUnlockedUnstake
             }}  
             modalFarmName="Farm 2"
             methodS = {() => stakeXLH(2, xlhAmountS)}
@@ -857,28 +988,30 @@ function Farms() {
               size: "small",
               color: "primary",
               label: "Claim",
-              hint: "Individual rewards can be claimed with a minimum of 25XLH"
+              hint: "Individual rewards can be claimed with a minimum of 25XLH",
+              disabled: disabledClaim3
             }}
             reinvest={{
               size: "small",
               color: "success",
               label: "Reinvest",
-              hint:
-                "Individual rewards can be reinvested with a minimum of 25XLH"
+              hint: "Individual rewards can be reinvested with a minimum of 25XLH",
+              disabled: disabledReinvest3
             }}
             unstake={{
               size: "small",
               color: "dark",
               label: unlockedTime3,
-              hint: unstakedEntry3,
+              hint: "Individual rewards can be claimed 10 days after unstake tranzaction",
               disabled: unlockedUnstake3
             }}
             claimUnstake={{
               size: "small",
-              color: "primary",
-              label: "Claim Unstake",
-              hint: "Individual rewards can be claimed 10 days after unstake tranzaction"
-            }}  
+              color: "dark",
+              label: claimUnlockedTime,
+              hint: claimUnstakedEntry,
+              disabled: claimUnlockedUnstake
+            }} 
             modalFarmName="Farm 3"
             methodS = {() => stakeXLH(3, xlhAmountS)}
             maxMethodS = {() => setMaxAmountS()}
