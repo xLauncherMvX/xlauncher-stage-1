@@ -6,30 +6,32 @@ MIN_AMOUNT=250000000000000000
 
 MY_LOGS="interaction-logs"
 
-PULL_A_ID="1"
-PULL_A_LOCKING_TIME_SPAN="0"
-APY_A0_ID="1"
-APY_A0_START=$(date -d '2022-05-12 00:00:01' +"%s")
-APY_A0_END=$(date -d '2022-07-04 00:00:00' +"%s")
-APY_A0_APY="4000"
 
-PULL_B_ID="2"
-#PULL_B_LOCKING_TIME_SPAN="5184000"
-PULL_B_LOCKING_TIME_SPAN="0"
-APY_B0_ID="1"
-APY_B0_START=$(date -d '2022-05-12 00:00:01' +"%s")
-APY_B0_END=$(date -d '2022-07-04 00:00:00' +"%s")
-APY_B0_APY="11000"
-
-PULL_C_ID="3"
-#PULL_C_LOCKING_TIME_SPAN="15552000"
-PULL_C_LOCKING_TIME_SPAN="0"
-APY_C0_ID="1"
-APY_C0_START=$(date -d '2022-05-12 00:00:01' +"%s")
-APY_C0_END=$(date -d '2022-07-04 00:00:00' +"%s")
-APY_C0_APY="18000"
 
 setEnvDevnet() {
+  PULL_A_ID="1"
+  PULL_A_LOCKING_TIME_SPAN="0"
+  APY_A0_ID="1"
+  APY_A0_START=$(date -d '2022-05-12 00:00:01' +"%s")
+  APY_A0_END=$(date -d '2022-07-04 00:00:00' +"%s")
+  APY_A0_APY="4000"
+
+  PULL_B_ID="2"
+  #PULL_B_LOCKING_TIME_SPAN="5184000"
+  PULL_B_LOCKING_TIME_SPAN="0"
+  APY_B0_ID="1"
+  APY_B0_START=$(date -d '2022-05-12 00:00:01' +"%s")
+  APY_B0_END=$(date -d '2022-07-04 00:00:00' +"%s")
+  APY_B0_APY="11000"
+
+  PULL_C_ID="3"
+  #PULL_C_LOCKING_TIME_SPAN="15552000"
+  PULL_C_LOCKING_TIME_SPAN="0"
+  APY_C0_ID="1"
+  APY_C0_START=$(date -d '2022-05-12 00:00:01' +"%s")
+  APY_C0_END=$(date -d '2022-07-04 00:00:00' +"%s")
+  APY_C0_APY="18000"
+
   cp -f erdpy.data-storage-devnet.json erdpy.data-storage.json
   CURRENT_ENV="devnet"
   PEM_FILE="${PROJECT}/../../wallets/users/devnet_owner_wallet.pem"
