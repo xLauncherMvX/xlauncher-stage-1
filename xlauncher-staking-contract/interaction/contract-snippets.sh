@@ -9,23 +9,25 @@ MY_LOGS="interaction-logs"
 PULL_A_ID="1"
 PULL_A_LOCKING_TIME_SPAN="0"
 APY_A0_ID="1"
-APY_A0_START=$(date -d '2022-05-12 00:00:00' +"%s")
-APY_A0_END=$(date -d '2022-06-02 00:00:00' +"%s")
-APY_A0_APY="100"
+APY_A0_START=$(date -d '2022-05-12 00:00:01' +"%s")
+APY_A0_END=$(date -d '2022-07-04 00:00:00' +"%s")
+APY_A0_APY="4000"
 
 PULL_B_ID="2"
-PULL_B_LOCKING_TIME_SPAN="5184000"
+#PULL_B_LOCKING_TIME_SPAN="5184000"
+PULL_B_LOCKING_TIME_SPAN="0"
 APY_B0_ID="1"
-APY_B0_START=$(date -d '2022-05-12 00:00:00' +"%s")
-APY_B0_END=$(date -d '2022-06-02 00:00:00' +"%s")
-APY_B0_APY="200"
+APY_B0_START=$(date -d '2022-05-12 00:00:01' +"%s")
+APY_B0_END=$(date -d '2022-07-04 00:00:00' +"%s")
+APY_B0_APY="11000"
 
 PULL_C_ID="3"
-PULL_C_LOCKING_TIME_SPAN="15552000"
+#PULL_C_LOCKING_TIME_SPAN="15552000"
+PULL_C_LOCKING_TIME_SPAN="0"
 APY_C0_ID="1"
-APY_C0_START=$(date -d '2022-05-12 00:00:00' +"%s")
-APY_C0_END=$(date -d '2022-06-02 00:00:00' +"%s")
-APY_C0_APY="300"
+APY_C0_START=$(date -d '2022-05-12 00:00:01' +"%s")
+APY_C0_END=$(date -d '2022-07-04 00:00:00' +"%s")
+APY_C0_APY="18000"
 
 setEnvDevnet() {
   cp -f erdpy.data-storage-devnet.json erdpy.data-storage.json
@@ -38,12 +40,7 @@ setEnvDevnet() {
   TOKEN_ID="XLH-cb26c7"
   TOKEN_ID_HEX=$(echo -n ${TOKEN_ID} | xxd -p)
 
-  APPEND_APY_ID="2"
-  APPEND_APY_START=$(date -d '2022-06-02 00:00:00' +"%s")
-  APPEND_APY_END=$(date -d '2022-06-03 00:00:00' +"%s")
-  APPEND_APY_A="50"
-  APPEND_APY_B="100"
-  APPEND_APY_C="150"
+
 }
 
 printCurrentEnv() {
@@ -172,15 +169,33 @@ getVariableContractSettings() {
     --proxy=${PROXY}
 }
 
-appendPoolSettings() {
+updatePeriod1PoolSettings() {
 
-  # relevant variables
-  #    APPEND_APY_ID
-  #    APPEND_APY_START
-  #    APPEND_APY_END
-  #    APPEND_APY_A
-  #    APPEND_APY_B
-  #    APPEND_APY_C
+    APPEND_APY_ID="1"
+    APPEND_APY_START=$(date -d '2022-05-12 00:00:01' +"%s")
+    APPEND_APY_END=$(date -d '2022-07-04 00:00:00' +"%s")
+    APPEND_APY_A="4000"
+    APPEND_APY_B="11000"
+    APPEND_APY_C="18000"
+
+  erdpy --verbose contract call ${ADDRESS} --recall-nonce \
+    --pem=${PEM_FILE} \
+    --gas-limit=8000000 \
+    --proxy=${PROXY} --chain=${CHAINID} \
+    --function="updatePoolSettings" \
+    --arguments ${APPEND_APY_ID} ${APPEND_APY_START} ${APPEND_APY_END} ${APPEND_APY_A} ${APPEND_APY_B} ${APPEND_APY_C} \
+    --send \
+    --outfile="${MY_LOGS}/updatePoolSettings-${ENV_LOGS}.json"
+}
+
+appendPeriod2PoolSettings() {
+
+  APPEND_APY_ID="2"
+  APPEND_APY_START=$(date -d '2022-07-04 00:00:01' +"%s")
+  APPEND_APY_END=$(date -d '2022-07-18 00:00:00' +"%s")
+  APPEND_APY_A="3200"
+  APPEND_APY_B="9500"
+  APPEND_APY_C="16000"
 
   erdpy --verbose contract call ${ADDRESS} --recall-nonce \
     --pem=${PEM_FILE} \
@@ -193,31 +208,7 @@ appendPoolSettings() {
 }
 
 
-updatePoolSettings() {
 
-  # relevant variables
-  #    APPEND_APY_ID
-  #    APPEND_APY_START
-  #    APPEND_APY_END
-  #    APPEND_APY_A
-  #    APPEND_APY_B
-  #    APPEND_APY_C
-    APPEND_APY_ID="1"
-    APPEND_APY_START=$(date -d '2022-05-12 00:00:00' +"%s")
-    APPEND_APY_END=$(date -d '2022-06-30 00:00:00' +"%s")
-    APPEND_APY_A="100"
-    APPEND_APY_B="200"
-    APPEND_APY_C="300"
-
-  erdpy --verbose contract call ${ADDRESS} --recall-nonce \
-    --pem=${PEM_FILE} \
-    --gas-limit=8000000 \
-    --proxy=${PROXY} --chain=${CHAINID} \
-    --function="updatePoolSettings" \
-    --arguments ${APPEND_APY_ID} ${APPEND_APY_START} ${APPEND_APY_END} ${APPEND_APY_A} ${APPEND_APY_B} ${APPEND_APY_C} \
-    --send \
-    --outfile="${MY_LOGS}/updatePoolSettings-${ENV_LOGS}.json"
-}
 
 updateUnstakeLockSpan(){
   # 60 * 5 = 300 (5 minutes)
