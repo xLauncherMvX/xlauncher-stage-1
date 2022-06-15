@@ -31,7 +31,8 @@ const app = express();
 const port = process.env.PORT || 8080;
 app.listen(port, () => {
   console.log("Hello world listening on port", port);
-  getTournamentInfoList();
+  // getTournamentInfoList();
+  getVariableContractSettings();
 });
 
 async function getTournamentInfoList() {
@@ -96,3 +97,71 @@ async function getTournamentInfoList() {
  *  - clientState
  *  - getClientReport
  */
+
+ const getVariableContractSettings = async () => {
+  try {
+    let providerCSD = new ProxyProvider("https://devnet-gateway.elrond.com");
+    await NetworkConfig.getDefault().sync(providerCSD);
+
+    let stringAddressCSD = "erd1qqqqqqqqqqqqqpgqj2zawgu92vuvs8xzcna0u7hrsd0xm9whpa7quckxv3";
+    let addressCSD = new Address(stringAddressCSD);
+    
+    let abiRegistryCSD = await AbiRegistry.load({
+      files: ["xlauncher-staking.abi.json"],
+    });
+
+    let abiCSD = new SmartContractAbi(abiRegistryCSD, [`XLauncherStaking`]);
+
+    let contractCSD = new SmartContract({
+      address: addressCSD,
+      abi: abiCSD,
+    });
+
+    let interactionCSD = contractCSD.methods.getVariableContractSettings([
+      
+    ]);
+
+    let queryResponseCSD = await contractCSD.runQuery(providerCSD, interactionCSD.buildQuery());
+
+    let responseCSD = interactionCSD.interpretQueryResponse(queryResponseCSD);
+    let myListCSD = responseCSD.firstValue.valueOf();
+    console.log("getVariableContractSettings " + JSON.stringify(myListCSD, null, 2));
+
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const getCientState = async () => {
+  try {
+    let providerCSD = new ProxyProvider("https://devnet-gateway.elrond.com");
+    await NetworkConfig.getDefault().sync(providerCSD);
+
+    let stringAddressCSD = "erd1qqqqqqqqqqqqqpgqj2zawgu92vuvs8xzcna0u7hrsd0xm9whpa7quckxv3";
+    let addressCSD = new Address(stringAddressCSD);
+    
+    let abiRegistryCSD = await AbiRegistry.load({
+      files: ["xlauncher-staking.abi.json"],
+    });
+
+    let abiCSD = new SmartContractAbi(abiRegistryCSD, [`XLauncherStaking`]);
+
+    let contractCSD = new SmartContract({
+      address: addressCSD,
+      abi: abiCSD,
+    });
+
+    let interactionCSD = contractCSD.methods.getCientState([
+      
+    ]);
+
+    let queryResponseCSD = await contractCSD.runQuery(providerCSD, interactionCSD.buildQuery());
+
+    let responseCSD = interactionCSD.interpretQueryResponse(queryResponseCSD);
+    let myListCSD = responseCSD.firstValue.valueOf();
+    console.log("getVariableContractSettings " + JSON.stringify(myListCSD, null, 2));
+
+  } catch (error) {
+    console.log(error);
+  }
+};
