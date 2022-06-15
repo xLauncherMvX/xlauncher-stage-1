@@ -76,7 +76,7 @@ function StakingCard({
   claim, methodC,
   reinvest, methodR,
   lockedRewards, openL, handleOpenL, handleCloseL, 
-  title, lockedTime, myXLH, apr, myRewards, modalFarmName, xlhBalance, isLoggedIn, showInfo, lockedRewardsLabel
+  title, lockedTime, myXLH, apr, myRewards, modalFarmName, xlhBalance, isLoggedIn, showInfo, lockedRewardsLabel, mbv
 }) 
 {  
   const [visible, setVisible] = React.useState(false);  
@@ -239,7 +239,7 @@ function StakingCard({
             {myRewards}
           </VuiTypography>
         </VuiBox>
-        <VuiBox display="flex" justifyContent="space-between" alignItems="center" mb="-8px">
+        <VuiBox display="flex" justifyContent="space-between" alignItems="center" mb={mbv}>
           <VuiTypography component="span" fontSize={14} fontWeight="regular" color="text">
             {lockedRewardsLabel}
           </VuiTypography>

@@ -883,6 +883,7 @@ function Farms() {
             xlhBalance={balanceXLH}     
             modalFarmName="Farm 1"  
             lockedRewardsLabel = "&nbsp;"
+            mbv="11px"
             stake={{
               size: "small",
               color: "info",
@@ -943,6 +944,7 @@ function Farms() {
             xlhBalance={balanceXLH}
             unstakedAmount = {unstakedAmount2}
             lockedRewardsLabel = "My Locked XLH:"
+            mbv="-8px"
             stake={{
               size: "small",
               color: "info",
@@ -1004,6 +1006,7 @@ function Farms() {
             xlhBalance={balanceXLH}
             unstakedAmount = {unstakedAmount3}
             lockedRewardsLabel = "My Locked XLH:"
+            mbv="-8px"
             stake={{
               size: "small",
               color: "info",
