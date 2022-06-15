@@ -28,11 +28,19 @@ import { readFileSync, accessSync, constants, writeFileSync } from "fs";
 
 const app = express();
 
+//Parameters
+let contractAddress = "erd1qqqqqqqqqqqqqpgqj2zawgu92vuvs8xzcna0u7hrsd0xm9whpa7quckxv3";
+let proxyAddress = "https://devnet-gateway.elrond.com";
+let clientAddress = "erd1mhhnd3ux2duwc9824dhelherdj3gvzn04erdw29l8cyr5z8fpa7quda68z";
+
 const port = process.env.PORT || 8080;
 app.listen(port, () => {
   console.log("Hello world listening on port", port);
   // getTournamentInfoList();
-  getVariableContractSettings();
+  // getVariableContractSettings();
+  // getClientState();
+  getClientReport();
+  
 });
 
 async function getTournamentInfoList() {
@@ -100,11 +108,10 @@ async function getTournamentInfoList() {
 
  const getVariableContractSettings = async () => {
   try {
-    let providerCSD = new ProxyProvider("https://devnet-gateway.elrond.com");
+    let providerCSD = new ProxyProvider(proxyAddress);
     await NetworkConfig.getDefault().sync(providerCSD);
 
-    let stringAddressCSD = "erd1qqqqqqqqqqqqqpgqj2zawgu92vuvs8xzcna0u7hrsd0xm9whpa7quckxv3";
-    let addressCSD = new Address(stringAddressCSD);
+    let addressCSD = new Address(contractAddress);
     
     let abiRegistryCSD = await AbiRegistry.load({
       files: ["xlauncher-staking.abi.json"],
@@ -132,13 +139,12 @@ async function getTournamentInfoList() {
   }
 };
 
-const getCientState = async () => {
+const getClientState = async () => {
   try {
-    let providerCSD = new ProxyProvider("https://devnet-gateway.elrond.com");
+    let providerCSD = new ProxyProvider(proxyAddress);
     await NetworkConfig.getDefault().sync(providerCSD);
 
-    let stringAddressCSD = "erd1qqqqqqqqqqqqqpgqj2zawgu92vuvs8xzcna0u7hrsd0xm9whpa7quckxv3";
-    let addressCSD = new Address(stringAddressCSD);
+    let addressCSD = new Address(contractAddress);
     
     let abiRegistryCSD = await AbiRegistry.load({
       files: ["xlauncher-staking.abi.json"],
@@ -151,15 +157,68 @@ const getCientState = async () => {
       abi: abiCSD,
     });
 
-    let interactionCSD = contractCSD.methods.getCientState([
-      
+    let interactionCSD = contractCSD.methods.getClientState([
+      new AddressValue(new Address(clientAddress)),
     ]);
 
     let queryResponseCSD = await contractCSD.runQuery(providerCSD, interactionCSD.buildQuery());
 
     let responseCSD = interactionCSD.interpretQueryResponse(queryResponseCSD);
     let myListCSD = responseCSD.firstValue.valueOf();
-    console.log("getVariableContractSettings " + JSON.stringify(myListCSD, null, 2));
+    console.log("getClientState " + JSON.stringify(myListCSD, null, 2));
+    
+
+    myListCSD.forEach((element) => {
+      let poolId = element.pool_id;
+      let poolAmount = element.pool_amount;
+      let multiplier = 1000000000000000000;
+      let poolAmountF = poolAmount / multiplier;
+
+      console.log("id: " + poolId + " amount: " + poolAmountF);
+    });
+
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const getClientReport = async () => {
+  try {
+    let providerCSD = new ProxyProvider(proxyAddress);
+    await NetworkConfig.getDefault().sync(providerCSD);
+
+    let addressCSD = new Address(contractAddress);
+    
+    let abiRegistryCSD = await AbiRegistry.load({
+      files: ["xlauncher-staking.abi.json"],
+    });
+
+    let abiCSD = new SmartContractAbi(abiRegistryCSD, [`XLauncherStaking`]);
+
+    let contractCSD = new SmartContract({
+      address: addressCSD,
+      abi: abiCSD,
+    });
+
+    let interactionCSD = contractCSD.methods.getClientReport([
+      new AddressValue(new Address(clientAddress)),
+    ]);
+
+    let queryResponseCSD = await contractCSD.runQuery(providerCSD, interactionCSD.buildQuery());
+
+    let responseCSD = interactionCSD.interpretQueryResponse(queryResponseCSD);
+    let myListCSD = responseCSD.firstValue.valueOf();
+    console.log("getClientReport " + JSON.stringify(myListCSD, null, 2));
+    
+
+    // myListCSD.forEach((element) => {
+    //   let poolId = element.pool_id;
+    //   let poolAmount = element.pool_amount;
+    //   let multiplier = 1000000000000000000;
+    //   let poolAmountF = poolAmount / multiplier;
+
+    //   console.log("id: " + poolId + " amount: " + poolAmountF);
+    // });
 
   } catch (error) {
     console.log(error);
