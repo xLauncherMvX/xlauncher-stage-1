@@ -341,14 +341,11 @@ function Farms() {
   clientStateData2.sort((a,b) => a.pool_time_stamp_entry < b.pool_time_stamp_entry? 1 : -1);
   const client2 =  Object.values(clientStateData2).map(person => {
     let amountClient2 = parseFloat(person.pool_amount) / xMultiplier;
-    let amountClient22 = parseFloat(person.pool_amount);
     let amountClient2Formatted = new Intl.NumberFormat("ro-Ro", 
     {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     }).format(amountClient2);
-    // console.log("getClientStatedataItem - Pool id " + person.pool_id);
-    // console.log("getClientStatedataItem - Pool amount " + amountClient2 + "000000000000000000");
     let entryClient2 = (parseFloat(person.pool_time_stamp_entry)  + 5184000) * 1000;
     let date2 = new Date(entryClient2).toLocaleDateString("en-GB", options);
     return (
@@ -434,12 +431,12 @@ function Farms() {
   }
 
   //Calculate the gass limit parameters
-  var countItems1 = Object.keys(clientStateData1).length;
-  var countItems2 = Object.keys(clientStateData2).length;
-  var countItems3 = Object.keys(clientStateData3).length;
-  var coefficient1 = 2.5;
-  var coefficient2 = 2.5;
-  var coefficient3 = 2.5;
+  let countItems1 = Object.keys(clientStateData1).length;
+  let countItems2 = Object.keys(clientStateData2).length;
+  let countItems3 = Object.keys(clientStateData3).length;
+  let coefficient1 = 2.5;
+  let coefficient2 = 2.5;
+  let coefficient3 = 2.5;
   //Change the gass fee limit if there are more than 40 items
   if(countItems1 >= 40){
     coefficient1 = 5;
@@ -462,26 +459,30 @@ function Farms() {
     coefficient3 = 8;
   }
 
-  var hVal = 100000;
-  var mVal = 1000000;
-  var c1 = clientReportData[11];
-  var c2 = clientReportData[13];
-  var c3 = clientReportData[15];
+  let hVal = 100000;
+  let mVal = 1000000;
+  let c1 = clientReportData[11];
+  let c2 = clientReportData[13];
+  let c3 = clientReportData[15];
   if(!c1){
-    c1 = 1;
+    c1 = 0;
   }
   if(!c2){
-    c2 = 1;
+    c2 = 0;
   }
   if(!c3){
-    c3 = 1;
+    c3 = 0;
   }
-  var gasLimit1N = 10 * mVal + (countItems1 * coefficient1 * mVal) + (c1 * hVal);
-  var gasLimit2N = 10 * mVal + (countItems2 * coefficient2 * mVal) + (c2 * hVal);
-  var gasLimit3N = 10 * mVal + (countItems3 * coefficient3 * mVal) + (c3 * hVal);
-  var gasLimit1 = calc0(gasLimit1N);
-  var gasLimit2 = calc0(gasLimit2N);
-  var gasLimit3 = calc0(gasLimit3N);
+  let gasLimit1N = 10 * mVal + (countItems1 * coefficient1 * mVal) + (c1 * hVal);
+  let gasLimit2N = 10 * mVal + (countItems2 * coefficient2 * mVal) + (c2 * hVal);
+  let gasLimit3N = 10 * mVal + (countItems3 * coefficient3 * mVal) + (c3 * hVal);
+  let gasLimit1 = calc0(gasLimit1N);
+  let gasLimit2 = calc0(gasLimit2N);
+  let gasLimit3 = calc0(gasLimit3N);
+
+  console.log("countItems2 " + countItems2);
+  console.log("coefficient2 " + coefficient2);
+  console.log("gasLimit2 " + gasLimit2);
 
   //Stake Function
   const [transactionSessionId, setTransactionSessionId] = React.useState(null);
