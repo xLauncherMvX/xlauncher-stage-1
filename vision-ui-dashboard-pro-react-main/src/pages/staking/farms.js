@@ -341,11 +341,14 @@ function Farms() {
   clientStateData2.sort((a,b) => a.pool_time_stamp_entry < b.pool_time_stamp_entry? 1 : -1);
   const client2 =  Object.values(clientStateData2).map(person => {
     let amountClient2 = parseFloat(person.pool_amount) / xMultiplier;
+    let amountClient22 = parseFloat(person.pool_amount);
     let amountClient2Formatted = new Intl.NumberFormat("ro-Ro", 
     {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     }).format(amountClient2);
+    // console.log("getClientStatedataItem - Pool id " + person.pool_id);
+    // console.log("getClientStatedataItem - Pool amount " + amountClient2 + "000000000000000000");
     let entryClient2 = (parseFloat(person.pool_time_stamp_entry)  + 5184000) * 1000;
     let date2 = new Date(entryClient2).toLocaleDateString("en-GB", options);
     return (
@@ -434,6 +437,30 @@ function Farms() {
   var countItems1 = Object.keys(clientStateData1).length;
   var countItems2 = Object.keys(clientStateData2).length;
   var countItems3 = Object.keys(clientStateData3).length;
+  var coefficient1 = 2.5;
+  var coefficient2 = 2.5;
+  var coefficient3 = 2.5;
+  //Change the gass fee limit if there are more than 40 items
+  if(countItems1 >= 40){
+    coefficient1 = 5;
+  }
+  if(countItems2 >= 40){
+    coefficient2 = 5;
+  }
+  if(countItems3 >= 40){
+    coefficient3 = 5;
+  }
+
+  //Change the gass fee limit if there are more than 100 items
+  if(countItems1 >= 100){
+    coefficient1 = 8;
+  }
+  if(countItems2 >= 100){
+    coefficient2 = 8;
+  }
+  if(countItems3 >= 100){
+    coefficient3 = 8;
+  }
 
   var hVal = 100000;
   var mVal = 1000000;
@@ -449,9 +476,9 @@ function Farms() {
   if(!c3){
     c3 = 1;
   }
-  var gasLimit1N = 10 * mVal + (countItems1 * 2.5 * mVal) + (c1 * hVal);
-  var gasLimit2N = 10 * mVal + (countItems2 * 2.5 * mVal) + (c2 * hVal);
-  var gasLimit3N = 10 * mVal + (countItems3 * 2.5 * mVal) + (c3 * hVal);
+  var gasLimit1N = 10 * mVal + (countItems1 * coefficient1 * mVal) + (c1 * hVal);
+  var gasLimit2N = 10 * mVal + (countItems2 * coefficient2 * mVal) + (c2 * hVal);
+  var gasLimit3N = 10 * mVal + (countItems3 * coefficient3 * mVal) + (c3 * hVal);
   var gasLimit1 = calc0(gasLimit1N);
   var gasLimit2 = calc0(gasLimit2N);
   var gasLimit3 = calc0(gasLimit3N);
@@ -704,7 +731,8 @@ function Farms() {
   //Get unstake time and amount farm 2
   let unstakedAmount2 = 0;
   let unstakedEntry2 = "";
-  let unlockedUnstake2 = true;
+  // TODO: Change to true after testing  
+  let unlockedUnstake2 = false;
   let unlockedTime2 = "Unstake";
   const timestamp = Date.now();
   const options2 = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
@@ -735,7 +763,8 @@ function Farms() {
   //Get unstake time and amount farm 3
   let unstakedAmount3 = 0;
   let unstakedEntry3 = "";
-  let unlockedUnstake3 = true;
+  // TODO: Change to true after testing  
+  let unlockedUnstake3 = false;
   let unlockedTime3 = "Unstake";
   Object.values(clientStateData3).map(item3 => {
     let entry3  = (parseFloat(item3.pool_time_stamp_entry) + 15552000) * 1000;
@@ -865,7 +894,7 @@ function Farms() {
       getClientStateData();
       getClientUnstakeStateData();
     }
-  });
+  }, []);
   
   return (
     <Main name="Staking">

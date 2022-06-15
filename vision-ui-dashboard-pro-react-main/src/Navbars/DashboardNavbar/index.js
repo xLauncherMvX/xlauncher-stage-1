@@ -162,10 +162,6 @@ function DashboardNavbar({ absolute, light, isMini }) {
       console.error(error);
       }
   }
-  if(isLoggedIn) {
-    getBalanceAccount();
-    //console.log("balanceAccount " + balanceAccount);
-  }
       
   let balance = balanceAccount/1000000000000000000;
   if(!balance){
@@ -307,6 +303,15 @@ function DashboardNavbar({ absolute, light, isMini }) {
       </Grid>  
     ;
   }
+
+  //useEffectFunc
+  useEffect(() => {
+    if(isLoggedIn) {
+      getBalanceAccount();
+      //console.log("balanceAccount " + balanceAccount);
+    }
+  }, [balanceAccount]);
+  
 
   return (   
       <>        
