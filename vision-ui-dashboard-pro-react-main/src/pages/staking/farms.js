@@ -54,6 +54,7 @@ import { IoWallet, IoDocumentText } from "react-icons/io5";
 //Ciio custom components
 import Main from "layouts/main";
 import StakingCard from "cards/StakingCard";
+import CompleteUnstakeCard from "cards/CompleteUnstakeCard";
 
 //Elrond
 import {
@@ -251,14 +252,14 @@ function Farms() {
           minimumFractionDigits: 2,
           maximumFractionDigits: 2,
         }).format(farm3RewardsF),
-        totalAmountF, 
-        totalRewardsF,
-        farm1AmountF, 
-        farm1RewardsF, 
-        farm2AmountF, 
-        farm2RewardsF, 
-        farm3AmountF,
-        farm3RewardsF
+        totalAmount, 
+        totalRewards,
+        farm1Amount, 
+        farm1Rewards, 
+        farm2Amount, 
+        farm2Rewards, 
+        farm3Amount,
+        farm3Rewards
       ];
 
       setClientReportData(myReturnList);
@@ -267,6 +268,7 @@ function Farms() {
     }
   };
 
+  const [clientStateData1, setClientStateData1] = useState([]);
   const [clientStateData2, setClientStateData2] = useState([]);
   const [clientStateData3, setClientStateData3] = useState([]);
   const getClientStateData = async () => {
@@ -299,9 +301,13 @@ function Farms() {
       let myListCSD = responseCSD.firstValue.valueOf();
       //console.log("myListCSD " + JSON.stringify(myListCSD, null, 2));
 
+      let pool1 = [];
       let pool2 = [];
       let pool3 = [];
       Object.values(myListCSD).map(element => {
+        if(element["pool_id"] == "1"){
+          pool1.push(element);
+        }
         if(element["pool_id"] == "2"){
           pool2.push(element);
         }
@@ -309,6 +315,7 @@ function Farms() {
           pool3.push(element);
         }
       });   
+      setClientStateData1(pool1); 
       setClientStateData2(pool2); 
       setClientStateData3(pool3); 
 
@@ -319,6 +326,7 @@ function Farms() {
 
   //Processing the data from getClientStatedata function
   const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
+  clientStateData2.sort((a,b) => a.pool_time_stamp_entry < b.pool_time_stamp_entry? 1 : -1);
   const client2 =  Object.values(clientStateData2).map(person => {
     let amountClient2 = parseFloat(person.pool_amount) / xMultiplier;
     let amountClient2Formatted = new Intl.NumberFormat("ro-Ro", 
@@ -344,6 +352,7 @@ function Farms() {
     )
   })
 
+  clientStateData3.sort((a,b) => a.pool_time_stamp_entry < b.pool_time_stamp_entry? 1 : -1);
   const client3 =  Object.values(clientStateData3).map(person3 => {
     let amountClient3 = parseFloat(person3.pool_amount) / xMultiplier;
     let amountClient3Formatted = new Intl.NumberFormat("ro-Ro", 
@@ -409,6 +418,32 @@ function Farms() {
     console.log("balanceXLH " + balanceXLH);
   }
 
+  //Calculate the gass limit parameters
+  var countItems1 = Object.keys(clientStateData1).length;
+  var countItems2 = Object.keys(clientStateData2).length;
+  var countItems3 = Object.keys(clientStateData3).length;
+
+  var hVal = 100000;
+  var mVal = 1000000;
+  var c1 = clientReportData[11];
+  var c2 = clientReportData[13];
+  var c3 = clientReportData[15];
+  if(!c1){
+    c1 = 1;
+  }
+  if(!c2){
+    c2 = 1;
+  }
+  if(!c3){
+    c3 = 1;
+  }
+  var gasLimit1N = 10 * mVal + (countItems1 * 2.5 * mVal) + (c1 * hVal);
+  var gasLimit2N = 10 * mVal + (countItems2 * 2.5 * mVal) + (c2 * hVal);
+  var gasLimit3N = 10 * mVal + (countItems3 * 2.5 * mVal) + (c3 * hVal);
+  var gasLimit1 = calc0(gasLimit1N);
+  var gasLimit2 = calc0(gasLimit2N);
+  var gasLimit3 = calc0(gasLimit3N);
+
   //Stake Function
   const [transactionSessionId, setTransactionSessionId] = React.useState(null);
   const [open1, setOpen1] = useState(false);
@@ -446,7 +481,7 @@ function Farms() {
       value: "0",
       data: SData,
       receiver: xStakeAddress,
-      gasLimit: 20_000_000,
+      gasLimit: 30000000,
     };
 
     await refreshAccount();
@@ -513,7 +548,7 @@ function Farms() {
       value: "0",
       data: UData,
       receiver: xStakeAddress,
-      gasLimit: 20_000_000,
+      gasLimit: 30000000,
     };
 
     await refreshAccount();
@@ -535,7 +570,7 @@ function Farms() {
 
   //Claim Function
    const [transactionSessionIdC, setTransactionSessionIdC] = React.useState(null);
-   const claimXLH = async (farmIdC) => {
+   const claimXLH = async (farmIdC, gasLimitC) => {
     console.log("Formatting claim transaction");
 
     let CData = TransactionPayload.contractCall()
@@ -549,7 +584,7 @@ function Farms() {
       value: "0",
       data: CData,
       receiver: xStakeAddress,
-      gasLimit: 20_000_000,
+      gasLimit: gasLimitC,
     };
 
     await refreshAccount();
@@ -571,7 +606,7 @@ function Farms() {
 
    //Reinvest Function
    const [transactionSessionIdR, setTransactionSessionIdR] = React.useState(null);
-   const reinvestXLH = async (farmIdR) => {
+   const reinvestXLH = async (farmIdR, gasLimitR) => {
     console.log("Formatting reinvest transaction");
 
     let RData = TransactionPayload.contractCall()
@@ -585,7 +620,7 @@ function Farms() {
       value: "0",
       data: RData,
       receiver: xStakeAddress,
-      gasLimit: 20_000_000,
+      gasLimit: gasLimitR,
     };
 
     await refreshAccount();
@@ -621,7 +656,7 @@ function Farms() {
      value: "0",
      data: CUData,
      receiver: xStakeAddress,
-     gasLimit: 20_000_000,
+     gasLimit: 30000000,
    };
 
    await refreshAccount();
@@ -661,7 +696,6 @@ function Farms() {
   let unlockedTime2 = "Unstake";
   const timestamp = Date.now();
   const options2 = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
-  clientStateData2.sort((a,b) => a.pool_time_stamp_entry < b.pool_time_stamp_entry? 1 : -1);
   Object.values(clientStateData2).map(item2 => {
     let entry2  = (parseFloat(item2.pool_time_stamp_entry) + 5184000) * 1000;
     let unlockedTimeItemDays2 = (entry2 - timestamp) / 86400000;
@@ -691,7 +725,6 @@ function Farms() {
   let unstakedEntry3 = "";
   let unlockedUnstake3 = true;
   let unlockedTime3 = "Unstake";
-  clientStateData3.sort((a,b) => a.pool_time_stamp_entry < b.pool_time_stamp_entry? 1 : -1);
   Object.values(clientStateData3).map(item3 => {
     let entry3  = (parseFloat(item3.pool_time_stamp_entry) + 15552000) * 1000;
 
@@ -768,11 +801,16 @@ function Farms() {
         setClaimUnlockedTime("Complete Unstake (" + calc1(unlockedTimeItemCUDays) + "D)");
       } 
 
-      if(entryCU <= timestamp){
-        let AmountCU = parseFloat(myListCUSD.requested_amount) / xMultiplier;
-        setClaimUnstakedAmount(AmountCU);
-        let EntryCUTips = "Available from " + new Date(entryCU).toLocaleDateString("en-GB", options2); 
-        setClaimUnstakedEntry(EntryCUTips);       
+      let AmountCU = parseFloat(myListCUSD.requested_amount) / xMultiplier;
+      let AmountCUF = new Intl.NumberFormat("ro-Ro", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      }).format(AmountCU);
+      setClaimUnstakedAmount(AmountCUF);
+      let EntryCUTips = new Date(entryCU).toLocaleDateString("en-GB", options2); 
+      setClaimUnstakedEntry(EntryCUTips); 
+
+      if(entryCU <= timestamp){              
         setClaimUnlockedUnstake(false);
       } 
     } catch (error) {
@@ -784,13 +822,13 @@ function Farms() {
   let disabledClaim1 = true;
   let disabledClaim2 = true;
   let disabledClaim3 = true;
-  if(clientReportData[11] >= 2){
+  if(clientReportData[11] >= 0){
     disabledClaim1 = false;
   }
-  if(clientReportData[13] >= 2){
+  if(clientReportData[13] >= 0){
     disabledClaim2 = false;
   }
-  if(clientReportData[15] >= 2){
+  if(clientReportData[15] >= 0){
     disabledClaim3 = false;
   }
 
@@ -798,13 +836,13 @@ function Farms() {
   let disabledReinvest1 = true;
   let disabledReinvest2 = true;
   let disabledReinvest3 = true;
-  if(clientReportData[11] >= 2){
+  if(clientReportData[11] >= 0){
     disabledReinvest1 = false;
   }
-  if(clientReportData[13] >= 2){
+  if(clientReportData[13] >= 0){
     disabledReinvest2 = false;
   }
-  if(clientReportData[15] >= 2){
+  if(clientReportData[15] >= 0){
     disabledReinvest3 = false;
   }
 
@@ -817,7 +855,6 @@ function Farms() {
     }
   });
   
-
   return (
     <Main name="Staking">
       <TransactionsToastList />
@@ -825,7 +862,6 @@ function Farms() {
       <SignTransactionsModals className="custom-class-for-modals" />
       <Grid container spacing={3} mb={3}>
         <Grid item xs={12} md={12} lg={12} xl={12}>
-          <VuiTypography size="20px" color="white">Date test</VuiTypography>
           <VuiTypography color="white">
             Xlh Amount:  
             {new Intl.NumberFormat("ro-Ro", {
@@ -846,6 +882,7 @@ function Farms() {
             myRewards={clientReportData[3]}
             xlhBalance={balanceXLH}     
             modalFarmName="Farm 1"  
+            lockedRewardsLabel = "&nbsp;"
             stake={{
               size: "small",
               color: "info",
@@ -872,13 +909,6 @@ function Farms() {
               hint: "Individual rewards can be claimed 10 days after unstake tranzaction",
               disabled: false
             }} 
-            claimUnstake={{
-              size: "small",
-              color: "dark",
-              label: claimUnlockedTime,
-              hint: claimUnstakedEntry,
-              disabled: claimUnlockedUnstake
-            }}     
             methodS = {() => stakeXLH(1, xlhAmountS)}
             maxMethodS = {() => setMaxAmountS()}
             onChangeMethodS = {e => onTodoChangeS(e.target.value)}
@@ -887,20 +917,20 @@ function Farms() {
             handleOpenS = {handleOpen1}
             handleCloseS = {handleClose}
             methodU = {() => unstakeXLH(1, xlhAmountU)}
-            maxMethodU = {() => setMaxAmountU(clientReportData[2])}
+            maxMethodU = {() => setMaxAmountU(clientReportData[10])}
             onChangeMethodU = {e => onTodoChangeU(e.target.value)}
             xlhAmountValueU = {xlhAmountU}
             openU = {openU1}
             handleOpenU = {handleOpenU1}
             handleCloseU = {handleCloseU}
-            methodC = {() => claimXLH(1)}
-            methodR = {() => reinvestXLH(1)}  
+            methodC = {() => claimXLH(1, gasLimit1)}
+            methodR = {() => reinvestXLH(1, gasLimit1)}  
             lockedRewards=""
             openL = {openL1}
             handleOpenL = {handleOpenL1}
             handleCloseL = {handleCloseL}  
-            methodCU = {() => claimUXLH(1)}   
-            isLoggedIn = {isLoggedIn}            
+            isLoggedIn = {isLoggedIn}    
+            showInfo = {false}        
           />
         </Grid>
         <Grid item xs={12} md={6} lg={4} xl={4}>
@@ -912,6 +942,7 @@ function Farms() {
             myRewards={clientReportData[5]}
             xlhBalance={balanceXLH}
             unstakedAmount = {unstakedAmount2}
+            lockedRewardsLabel = "My Locked XLH:"
             stake={{
               size: "small",
               color: "info",
@@ -938,13 +969,6 @@ function Farms() {
               hint: "Individual rewards can be claimed 10 days after unstake tranzaction",
               disabled: unlockedUnstake2
             }}
-            claimUnstake={{
-              size: "small",
-              color: "dark",
-              label: claimUnlockedTime,
-              hint: claimUnstakedEntry,
-              disabled: claimUnlockedUnstake
-            }}  
             modalFarmName="Farm 2"
             methodS = {() => stakeXLH(2, xlhAmountS)}
             maxMethodS = {() => setMaxAmountS()}
@@ -960,14 +984,14 @@ function Farms() {
             openU = {openU2}
             handleOpenU = {handleOpenU2}
             handleCloseU = {handleCloseU}
-            methodC = {() => claimXLH(2)}
-            methodR = {() => reinvestXLH(2)} 
+            methodC = {() => claimXLH(2, gasLimit2)}
+            methodR = {() => reinvestXLH(2, gasLimit2)} 
             lockedRewards={client2}   
             openL = {openL2}
             handleOpenL = {handleOpenL2}
             handleCloseL = {handleCloseL} 
-            methodCU = {() => claimUXLH(2)}
-            isLoggedIn = {isLoggedIn}         
+            isLoggedIn = {isLoggedIn}
+            showInfo = {true}         
           />
         </Grid>
         <Grid item xs={12} md={6} lg={4} xl={4}>
@@ -979,6 +1003,7 @@ function Farms() {
             myRewards={clientReportData[7]}
             xlhBalance={balanceXLH}
             unstakedAmount = {unstakedAmount3}
+            lockedRewardsLabel = "My Locked XLH:"
             stake={{
               size: "small",
               color: "info",
@@ -1005,13 +1030,6 @@ function Farms() {
               hint: "Individual rewards can be claimed 10 days after unstake tranzaction",
               disabled: unlockedUnstake3
             }}
-            claimUnstake={{
-              size: "small",
-              color: "dark",
-              label: claimUnlockedTime,
-              hint: claimUnstakedEntry,
-              disabled: claimUnlockedUnstake
-            }} 
             modalFarmName="Farm 3"
             methodS = {() => stakeXLH(3, xlhAmountS)}
             maxMethodS = {() => setMaxAmountS()}
@@ -1027,18 +1045,34 @@ function Farms() {
             openU = {openU3}
             handleOpenU = {handleOpenU3}
             handleCloseU = {handleCloseU}
-            methodC = {() => claimXLH(3)}
-            methodR = {() => reinvestXLH(3)}
+            methodC = {() => claimXLH(3, gasLimit3)}
+            methodR = {() => reinvestXLH(3, gasLimit3)}
             lockedRewards={client3}   
             openL = {openL3}
             handleOpenL = {handleOpenL3}
             handleCloseL = {handleCloseL}  
-            methodCU = {() => claimUXLH(3)} 
             isLoggedIn = {isLoggedIn}  
+            showInfo = {true}
+          />
+        </Grid>
+      </Grid>   
+      <Grid container spacing={3} mt={2}>
+        <Grid item xs={12} md={6} lg={4} xl={4}>
+          <CompleteUnstakeCard
+            title = "Complete Unstake "
+            lockedTime = "10 days locked"
+            claimUnstakedAmount = {claimUnstakedAmount}
+            claimUnstakedEntry = {claimUnstakedEntry}
+            claimUnstake= {{
+                size: "small",
+                color: "info",
+                label: claimUnlockedTime,
+                disabled: claimUnlockedUnstake
+            }} 
+            methodCU = {() => claimUXLH(3)}
           />
         </Grid>
       </Grid>
-      
     </Main>
   );
 }

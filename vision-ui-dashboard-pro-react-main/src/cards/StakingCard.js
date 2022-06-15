@@ -72,12 +72,11 @@ const style = {
 
 function StakingCard({
   stake, methodS, maxMethodS, onChangeMethodS, xlhAmountValueS, openS, handleOpenS, handleCloseS, 
-  unstake, methodU, maxMethodU, onChangeMethodU, xlhAmountValueU, openU, handleOpenU, handleCloseU, 
+  unstake, methodU, maxMethodU, onChangeMethodU, xlhAmountValueU, openU, handleOpenU, handleCloseU, unstakedAmount,
   claim, methodC,
   reinvest, methodR,
-  claimUnstake, methodCU, unstakedAmount,
   lockedRewards, openL, handleOpenL, handleCloseL, 
-  title, lockedTime, myXLH, apr, myRewards, modalFarmName, xlhBalance, isLoggedIn
+  title, lockedTime, myXLH, apr, myRewards, modalFarmName, xlhBalance, isLoggedIn, showInfo, lockedRewardsLabel
 }) 
 {  
   const [visible, setVisible] = React.useState(false);  
@@ -133,19 +132,17 @@ function StakingCard({
             {stake.label}
           </VuiButton>
         </Grid>
-        <Grid item xs={12} md={6} lg={6}>
-          <Tooltip key="claim" title={claim.hint} placement="bottom">
-            <VuiButton
-              color={claim.color}
-              size={claim.size}
-              sx={{ minWidth: "90px" }}
-              onClick={methodC}
-              fullWidth
-              disabled={claim.disabled}
-            >
-              {claim.label}
-            </VuiButton>
-          </Tooltip>
+        <Grid item xs={12} md={6} lg={6}>          
+          <VuiButton
+            color={claim.color}
+            size={claim.size}
+            sx={{ minWidth: "90px" }}
+            onClick={methodC}
+            fullWidth
+            disabled={claim.disabled}
+          >
+            {claim.label}
+          </VuiButton>          
         </Grid>     
       </Grid>
     ;
@@ -177,6 +174,17 @@ function StakingCard({
           </Tooltip>
         </Grid>     
       </Grid>
+    ;
+  }
+
+  let infoModalSection = "";
+  if(showInfo){
+    infoModalSection = 
+    <Tooltip key="modale" title="Open" placement="bottom">
+      <IconButton onClick={handleOpenL}>          
+        <FontAwesomeIcon fontSize={"medium"} icon={faCircleInfo} color="white"/>
+      </IconButton>
+    </Tooltip>
     ;
   }
 
@@ -233,58 +241,38 @@ function StakingCard({
         </VuiBox>
         <VuiBox display="flex" justifyContent="space-between" alignItems="center" mb="-8px">
           <VuiTypography component="span" fontSize={14} fontWeight="regular" color="text">
-            My Locked XLH:
+            {lockedRewardsLabel}
           </VuiTypography>
-          <IconButton onClick={handleOpenL}>          
-            <FontAwesomeIcon fontSize={"medium"} icon={faCircleInfo} color="white"/>
-          </IconButton>
+          {infoModalSection}
         </VuiBox>
         <Divider light />
         {buttonsLoggedInSection}
         {visible && 
           <Grid container spacing={1} mt={0}>   
             <Grid item xs={12} md={6} lg={6}>
-              <Tooltip key="reinvest" title={reinvest.hint} placement="bottom">
-                <VuiButton
-                  color={reinvest.color}
-                  size={reinvest.size}
-                  sx={{ minWidth: "90px" }}
-                  onClick={methodR}
-                  fullWidth
-                  disabled={reinvest.disabled}
-                >
-                  {reinvest.label}
-                </VuiButton>
-              </Tooltip>
+              <VuiButton
+                color={reinvest.color}
+                size={reinvest.size}
+                sx={{ minWidth: "90px" }}
+                onClick={methodR}
+                fullWidth
+                disabled={reinvest.disabled}
+              >
+                {reinvest.label}
+              </VuiButton>              
             </Grid>         
-            <Grid item xs={12} md={6} lg={6}>
-              <Tooltip key="unstake" title={unstake.hint} placement="bottom">
-                <VuiButton
-                  color={unstake.color}
-                  size={unstake.size}
-                  sx={{ minWidth: "90px" }}
-                  onClick={handleOpenU}
-                  fullWidth
-                  disabled={unstake.disabled}
-                >
-                  {unstake.label}
-                </VuiButton>
-              </Tooltip>
-            </Grid>
-            <Grid item xs={12} md={6} lg={6}>
-              <Tooltip key="claimUnstake" title={claimUnstake.hint} placement="bottom">
-                <VuiButton
-                  color={claimUnstake.color}
-                  size={claimUnstake.size}
-                  sx={{ minWidth: "90px" }}
-                  onClick={methodCU}
-                  fullWidth
-                  disabled={claimUnstake.disabled}
-                >
-                  {claimUnstake.label}
-                </VuiButton>
-              </Tooltip>
-            </Grid>
+            <Grid item xs={12} md={6} lg={6}>              
+              <VuiButton
+                color={unstake.color}
+                size={unstake.size}
+                sx={{ minWidth: "90px" }}
+                onClick={handleOpenU}
+                fullWidth
+                disabled={unstake.disabled}
+              >
+                {unstake.label}
+              </VuiButton>              
+            </Grid>            
           </Grid>
         }
         {/* Modal Stake */}
