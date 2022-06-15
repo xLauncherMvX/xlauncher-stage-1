@@ -126,7 +126,8 @@ claim() {
 
 unstake() {
   pool_id="2"
-  amount="1000${MY_DECIMALS}"
+  #amount="1000${MY_DECIMALS}"
+  amount="94000${MY_DECIMALS}"
   erdpy --verbose contract call ${ADDRESS} --recall-nonce \
     --pem=${PEM_FILE} \
     --gas-limit=8000000 \
