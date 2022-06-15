@@ -81,10 +81,10 @@ updateContract() {
 fundContract() {
   method_name="0x$(echo -n 'fundContract' | xxd -p -u | tr -d '\n')"
   token_id="0x$(echo -n ${TOKEN_ID} | xxd -p -u | tr -d '\n')"
-  amount="1${MY_DECIMALS}"
+  amount="1000${MY_DECIMALS}"
   erdpy --verbose contract call ${ADDRESS} --recall-nonce \
     --pem=${PEM_FILE} \
-    --gas-limit=4000000 \
+    --gas-limit=5000000 \
     --proxy=${PROXY} --chain=${CHAINID} \
     --function="ESDTTransfer" \
     --arguments $token_id $amount $method_name \
@@ -124,10 +124,12 @@ claim() {
     --outfile="${MY_LOGS}/claim-${ENV_LOGS}.json"
 }
 
+
+
 unstake() {
   pool_id="2"
-  #amount="1000${MY_DECIMALS}"
-  amount="94000${MY_DECIMALS}"
+  amount="1000${MY_DECIMALS}"
+  #amount="94000${MY_DECIMALS}"
   erdpy --verbose contract call ${ADDRESS} --recall-nonce \
     --pem=${PEM_FILE} \
     --gas-limit=8000000 \
@@ -137,6 +139,16 @@ unstake() {
     --send \
     --outfile="${MY_LOGS}/unstake-${ENV_LOGS}.json"
 }
+
+claimUnstakedValue() {
+   erdpy --verbose contract call ${ADDRESS} --recall-nonce \
+     --pem=${PEM_FILE} \
+     --gas-limit=8000000 \
+     --proxy=${PROXY} --chain=${CHAINID} \
+     --function="claimUnstakedValue" \
+     --send \
+     --outfile="${MY_LOGS}/claimUnstakedValue-${ENV_LOGS}.json"
+ }
 
 getClientReport() {
   # erdpy wallet bech32 --decode erd1mhhnd3ux2duwc9824dhelherdj3gvzn04erdw29l8cyr5z8fpa7quda68z
@@ -271,7 +283,7 @@ appendPeriod5PoolSettings() {
 
 updateUnstakeLockSpan(){
   # 60 * 5 = 300 (5 minutes)
-  UNSTAKE_LOCK_SPAN="300"
+  UNSTAKE_LOCK_SPAN="1"
   erdpy --verbose contract call ${ADDRESS} --recall-nonce \
       --pem=${PEM_FILE} \
       --gas-limit=8000000 \
