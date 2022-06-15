@@ -80,6 +80,13 @@ import logoSpotify from "assets/images/small-logos/logo-spotify.svg";
 //Elrond
 import { DappProvider, DappUI, logout, useGetAccountInfo } from '@elrondnetwork/dapp-core';
 import { Typography } from '@mui/material';
+import xConfigs from 'configs/envConfig.json';
+
+function calc2(theform) {
+  var with2Decimals = theform.toString().match(/^-?\d+(?:\.\d{0,2})?/)[0];
+  var value = with2Decimals;
+  return value;
+}
 
 function DashboardNavbar({ absolute, light, isMini }) {
   
@@ -117,6 +124,15 @@ function DashboardNavbar({ absolute, light, isMini }) {
 
   const handleMiniSidenav = () => setMiniSidenav(dispatch, !miniSidenav);
 
+  //Config Variables
+  let xProvider = xConfigs['provider'];
+  let xToken = xConfigs["token"];
+  let xStakeAddress = xConfigs["stakeAddress"];
+  let xApiLink = xConfigs["apiLink"];
+  let xApiResponse = xConfigs["apiResponse"];
+  let xPresaleAddress = xConfigs["presaleAddress"];
+  let xOldStakeAddress = xConfigs["oldStakeAddress"];
+
   //Elrond login
   const { address, account } = useGetAccountInfo();
   const isLoggedIn = Boolean(address);
@@ -129,7 +145,32 @@ function DashboardNavbar({ absolute, light, isMini }) {
     ExtensionLoginButton
   } = DappUI;
 
-  const [dataAccount, setDataAccount] = useState([]);
+  //Get Account Balance
+  const [balanceAccount, setBalanceAccount] = useState([0]); 
+  const customApi = xApiLink+address+'/tokens/'+xToken;
+
+  const getBalanceAccount = async () => {
+      try {
+      const response = await fetch(customApi, { 
+          headers: {
+              'Accept': 'application/json',
+          }
+      });
+      const json = await response.json();
+      setBalanceAccount(json.balance);
+      } catch (error) {
+      console.error(error);
+      }
+  }
+  if(isLoggedIn) {
+    getBalanceAccount();
+    //console.log("balanceAccount " + balanceAccount);
+  }
+      
+  var balanceXLH = calc2(balanceAccount/1000000000000000000);
+  if(!balanceXLH){
+    balanceXLH = 0;
+  }
 
 
 
@@ -228,31 +269,63 @@ function DashboardNavbar({ absolute, light, isMini }) {
     </VuiButton>
   );
 
-  let xlhAccount = isLoggedIn ? (
-    ""
-  ):(
-    ""
-  );
+  var fls = address.slice(0,6);
+  var lls = address.slice(55,62);
+
+  let accountInfoSection = "";
+  if(isLoggedIn){
+    accountInfoSection = 
+      <Grid container spacing={1} mt={2}> 
+        <Grid item xs={12} sm={12} md={6} lg={8}> 
+
+        </Grid>
+        <Grid item xs={6} sm={6} md={3} lg={2}>
+          <VuiButton
+            variant="gradient"
+            color="info"
+            fullWidth
+          >
+            <VuiTypography color="white" variant="body2">              
+              {fls} ... {lls}
+            </VuiTypography>
+          </VuiButton>   
+        </Grid>
+        <Grid item xs={6} sm={6} md={3} lg={2}> 
+          <VuiButton
+            variant="gradient"
+            color="info"
+            fullWidth
+          >
+            <VuiTypography color="white" variant="body2">              
+              {new Intl.NumberFormat("ro-Ro", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              }).format(balanceXLH)} &nbsp; XLH
+            </VuiTypography>
+          </VuiButton>   
+        </Grid>
+      </Grid>  
+    ;
+  }
 
   return (   
-      <>
-        
-          <Grid container spacing={1} > 
-            <Grid item xs={12} sm={12} md={6} lg={8}> 
+      <>        
+        <Grid container spacing={1}> 
+          <Grid item xs={12} sm={12} md={6} lg={8}> 
 
-            </Grid>
-            <Grid item xs={6} sm={6} md={3} lg={2}>  
-              <VuiButton fullWidth variant="outlined" color="light" size="small" onClick={handleMiniSidenav} sx={{ minWidth: 140}}>
-                <Icon>{miniSidenav ? "menu_open" : "menu"}</Icon>&nbsp;
-                Menu
-              </VuiButton>
-            </Grid> 
-            <Grid item xs={6} sm={6} md={3} lg={2}>  
-              {connectButton}  
-            </Grid>            
-            {connectLoggedinSection}   
+          </Grid>
+          <Grid item xs={6} sm={6} md={3} lg={2}>  
+            <VuiButton fullWidth variant="outlined" color="light" size="small" onClick={handleMiniSidenav} sx={{ minWidth: 140}}>
+              <Icon>{miniSidenav ? "menu_open" : "menu"}</Icon>&nbsp;
+              Menu
+            </VuiButton>
           </Grid> 
-                 
+          <Grid item xs={6} sm={6} md={3} lg={2}>  
+            {connectButton}  
+          </Grid>          
+          {connectLoggedinSection}   
+        </Grid>   
+        {accountInfoSection}
       </>
   );
 }

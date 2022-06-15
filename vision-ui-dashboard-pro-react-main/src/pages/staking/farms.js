@@ -860,17 +860,6 @@ function Farms() {
       <TransactionsToastList />
       <NotificationModal />
       <SignTransactionsModals className="custom-class-for-modals" />
-      <Grid container spacing={3} mb={3}>
-        <Grid item xs={12} md={12} lg={12} xl={12}>
-          <VuiTypography color="white">
-            Xlh Amount:  
-            {new Intl.NumberFormat("ro-Ro", {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            }).format(balanceXLH)}
-          </VuiTypography>
-        </Grid>
-      </Grid>
       <Grid container spacing={3}>
         <Grid item xs={12} md={6} lg={4} xl={4}>
           <StakingCard

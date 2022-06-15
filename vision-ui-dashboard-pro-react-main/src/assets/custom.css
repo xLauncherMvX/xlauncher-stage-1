@@ -148,3 +148,10 @@ dapp-core-ui-component .btn-primary:active {
 .modal-open .modal{
     overflow: auto !important;  
 }
+.xlh-display{
+    border: 1px solid white;
+    padding: 0.5rem 2rem;
+    border-radius: 1.25rem;
+    background-color: #060b28f0;
+    color: white;
+}
