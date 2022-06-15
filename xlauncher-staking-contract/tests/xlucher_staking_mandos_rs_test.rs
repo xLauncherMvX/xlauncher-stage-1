@@ -118,3 +118,8 @@ fn multi_users_ex_1() {
 fn when_time_passes_ex_1() {
     elrond_wasm_debug::mandos_rs("mandos/08-get-client-report-as-time-passes-ex-1.scen.json", world());
 }
+
+#[test]
+fn t_16_unstake_all_case_2() {
+    elrond_wasm_debug::mandos_rs("mandos/16-unstake-all-case-2.scen.json", world());
+}

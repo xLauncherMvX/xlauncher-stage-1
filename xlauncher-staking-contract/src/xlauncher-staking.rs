@@ -190,6 +190,7 @@ pub trait XLauncherStaking {
         total_amount: BigUint,
         requested_amount: BigUint,
     ) {
+        sc_print!("total unstake amount = {}", total_amount.clone());
         let client = self.blockchain().get_caller();
         let settings = self.variable_contract_settings().get();
         let unstake_lock_span: u64 = settings.unstake_lock_span;
