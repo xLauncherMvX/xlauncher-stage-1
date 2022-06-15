@@ -63,33 +63,7 @@
         "refund": "*"
       }
     },
-    {
-      "step": "scCall",
-      "txId": "appendPoolSettings-new-id",
-      "tx": {
-        "from": "address:owner",
-        "to": "sc:xlauncher-staking",
-        "function": "appendPoolSettings",
-        "value": "0",
-        "gasLimit": "100,000,000",
-        "gasPrice": "0",
-        "arguments": [
-          "2",
-          "31536000",
-          "63072000",
-          "100",
-          "200",
-          "400"
-        ]
-      },
-      "expect": {
-        "out": [],
-        "status": "0",
-        "message": "",
-        "gas": "*",
-        "refund": "*"
-      }
-    },
+
     {
       "step": "setState",
       "currentBlockInfo": {
