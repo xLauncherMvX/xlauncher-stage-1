@@ -29,27 +29,29 @@ import { readFileSync, accessSync, constants, writeFileSync } from "fs";
 const app = express();
 
 //Parameters
-let contractAddress = "erd1qqqqqqqqqqqqqpgqj2zawgu92vuvs8xzcna0u7hrsd0xm9whpa7quckxv3";
+//let contractAddress =  "erd1qqqqqqqqqqqqqpgq60rugu3m57kvx0n6wqv53y3tuzzyl602pa7qefp8ar"; // 1 periods
+let contractAddress =  "erd1qqqqqqqqqqqqqpgqqxc37qvrcg8r3y2edlqm9n7uzht0jwtkpa7qhkcw64"; // 2 periods
+
+
 let proxyAddress = "https://devnet-gateway.elrond.com";
-let clientAddress = "erd1mhhnd3ux2duwc9824dhelherdj3gvzn04erdw29l8cyr5z8fpa7quda68z";
+let clientAddress =
+  "erd1mhhnd3ux2duwc9824dhelherdj3gvzn04erdw29l8cyr5z8fpa7quda68z";
 
 const port = process.env.PORT || 8080;
 app.listen(port, () => {
   console.log("Hello world listening on port", port);
-  // getVariableContractSettings();
-   getClientState();
-  //getClientReport();
-  
+  //  getVariableContractSettings();
+  getClientState();
+  getClientReport();
 });
 
-
- const getVariableContractSettings = async () => {
+const getVariableContractSettings = async () => {
   try {
     let providerCSD = new ProxyProvider(proxyAddress);
     await NetworkConfig.getDefault().sync(providerCSD);
 
     let addressCSD = new Address(contractAddress);
-    
+
     let abiRegistryCSD = await AbiRegistry.load({
       files: ["xlauncher-staking.abi.json"],
     });
@@ -61,16 +63,18 @@ app.listen(port, () => {
       abi: abiCSD,
     });
 
-    let interactionCSD = contractCSD.methods.getVariableContractSettings([
-      
-    ]);
+    let interactionCSD = contractCSD.methods.getVariableContractSettings([]);
 
-    let queryResponseCSD = await contractCSD.runQuery(providerCSD, interactionCSD.buildQuery());
+    let queryResponseCSD = await contractCSD.runQuery(
+      providerCSD,
+      interactionCSD.buildQuery()
+    );
 
     let responseCSD = interactionCSD.interpretQueryResponse(queryResponseCSD);
     let myListCSD = responseCSD.firstValue.valueOf();
-    console.log("getVariableContractSettings " + JSON.stringify(myListCSD, null, 2));
-
+    console.log(
+      "getVariableContractSettings " + JSON.stringify(myListCSD, null, 2)
+    );
   } catch (error) {
     console.log(error);
   }
@@ -82,7 +86,7 @@ const getClientState = async () => {
     await NetworkConfig.getDefault().sync(providerCSD);
 
     let addressCSD = new Address(contractAddress);
-    
+
     let abiRegistryCSD = await AbiRegistry.load({
       files: ["xlauncher-staking.abi.json"],
     });
@@ -98,12 +102,14 @@ const getClientState = async () => {
       new AddressValue(new Address(clientAddress)),
     ]);
 
-    let queryResponseCSD = await contractCSD.runQuery(providerCSD, interactionCSD.buildQuery());
+    let queryResponseCSD = await contractCSD.runQuery(
+      providerCSD,
+      interactionCSD.buildQuery()
+    );
 
     let responseCSD = interactionCSD.interpretQueryResponse(queryResponseCSD);
     let myListCSD = responseCSD.firstValue.valueOf();
     console.log("getClientState " + JSON.stringify(myListCSD, null, 2));
-    
 
     myListCSD.forEach((element) => {
       let poolId = element.pool_id;
@@ -113,7 +119,6 @@ const getClientState = async () => {
 
       console.log("id: " + poolId + " amount: " + poolAmountF);
     });
-
   } catch (error) {
     console.log(error);
   }
@@ -125,7 +130,7 @@ const getClientReport = async () => {
     await NetworkConfig.getDefault().sync(providerCSD);
 
     let addressCSD = new Address(contractAddress);
-    
+
     let abiRegistryCSD = await AbiRegistry.load({
       files: ["xlauncher-staking.abi.json"],
     });
@@ -141,12 +146,14 @@ const getClientReport = async () => {
       new AddressValue(new Address(clientAddress)),
     ]);
 
-    let queryResponseCSD = await contractCSD.runQuery(providerCSD, interactionCSD.buildQuery());
+    let queryResponseCSD = await contractCSD.runQuery(
+      providerCSD,
+      interactionCSD.buildQuery()
+    );
 
     let responseCSD = interactionCSD.interpretQueryResponse(queryResponseCSD);
     let myListCSD = responseCSD.firstValue.valueOf();
     console.log("getClientReport " + JSON.stringify(myListCSD, null, 2));
-    
 
     // myListCSD.forEach((element) => {
     //   let poolId = element.pool_id;
@@ -156,7 +163,6 @@ const getClientReport = async () => {
 
     //   console.log("id: " + poolId + " amount: " + poolAmountF);
     // });
-
   } catch (error) {
     console.log(error);
   }
