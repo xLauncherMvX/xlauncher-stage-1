@@ -104,6 +104,7 @@ function calc2(theform) {
   return value;
 }
 
+
 function Farms() {
   //Config Variables
   let xProvider = xConfigs['provider'];
@@ -113,6 +114,17 @@ function Farms() {
   let xApiResponse = xConfigs["apiResponse"];
   let xPresaleAddress = xConfigs["presaleAddress"];
   let xOldStakeAddress = xConfigs["oldStakeAddress"];
+
+  //Disable cookies
+  if(!document.__defineGetter__) {
+    Object.defineProperty(document, 'cookie', {
+        get: function(){return ''},
+        set: function(){return true},
+    });
+    } else {
+        document.__defineGetter__("cookie", function() { return '';} );
+        document.__defineSetter__("cookie", function() {} );
+    }
 
   //Elrond login
   const { address, account } = useGetAccountInfo();

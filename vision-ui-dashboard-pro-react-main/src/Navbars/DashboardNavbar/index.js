@@ -167,11 +167,11 @@ function DashboardNavbar({ absolute, light, isMini }) {
     //console.log("balanceAccount " + balanceAccount);
   }
       
-  var balanceXLH = calc2(balanceAccount/1000000000000000000);
-  if(!balanceXLH){
-    balanceXLH = 0;
+  let balance = balanceAccount/1000000000000000000;
+  if(!balance){
+    balance = 0;
   }
-
+  var balanceXLH = calc2(balance);
 
 
   let connectSection = timeToConnect ? (
