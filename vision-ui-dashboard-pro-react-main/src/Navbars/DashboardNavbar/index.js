@@ -113,13 +113,13 @@ function DashboardNavbar({ absolute, light, isMini }) {
      The event listener that's calling the handleTransparentNavbar function when 
      scrolling the window.
     */
-    //window.addEventListener("scroll", handleTransparentNavbar);
+    window.addEventListener("scroll", handleTransparentNavbar);
 
     // Call the handleTransparentNavbar function to set the state with the initial value.
     handleTransparentNavbar();
 
     // Remove event listener on cleanup
-    //return () => window.removeEventListener("scroll", handleTransparentNavbar);
+    return () => window.removeEventListener("scroll", handleTransparentNavbar);
   }, [dispatch, fixedNavbar]);
 
   const handleMiniSidenav = () => setMiniSidenav(dispatch, !miniSidenav);
@@ -171,7 +171,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
 
 
   let connectSection = timeToConnect ? (
-    <>
+    <React.Fragment>
     <Grid container alignContent={'center'} mt={4} mb={4}>
         <Grid item xs={12} sm={12} md={4} lg={4}>
 
@@ -230,7 +230,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
           </Box>
         </Grid>
       </Grid>
-    </>
+    </React.Fragment>
   ) : (
     ""
   );
@@ -314,24 +314,24 @@ function DashboardNavbar({ absolute, light, isMini }) {
   
 
   return (   
-      <>        
-        <Grid container spacing={1}> 
-          <Grid item xs={12} sm={12} md={6} lg={8}> 
+    <React.Fragment>       
+      <Grid container spacing={1}> 
+        <Grid item xs={12} sm={12} md={6} lg={8}> 
 
-          </Grid>
-          <Grid item xs={6} sm={6} md={3} lg={2}>  
-            <VuiButton fullWidth variant="outlined" color="light" size="small" onClick={handleMiniSidenav} sx={{ minWidth: 140}}>
-              <Icon>{miniSidenav ? "menu_open" : "menu"}</Icon>&nbsp;
-              Menu
-            </VuiButton>
-          </Grid> 
-          <Grid item xs={6} sm={6} md={3} lg={2}>  
-            {connectButton}  
-          </Grid>          
-          {connectLoggedinSection}   
-        </Grid>   
-        {accountInfoSection}
-      </>
+        </Grid>
+        <Grid item xs={6} sm={6} md={3} lg={2}>  
+          <VuiButton fullWidth variant="outlined" color="light" size="small" onClick={handleMiniSidenav} sx={{ minWidth: 140}}>
+            <Icon>{miniSidenav ? "menu_open" : "menu"}</Icon>&nbsp;
+            Menu
+          </VuiButton>
+        </Grid> 
+        <Grid item xs={6} sm={6} md={3} lg={2}>  
+          {connectButton}  
+        </Grid>          
+        {connectLoggedinSection}   
+      </Grid>   
+      {accountInfoSection}
+    </React.Fragment>
   );
 }
 

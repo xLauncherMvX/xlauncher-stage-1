@@ -160,18 +160,16 @@ function StakingCard({
             {stake.label}
           </VuiButton>
         </Grid>
-        <Grid item xs={12} md={6} lg={6}>
-          <Tooltip key="claim" title={claim.hint} placement="bottom">
-            <VuiButton
-              color={claim.color}
-              size={claim.size}
-              sx={{ minWidth: "90px" }}
-              fullWidth
-              disabled
-            >
-              {claim.label}
-            </VuiButton>
-          </Tooltip>
+        <Grid item xs={12} md={6} lg={6}>          
+          <VuiButton
+            color={claim.color}
+            size={claim.size}
+            sx={{ minWidth: "90px" }}
+            fullWidth
+            disabled
+          >
+            {claim.label}
+          </VuiButton>          
         </Grid>     
       </Grid>
     ;
@@ -291,7 +289,7 @@ function StakingCard({
             <Box sx={style}>
               <VuiBox sx={{ minHeight: "250px" }} className="farm-card">
                 <VuiBox display="flex" mb="12px" alignItems="center">
-                  <Tooltip key="logo" title="XLH" placement="bottom">
+                  <Tooltip key="logox" title="XLH" placement="bottom">
                     <XLauncherLogo className='xlh-logo-stake'/>
                   </Tooltip>
                   <VuiBox ml="16px" display="flex" flexDirection="column" lineHeight={0}>

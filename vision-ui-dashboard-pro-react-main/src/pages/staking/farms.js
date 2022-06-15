@@ -348,8 +348,10 @@ function Farms() {
     }).format(amountClient2);
     let entryClient2 = (parseFloat(person.pool_time_stamp_entry)  + 5184000) * 1000;
     let date2 = new Date(entryClient2).toLocaleDateString("en-GB", options);
+    let keyItem = person.pool_id.toString() + person.pool_amount.toString() +
+     person.pool_time_stamp_last_collection.toString() + person.pool_amount.toString();
     return (
-      <Grid container spacing={1} justifyContent="space-around">
+      <Grid container spacing={1} justifyContent="space-around" key={keyItem}>
         <Grid item xs={4}>
           <VuiTypography component="span" fontSize={12} fontWeight="regular" color="white">
            {amountClient2Formatted} &nbsp; 
@@ -374,8 +376,10 @@ function Farms() {
     }).format(amountClient3);
     let entryClient3 = (parseFloat(person3.pool_time_stamp_entry)  + 15552000) * 1000;
     let date3 = new Date(entryClient3).toLocaleDateString("en-GB", options);
+    let keyItem3 = person3.pool_id.toString() + person3.pool_amount.toString() +
+     person3.pool_time_stamp_last_collection.toString() + person3.pool_amount.toString();
     return (
-      <Grid container spacing={1} justifyContent="space-around">
+      <Grid container spacing={1} justifyContent="space-around" key={keyItem3}>
         <Grid item xs={4}>
           <VuiTypography component="span" fontSize={12} fontWeight="regular" color="white">
            {amountClient3Formatted} &nbsp; 
@@ -434,30 +438,6 @@ function Farms() {
   let countItems1 = Object.keys(clientStateData1).length;
   let countItems2 = Object.keys(clientStateData2).length;
   let countItems3 = Object.keys(clientStateData3).length;
-  let coefficient1 = 2.5;
-  let coefficient2 = 2.5;
-  let coefficient3 = 2.5;
-  //Change the gass fee limit if there are more than 40 items
-  if(countItems1 >= 40){
-    coefficient1 = 5;
-  }
-  if(countItems2 >= 40){
-    coefficient2 = 5;
-  }
-  if(countItems3 >= 40){
-    coefficient3 = 5;
-  }
-
-  //Change the gass fee limit if there are more than 100 items
-  if(countItems1 >= 100){
-    coefficient1 = 8;
-  }
-  if(countItems2 >= 100){
-    coefficient2 = 8;
-  }
-  if(countItems3 >= 100){
-    coefficient3 = 8;
-  }
 
   let hVal = 100000;
   let mVal = 1000000;
@@ -473,16 +453,30 @@ function Farms() {
   if(!c3){
     c3 = 0;
   }
-  let gasLimit1N = 10 * mVal + (countItems1 * coefficient1 * mVal) + (c1 * hVal);
-  let gasLimit2N = 10 * mVal + (countItems2 * coefficient2 * mVal) + (c2 * hVal);
-  let gasLimit3N = 10 * mVal + (countItems3 * coefficient3 * mVal) + (c3 * hVal);
+  var gasLimit1N = 10 * mVal + (countItems1 * 2.5 * mVal) + (c1 * hVal);
+  var gasLimit2N = 10 * mVal + (countItems2 * 2.5 * mVal) + (c2 * hVal);
+  var gasLimit3N = 10 * mVal + (countItems3 * 2.5 * mVal) + (c3 * hVal);
+  if(countItems1 >= 40){
+    gasLimit1N = 10 * mVal + (countItems1 * 5 * mVal) + (c1 * hVal);
+  }
+  if(countItems1 >= 70){
+    gasLimit1N = 10 * mVal + (countItems1 * 8 * mVal) + (c1 * hVal);
+  }
+  if(countItems2 >= 40){
+    gasLimit2N = 10 * mVal + (countItems2 * 5 * mVal) + (c2 * hVal);
+  }
+  if(countItems2 >= 70){
+    gasLimit2N = 10 * mVal + (countItems2 * 8 * mVal) + (c2 * hVal);
+  }
+  if(countItems3 >= 40){
+    gasLimit3N = 10 * mVal + (countItems3 * 5 * mVal) + (c3 * hVal);
+  }
+  if(countItems3 >= 70){
+    gasLimit3N = 10 * mVal + (countItems3 * 8 * mVal) + (c3 * hVal);
+  }
   let gasLimit1 = calc0(gasLimit1N);
   let gasLimit2 = calc0(gasLimit2N);
   let gasLimit3 = calc0(gasLimit3N);
-
-  console.log("countItems2 " + countItems2);
-  console.log("coefficient2 " + coefficient2);
-  console.log("gasLimit2 " + gasLimit2);
 
   //Stake Function
   const [transactionSessionId, setTransactionSessionId] = React.useState(null);

@@ -1,6 +1,6 @@
 {
     "environment": "devnet",
-    "stakeAddress": "erd1qqqqqqqqqqqqqpgqj09k2dfujmj8x2sq32pl5px4uqclj9llpa7qqmehd2",
+    "stakeAddress": "erd1qqqqqqqqqqqqqpgq60rugu3m57kvx0n6wqv53y3tuzzyl602pa7qefp8ar",
     "provider": "https://devnet-gateway.elrond.com",
     "token": "XLH-cb26c7",
     "apiLink": "https://devnet-api.elrond.com/accounts/",
