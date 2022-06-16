@@ -45,6 +45,44 @@ setEnvDevnet() {
 
 }
 
+
+setEnvTestnet() {
+  PULL_A_ID="1"
+  PULL_A_LOCKING_TIME_SPAN="0"
+  APY_A0_ID="1"
+  APY_A0_START=$(date -d '2022-05-12 00:00:01' +"%s")
+  APY_A0_END=$(date -d '2022-07-04 00:00:00' +"%s")
+  APY_A0_APY="4000"
+
+  PULL_B_ID="2"
+  #PULL_B_LOCKING_TIME_SPAN="5184000"
+  PULL_B_LOCKING_TIME_SPAN="300"
+  APY_B0_ID="1"
+  APY_B0_START=$(date -d '2022-05-12 00:00:01' +"%s")
+  APY_B0_END=$(date -d '2022-07-04 00:00:00' +"%s")
+  APY_B0_APY="11000"
+
+  PULL_C_ID="3"
+  #PULL_C_LOCKING_TIME_SPAN="15552000"
+  PULL_C_LOCKING_TIME_SPAN="600"
+  APY_C0_ID="1"
+  APY_C0_START=$(date -d '2022-05-12 00:00:01' +"%s")
+  APY_C0_END=$(date -d '2022-07-04 00:00:00' +"%s")
+  APY_C0_APY="18000"
+
+  cp -f erdpy.data-storage-testnet.json erdpy.data-storage.json
+  CURRENT_ENV="testnet"
+  PEM_FILE="${PROJECT}/../../wallets/users/testnet_owner_wallet.pem"
+  ADDRESS=$(erdpy data load --key=address-devnet)
+  PROXY=https://devnet-gateway.elrond.com
+  CHAINID=D
+  ENV_LOGS="testnet"
+  TOKEN_ID="XLH-b7f529"
+  TOKEN_ID_HEX=$(echo -n ${TOKEN_ID} | xxd -p)
+
+
+}
+
 printCurrentEnv() {
   echo ${CURRENT_ENV}
 }
@@ -81,7 +119,7 @@ updateContract() {
 fundContract() {
   method_name="0x$(echo -n 'fundContract' | xxd -p -u | tr -d '\n')"
   token_id="0x$(echo -n ${TOKEN_ID} | xxd -p -u | tr -d '\n')"
-  amount="1000${MY_DECIMALS}"
+  amount="100000${MY_DECIMALS}"
   erdpy --verbose contract call ${ADDRESS} --recall-nonce \
     --pem=${PEM_FILE} \
     --gas-limit=5000000 \
@@ -90,6 +128,20 @@ fundContract() {
     --arguments $token_id $amount $method_name \
     --send \
     --outfile="${MY_LOGS}/fundContract-${ENV_LOGS}.json"
+}
+
+
+updateUnstakeLockSpan(){
+  # 60 * 5 = 300 (5 minutes)
+  UNSTAKE_LOCK_SPAN="1"
+  erdpy --verbose contract call ${ADDRESS} --recall-nonce \
+      --pem=${PEM_FILE} \
+      --gas-limit=8000000 \
+      --proxy=${PROXY} --chain=${CHAINID} \
+      --function="updateUnstakeLockSpan" \
+      --arguments ${UNSTAKE_LOCK_SPAN} \
+      --send \
+      --outfile="${MY_LOGS}/updateUnstakeLockSpan-${ENV_LOGS}.json"
 }
 
 getTokenBalance() {
@@ -281,18 +333,7 @@ appendPeriod5PoolSettings() {
 
 
 
-updateUnstakeLockSpan(){
-  # 60 * 5 = 300 (5 minutes)
-  UNSTAKE_LOCK_SPAN="1"
-  erdpy --verbose contract call ${ADDRESS} --recall-nonce \
-      --pem=${PEM_FILE} \
-      --gas-limit=8000000 \
-      --proxy=${PROXY} --chain=${CHAINID} \
-      --function="updateUnstakeLockSpan" \
-      --arguments ${UNSTAKE_LOCK_SPAN} \
-      --send \
-      --outfile="${MY_LOGS}/updateUnstakeLockSpan-${ENV_LOGS}.json"
-}
+
 
 switchIsActiveFieldValue(){
   erdpy --verbose contract call ${ADDRESS} --recall-nonce \
