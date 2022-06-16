@@ -30,7 +30,8 @@ const app = express();
 
 //Parameters
 //let contractAddress =  "erd1qqqqqqqqqqqqqpgq60rugu3m57kvx0n6wqv53y3tuzzyl602pa7qefp8ar"; // 1 periods
-let contractAddress =  "erd1qqqqqqqqqqqqqpgqqxc37qvrcg8r3y2edlqm9n7uzht0jwtkpa7qhkcw64"; // 2 periods
+//let contractAddress =  "erd1qqqqqqqqqqqqqpgqqxc37qvrcg8r3y2edlqm9n7uzht0jwtkpa7qhkcw64"; // 2 periods
+let contractAddress =  "erd1qqqqqqqqqqqqqpgqxmeg3k0ty84hm3f8n9wdfpukspc0asj3pa7qtt6j0t"; // 5 periods
 
 
 let proxyAddress = "https://devnet-gateway.elrond.com";
