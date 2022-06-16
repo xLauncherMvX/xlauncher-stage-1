@@ -153,7 +153,7 @@ stake() {
   method_name="0x$(echo -n 'stake' | xxd -p -u | tr -d '\n')"
   token_id="0x$(echo -n ${TOKEN_ID} | xxd -p -u | tr -d '\n')"
   amount="1000${MY_DECIMALS}"
-  pool_id="2"
+  pool_id="3"
   erdpy --verbose contract call ${ADDRESS} --recall-nonce \
     --pem=${PEM_FILE} \
     --gas-limit=8000000 \
@@ -165,12 +165,24 @@ stake() {
 }
 
 claim() {
-  pool_id="1"
+  pool_id="3"
   erdpy --verbose contract call ${ADDRESS} --recall-nonce \
     --pem=${PEM_FILE} \
     --gas-limit=8000000 \
     --proxy=${PROXY} --chain=${CHAINID} \
     --function="claim" \
+    --arguments ${pool_id} \
+    --send \
+    --outfile="${MY_LOGS}/claim-${ENV_LOGS}.json"
+}
+
+reinvest() {
+  pool_id="3"
+  erdpy --verbose contract call ${ADDRESS} --recall-nonce \
+    --pem=${PEM_FILE} \
+    --gas-limit=100000000 \
+    --proxy=${PROXY} --chain=${CHAINID} \
+    --function="reinvest" \
     --arguments ${pool_id} \
     --send \
     --outfile="${MY_LOGS}/claim-${ENV_LOGS}.json"
