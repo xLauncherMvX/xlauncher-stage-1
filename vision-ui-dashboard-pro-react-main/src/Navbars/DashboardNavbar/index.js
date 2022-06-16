@@ -108,18 +108,6 @@ function DashboardNavbar({ absolute, light, isMini }) {
     function handleTransparentNavbar() {
       setTransparentNavbar(dispatch, (fixedNavbar && window.scrollY === 0) || !fixedNavbar);
     }
-
-    /** 
-     The event listener that's calling the handleTransparentNavbar function when 
-     scrolling the window.
-    */
-    window.addEventListener("scroll", handleTransparentNavbar);
-
-    // Call the handleTransparentNavbar function to set the state with the initial value.
-    handleTransparentNavbar();
-
-    // Remove event listener on cleanup
-    return () => window.removeEventListener("scroll", handleTransparentNavbar);
   }, [dispatch, fixedNavbar]);
 
   const handleMiniSidenav = () => setMiniSidenav(dispatch, !miniSidenav);
@@ -146,8 +134,8 @@ function DashboardNavbar({ absolute, light, isMini }) {
   } = DappUI;
 
   //Get Account Balance
-  const [balanceAccount, setBalanceAccount] = useState([0]); 
-  const customApi = xApiLink+address+'/tokens/'+xToken;
+  const [balanceAccountTokens, setBalanceAccountTokens] = useState([]); 
+  const customApi = xApiLink+address+'/tokens/';
 
   const getBalanceAccount = async () => {
       try {
@@ -157,12 +145,19 @@ function DashboardNavbar({ absolute, light, isMini }) {
           }
       });
       const json = await response.json();
-      setBalanceAccount(json.balance);
+      setBalanceAccountTokens(json);
       } catch (error) {
       console.error(error);
       }
   }
-      
+
+  let balanceAccount = 0;
+  Object.values(balanceAccountTokens).map(element => {
+    if(element.identifier == xToken){
+      balanceAccount = element.balance;
+    }
+  }); 
+
   let balance = balanceAccount/1000000000000000000;
   if(!balance){
     balance = 0;

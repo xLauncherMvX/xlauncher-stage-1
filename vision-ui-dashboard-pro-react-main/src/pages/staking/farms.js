@@ -395,8 +395,8 @@ function Farms() {
   })
   
   //Get Account Balance
-  const [balanceAccount, setBalanceAccount] = useState([0]); 
-  const customApi = xApiLink+address+'/tokens/'+xToken;
+  const [balanceAccountTokens, setBalanceAccountTokens] = useState([]);  
+  const customApi = xApiLink+address+'/tokens/';
 
   const getBalanceAccount = async () => {
       try {
@@ -406,15 +406,18 @@ function Farms() {
           }
       });
       const json = await response.json();
-      setBalanceAccount(json.balance);
+      setBalanceAccountTokens(json);
       } catch (error) {
       console.error(error);
       }
   }
-  if(isLoggedIn) {
-    getBalanceAccount();
-    // console.log("balanceAccount " + balanceAccount);
-  }
+
+  let balanceAccount = 0;
+  Object.values(balanceAccountTokens).map(element => {
+    if(element.identifier == xToken){
+      balanceAccount = element.balance;
+    }
+  }); 
       
   var balanceXLH = balanceAccount/1000000000000000000;
   if(!balanceXLH){
@@ -890,6 +893,13 @@ function Farms() {
       getClientUnstakeStateData();
     }
   }, []);
+
+  useEffect(() => {
+    if(isLoggedIn) {
+      getBalanceAccount();
+      //console.log("balanceAccount " + balanceAccount);
+    }
+  }, [balanceAccount]);
   
   return (
     <Main name="Staking">
