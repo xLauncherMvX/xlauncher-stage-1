@@ -74,7 +74,7 @@ setEnvTestnet() {
   CURRENT_ENV="testnet"
   PEM_FILE="${PROJECT}/../../wallets/users/testnet_owner_wallet.pem"
   ADDRESS=$(erdpy data load --key=address-devnet)
-  PROXY=https://devnet-gateway.elrond.com
+  PROXY=https://testnet-gateway.elrond.com
   CHAINID=D
   ENV_LOGS="testnet"
   TOKEN_ID="XLH-b7f529"
