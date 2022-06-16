@@ -429,12 +429,12 @@ function Farms() {
 
   function onTodoChangeS(value){
     setXlhAmountS(value);
-    console.log('value ' + value); 
+    //console.log('value ' + value); 
   }
   const setMaxAmountS = () => {
-    setXlhAmountS(balanceXLH);
-    onTodoChangeS(balanceXLH);
-    console.log("balanceXLH " + balanceXLH);
+    setXlhAmountS(calc2(balanceXLH));
+    onTodoChangeS(calc2(balanceXLH));
+    //console.log("balanceXLH " + balanceXLH);
   }
 
   //Calculate the gass limit parameters
@@ -728,14 +728,13 @@ function Farms() {
 
   //Get unstake time and amount farm 2
   let unstakedAmount2 = 0;
-  let unstakedEntry2 = "";
-  // TODO: Change to true after testing  
-  let unlockedUnstake2 = false;
+  let unstakedEntry2 = "";  
+  let unlockedUnstake2 = true;
   let unlockedTime2 = "Unstake";
   const timestamp = Date.now();
   const options2 = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
   Object.values(clientStateData2).map(item2 => {
-    let entry2  = (parseFloat(item2.pool_time_stamp_entry) + 5184000) * 1000;
+    let entry2  = (parseFloat(item2.pool_time_stamp_entry)+ 5184000) * 1000;
     let unlockedTimeItemDays2 = (entry2 - timestamp) / 86400000;
     let unlockedTimeItemHours2 = (entry2 - timestamp) / 3600000;
     let unlockedTimeItemMinutes2 = (entry2 - timestamp) / 60000;
@@ -760,9 +759,8 @@ function Farms() {
 
   //Get unstake time and amount farm 3
   let unstakedAmount3 = 0;
-  let unstakedEntry3 = "";
-  // TODO: Change to true after testing  
-  let unlockedUnstake3 = false;
+  let unstakedEntry3 = ""; 
+  let unlockedUnstake3 = true;
   let unlockedTime3 = "Unstake";
   Object.values(clientStateData3).map(item3 => {
     let entry3  = (parseFloat(item3.pool_time_stamp_entry) + 15552000) * 1000;
@@ -891,6 +889,7 @@ function Farms() {
       getClientReportData(); 
       getClientStateData();
       getClientUnstakeStateData();
+      getBalanceAccount();
     }
   }, []);
 
@@ -977,7 +976,7 @@ function Farms() {
             myXLH={clientReportData[4]}
             myRewards={clientReportData[5]}
             xlhBalance={balanceXLH}
-            unstakedAmount = {unstakedAmount2}
+            unstakedAmount = {calc2(unstakedAmount2)}
             lockedRewardsLabel = "My Locked XLH:"
             mbv="-8px"
             stake={{
@@ -1015,7 +1014,7 @@ function Farms() {
             handleOpenS = {handleOpen2}
             handleCloseS = {handleClose}
             methodU = {() => unstakeXLH(2, xlhAmountU)}
-            maxMethodU = {() => setMaxAmountU(unstakedAmount2)}
+            maxMethodU = {() => setMaxAmountU(calc2(unstakedAmount2))}
             onChangeMethodU = {e => onTodoChangeU(e.target.value)}
             xlhAmountValueU = {xlhAmountU}
             openU = {openU2}
@@ -1039,7 +1038,7 @@ function Farms() {
             myXLH={clientReportData[6]}
             myRewards={clientReportData[7]}
             xlhBalance={balanceXLH}
-            unstakedAmount = {unstakedAmount3}
+            unstakedAmount = {calc2(unstakedAmount3)}
             lockedRewardsLabel = "My Locked XLH:"
             mbv="-8px"
             stake={{
@@ -1077,7 +1076,7 @@ function Farms() {
             handleOpenS = {handleOpen3}
             handleCloseS = {handleClose}
             methodU = {() => unstakeXLH(3, xlhAmountU)}
-            maxMethodU = {() => setMaxAmountU(unstakedAmount3)}
+            maxMethodU = {() => setMaxAmountU(calc2(unstakedAmount3))}
             onChangeMethodU = {e => onTodoChangeU(e.target.value)}
             xlhAmountValueU = {xlhAmountU}
             openU = {openU3}

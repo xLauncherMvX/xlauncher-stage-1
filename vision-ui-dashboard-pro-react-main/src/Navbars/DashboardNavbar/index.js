@@ -15,7 +15,7 @@
 
 */
 import * as React from 'react';
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useLayoutEffect } from "react";
 
 // react-router components
 import { useLocation, Link } from "react-router-dom";
@@ -300,16 +300,23 @@ function DashboardNavbar({ absolute, light, isMini }) {
   }
 
   //useEffectFunc
+  useLayoutEffect(() => {
+    if(isLoggedIn) {
+      getBalanceAccount();
+      //console.log("balanceAccount " + balanceAccount);
+    }
+  }, []);
+
   useEffect(() => {
     if(isLoggedIn) {
       getBalanceAccount();
       //console.log("balanceAccount " + balanceAccount);
     }
-  }, [balanceAccount]);
+  }, [balanceAccountTokens]);
   
 
   return (   
-    <React.Fragment>       
+    <React.Fragment>    
       <Grid container spacing={1}> 
         <Grid item xs={12} sm={12} md={6} lg={8}> 
 
