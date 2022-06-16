@@ -172,3 +172,39 @@ const getClientReport = async () => {
     console.log(error);
   }
 };
+
+
+//gas limit queries
+const [gasLimitValue, setGasLimitValue] = useState(0);
+const getGasLimitValue = async () => {
+  try {
+    let providerCSD = new ProxyProvider(proxyAddress);
+    await NetworkConfig.getDefault().sync(providerCSD);
+
+    let addressCSD = new Address(contractAddress);
+
+    let abiRegistryCSD = await AbiRegistry.load({
+      files: ["xlauncher-staking.abi.json"],
+    });
+
+    let abiCSD = new SmartContractAbi(abiRegistryCSD, [`XLauncherStaking`]);
+
+    let contractCSD = new SmartContract({
+      address: addressCSD,
+      abi: abiCSD,
+    });
+
+    let interactionCSD = contractCSD.methods.reinvest([
+      new BigUIntValue(new BigNumber(1))
+    ]);
+
+    let queryResponseCSD = await contractCSD.runQuery(providerCSD, interactionCSD.buildQuery());
+
+    let responseCSD = interactionCSD.interpretQueryResponse(queryResponseCSD);
+    let myListCSD = responseCSD.firstValue.valueOf();
+    console.log("myListCSD " + JSON.stringify(myListCSD, null, 2));
+
+  } catch (error) {
+    console.log(error);
+  }
+};
