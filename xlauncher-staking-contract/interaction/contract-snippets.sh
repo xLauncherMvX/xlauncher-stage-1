@@ -180,7 +180,7 @@ reinvest() {
   pool_id="2"
   erdpy --verbose contract call ${ADDRESS} --recall-nonce \
     --pem=${PEM_FILE} \
-    --gas-limit=550000000 \
+    --gas-limit=600000000 \
     --proxy=${PROXY} --chain=${CHAINID} \
     --function="reinvest" \
     --arguments ${pool_id} \
