@@ -90,19 +90,19 @@ const { sendTransactions } = transactionServices;
 function calc0(theform) {
   var with1Decimal = theform.toString().match(/^-?\d+(?:\\d{0})?/)[0];
   var value = with1Decimal;
-  return value;
+  return parseFloat(value);
 }
 
 function calc1(theform) {
   var with1Decimal = theform.toString().match(/^-?\d+(?:\.\d{0,1})?/)[0];
   var value = with1Decimal;
-  return value;
+  return parseFloat(value);
 }
 
 function calc2(theform) {
   var with2Decimals = theform.toString().match(/^-?\d+(?:\.\d{0,2})?/)[0];
   var value = with2Decimals;
-  return value;
+  return parseFloat(value);
 }
 
 
@@ -417,15 +417,14 @@ function Farms() {
 
   //Set the amount of xlh for staking from the input or max button
   const [xlhAmountS, setXlhAmountS] = React.useState(0);
-
-  function onTodoChangeS(value){
+  const handleSliderChangeS = (value) => {
     setXlhAmountS(value);
-    //console.log('value ' + value); 
-  }
+  };
+  const handleInputChangeS = (event) => {
+    setXlhAmountS(event.target.value);
+  };
   const setMaxAmountS = () => {
     setXlhAmountS(calc2(balanceXLH));
-    onTodoChangeS(calc2(balanceXLH));
-    //console.log("balanceXLH " + balanceXLH);
   }
 
   //Calculate the gass limit parameters
@@ -531,15 +530,16 @@ function Farms() {
 
   //Set the amount of xlh for unstaking from the input or max button
   const [xlhAmountU, setXlhAmountU] = React.useState(0);
-
-  function onTodoChangeU(value){
+  const handleSliderChangeU = (value) => {
     setXlhAmountU(value);
-    console.log('value ' + value); 
-  }
+  };
+  const handleInputChangeU = (event) => {
+    setXlhAmountU(event.target.value);
+  };
   const setMaxAmountU = (maxU) => {
-    setXlhAmountU(maxU);
-    onTodoChangeU(maxU);
+    setXlhAmountU(calc2(maxU));
   }
+
 
   //Unstake Function
   const [transactionSessionIdU, setTransactionSessionIdU] = React.useState(null);
@@ -937,7 +937,7 @@ function Farms() {
             lockedTime="0 days locked"
             apr="40%"
             myXLH={clientReportData[2]}
-            unstakedAmount = {clientReportData[2]}
+            unstakedAmount = {clientReportData[10]}
             myRewards={clientReportData[3]}
             xlhBalance={balanceXLH}     
             modalFarmName="Farm 1"  
@@ -972,14 +972,16 @@ function Farms() {
             }} 
             methodS = {() => stakeXLH(1, xlhAmountS)}
             maxMethodS = {() => setMaxAmountS()}
-            onChangeMethodS = {e => onTodoChangeS(e.target.value)}
+            handleSliderChangeS = {e => handleSliderChangeS(e.target.value)}
+            handleInputChangeS = {e => handleInputChangeS(e)}
             xlhAmountValueS = {xlhAmountS}
             openS = {open1}
             handleOpenS = {handleOpen1}
             handleCloseS = {handleClose}
             methodU = {() => unstakeXLH(1, xlhAmountU)}
             maxMethodU = {() => setMaxAmountU(clientReportData[10])}
-            onChangeMethodU = {e => onTodoChangeU(e.target.value)}
+            handleSliderChangeU = {e => handleSliderChangeU(e.target.value)}
+            handleInputChangeU = {e => handleInputChangeU(e)}
             xlhAmountValueU = {xlhAmountU}
             openU = {openU1}
             handleOpenU = {handleOpenU1}
@@ -1035,14 +1037,16 @@ function Farms() {
             modalFarmName="Farm 2"
             methodS = {() => stakeXLH(2, xlhAmountS)}
             maxMethodS = {() => setMaxAmountS()}
-            onChangeMethodS = {e => onTodoChangeS(e.target.value)}
+            handleSliderChangeS = {e => handleSliderChangeS(e.target.value)}
+            handleInputChangeS = {e => handleInputChangeS(e)}
             xlhAmountValueS = {xlhAmountS}
             openS = {open2}
             handleOpenS = {handleOpen2}
             handleCloseS = {handleClose}
             methodU = {() => unstakeXLH(2, xlhAmountU)}
             maxMethodU = {() => setMaxAmountU(calc2(unstakedAmount2))}
-            onChangeMethodU = {e => onTodoChangeU(e.target.value)}
+            handleSliderChangeU = {e => handleSliderChangeU(e.target.value)}
+            handleInputChangeU = {e => handleInputChangeU(e)}
             xlhAmountValueU = {xlhAmountU}
             openU = {openU2}
             handleOpenU = {handleOpenU2}
@@ -1098,14 +1102,16 @@ function Farms() {
             modalFarmName="Farm 3"
             methodS = {() => stakeXLH(3, xlhAmountS)}
             maxMethodS = {() => setMaxAmountS()}
-            onChangeMethodS = {e => onTodoChangeS(e.target.value)}
+            handleSliderChangeS = {e => handleSliderChangeS(e.target.value)}
+            handleInputChangeS = {e => handleInputChangeS(e)}
             xlhAmountValueS = {xlhAmountS}
             openS = {open3}
             handleOpenS = {handleOpen3}
             handleCloseS = {handleClose}
             methodU = {() => unstakeXLH(3, xlhAmountU)}
             maxMethodU = {() => setMaxAmountU(calc2(unstakedAmount3))}
-            onChangeMethodU = {e => onTodoChangeU(e.target.value)}
+            handleSliderChangeU = {e => handleSliderChangeU(e.target.value)}
+            handleInputChangeU = {e => handleInputChangeU(e)}
             xlhAmountValueU = {xlhAmountU}
             openU = {openU3}
             handleOpenU = {handleOpenU3}

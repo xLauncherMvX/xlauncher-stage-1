@@ -35,6 +35,7 @@ import IconButton from '@mui/material/IconButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Icon from '@mui/material/Icon';
 import { Scrollbars } from "react-custom-scrollbars";
+import Slider from '@mui/material/Slider';
 
 // Scrollbar configs
 import {
@@ -70,13 +71,31 @@ const style = {
   p: 4
 };
 
+function calc0(theform) {
+  var with1Decimal = theform.toString().match(/^-?\d+(?:\\d{0})?/)[0];
+  var value = with1Decimal;
+  return value;
+}
+
+function calc1(theform) {
+  var with1Decimal = theform.toString().match(/^-?\d+(?:\.\d{0,1})?/)[0];
+  var value = with1Decimal;
+  return value;
+}
+
+function calc2(theform) {
+  var with2Decimals = theform.toString().match(/^-?\d+(?:\.\d{0,2})?/)[0];
+  var value = with2Decimals;
+  return parseFloat(value);
+}
+
 function StakingCard({
-  stake, methodS, maxMethodS, onChangeMethodS, xlhAmountValueS, openS, handleOpenS, handleCloseS, 
-  unstake, methodU, maxMethodU, onChangeMethodU, xlhAmountValueU, openU, handleOpenU, handleCloseU, unstakedAmount,
+  stake, methodS, maxMethodS, handleSliderChangeS, handleInputChangeS, xlhAmountValueS, openS, handleOpenS, handleCloseS, 
+  unstake, methodU, maxMethodU, handleSliderChangeU, handleInputChangeU, xlhAmountValueU, openU, handleOpenU, handleCloseU, unstakedAmount,
   claim, methodC,
   reinvest, methodR,
   lockedRewards, openL, handleOpenL, handleCloseL, 
-  title, lockedTime, myXLH, apr, myRewards, modalFarmName, xlhBalance, isLoggedIn, showInfo, lockedRewardsLabel, mbv
+  title, lockedTime, myXLH, apr, myRewards, modalFarmName, xlhBalance, isLoggedIn, showInfo, lockedRewardsLabel, mbv  
 }) 
 {  
   const [visible, setVisible] = React.useState(false);  
@@ -186,7 +205,10 @@ function StakingCard({
     </Tooltip>
     ;
   }
-
+  
+  if(!unstakedAmount){
+    unstakedAmount = 0;
+  }
   return (
     <Card sx={{ minHeight: "250px" }}>
       <VuiBox>        
@@ -308,19 +330,24 @@ function StakingCard({
                 <VuiBox id="transition-modal-description" sx={{ mt: 5 }}>    
                   <Grid container spacing={2}>
                     <Grid item xs={9}>
-                      <VuiInput 
+                      <VuiInput
                         value={xlhAmountValueS}
+                        size="small"
+                        placeholder="XLH Amount" 
+                        onChange={handleInputChangeS}
                         onKeyPress={(event) => {
-                          if (!/[0-9.]/.test(event.key)) {
+                          if (!/[]/.test(event.key)) {
                             event.preventDefault();
                           }
                         }}
-                        onChange={onChangeMethodS}                        
-                        placeholder="Amount" 
-                        size="medium"
-                        
-                      >                    
-                      </VuiInput>
+                      />
+                      <Slider
+                        value={xlhAmountValueS}
+                        onChange={handleSliderChangeS}
+                        step={100}
+                        min={0}        
+                        max={calc2(xlhBalance)}   
+                      />
                     </Grid>
                     <Grid item xs={2}>
                       <VuiButton
@@ -339,7 +366,6 @@ function StakingCard({
                       color="white"
                       textTransform="capitalize"
                       marginBottom="5px"
-                      marginLeft="13px"
                       marginTop="2px"
                     >
                       Balance: 
@@ -413,20 +439,25 @@ function StakingCard({
                 </VuiBox>
                 <VuiBox id="transition-modal-description2" sx={{ mt: 5 }}>    
                   <Grid container spacing={2}>
-                    <Grid item xs={9}>
-                      <VuiInput 
+                    <Grid item xs={9}>                      
+                      <VuiInput
                         value={xlhAmountValueU}
+                        size="small"
+                        placeholder="XLH Amount" 
+                        onChange={handleInputChangeU}
                         onKeyPress={(event) => {
-                          if (!/[0-9.]/.test(event.key)) {
+                          if (!/[]/.test(event.key)) {
                             event.preventDefault();
                           }
                         }}
-                        onChange={onChangeMethodU}                        
-                        placeholder="Amount" 
-                        size="medium"
-                        
-                      >                    
-                      </VuiInput>
+                      />
+                      <Slider
+                        value={xlhAmountValueU}
+                        onChange={handleSliderChangeU}
+                        step={100}
+                        min={0}        
+                        max={calc2(unstakedAmount)}   
+                      />
                     </Grid>
                     <Grid item xs={2}>
                       <VuiButton
@@ -448,7 +479,7 @@ function StakingCard({
                       marginLeft="13px"
                       marginTop="2px"
                     >
-                      Total Staked: {unstakedAmount} XLH
+                      Total Staked: {calc2(unstakedAmount)} XLH
                   </VuiTypography>  
                   <Grid container spacing={1} mt={5}>
                     <Grid item xs={12} md={6} lg={6}>
