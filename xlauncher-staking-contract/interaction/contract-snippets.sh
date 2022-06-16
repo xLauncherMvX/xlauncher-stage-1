@@ -75,7 +75,7 @@ setEnvTestnet() {
   PEM_FILE="${PROJECT}/../../wallets/users/testnet_owner_wallet.pem"
   ADDRESS=$(erdpy data load --key=address-devnet)
   PROXY=https://testnet-gateway.elrond.com
-  CHAINID=D
+  CHAINID=T
   ENV_LOGS="testnet"
   TOKEN_ID="XLH-b7f529"
   TOKEN_ID_HEX=$(echo -n ${TOKEN_ID} | xxd -p)
@@ -89,7 +89,7 @@ printCurrentEnv() {
 
 deploy() {
   erdpy --verbose contract deploy --project=${PROJECT} --recall-nonce --pem=${PEM_FILE} \
-    --gas-limit=200000000 --send --outfile="${MY_LOGS}/deploy-${ENV_LOGS}.json" \
+    --gas-limit=100000000 --send --outfile="${MY_LOGS}/deploy-${ENV_LOGS}.json" \
     --proxy=${PROXY} --chain=${CHAINID} \
     --arguments "0x${TOKEN_ID_HEX}" ${MIN_AMOUNT} \
     ${PULL_A_ID} ${PULL_A_LOCKING_TIME_SPAN} ${APY_A0_ID} ${APY_A0_START} ${APY_A0_END} ${APY_A0_APY} \
