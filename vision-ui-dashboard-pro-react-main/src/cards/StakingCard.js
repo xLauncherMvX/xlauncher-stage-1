@@ -128,6 +128,7 @@ function StakingCard({
             sx={{ minWidth: "90px" }}
             onClick={handleOpenS}
             fullWidth
+            disabled={stake.disabled}
           >
             {stake.label}
           </VuiButton>

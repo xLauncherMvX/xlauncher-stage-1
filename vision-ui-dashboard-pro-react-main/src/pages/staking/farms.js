@@ -63,6 +63,7 @@ import {
   refreshAccount,
   transactionServices,
   useGetAccountInfo,
+  useGetPendingTransactions
 } from "@elrondnetwork/dapp-core";
 import {
   AbiRegistry,
@@ -115,20 +116,10 @@ function Farms() {
   let xPresaleAddress = xConfigs["presaleAddress"];
   let xOldStakeAddress = xConfigs["oldStakeAddress"];
 
-  //Disable cookies
-  if(!document.__defineGetter__) {
-    Object.defineProperty(document, 'cookie', {
-        get: function(){return ''},
-        set: function(){return true},
-    });
-    } else {
-        document.__defineGetter__("cookie", function() { return '';} );
-        document.__defineSetter__("cookie", function() {} );
-    }
-
   //Elrond login
   const { address, account } = useGetAccountInfo();
-  const isLoggedIn = Boolean(address);  
+  const isLoggedIn = Boolean(address); 
+  const trans = useGetPendingTransactions().hasPendingTransactions; 
   const [clientReportData, setClientReportData] = useState(["", "", "", "", "", "", "", ""]);
   let xMultiplier = 1000000000000000000;
 
@@ -883,22 +874,56 @@ function Farms() {
     disabledReinvest3 = false;
   }
 
-  //useEffectFunc
+  //Disable stake, claim, reinvest, unstake and claim unstake if any tranzaction is active
+  let unlockedStake1 = false;
+  let unlockedStake2 = false;
+  let unlockedStake3 = false;
+  let unlockedUnstake1 = false;
+  if(trans){
+    unlockedStake1 = true;
+    unlockedStake2 = true;
+    unlockedStake3 = true;
+    disabledClaim1 = true;
+    disabledClaim2 = true;
+    disabledClaim3 = true;
+    disabledReinvest1 = true;
+    disabledReinvest2 = true;
+    disabledReinvest3 = true;
+    unlockedUnstake1 = true;
+    unlockedUnstake2 = true;
+    unlockedUnstake3 = true;
+    console.log("trans " + trans);
+  }
+
+  //useEffect after based on login parameter
   useEffect(() => {
-    if (isLoggedIn) {
+    if(isLoggedIn) {
       getClientReportData(); 
       getClientStateData();
       getClientUnstakeStateData();
       getBalanceAccount();
     }
-  }, []);
+  }, [isLoggedIn]);
 
+  //useEffect based on balanceAccount parameter
   useEffect(() => {
     if(isLoggedIn) {
       getBalanceAccount();
       //console.log("balanceAccount " + balanceAccount);
     }
   }, [balanceAccount]);
+
+   //useEffect based on timer to display the current rewards and the modal with the list of rewards
+  const MINUTE_MS = 5000;
+  useEffect(() => {
+    const interval = setInterval(() => {
+      getClientReportData(); 
+      getClientStateData();
+      getClientUnstakeStateData();
+    }, MINUTE_MS);
+
+    return () => clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
+  }, [])
   
   return (
     <Main name="Staking">
@@ -921,7 +946,8 @@ function Farms() {
             stake={{
               size: "small",
               color: "info",
-              label: "Stake"
+              label: "Stake",
+              disabled: unlockedStake1
             }}
             claim={{
               size: "small",
@@ -942,7 +968,7 @@ function Farms() {
               color: "dark",
               label: "Unstake",
               hint: "Individual rewards can be claimed 10 days after unstake tranzaction",
-              disabled: false
+              disabled: unlockedUnstake1
             }} 
             methodS = {() => stakeXLH(1, xlhAmountS)}
             maxMethodS = {() => setMaxAmountS()}
@@ -982,7 +1008,8 @@ function Farms() {
             stake={{
               size: "small",
               color: "info",
-              label: "Stake"
+              label: "Stake",
+              disabled: unlockedStake2
             }}
             claim={{
               size: "small",
@@ -1044,7 +1071,8 @@ function Farms() {
             stake={{
               size: "small",
               color: "info",
-              label: "Stake"
+              label: "Stake",
+              disabled: unlockedStake3
             }}
             claim={{
               size: "small",

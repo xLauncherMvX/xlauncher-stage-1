@@ -300,19 +300,19 @@ function DashboardNavbar({ absolute, light, isMini }) {
   }
 
   //useEffectFunc
-  useLayoutEffect(() => {
-    if(isLoggedIn) {
-      getBalanceAccount();
-      //console.log("balanceAccount " + balanceAccount);
-    }
-  }, []);
-
   useEffect(() => {
     if(isLoggedIn) {
       getBalanceAccount();
       //console.log("balanceAccount " + balanceAccount);
     }
   }, [balanceAccountTokens]);
+
+  useEffect(() => {
+    if(isLoggedIn) {
+      getBalanceAccount();
+      //console.log("balanceAccount " + balanceAccount);
+    }
+  }, [isLoggedIn]);
   
 
   return (   
