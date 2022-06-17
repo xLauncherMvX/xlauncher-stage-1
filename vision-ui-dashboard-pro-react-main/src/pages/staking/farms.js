@@ -427,49 +427,64 @@ function Farms() {
     setXlhAmountS(calc2(balanceXLH));
   }
 
-  //Calculate the gass limit parameters
+  //Calculate the gas limit parameters
   let countItems1 = Object.keys(clientStateData1).length;
   let countItems2 = Object.keys(clientStateData2).length;
   let countItems3 = Object.keys(clientStateData3).length;
 
-  let hVal = 100000;
-  let mVal = 1000000;
-  let c1 = clientReportData[11];
-  let c2 = clientReportData[13];
-  let c3 = clientReportData[15];
-  if(!c1){
-    c1 = 0;
+  var n1 = countItems1 * (countItems1 + 1) / 2;
+  var l1 = 80000 * (15 * countItems1 + n1) + 50000000 + (1000000 * countItems1);
+
+  var n2 = countItems2 * (countItems2 + 1) / 2;
+  var l2 = 80000 * (15 * countItems2 + n2) + 50000000 + (1000000 * countItems2);
+
+  var n3 = countItems3 * (countItems3 + 1) / 2;
+  var l3 = 80000 * (15 * countItems3 + n3) + 50000000 + (1000000 * countItems3);
+
+  
+
+  let gasLimit1 = 10000000;
+  let gasLimit2 = 10000000;
+  let gasLimit3 = 10000000;
+
+  //gas limit 1
+  if(l1 >= 10000000 && l1 < 20000000){
+    gasLimit1 = 20000000;
+  }else if(l1 >= 20000000 && l1 < 30000000){
+    gasLimit1 = 30000000;
+  }else if(l1 >= 30000000 && l1 < 60000000){
+    gasLimit1 = 60000000;
+  }else if(l1 >= 60000000 && l1 < 100000000){
+    gasLimit1 = 100000000;
+  }else if(l1 >= 100000000){
+    gasLimit1 = 600000000;
   }
-  if(!c2){
-    c2 = 0;
+
+  //gas limit 2
+  if(l2 >= 10000000 && l2 < 20000000){
+    gasLimit2 = 20000000;
+  }else if(l2 >= 20000000 && l2 < 30000000){
+    gasLimit2 = 30000000;
+  }else if(l2 >= 30000000 && l2 < 60000000){
+    gasLimit2 = 60000000;
+  }else if(l2 >= 60000000 && l2 < 100000000){
+    gasLimit2 = 100000000;
+  }else if(l2 >= 100000000){
+    gasLimit2 = 600000000;
   }
-  if(!c3){
-    c3 = 0;
+
+  //gas limit 3
+  if(l3 >= 10000000 && l3 < 20000000){
+    gasLimit3 = 20000000;
+  }else if(l3 >= 20000000 && l3 < 30000000){
+    gasLimit3 = 30000000;
+  }else if(l3 >= 30000000 && l3 < 60000000){
+    gasLimit3 = 60000000;
+  }else if(l3 >= 60000000 && l3 < 100000000){
+    gasLimit3 = 100000000;
+  }else if(l3 >= 100000000){
+    gasLimit3 = 600000000;
   }
-  var gasLimit1N = 10 * mVal + (countItems1 * 2.5 * mVal) + (c1 * hVal);
-  var gasLimit2N = 10 * mVal + (countItems2 * 2.5 * mVal) + (c2 * hVal);
-  var gasLimit3N = 10 * mVal + (countItems3 * 2.5 * mVal) + (c3 * hVal);
-  if(countItems1 >= 40){
-    gasLimit1N = 10 * mVal + (countItems1 * 5 * mVal) + (c1 * hVal);
-  }
-  if(countItems1 >= 70){
-    gasLimit1N = 10 * mVal + (countItems1 * 8 * mVal) + (c1 * hVal);
-  }
-  if(countItems2 >= 40){
-    gasLimit2N = 10 * mVal + (countItems2 * 5 * mVal) + (c2 * hVal);
-  }
-  if(countItems2 >= 70){
-    gasLimit2N = 10 * mVal + (countItems2 * 8 * mVal) + (c2 * hVal);
-  }
-  if(countItems3 >= 40){
-    gasLimit3N = 10 * mVal + (countItems3 * 5 * mVal) + (c3 * hVal);
-  }
-  if(countItems3 >= 70){
-    gasLimit3N = 10 * mVal + (countItems3 * 8 * mVal) + (c3 * hVal);
-  }
-  let gasLimit1 = calc0(gasLimit1N);
-  let gasLimit2 = calc0(gasLimit2N);
-  let gasLimit3 = calc0(gasLimit3N);
 
   //Stake Function
   const [transactionSessionId, setTransactionSessionId] = React.useState(null);
@@ -678,7 +693,7 @@ function Farms() {
   //  .setArgs([
   //      new BigUIntValue(new BigNumber(farmIdCU))
   //  ])
-   .build().toString()
+   .build().toString();
 
    const createClaimUTransaction = {
      value: "0",
@@ -730,16 +745,16 @@ function Farms() {
     let unlockedTimeItemHours2 = (entry2 - timestamp) / 3600000;
     let unlockedTimeItemMinutes2 = (entry2 - timestamp) / 60000;
     let unlockedTimeItemSeconds2 = (entry2 - timestamp) / 1000;
-    if(calc1(unlockedTimeItemMinutes2) <= 0){
+    if(calc0(unlockedTimeItemMinutes2) <= 0){
       unlockedTime2 = "Unstake";
-    }else if(calc1(unlockedTimeItemMinutes2) > 0 && calc1(unlockedTimeItemMinutes2) < 1){
+    }else if(calc0(unlockedTimeItemMinutes2) > 0 && calc0(unlockedTimeItemMinutes2) < 1){
       unlockedTime2 = "Unstake (" + calc0(unlockedTimeItemSeconds2) + "S)";
-    }else if(calc1(unlockedTimeItemMinutes2) >= 1 && calc1(unlockedTimeItemMinutes2) < 60){
-      unlockedTime2 = "Unstake (" + calc1(unlockedTimeItemMinutes2) + "M)";
-    }else if(calc1(unlockedTimeItemMinutes2) >= 60 && calc1(unlockedTimeItemMinutes2) < 1440){
-      unlockedTime2 = "Unstake (" + calc1(unlockedTimeItemHours2) + "H)";
-    }else if(calc1(unlockedTimeItemMinutes2) >= 1440){
-      unlockedTime2 = "Unstake (" + calc1(unlockedTimeItemDays2) + "D)";
+    }else if(calc0(unlockedTimeItemMinutes2) >= 1 && calc0(unlockedTimeItemMinutes2) < 60){
+      unlockedTime2 = "Unstake (" + calc0(unlockedTimeItemMinutes2) + "M)";
+    }else if(calc0(unlockedTimeItemMinutes2) >= 60 && calc0(unlockedTimeItemMinutes2) < 1440){
+      unlockedTime2 = "Unstake (" + calc0(unlockedTimeItemHours2) + "H)";
+    }else if(calc0(unlockedTimeItemMinutes2) >= 1440){
+      unlockedTime2 = "Unstake (" + calc0(unlockedTimeItemDays2) + "D)";
     }    
     if(entry2 <= timestamp){
       unstakedEntry2 = "Available from " + new Date(entry2).toLocaleDateString("en-GB", options2);
@@ -760,16 +775,16 @@ function Farms() {
     let unlockedTimeItemHours3 = (entry3 - timestamp) / 3600000;
     let unlockedTimeItemMinutes3 = (entry3 - timestamp) / 60000;
     let unlockedTimeItemSeconds3 = (entry3 - timestamp) / 1000;
-    if(calc1(unlockedTimeItemMinutes3) <= 0){
+    if(calc0(unlockedTimeItemMinutes3) <= 0){
       unlockedTime3 = "Unstake";
-    }else if(calc1(unlockedTimeItemMinutes3) > 0 && calc1(unlockedTimeItemMinutes3) < 1){
+    }else if(calc0(unlockedTimeItemMinutes3) > 0 && calc0(unlockedTimeItemMinutes3) < 1){
       unlockedTime3 = "Unstake (" + calc0(unlockedTimeItemSeconds3) + "S)";
-    }else if(calc1(unlockedTimeItemMinutes3) >= 1 && calc1(unlockedTimeItemMinutes3) < 60){
-      unlockedTime3 = "Unstake (" + calc1(unlockedTimeItemMinutes3) + "M)";
-    }else if(calc1(unlockedTimeItemMinutes3) >= 60 && calc1(unlockedTimeItemMinutes3) < 1440){
-      unlockedTime3 = "Unstake (" + calc1(unlockedTimeItemHours3) + "H)";
-    }else if(calc1(unlockedTimeItemMinutes3) >= 1440){
-      unlockedTime3 = "Unstake (" + calc1(unlockedTimeItemDays3) + "D)";
+    }else if(calc0(unlockedTimeItemMinutes3) >= 1 && calc0(unlockedTimeItemMinutes3) < 60){
+      unlockedTime3 = "Unstake (" + calc0(unlockedTimeItemMinutes3) + "M)";
+    }else if(calc0(unlockedTimeItemMinutes3) >= 60 && calc0(unlockedTimeItemMinutes3) < 1440){
+      unlockedTime3 = "Unstake (" + calc0(unlockedTimeItemHours3) + "H)";
+    }else if(calc0(unlockedTimeItemMinutes3) >= 1440){
+      unlockedTime3 = "Unstake (" + calc0(unlockedTimeItemDays3) + "D)";
     }   
     if(entry3 <= timestamp){
       unstakedEntry3 = "Available from " + new Date(entry3).toLocaleDateString("en-GB", options2);
@@ -812,35 +827,37 @@ function Farms() {
       let myListCUSD = responseCUSD.firstValue.valueOf();
       //console.log("myListCUSD " + JSON.stringify(myListCUSD, null, 2));
 
-      let entryCU  = (parseFloat(myListCUSD.free_after_time_stamp)) * 1000;
-      let unlockedTimeItemCUDays = (entryCU - timestamp) / 86400000;
-      let unlockedTimeItemCUHours = (entryCU - timestamp) / 3600000;
-      let unlockedTimeItemCUMinutes = (entryCU - timestamp) / 60000;
-      let unlockedTimeItemCUSeconds = (entryCU - timestamp) / 1000;
-      if(calc1(unlockedTimeItemCUMinutes) <= 0){
-        setClaimUnlockedTime("Complete Unstake");
-      }else if(calc1(unlockedTimeItemCUMinutes) > 0 && calc1(unlockedTimeItemCUMinutes) < 1){
-        setClaimUnlockedTime("Complete Unstake (" + calc0(unlockedTimeItemCUSeconds) + "S)");
-      }else if(calc1(unlockedTimeItemCUMinutes) >= 1 && calc1(unlockedTimeItemCUMinutes) < 60){
-        setClaimUnlockedTime("Complete Unstake (" + calc1(unlockedTimeItemCUMinutes) + "M)");
-      }else if(calc1(unlockedTimeItemCUMinutes) >= 60 && calc1(unlockedTimeItemCUMinutes) < 1440){
-        setClaimUnlockedTime("Complete Unstake (" + calc1(unlockedTimeItemCUHours) + "H)");
-      }else if(calc1(unlockedTimeItemCUMinutes) >= 1440){
-        setClaimUnlockedTime("Complete Unstake (" + calc1(unlockedTimeItemCUDays) + "D)");
-      } 
+      if(myListCUSD){        
+        let entryCU  = (parseFloat(myListCUSD.free_after_time_stamp)) * 1000;
+        let unlockedTimeItemCUDays = (entryCU - timestamp) / 86400000;
+        let unlockedTimeItemCUHours = (entryCU - timestamp) / 3600000;
+        let unlockedTimeItemCUMinutes = (entryCU - timestamp) / 60000;
+        let unlockedTimeItemCUSeconds = (entryCU - timestamp) / 1000;
+        if(calc0(unlockedTimeItemCUMinutes) <= 0){
+          setClaimUnlockedTime("Complete Unstake");
+        }else if(calc0(unlockedTimeItemCUMinutes) > 0 && calc0(unlockedTimeItemCUMinutes) < 1){
+          setClaimUnlockedTime("Complete Unstake (" + calc0(unlockedTimeItemCUSeconds) + "S)");
+        }else if(calc0(unlockedTimeItemCUMinutes) >= 1 && calc0(unlockedTimeItemCUMinutes) < 60){
+          setClaimUnlockedTime("Complete Unstake (" + calc1(unlockedTimeItemCUMinutes) + "M)");
+        }else if(calc0(unlockedTimeItemCUMinutes) >= 60 && calc0(unlockedTimeItemCUMinutes) < 1440){
+          setClaimUnlockedTime("Complete Unstake (" + calc0(unlockedTimeItemCUHours) + "H)");
+        }else if(calc0(unlockedTimeItemCUMinutes) >= 1440){
+          setClaimUnlockedTime("Complete Unstake (" + calc0(unlockedTimeItemCUDays) + "D)");
+        } 
 
-      let AmountCU = parseFloat(myListCUSD.requested_amount) / xMultiplier;
-      let AmountCUF = new Intl.NumberFormat("ro-Ro", {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-      }).format(AmountCU);
-      setClaimUnstakedAmount(AmountCUF);
-      let EntryCUTips = new Date(entryCU).toLocaleDateString("en-GB", options2); 
-      setClaimUnstakedEntry(EntryCUTips); 
+        let AmountCU = parseFloat(myListCUSD.requested_amount) / xMultiplier;
+        let AmountCUF = new Intl.NumberFormat("ro-Ro", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        }).format(AmountCU);
+        setClaimUnstakedAmount(AmountCUF);
+        let EntryCUTips = new Date(entryCU).toLocaleDateString("en-GB", options2); 
+        setClaimUnstakedEntry(EntryCUTips); 
 
-      if(entryCU <= timestamp){              
-        setClaimUnlockedUnstake(false);
-      } 
+        if(entryCU <= timestamp){              
+          setClaimUnlockedUnstake(false);
+        } 
+      }
     } catch (error) {
       console.log(error);
     }
@@ -892,7 +909,34 @@ function Farms() {
     unlockedUnstake1 = true;
     unlockedUnstake2 = true;
     unlockedUnstake3 = true;
-    console.log("trans " + trans);
+  }
+
+  let disabledStakeButton;
+  if(xlhAmountS == 0 || xlhAmountS > balanceXLH){
+    disabledStakeButton = true;
+  }else{
+    disabledStakeButton = false;
+  }
+
+  let disabledUnstakeButton1;
+  if(xlhAmountU == 0 || xlhAmountU > clientReportData[10]){
+    disabledUnstakeButton1 = true;
+  }else{
+    disabledUnstakeButton1 = false;
+  }
+
+  let disabledUnstakeButton2;
+  if(xlhAmountU == 0 || xlhAmountU > clientReportData[12]){
+    disabledUnstakeButton2 = true;
+  }else{
+    disabledUnstakeButton2 = false;
+  }
+
+  let disabledUnstakeButton3;
+  if(xlhAmountU == 0 || xlhAmountU > clientReportData[14]){
+    disabledUnstakeButton3 = true;
+  }else{
+    disabledUnstakeButton3 = false;
   }
 
   //useEffect after based on login parameter
@@ -913,16 +957,19 @@ function Farms() {
     }
   }, [balanceAccount]);
 
-   //useEffect based on timer to display the current rewards and the modal with the list of rewards
-  const MINUTE_MS = 5000;
-  useEffect(() => {
-    const interval = setInterval(() => {
-      getClientReportData(); 
-      getClientStateData();
-      getClientUnstakeStateData();
-    }, MINUTE_MS);
 
-    return () => clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
+  //useEffect based on timer to display the current rewards and the modal with the list of rewards
+  const MINUTE_MS = 3000;
+  useEffect(() => {
+    if(isLoggedIn) {
+      const interval = window.setInterval(() => {
+        getClientReportData(); 
+        getClientStateData();
+        getClientUnstakeStateData();
+      }, MINUTE_MS);
+
+      return () => window.clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
+    }
   }, [])
   
   return (
@@ -947,7 +994,8 @@ function Farms() {
               size: "small",
               color: "info",
               label: "Stake",
-              disabled: unlockedStake1
+              disabled: unlockedStake1,
+              disabledAction:disabledStakeButton
             }}
             claim={{
               size: "small",
@@ -968,7 +1016,8 @@ function Farms() {
               color: "dark",
               label: "Unstake",
               hint: "Individual rewards can be claimed 10 days after unstake tranzaction",
-              disabled: unlockedUnstake1
+              disabled: unlockedUnstake1,
+              disabledAction:disabledUnstakeButton1
             }} 
             methodS = {() => stakeXLH(1, xlhAmountS)}
             maxMethodS = {() => setMaxAmountS()}
@@ -1011,7 +1060,8 @@ function Farms() {
               size: "small",
               color: "info",
               label: "Stake",
-              disabled: unlockedStake2
+              disabled: unlockedStake2,
+              disabledAction:disabledStakeButton
             }}
             claim={{
               size: "small",
@@ -1032,7 +1082,8 @@ function Farms() {
               color: "dark",
               label: unlockedTime2,
               hint: "Individual rewards can be claimed 10 days after unstake tranzaction",
-              disabled: unlockedUnstake2
+              disabled: unlockedUnstake2,
+              disabledAction:disabledUnstakeButton2
             }}
             modalFarmName="Farm 2"
             methodS = {() => stakeXLH(2, xlhAmountS)}
@@ -1076,7 +1127,8 @@ function Farms() {
               size: "small",
               color: "info",
               label: "Stake",
-              disabled: unlockedStake3
+              disabled: unlockedStake3,
+              disabledAction:disabledStakeButton
             }}
             claim={{
               size: "small",
@@ -1097,7 +1149,8 @@ function Farms() {
               color: "dark",
               label: unlockedTime3,
               hint: "Individual rewards can be claimed 10 days after unstake tranzaction",
-              disabled: unlockedUnstake3
+              disabled: unlockedUnstake3,
+              disabledAction:disabledUnstakeButton3
             }}
             modalFarmName="Farm 3"
             methodS = {() => stakeXLH(3, xlhAmountS)}

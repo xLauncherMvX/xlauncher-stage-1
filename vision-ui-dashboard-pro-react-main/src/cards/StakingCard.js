@@ -205,10 +205,11 @@ function StakingCard({
     </Tooltip>
     ;
   }
-  
+
   if(!unstakedAmount){
     unstakedAmount = 0;
   }
+
   return (
     <Card sx={{ minHeight: "250px" }}>
       <VuiBox>        
@@ -336,10 +337,11 @@ function StakingCard({
                         placeholder="XLH Amount" 
                         onChange={handleInputChangeS}
                         onKeyPress={(event) => {
-                          if (!/[]/.test(event.key)) {
+                          if (!/[0-9.]/.test(event.key)) {
                             event.preventDefault();
                           }
                         }}
+                        disabled={false}
                       />
                       <Slider
                         value={xlhAmountValueS}
@@ -384,6 +386,7 @@ function StakingCard({
                         sx={{ minWidth: "90px" }}
                         onClick={methodS}
                         fullWidth
+                        disabled={stake.disabledAction}
                       >
                         Stake
                       </VuiButton>     
@@ -446,10 +449,11 @@ function StakingCard({
                         placeholder="XLH Amount" 
                         onChange={handleInputChangeU}
                         onKeyPress={(event) => {
-                          if (!/[]/.test(event.key)) {
+                          if (!/[0-9.]/.test(event.key)) {
                             event.preventDefault();
                           }
                         }}
+                        disabled={false}
                       />
                       <Slider
                         value={xlhAmountValueU}
@@ -490,6 +494,7 @@ function StakingCard({
                         sx={{ minWidth: "90px" }}
                         onClick={methodU}
                         fullWidth
+                        disabled={unstake.disabledAction}
                       >
                         Unstake
                       </VuiButton>     
