@@ -896,6 +896,7 @@ function Farms() {
   let unlockedStake2 = false;
   let unlockedStake3 = false;
   let unlockedUnstake1 = false;
+  let unlockedCompleteUnstake = false;
   if(trans){
     unlockedStake1 = true;
     unlockedStake2 = true;
@@ -909,6 +910,11 @@ function Farms() {
     unlockedUnstake1 = true;
     unlockedUnstake2 = true;
     unlockedUnstake3 = true;
+    unlockedCompleteUnstake = true;
+  }
+  let unlockedCompleteUnstakeDisabled = false;
+  if(claimUnlockedUnstake || unlockedCompleteUnstake){
+    unlockedCompleteUnstakeDisabled = true;
   }
 
   let disabledStakeButton;
@@ -949,20 +955,12 @@ function Farms() {
     }
   }, [isLoggedIn]);
 
-  //useEffect based on balanceAccount parameter
-  useEffect(() => {
-    if(isLoggedIn) {
-      getBalanceAccount();
-      //console.log("balanceAccount " + balanceAccount);
-    }
-  }, [balanceAccount]);
-
-
   //useEffect based on timer to display the current rewards and the modal with the list of rewards
-  const MINUTE_MS = 3000;
+  const MINUTE_MS = 4000;
   useEffect(() => {
     if(isLoggedIn) {
       const interval = window.setInterval(() => {
+        getBalanceAccount();
         getClientReportData(); 
         getClientStateData();
         getClientUnstakeStateData();
@@ -1191,7 +1189,7 @@ function Farms() {
                 size: "small",
                 color: "info",
                 label: claimUnlockedTime,
-                disabled: claimUnlockedUnstake
+                disabled: unlockedCompleteUnstakeDisabled
             }} 
             methodCU = {() => claimUXLH(3)}
           />

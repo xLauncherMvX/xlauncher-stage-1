@@ -551,7 +551,7 @@ function StakingCard({
                 </VuiBox>                
                 <VuiBox id="transition-modal-description3" sx={{ mt: 5 }}>  
                   <Grid container height={"100%"}>
-                    <Grid item xs={12}>                    
+                    <Grid item xs={12}  className="overflow-item">                    
                       {lockedRewards}                    
                     </Grid>
                   </Grid>

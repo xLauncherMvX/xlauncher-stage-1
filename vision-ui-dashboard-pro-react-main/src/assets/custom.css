@@ -155,3 +155,9 @@ dapp-core-ui-component .btn-primary:active {
     background-color: #060b28f0;
     color: white;
 }
+
+.overflow-item {
+    overflow-y: auto;
+    max-height: 35vh;
+    scrollbar-color: rebeccapurple green;
+}

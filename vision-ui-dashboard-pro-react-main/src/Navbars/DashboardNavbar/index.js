@@ -299,20 +299,24 @@ function DashboardNavbar({ absolute, light, isMini }) {
     ;
   }
 
-  //useEffectFunc
-  useEffect(() => {
-    if(isLoggedIn) {
-      getBalanceAccount();
-      //console.log("balanceAccount " + balanceAccount);
-    }
-  }, [balanceAccountTokens]);
-
   useEffect(() => {
     if(isLoggedIn) {
       getBalanceAccount();
       //console.log("balanceAccount " + balanceAccount);
     }
   }, [isLoggedIn]);
+
+  //useEffect based on timer to display the current rewards and the modal with the list of rewards
+  const MINUTE_MS = 4000;
+  useEffect(() => {
+    if(isLoggedIn) {
+      const interval = window.setInterval(() => {
+        getBalanceAccount();
+      }, MINUTE_MS);
+
+      return () => window.clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
+    }
+  }, [])
   
 
   return (   
