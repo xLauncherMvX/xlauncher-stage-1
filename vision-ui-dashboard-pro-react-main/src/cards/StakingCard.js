@@ -483,8 +483,18 @@ function StakingCard({
                       marginLeft="13px"
                       marginTop="2px"
                     >
-                      Total Staked: {calc2(unstakedAmount)} XLH
-                  </VuiTypography>  
+                      Total: {myXLH} XLH
+                  </VuiTypography> 
+                  <VuiTypography
+                      fontSize={12}
+                      color="white"
+                      textTransform="capitalize"
+                      marginBottom="5px"
+                      marginLeft="13px"
+                      marginTop="2px"
+                    >
+                      Available: {calc2(unstakedAmount)} XLH
+                  </VuiTypography> 
                   <Grid container spacing={1} mt={5}>
                     <Grid item xs={12} md={6} lg={6}>
                       <VuiButton
