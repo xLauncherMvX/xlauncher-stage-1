@@ -795,7 +795,7 @@ function Farms() {
   const [claimUnstakedAmount, setClaimUnstakedAmount] = useState(0);
   const [claimUnstakedEntry, setClaimUnstakedEntry] = useState("");
   const [claimUnlockedUnstake, setClaimUnlockedUnstake] = useState(true);
-  const [claimUnlockedTime, setClaimUnlockedTime] = useState("Complete Unstake");
+  const [claimUnlockedTime, setClaimUnlockedTime] = useState("Claim Unstake");
   const getClientUnstakeStateData = async () => {
     try {
       let providerCUSD = new ProxyProvider(xProvider);
@@ -819,12 +819,13 @@ function Farms() {
       let interactionCUSD = contractCUSD.methods.getUnstakeState([
         new AddressValue(new Address(address)),
       ]);
-
       let queryResponseCUSD = await contractCUSD.runQuery(providerCUSD, interactionCUSD.buildQuery());
 
-      let responseCUSD = interactionCUSD.interpretQueryResponse(queryResponseCUSD);
-      let myListCUSD = responseCUSD.firstValue.valueOf();
-      //console.log("myListCUSD " + JSON.stringify(myListCUSD, null, 2));
+      let myListCUSD = null;
+      if(!queryResponseCUSD.returnMessage){
+        let responseCUSD = interactionCUSD.interpretQueryResponse(queryResponseCUSD);
+        myListCUSD = responseCUSD.firstValue.valueOf();
+      }   //console.log("myListCUSD " + JSON.stringify(myListCUSD, null, 2));
 
       if(myListCUSD){        
         let entryCU  = (parseFloat(myListCUSD.free_after_time_stamp)) * 1000;
@@ -833,15 +834,15 @@ function Farms() {
         let unlockedTimeItemCUMinutes = (entryCU - timestamp) / 60000;
         let unlockedTimeItemCUSeconds = (entryCU - timestamp) / 1000;
         if(calc0(unlockedTimeItemCUMinutes) <= 0){
-          setClaimUnlockedTime("Complete Unstake");
+          setClaimUnlockedTime("Claim Unstake");
         }else if(calc0(unlockedTimeItemCUMinutes) > 0 && calc0(unlockedTimeItemCUMinutes) < 1){
-          setClaimUnlockedTime("Complete Unstake (" + calc0(unlockedTimeItemCUSeconds) + "S)");
+          setClaimUnlockedTime("Claim Unstake (" + calc0(unlockedTimeItemCUSeconds) + "S)");
         }else if(calc0(unlockedTimeItemCUMinutes) >= 1 && calc0(unlockedTimeItemCUMinutes) < 60){
-          setClaimUnlockedTime("Complete Unstake (" + calc1(unlockedTimeItemCUMinutes) + "M)");
+          setClaimUnlockedTime("Claim Unstake (" + calc1(unlockedTimeItemCUMinutes) + "M)");
         }else if(calc0(unlockedTimeItemCUMinutes) >= 60 && calc0(unlockedTimeItemCUMinutes) < 1440){
-          setClaimUnlockedTime("Complete Unstake (" + calc0(unlockedTimeItemCUHours) + "H)");
+          setClaimUnlockedTime("Claim Unstake (" + calc0(unlockedTimeItemCUHours) + "H)");
         }else if(calc0(unlockedTimeItemCUMinutes) >= 1440){
-          setClaimUnlockedTime("Complete Unstake (" + calc0(unlockedTimeItemCUDays) + "D)");
+          setClaimUnlockedTime("Claim Unstake (" + calc0(unlockedTimeItemCUDays) + "D)");
         } 
 
         let AmountCU = parseFloat(myListCUSD.requested_amount) / xMultiplier;
@@ -856,6 +857,11 @@ function Farms() {
         if(entryCU <= timestamp){              
           setClaimUnlockedUnstake(false);
         } 
+      }else{        
+        setClaimUnstakedAmount(0);
+        setClaimUnstakedEntry("");
+        setClaimUnlockedTime("Claim Unstake");
+        setClaimUnlockedUnstake(true);        
       }
     } catch (error) {
       console.log(error);
@@ -1180,7 +1186,7 @@ function Farms() {
       <Grid container spacing={3} mt={2}>
         <Grid item xs={12} md={6} lg={4} xl={4}>
           <CompleteUnstakeCard
-            title = "Unstaked XLH"
+            title = "Claim Unstaked XLH"
             lockedTime = "10 days locked"
             claimUnstakedAmount = {claimUnstakedAmount}
             claimUnstakedEntry = {claimUnstakedEntry}
