@@ -263,41 +263,15 @@ function DashboardNavbar({ absolute, light, isMini }) {
   var fls = address.slice(0,6);
   var lls = address.slice(55,62);
 
-  let accountInfoSection = "";
-  if(isLoggedIn){
-    accountInfoSection = 
-      <Grid container spacing={1} mt={2}> 
-        <Grid item xs={12} sm={12} md={6} lg={8}> 
+  
+  let  accountInfoSection = 
+    <Grid container spacing={1} mt={2}> 
+      <Grid item xs={12} sm={12} md={6} lg={8}> 
 
-        </Grid>
-        <Grid item xs={6} sm={6} md={3} lg={2}>
-          <VuiButton
-            variant="gradient"
-            color="info"
-            fullWidth
-          >
-            <VuiTypography color="white" variant="body2">              
-              {fls} ... {lls}
-            </VuiTypography>
-          </VuiButton>   
-        </Grid>
-        <Grid item xs={6} sm={6} md={3} lg={2}> 
-          <VuiButton
-            variant="gradient"
-            color="info"
-            fullWidth
-          >
-            <VuiTypography color="white" variant="body2">              
-              {new Intl.NumberFormat("ro-Ro", {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2,
-              }).format(balanceXLH)} &nbsp; XLH
-            </VuiTypography>
-          </VuiButton>   
-        </Grid>
-      </Grid>  
-    ;
-  }
+      </Grid>
+      
+    </Grid>  
+  ;
 
   useEffect(() => {
     if(isLoggedIn) {
@@ -319,26 +293,74 @@ function DashboardNavbar({ absolute, light, isMini }) {
   }, [])
   
 
-  return (   
-    <React.Fragment>    
-      <Grid container spacing={1}> 
-        <Grid item xs={12} sm={12} md={6} lg={8}> 
-
-        </Grid>
-        <Grid item xs={6} sm={6} md={3} lg={2}>  
-          <VuiButton fullWidth variant="outlined" color="light" size="small" onClick={handleMiniSidenav} sx={{ minWidth: 140}}>
-            <Icon>{miniSidenav ? "menu_open" : "menu"}</Icon>&nbsp;
-            Menu
-          </VuiButton>
-        </Grid> 
-        <Grid item xs={6} sm={6} md={3} lg={2}>  
-          {connectButton}  
-        </Grid>          
-        {connectLoggedinSection}   
-      </Grid>   
-      {accountInfoSection}
-    </React.Fragment>
-  );
+  if(isLoggedIn){
+    return (   
+      <React.Fragment>    
+        <Grid container spacing={1}>           
+          <Grid item xs={6} sm={6} md={3} lg={2}>  
+            <VuiButton fullWidth variant="outlined" color="light" size="small" onClick={handleMiniSidenav} sx={{ minWidth: 140}}>
+              <Icon>{miniSidenav ? "menu_open" : "menu"}</Icon>&nbsp;
+              Menu
+            </VuiButton>
+          </Grid> 
+          <Grid item xs={6} sm={6} md={3} lg={2}>  
+            {connectButton}  
+          </Grid>         
+          <Grid item xs={12} sm={12} md={0} lg={4}> 
+  
+          </Grid> 
+          <Grid item xs={12} sm={12} md={3} lg={2}>
+            <VuiButton
+              color="info"
+              fullWidth
+              size="small"
+            >             
+              <VuiTypography fontSize="13px" color="white">{fls} ... {lls}</VuiTypography>
+            </VuiButton>   
+          </Grid>
+          <Grid item xs={12} sm={12} md={3} lg={2}> 
+            <VuiButton
+              color="info"
+              fullWidth
+              size="small"
+            >    
+              <VuiTypography
+              fontSize="13px"
+              color="white"
+              >     
+                {new Intl.NumberFormat("ro-Ro", {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                }).format(balanceXLH)} &nbsp; XLH     
+              </VuiTypography>         
+            </VuiButton>   
+          </Grid>
+          {connectLoggedinSection}   
+        </Grid>   
+      </React.Fragment>
+    );
+  }else{
+    return (   
+      <React.Fragment>    
+        <Grid container spacing={1}> 
+          <Grid item xs={12} sm={12} md={6} lg={8}> 
+  
+          </Grid>
+          <Grid item xs={6} sm={6} md={3} lg={2}>  
+            <VuiButton fullWidth variant="outlined" color="light" size="small" onClick={handleMiniSidenav} sx={{ minWidth: 140}}>
+              <Icon>{miniSidenav ? "menu_open" : "menu"}</Icon>&nbsp;
+              Menu
+            </VuiButton>
+          </Grid> 
+          <Grid item xs={6} sm={6} md={3} lg={2}>  
+            {connectButton}  
+          </Grid>          
+          {connectLoggedinSection}   
+        </Grid>   
+      </React.Fragment>
+    );
+  }
+  
 }
 
 export default DashboardNavbar;

@@ -545,7 +545,7 @@ function StakingCard({
                       textTransform="capitalize"
                       id="transition-modal-title3"
                     >
-                      Locked XLH in {modalFarmName}
+                      {modalFarmName} Unlock Schedule 
                     </VuiTypography>
                   </VuiBox>
                 </VuiBox>                

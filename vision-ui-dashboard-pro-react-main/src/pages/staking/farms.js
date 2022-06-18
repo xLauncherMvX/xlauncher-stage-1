@@ -81,7 +81,7 @@ import {
   ContractFunction
 } from "@elrondnetwork/erdjs/out";
 import {BigNumber} from "bignumber.js"
-import { element } from "prop-types";
+import { element, object } from "prop-types";
 import xConfigs from 'configs/envConfig.json';
 
 const { SignTransactionsModals, TransactionsToastList, NotificationModal } = DappUI;
@@ -337,7 +337,8 @@ function Farms() {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     }).format(amountClient2);
-    let entryClient2 = (parseFloat(person.pool_time_stamp_entry)  + 5184000) * 1000;
+    //TODO   + 5184000
+    let entryClient2 = (parseFloat(person.pool_time_stamp_entry)  + 300) * 1000;
     let date2 = new Date(entryClient2).toLocaleDateString("en-GB", options);
     let keyItem = person.pool_id.toString() + person.pool_amount.toString() +
      person.pool_time_stamp_last_collection.toString() + person.pool_amount.toString();
@@ -365,7 +366,8 @@ function Farms() {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     }).format(amountClient3);
-    let entryClient3 = (parseFloat(person3.pool_time_stamp_entry)  + 15552000) * 1000;
+    //TODO   + 15552000
+    let entryClient3 = (parseFloat(person3.pool_time_stamp_entry)  + 600) * 1000;
     let date3 = new Date(entryClient3).toLocaleDateString("en-GB", options);
     let keyItem3 = person3.pool_id.toString() + person3.pool_amount.toString() +
      person3.pool_time_stamp_last_collection.toString() + person3.pool_amount.toString();
@@ -433,13 +435,13 @@ function Farms() {
   let countItems3 = Object.keys(clientStateData3).length;
 
   var n1 = countItems1 * (countItems1 + 1) / 2;
-  var l1 = 80000 * (15 * countItems1 + n1) + 50000000 + (1000000 * countItems1);
+  var l1 = 80000 * (10 * countItems1 + n1) + 10000000 + (1000000 * countItems1);
 
   var n2 = countItems2 * (countItems2 + 1) / 2;
-  var l2 = 80000 * (15 * countItems2 + n2) + 50000000 + (1000000 * countItems2);
+  var l2 = 80000 * (10 * countItems2 + n2) + 10000000 + (1000000 * countItems2);
 
   var n3 = countItems3 * (countItems3 + 1) / 2;
-  var l3 = 80000 * (15 * countItems3 + n3) + 50000000 + (1000000 * countItems3);
+  var l3 = 80000 * (10 * countItems3 + n3) + 10000000 + (1000000 * countItems3);
 
   
 
@@ -448,9 +450,7 @@ function Farms() {
   let gasLimit3 = 10000000;
 
   //gas limit 1
-  if(l1 >= 10000000 && l1 < 20000000){
-    gasLimit1 = 20000000;
-  }else if(l1 >= 20000000 && l1 < 30000000){
+  if(l1 >= 10000000 && l1 < 30000000){
     gasLimit1 = 30000000;
   }else if(l1 >= 30000000 && l1 < 60000000){
     gasLimit1 = 60000000;
@@ -461,9 +461,7 @@ function Farms() {
   }
 
   //gas limit 2
-  if(l2 >= 10000000 && l2 < 20000000){
-    gasLimit2 = 20000000;
-  }else if(l2 >= 20000000 && l2 < 30000000){
+  if(l2 >= 10000000 && l2 < 30000000){
     gasLimit2 = 30000000;
   }else if(l2 >= 30000000 && l2 < 60000000){
     gasLimit2 = 60000000;
@@ -474,9 +472,7 @@ function Farms() {
   }
 
   //gas limit 3
-  if(l3 >= 10000000 && l3 < 20000000){
-    gasLimit3 = 20000000;
-  }else if(l3 >= 20000000 && l3 < 30000000){
+  if(l3 >= 10000000 && l3 < 30000000){
     gasLimit3 = 30000000;
   }else if(l3 >= 30000000 && l3 < 60000000){
     gasLimit3 = 60000000;
@@ -739,8 +735,10 @@ function Farms() {
   let unlockedTime2 = "Unstake";
   const timestamp = Date.now();
   const options2 = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
-  Object.values(clientStateData2).map(item2 => {
-    let entry2  = (parseFloat(item2.pool_time_stamp_entry)+ 5184000) * 1000;
+  let c2Aux = clientStateData2.sort((a,b) => a.pool_time_stamp_entry < b.pool_time_stamp_entry? 1 : -1);
+  Object.values(c2Aux).map(item2 => {
+    //TODO   + 5184000
+    let entry2  = (parseFloat(item2.pool_time_stamp_entry)+ 300) * 1000;
     let unlockedTimeItemDays2 = (entry2 - timestamp) / 86400000;
     let unlockedTimeItemHours2 = (entry2 - timestamp) / 3600000;
     let unlockedTimeItemMinutes2 = (entry2 - timestamp) / 60000;
@@ -768,9 +766,10 @@ function Farms() {
   let unstakedEntry3 = ""; 
   let unlockedUnstake3 = true;
   let unlockedTime3 = "Unstake";
-  Object.values(clientStateData3).map(item3 => {
-    let entry3  = (parseFloat(item3.pool_time_stamp_entry) + 15552000) * 1000;
-
+  let c3Aux = clientStateData3.sort((a,b) => a.pool_time_stamp_entry < b.pool_time_stamp_entry? 1 : -1);
+  Object.values(c3Aux).map(item3 => {
+    //TODO   + 15552000
+    let entry3  = (parseFloat(item3.pool_time_stamp_entry) + 600) * 1000;
     let unlockedTimeItemDays3 = (entry3 - timestamp) / 86400000;
     let unlockedTimeItemHours3 = (entry3 - timestamp) / 3600000;
     let unlockedTimeItemMinutes3 = (entry3 - timestamp) / 60000;
@@ -1181,7 +1180,7 @@ function Farms() {
       <Grid container spacing={3} mt={2}>
         <Grid item xs={12} md={6} lg={4} xl={4}>
           <CompleteUnstakeCard
-            title = "Complete Unstake "
+            title = "Unstaked XLH"
             lockedTime = "10 days locked"
             claimUnstakedAmount = {claimUnstakedAmount}
             claimUnstakedEntry = {claimUnstakedEntry}
