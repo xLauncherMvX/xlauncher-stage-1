@@ -329,8 +329,8 @@ function Farms() {
 
   //Processing the data from getClientStatedata function
   const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
-  clientStateData2.sort((a,b) => a.pool_time_stamp_entry < b.pool_time_stamp_entry? 1 : -1);
-  const client2 =  Object.values(clientStateData2).map(person => {
+  let cs2Aux = clientStateData2.sort((a,b) => a.pool_time_stamp_entry > b.pool_time_stamp_entry? 1 : -1);
+  const client2 =  Object.values(cs2Aux).map(person => {
     let amountClient2 = parseFloat(person.pool_amount) / xMultiplier;
     let amountClient2Formatted = new Intl.NumberFormat("ro-Ro", 
     {
@@ -358,8 +358,8 @@ function Farms() {
     )
   })
 
-  clientStateData3.sort((a,b) => a.pool_time_stamp_entry < b.pool_time_stamp_entry? 1 : -1);
-  const client3 =  Object.values(clientStateData3).map(person3 => {
+  let cs3Aux = clientStateData3.sort((a,b) => a.pool_time_stamp_entry > b.pool_time_stamp_entry? 1 : -1);
+  const client3 =  Object.values(cs3Aux).map(person3 => {
     let amountClient3 = parseFloat(person3.pool_amount) / xMultiplier;
     let amountClient3Formatted = new Intl.NumberFormat("ro-Ro", 
     {
