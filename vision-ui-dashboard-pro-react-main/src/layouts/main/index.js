@@ -97,7 +97,7 @@ function Main(props) {
     return (        
       <DashboardLayout>
           <CssBaseline />  
-          <Globe
+          {/* <Globe
               display={{ xs: "none", md: "block" }}
               position="absolute"
               top="10%"
@@ -105,7 +105,7 @@ function Main(props) {
               mt={{ xs: -12, lg: 1 }}
               mr={{ xs: 0, md: -10, lg: 10 }}
               canvasStyle={{ marginTop: "3rem"}}
-          />
+          /> */}
           <DashboardNavbar/> 
           <Sidenav
               color="info"

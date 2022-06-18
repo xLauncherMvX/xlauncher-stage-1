@@ -451,33 +451,39 @@ function Farms() {
 
   //gas limit 1
   if(l1 >= 10000000 && l1 < 30000000){
-    gasLimit1 = 30000000;
+    gasLimit1 = 50000000;
+  }else if(l1 >= 20000000 && l1 < 30000000){
+    gasLimit1 = 70000000;
   }else if(l1 >= 30000000 && l1 < 60000000){
-    gasLimit1 = 60000000;
+    gasLimit1 = 90000000;
   }else if(l1 >= 60000000 && l1 < 100000000){
-    gasLimit1 = 100000000;
+    gasLimit1 = 130000000;
   }else if(l1 >= 100000000){
     gasLimit1 = 600000000;
   }
 
   //gas limit 2
   if(l2 >= 10000000 && l2 < 30000000){
-    gasLimit2 = 30000000;
+    gasLimit2 = 50000000;
+  }else if(l2 >= 20000000 && l2 < 30000000){
+    gasLimit2 = 70000000;
   }else if(l2 >= 30000000 && l2 < 60000000){
-    gasLimit2 = 60000000;
+    gasLimit2 = 90000000;
   }else if(l2 >= 60000000 && l2 < 100000000){
-    gasLimit2 = 100000000;
+    gasLimit2 = 130000000;
   }else if(l2 >= 100000000){
     gasLimit2 = 600000000;
   }
 
   //gas limit 3
   if(l3 >= 10000000 && l3 < 30000000){
-    gasLimit3 = 30000000;
+    gasLimit3 = 50000000;
+  }else if(l3 >= 20000000 && l3 < 30000000){
+    gasLimit3 = 70000000;
   }else if(l3 >= 30000000 && l3 < 60000000){
-    gasLimit3 = 60000000;
+    gasLimit3 = 90000000;
   }else if(l3 >= 60000000 && l3 < 100000000){
-    gasLimit3 = 100000000;
+    gasLimit3 = 130000000;
   }else if(l3 >= 100000000){
     gasLimit3 = 600000000;
   }
@@ -567,7 +573,7 @@ function Farms() {
     setXlhAmountU(0);
   };
 
-  const unstakeXLH = async (farmIdU, xlhAmountU) => {
+  const unstakeXLH = async (farmIdU, xlhAmountU, gasLimitU) => {
     console.log("Formatting unstake transaction");
     setOpenU1(false);
     setOpenU2(false);
@@ -587,7 +593,7 @@ function Farms() {
       value: "0",
       data: UData,
       receiver: xStakeAddress,
-      gasLimit: 30000000,
+      gasLimit: gasLimitU,
     };
 
     await refreshAccount();
@@ -872,13 +878,13 @@ function Farms() {
   let disabledClaim1 = true;
   let disabledClaim2 = true;
   let disabledClaim3 = true;
-  if(clientReportData[11] >= 0){
+  if(clientReportData[11] >= 0.1){
     disabledClaim1 = false;
   }
-  if(clientReportData[13] >= 0){
+  if(clientReportData[13] >= 0.1){
     disabledClaim2 = false;
   }
-  if(clientReportData[15] >= 0){
+  if(clientReportData[15] >= 0.1){
     disabledClaim3 = false;
   }
 
@@ -886,13 +892,13 @@ function Farms() {
   let disabledReinvest1 = true;
   let disabledReinvest2 = true;
   let disabledReinvest3 = true;
-  if(clientReportData[11] >= 0){
+  if(clientReportData[11] >= 0.1){
     disabledReinvest1 = false;
   }
-  if(clientReportData[13] >= 0){
+  if(clientReportData[13] >= 0.1){
     disabledReinvest2 = false;
   }
-  if(clientReportData[15] >= 0){
+  if(clientReportData[15] >= 0.1){
     disabledReinvest3 = false;
   }
 
@@ -1030,7 +1036,7 @@ function Farms() {
             openS = {open1}
             handleOpenS = {handleOpen1}
             handleCloseS = {handleClose}
-            methodU = {() => unstakeXLH(1, xlhAmountU)}
+            methodU = {() => unstakeXLH(1, xlhAmountU, gasLimit1)}
             maxMethodU = {() => setMaxAmountU(clientReportData[10])}
             handleSliderChangeU = {e => handleSliderChangeU(e.target.value)}
             handleInputChangeU = {e => handleInputChangeU(e)}
@@ -1097,7 +1103,7 @@ function Farms() {
             openS = {open2}
             handleOpenS = {handleOpen2}
             handleCloseS = {handleClose}
-            methodU = {() => unstakeXLH(2, xlhAmountU)}
+            methodU = {() => unstakeXLH(2, xlhAmountU, gasLimit2)}
             maxMethodU = {() => setMaxAmountU(calc2(unstakedAmount2))}
             handleSliderChangeU = {e => handleSliderChangeU(e.target.value)}
             handleInputChangeU = {e => handleInputChangeU(e)}
@@ -1164,7 +1170,7 @@ function Farms() {
             openS = {open3}
             handleOpenS = {handleOpen3}
             handleCloseS = {handleClose}
-            methodU = {() => unstakeXLH(3, xlhAmountU)}
+            methodU = {() => unstakeXLH(3, xlhAmountU, gasLimit3)}
             maxMethodU = {() => setMaxAmountU(calc2(unstakedAmount3))}
             handleSliderChangeU = {e => handleSliderChangeU(e.target.value)}
             handleInputChangeU = {e => handleInputChangeU(e)}
