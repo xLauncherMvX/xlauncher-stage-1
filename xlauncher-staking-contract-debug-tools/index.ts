@@ -32,13 +32,12 @@ const app = express();
 //devnet
 //let contractAddress =  "erd1qqqqqqqqqqqqqpgq60rugu3m57kvx0n6wqv53y3tuzzyl602pa7qefp8ar"; // 1 periods
 //let contractAddress =  "erd1qqqqqqqqqqqqqpgqqxc37qvrcg8r3y2edlqm9n7uzht0jwtkpa7qhkcw64"; // 2 periods
-let contractAddress =
-  "erd1qqqqqqqqqqqqqpgqxmeg3k0ty84hm3f8n9wdfpukspc0asj3pa7qtt6j0t"; // 5 periods
+//let contractAddress =  "erd1qqqqqqqqqqqqqpgqxmeg3k0ty84hm3f8n9wdfpukspc0asj3pa7qtt6j0t"; // 5 periods
 
-//let contractAddress =  "erd1qqqqqqqqqqqqqpgqdw9gatcwzlsdtvjwu3mveln57g0quyzzpa7q9jg84s"; // testnet
+let contractAddress =  "erd1qqqqqqqqqqqqqpgqdw9gatcwzlsdtvjwu3mveln57g0quyzzpa7q9jg84s"; // testnet
 
-let proxyAddress = "https://devnet-gateway.elrond.com"; //devnet
-//let proxyAddress = "https://testnet-gateway.elrond.com"; //testnet
+//let proxyAddress = "https://devnet-gateway.elrond.com"; //devnet
+let proxyAddress = "https://testnet-gateway.elrond.com"; //testnet
 
 let clientAddress =
   "erd1mhhnd3ux2duwc9824dhelherdj3gvzn04erdw29l8cyr5z8fpa7quda68z";
@@ -46,7 +45,7 @@ let clientAddress =
 const port = process.env.PORT || 8080;
 app.listen(port, () => {
   console.log("Hello world listening on port", port);
-  //getVariableContractSettings();
+  getVariableContractSettings();
   //getClientState();
   //getClientReport();
   getGasLimitValue();

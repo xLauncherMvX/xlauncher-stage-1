@@ -192,11 +192,11 @@ reinvest() {
 
 unstake() {
   pool_id="2"
-  amount="1000${MY_DECIMALS}"
+  amount="50${MY_DECIMALS}"
   #amount="94000${MY_DECIMALS}"
   erdpy --verbose contract call ${ADDRESS} --recall-nonce \
     --pem=${PEM_FILE} \
-    --gas-limit=8000000 \
+    --gas-limit=100000000 \
     --proxy=${PROXY} --chain=${CHAINID} \
     --function="unstake" \
     --arguments ${pool_id} ${amount} \
