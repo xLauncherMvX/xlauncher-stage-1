@@ -73,6 +73,7 @@ import SignUpIllustration from "layouts/authentication/sign-up/illustration";
 import Home from "pages/dashboards/home";
 import Staking from "pages/staking/farms";
 import Projects from "pages/projects/list";
+import Finished from "pages/miscellaneous/finished"
 
 // React icons
 import { IoDocument } from "react-icons/io5";
@@ -122,6 +123,12 @@ const routes = [
         route: "/projects/list",
         component: Projects
       }
+      // {
+      //   name: "Finished",
+      //   key: "miscellaneous",
+      //   route: "/miscellaneous/finished",
+      //   component: Finished
+      // }
     ]
   }
 ];
