@@ -956,6 +956,26 @@ function Farms() {
     disabledUnstakeButton3 = false;
   }
 
+  //Show claim unstake widget if unstaked amount > 0
+  let claimUnstakeWidget = "";
+  if(claimUnstakedAmount){
+    claimUnstakeWidget = 
+      <CompleteUnstakeCard
+        title = "Claim Unstaked XLH"
+        lockedTime = "10 days locked"
+        claimUnstakedAmount = {claimUnstakedAmount}
+        claimUnstakedEntry = {claimUnstakedEntry}
+        claimUnstake= {{
+            size: "small",
+            color: "info",
+            label: claimUnlockedTime,
+            disabled: unlockedCompleteUnstakeDisabled
+        }} 
+        methodCU = {() => claimUXLH(3)}
+      />
+    ;
+  }
+
   //useEffect after based on login parameter
   useEffect(() => {
     if(isLoggedIn) {
@@ -1189,21 +1209,9 @@ function Farms() {
           />
         </Grid>
       </Grid>   
-      <Grid container spacing={3} mt={2}>
+      <Grid container spacing={3} mt={1}>
         <Grid item xs={12} md={6} lg={4} xl={4}>
-          <CompleteUnstakeCard
-            title = "Claim Unstaked XLH"
-            lockedTime = "10 days locked"
-            claimUnstakedAmount = {claimUnstakedAmount}
-            claimUnstakedEntry = {claimUnstakedEntry}
-            claimUnstake= {{
-                size: "small",
-                color: "info",
-                label: claimUnlockedTime,
-                disabled: unlockedCompleteUnstakeDisabled
-            }} 
-            methodCU = {() => claimUXLH(3)}
-          />
+          {claimUnstakeWidget}
         </Grid>
       </Grid>
     </Main>

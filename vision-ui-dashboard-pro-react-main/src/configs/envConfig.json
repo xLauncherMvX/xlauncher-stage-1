@@ -1,10 +1,10 @@
 {
-    "environment": "testnet",
-    "stakeAddress": "erd1qqqqqqqqqqqqqpgqdw9gatcwzlsdtvjwu3mveln57g0quyzzpa7q9jg84s",
-    "provider": "https://testnet-gateway.elrond.com",
-    "token": "XLH-b7f529",
-    "apiLink": "https://testnet-api.elrond.com/accounts/",
-    "apiResponse": "https://testnet-api.elrond.com/accounts/erd1qqqqqqqqqqqqqpgqrvc0vklltk8us4ftcf79cm3fhx7vtm72pa7q7zql3t/tokens/XLH-0be7d1",
-    "presaleAddress": "erd1qqqqqqqqqqqqqpgqrvc0vklltk8us4ftcf79cm3fhx7vtm72pa7q7zql3t",
+    "environment": "devnet",
+    "stakeAddress": "erd1qqqqqqqqqqqqqpgqxmeg3k0ty84hm3f8n9wdfpukspc0asj3pa7qtt6j0t",
+    "provider": "https://devnet-gateway.elrond.com",
+    "token": "XLH-cb26c7",
+    "apiLink": "https://devnet-api.elrond.com/accounts/",
+    "apiResponse": "https://devnet-api.elrond.com/accounts/erd1qqqqqqqqqqqqqpgqf2ddf4cd3ycqde6d43ulkcjh46lqa5lnpa7qaej6t9/tokens/XLH-cb26c7",
+    "presaleAddress": "erd1qqqqqqqqqqqqqpgqf2ddf4cd3ycqde6d43ulkcjh46lqa5lnpa7qaej6t9",
     "oldStakeAddress" : "erd1qqqqqqqqqqqqqpgqvfp2xkxhwvrvrcrxzs6e3vz4sz2ms7m0pa7qkrd5ll"
 }

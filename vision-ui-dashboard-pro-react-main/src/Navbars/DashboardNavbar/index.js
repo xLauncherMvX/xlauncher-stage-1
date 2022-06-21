@@ -325,7 +325,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
               size="small"
             >    
               <VuiTypography
-              fontSize="13px"
+              fontSize="12px"
               color="white"
               >     
                 {new Intl.NumberFormat("ro-Ro", {
