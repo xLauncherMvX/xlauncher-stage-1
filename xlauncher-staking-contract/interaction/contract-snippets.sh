@@ -41,8 +41,6 @@ setEnvDevnet() {
   ENV_LOGS="devnet"
   TOKEN_ID="XLH-cb26c7"
   TOKEN_ID_HEX=$(echo -n ${TOKEN_ID} | xxd -p)
-
-
 }
 
 
@@ -79,8 +77,40 @@ setEnvTestnet() {
   ENV_LOGS="testnet"
   TOKEN_ID="XLH-b7f529"
   TOKEN_ID_HEX=$(echo -n ${TOKEN_ID} | xxd -p)
+}
 
+setEnvMainnet() {
+  PULL_A_ID="1"
+  PULL_A_LOCKING_TIME_SPAN="0"
+  APY_A0_ID="1"
+  APY_A0_START=$(date -d '2022-05-12 00:00:01' +"%s")
+  APY_A0_END=$(date -d '2022-07-04 00:00:00' +"%s")
+  APY_A0_APY="4000"
 
+  PULL_B_ID="2"
+  PULL_B_LOCKING_TIME_SPAN="5184000"
+  APY_B0_ID="1"
+  APY_B0_START=$(date -d '2022-05-12 00:00:01' +"%s")
+  APY_B0_END=$(date -d '2022-07-04 00:00:00' +"%s")
+  APY_B0_APY="11000"
+
+  PULL_C_ID="3"
+  PULL_C_LOCKING_TIME_SPAN="15552000"
+  PULL_C_LOCKING_TIME_SPAN="600"
+  APY_C0_ID="1"
+  APY_C0_START=$(date -d '2022-05-12 00:00:01' +"%s")
+  APY_C0_END=$(date -d '2022-07-04 00:00:00' +"%s")
+  APY_C0_APY="18000"
+
+  cp -f erdpy.data-storage-mainnet.json erdpy.data-storage.json
+  CURRENT_ENV="mainnet"
+  PEM_FILE="${PROJECT}/../../wallets/users/mainnet_owner_wallet.pem"
+  ADDRESS=$(erdpy data load --key=address-devnet)
+  PROXY=https://api.elrond.com
+  CHAINID=1
+  ENV_LOGS="mainnet"
+  TOKEN_ID="XLH-8daa50"
+  TOKEN_ID_HEX=$(echo -n ${TOKEN_ID} | xxd -p)
 }
 
 printCurrentEnv() {
