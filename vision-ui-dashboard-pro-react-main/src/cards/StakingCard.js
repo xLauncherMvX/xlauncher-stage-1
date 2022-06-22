@@ -95,7 +95,7 @@ function StakingCard({
   claim, methodC,
   reinvest, methodR,
   lockedRewards, openL, handleOpenL, handleCloseL, 
-  title, lockedTime, myXLH, apr, myRewards, modalFarmName, xlhBalance, isLoggedIn, showInfo, lockedRewardsLabel, mbv  
+  title, lockedTime, myXLH, apr, myRewards, modalFarmName, xlhBalance, isLoggedIn, showInfo, lockedRewardsLabel, mbv, myRewardsColor  
 }) 
 {  
   const [visible, setVisible] = React.useState(false);  
@@ -152,17 +152,21 @@ function StakingCard({
             {stake.label}
           </VuiButton>
         </Grid>
-        <Grid item xs={12} md={6} lg={6}>          
-          <VuiButton
-            color={claim.color}
-            size={claim.size}
-            sx={{ minWidth: "90px" }}
-            onClick={methodC}
-            fullWidth
-            disabled={claim.disabled}
-          >
-            {claim.label}
-          </VuiButton>          
+        <Grid item xs={12} md={6} lg={6}> 
+          <Tooltip key="claim" title={claim.hint} placement="bottom">
+              <VuiBox>
+                <VuiButton
+                  color={claim.color}
+                  size={claim.size}
+                  sx={{ minWidth: "90px" }}
+                  onClick={methodC}
+                  fullWidth
+                  disabled={claim.disabled}
+                >
+                  {claim.label}
+                </VuiButton> 
+              </VuiBox>   
+          </Tooltip>                   
         </Grid>     
       </Grid>
     ;
@@ -257,7 +261,7 @@ function StakingCard({
           <VuiTypography component="span" fontSize={14} fontWeight="regular" color="text">
             My Earned XLH:
           </VuiTypography>
-          <VuiTypography fontSize={14} fontWeight="regular" color="white">
+          <VuiTypography fontSize={14} fontWeight="regular" color={myRewardsColor}>
             {myRewards}
           </VuiTypography>
         </VuiBox>
@@ -272,28 +276,36 @@ function StakingCard({
         {visible && 
           <Grid container spacing={1} mt={0}>   
             <Grid item xs={12} md={6} lg={6}>
-              <VuiButton
-                color={reinvest.color}
-                size={reinvest.size}
-                sx={{ minWidth: "90px" }}
-                onClick={methodR}
-                fullWidth
-                disabled={reinvest.disabled}
-              >
-                {reinvest.label}
-              </VuiButton>              
+              <Tooltip key="reinvest" title={reinvest.hint} placement="bottom">
+                <VuiBox>
+                  <VuiButton
+                    color={reinvest.color}
+                    size={reinvest.size}
+                    sx={{ minWidth: "90px" }}
+                    onClick={methodR}
+                    fullWidth
+                    disabled={reinvest.disabled}
+                  >
+                    {reinvest.label}
+                  </VuiButton>  
+                </VuiBox>
+              </Tooltip>                          
             </Grid>         
-            <Grid item xs={12} md={6} lg={6}>              
-              <VuiButton
-                color={unstake.color}
-                size={unstake.size}
-                sx={{ minWidth: "90px" }}
-                onClick={handleOpenU}
-                fullWidth
-                disabled={unstake.disabled}
-              >
-                {unstake.label}
-              </VuiButton>              
+            <Grid item xs={12} md={6} lg={6}>      
+              <Tooltip key="claim" title={unstake.hint} placement="bottom">
+                <VuiBox>        
+                  <VuiButton
+                    color={unstake.color}
+                    size={unstake.size}
+                    sx={{ minWidth: "90px" }}
+                    onClick={handleOpenU}
+                    fullWidth
+                    disabled={unstake.disabled}
+                  >
+                    {unstake.label}
+                  </VuiButton>    
+                </VuiBox>
+              </Tooltip>          
             </Grid>            
           </Grid>
         }

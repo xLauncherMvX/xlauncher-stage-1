@@ -874,32 +874,42 @@ function Farms() {
     }
   };
 
-  //Disable claim function if xlh amount is too small
-  let disabledClaim1 = true;
-  let disabledClaim2 = true;
-  let disabledClaim3 = true;
-  if(clientReportData[11] >= 0.1){
-    disabledClaim1 = false;
+  //Calculate the farms apr for 3 days
+  let apr1 = 0.0015 * clientReportData[10];
+  let apr2 = 0.0072 * clientReportData[12];
+  let apr3 = 0.0115 * clientReportData[14];
+
+  if(!apr1) apr1 = 0;
+  if(!apr2) apr2 = 0;
+  if(!apr3) apr3 = 0;
+
+  //Change the color for the earned xlh if can be claimed / reinvested
+  let earned1Color1 = "white";
+  let earned1Color2 = "white";
+  let earned1Color3 = "white";
+  if(clientReportData[11] >= apr1){
+    earned1Color1 = "success";
   }
-  if(clientReportData[13] >= 0.1){
-    disabledClaim2 = false;
+  if(clientReportData[13] >= apr2){
+    earned1Color2 = "success";
   }
-  if(clientReportData[15] >= 0.1){
-    disabledClaim3 = false;
+  if(clientReportData[15] >= apr3){
+    earned1Color3 = "success";
   }
 
-  //Disable reinvest function if xlh amount is too small
-  let disabledReinvest1 = true;
-  let disabledReinvest2 = true;
-  let disabledReinvest3 = true;
-  if(clientReportData[11] >= 0.1){
-    disabledReinvest1 = false;
+
+  //Disable claim and reinvest functions if xlh amount less than apr score, add events is amount is reached
+  let disabledCR1 = true;
+  let disabledCR2 = true;
+  let disabledCR3 = true;
+  if(clientReportData[11] >= apr1){
+    disabledCR1 = false;
   }
-  if(clientReportData[13] >= 0.1){
-    disabledReinvest2 = false;
+  if(clientReportData[13] >= apr2){
+    disabledCR2 = false;
   }
-  if(clientReportData[15] >= 0.1){
-    disabledReinvest3 = false;
+  if(clientReportData[15] >= apr3){
+    disabledCR3 = false;
   }
 
   //Disable stake, claim, reinvest, unstake and claim unstake if any tranzaction is active
@@ -912,12 +922,9 @@ function Farms() {
     unlockedStake1 = true;
     unlockedStake2 = true;
     unlockedStake3 = true;
-    disabledClaim1 = true;
-    disabledClaim2 = true;
-    disabledClaim3 = true;
-    disabledReinvest1 = true;
-    disabledReinvest2 = true;
-    disabledReinvest3 = true;
+    disabledCR1 = true;
+    disabledCR2 = true;
+    disabledCR3 = true;
     unlockedUnstake1 = true;
     unlockedUnstake2 = true;
     unlockedUnstake3 = true;
@@ -960,6 +967,7 @@ function Farms() {
   let claimUnstakeWidget = "";
   if(claimUnstakedAmount){
     claimUnstakeWidget = 
+    <>
       <CompleteUnstakeCard
         title = "Claim Unstaked XLH"
         lockedTime = "10 days locked"
@@ -971,8 +979,9 @@ function Farms() {
             label: claimUnlockedTime,
             disabled: unlockedCompleteUnstakeDisabled
         }} 
-        methodCU = {() => claimUXLH(3)}
-      />
+        methodCU = {() => claimUXLH(3)}        
+      />      
+    </>
     ;
   }
 
@@ -1015,6 +1024,7 @@ function Farms() {
             myXLH={clientReportData[2]}
             unstakedAmount = {clientReportData[10]}
             myRewards={clientReportData[3]}
+            myRewardsColor={earned1Color1}
             xlhBalance={balanceXLH}     
             modalFarmName="Farm 1"  
             lockedRewardsLabel = "&nbsp;"
@@ -1030,15 +1040,15 @@ function Farms() {
               size: "small",
               color: "primary",
               label: "Claim",
-              hint: "Individual rewards can be claimed with a minimum of 25XLH",
-              disabled: disabledClaim1
+              hint: "Individual rewards can be claimed with a minimum of " + calc2(apr1) + " XLH",
+              disabled: disabledCR1
             }}
             reinvest={{
               size: "small",
               color: "success",
               label: "Reinvest",
-              hint: "Individual rewards can be reinvested with a minimum of 25XLH",
-              disabled: disabledReinvest1
+              hint: "Individual rewards can be reinvested with a minimum of " + calc2(apr1) + " XLH",
+              disabled: disabledCR1
             }}
             unstake={{
               size: "small",
@@ -1081,6 +1091,7 @@ function Farms() {
             apr="110%"
             myXLH={clientReportData[4]}
             myRewards={clientReportData[5]}
+            myRewardsColor={earned1Color2}
             xlhBalance={balanceXLH}
             unstakedAmount = {calc2(unstakedAmount2)}
             lockedRewardsLabel = "My Locked XLH:"
@@ -1096,15 +1107,15 @@ function Farms() {
               size: "small",
               color: "primary",
               label: "Claim",
-              hint: "Individual rewards can be claimed with a minimum of 25XLH",
-              disabled: disabledClaim2
+              hint: "Individual rewards can be claimed with a minimum of " + calc2(apr2) + " XLH",
+              disabled: disabledCR2
             }}
             reinvest={{
               size: "small",
               color: "success",
               label: "Reinvest",
-              hint: "Individual rewards can be reinvested with a minimum of 25XLH",
-              disabled: disabledReinvest2
+              hint: "Individual rewards can be reinvested with a minimum of " + calc2(apr2) + " XLH",
+              disabled: disabledCR2
             }}
             unstake={{
               size: "small",
@@ -1148,6 +1159,7 @@ function Farms() {
             apr="180%"
             myXLH={clientReportData[6]}
             myRewards={clientReportData[7]}
+            myRewardsColor={earned1Color3}
             xlhBalance={balanceXLH}
             unstakedAmount = {calc2(unstakedAmount3)}
             lockedRewardsLabel = "My Locked XLH:"
@@ -1163,15 +1175,15 @@ function Farms() {
               size: "small",
               color: "primary",
               label: "Claim",
-              hint: "Individual rewards can be claimed with a minimum of 25XLH",
-              disabled: disabledClaim3
+              hint: "Individual rewards can be claimed with a minimum of " + calc2(apr3) + " XLH",
+              disabled: disabledCR3
             }}
             reinvest={{
               size: "small",
               color: "success",
               label: "Reinvest",
-              hint: "Individual rewards can be reinvested with a minimum of 25XLH",
-              disabled: disabledReinvest3
+              hint: "Individual rewards can be reinvested with a minimum of " + calc2(apr3) + " XLH",
+              disabled: disabledCR3
             }}
             unstake={{
               size: "small",
