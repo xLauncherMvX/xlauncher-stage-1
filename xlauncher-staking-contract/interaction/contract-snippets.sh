@@ -83,23 +83,23 @@ setEnvMainnet() {
   PULL_A_ID="1"
   PULL_A_LOCKING_TIME_SPAN="0"
   APY_A0_ID="1"
-  APY_A0_START=$(date -d '2022-05-12 00:00:01' +"%s")
-  APY_A0_END=$(date -d '2022-07-04 00:00:00' +"%s")
+  APY_A0_START=$(date -d '2022-06-22 21:00:00' +"%s")
+  APY_A0_END=$(date -d '2022-07-06 23:59:59' +"%s")
   APY_A0_APY="4000"
 
   PULL_B_ID="2"
   PULL_B_LOCKING_TIME_SPAN="5184000"
   APY_B0_ID="1"
-  APY_B0_START=$(date -d '2022-05-12 00:00:01' +"%s")
-  APY_B0_END=$(date -d '2022-07-04 00:00:00' +"%s")
+  APY_B0_START=$(date -d '2022-06-22 21:00:00' +"%s")
+  APY_B0_END=$(date -d '2022-07-06 23:59:59' +"%s")
   APY_B0_APY="11000"
 
   PULL_C_ID="3"
   PULL_C_LOCKING_TIME_SPAN="15552000"
   PULL_C_LOCKING_TIME_SPAN="600"
   APY_C0_ID="1"
-  APY_C0_START=$(date -d '2022-05-12 00:00:01' +"%s")
-  APY_C0_END=$(date -d '2022-07-04 00:00:00' +"%s")
+  APY_C0_START=$(date -d '2022-06-22 21:00:00' +"%s")
+  APY_C0_END=$(date -d '2022-07-06 23:59:59' +"%s")
   APY_C0_APY="18000"
 
   cp -f erdpy.data-storage-mainnet.json erdpy.data-storage.json
@@ -286,8 +286,8 @@ updatePeriod1PoolSettings() {
 appendPeriod2PoolSettings() {
 
   APPEND_APY_ID="2"
-  APPEND_APY_START=$(date -d '2022-07-04 00:00:01' +"%s")
-  APPEND_APY_END=$(date -d '2022-07-18 00:00:00' +"%s")
+  APPEND_APY_START=$(date -d '2022-07-07 00:00:00' +"%s")
+  APPEND_APY_END=$(date -d '2022-07-20 23:59:59' +"%s")
   APPEND_APY_A="3200"
   APPEND_APY_B="9500"
   APPEND_APY_C="16000"
@@ -305,8 +305,8 @@ appendPeriod2PoolSettings() {
 appendPeriod3PoolSettings() {
 
   APPEND_APY_ID="3"
-  APPEND_APY_START=$(date -d '2022-07-18 00:00:01' +"%s")
-  APPEND_APY_END=$(date -d '2022-08-08 00:00:00' +"%s")
+  APPEND_APY_START=$(date -d '2022-07-21 00:00:00' +"%s")
+  APPEND_APY_END=$(date -d '2022-08-10 23:59:59' +"%s")
   APPEND_APY_A="3000"
   APPEND_APY_B="9000"
   APPEND_APY_C="15000"
@@ -324,8 +324,8 @@ appendPeriod3PoolSettings() {
 appendPeriod4PoolSettings() {
 
   APPEND_APY_ID="4"
-  APPEND_APY_START=$(date -d '2022-08-08 00:00:01' +"%s")
-  APPEND_APY_END=$(date -d '2022-08-29 00:00:00' +"%s")
+  APPEND_APY_START=$(date -d '2022-08-11 00:00:00' +"%s")
+  APPEND_APY_END=$(date -d '2023-01-04 23:59:59' +"%s")
   APPEND_APY_A="2500"
   APPEND_APY_B="7500"
   APPEND_APY_C="12500"
@@ -343,8 +343,8 @@ appendPeriod4PoolSettings() {
 appendPeriod5PoolSettings() {
 
   APPEND_APY_ID="5"
-  APPEND_APY_START=$(date -d '2022-08-29 00:00:01' +"%s")
-  APPEND_APY_END=$(date -d '2023-05-12 00:00:00' +"%s")
+  APPEND_APY_START=$(date -d '2023-01-05 00:00:00' +"%s")
+  APPEND_APY_END=$(date -d '2024-01-5 23:59:59' +"%s")
   APPEND_APY_A="2500"
   APPEND_APY_B="7500"
   APPEND_APY_C="12500"
