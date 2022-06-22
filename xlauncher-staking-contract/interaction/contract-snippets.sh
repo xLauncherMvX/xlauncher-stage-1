@@ -149,7 +149,7 @@ updateContract() {
 fundContract() {
   method_name="0x$(echo -n 'fundContract' | xxd -p -u | tr -d '\n')"
   token_id="0x$(echo -n ${TOKEN_ID} | xxd -p -u | tr -d '\n')"
-  amount="100000${MY_DECIMALS}"
+  amount="10000000${MY_DECIMALS}"
   erdpy --verbose contract call ${ADDRESS} --recall-nonce \
     --pem=${PEM_FILE} \
     --gas-limit=5000000 \
