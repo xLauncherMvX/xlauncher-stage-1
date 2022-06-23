@@ -17,7 +17,7 @@
 //Display an object in a stylized way in console
 //console.log(JSON.stringify(contract, null, 2));
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 
 // react-router components
 import { Route, Switch, Redirect, useLocation } from "react-router-dom";
@@ -338,7 +338,7 @@ function Farms() {
       maximumFractionDigits: 2,
     }).format(amountClient2);
     //TODO   + 5184000
-    let entryClient2 = (parseFloat(person.pool_time_stamp_entry)  + 300) * 1000;
+    let entryClient2 = (parseFloat(person.pool_time_stamp_entry)  + 5184000) * 1000;
     let date2 = new Date(entryClient2).toLocaleDateString("en-GB", options);
     let keyItem = person.pool_id.toString() + person.pool_amount.toString() +
      person.pool_time_stamp_last_collection.toString() + person.pool_amount.toString();
@@ -367,7 +367,7 @@ function Farms() {
       maximumFractionDigits: 2,
     }).format(amountClient3);
     //TODO   + 15552000
-    let entryClient3 = (parseFloat(person3.pool_time_stamp_entry)  + 600) * 1000;
+    let entryClient3 = (parseFloat(person3.pool_time_stamp_entry)  + 15552000) * 1000;
     let date3 = new Date(entryClient3).toLocaleDateString("en-GB", options);
     let keyItem3 = person3.pool_id.toString() + person3.pool_amount.toString() +
      person3.pool_time_stamp_last_collection.toString() + person3.pool_amount.toString();
@@ -744,7 +744,7 @@ function Farms() {
   let c2Aux = clientStateData2.sort((a,b) => a.pool_time_stamp_entry < b.pool_time_stamp_entry? 1 : -1);
   Object.values(c2Aux).map(item2 => {
     //TODO   + 5184000
-    let entry2  = (parseFloat(item2.pool_time_stamp_entry)+ 300) * 1000;
+    let entry2  = (parseFloat(item2.pool_time_stamp_entry) + 5184000) * 1000;
     let unlockedTimeItemDays2 = (entry2 - timestamp) / 86400000;
     let unlockedTimeItemHours2 = (entry2 - timestamp) / 3600000;
     let unlockedTimeItemMinutes2 = (entry2 - timestamp) / 60000;
@@ -775,7 +775,7 @@ function Farms() {
   let c3Aux = clientStateData3.sort((a,b) => a.pool_time_stamp_entry < b.pool_time_stamp_entry? 1 : -1);
   Object.values(c3Aux).map(item3 => {
     //TODO   + 15552000
-    let entry3  = (parseFloat(item3.pool_time_stamp_entry) + 600) * 1000;
+    let entry3  = (parseFloat(item3.pool_time_stamp_entry) + 15552000) * 1000;
     let unlockedTimeItemDays3 = (entry3 - timestamp) / 86400000;
     let unlockedTimeItemHours3 = (entry3 - timestamp) / 3600000;
     let unlockedTimeItemMinutes3 = (entry3 - timestamp) / 60000;
@@ -887,13 +887,13 @@ function Farms() {
   let earned1Color1 = "white";
   let earned1Color2 = "white";
   let earned1Color3 = "white";
-  if(clientReportData[11] >= apr1){
+  if(clientReportData[11] >= apr1 && clientReportData[11] > 0){
     earned1Color1 = "success";
   }
-  if(clientReportData[13] >= apr2){
+  if(clientReportData[13] >= apr2 && clientReportData[13] > 0){
     earned1Color2 = "success";
   }
-  if(clientReportData[15] >= apr3){
+  if(clientReportData[15] >= apr3 && clientReportData[15] > 0){
     earned1Color3 = "success";
   }
 
@@ -902,13 +902,13 @@ function Farms() {
   let disabledCR1 = true;
   let disabledCR2 = true;
   let disabledCR3 = true;
-  if(clientReportData[11] >= apr1){
+  if(clientReportData[11] >= apr1 && clientReportData[11] > 0){
     disabledCR1 = false;
   }
-  if(clientReportData[13] >= apr2){
+  if(clientReportData[13] >= apr2 && clientReportData[13] > 0){
     disabledCR2 = false;
   }
-  if(clientReportData[15] >= apr3){
+  if(clientReportData[15] >= apr3 && clientReportData[15] > 0){
     disabledCR3 = false;
   }
 
@@ -997,10 +997,9 @@ function Farms() {
 
   //useEffect based on timer to display the current rewards and the modal with the list of rewards
   const MINUTE_MS = 4000;
-  useEffect(() => {
+  useEffect(() => {    
     if(isLoggedIn) {
-      const interval = window.setInterval(() => {
-        getBalanceAccount();
+      const interval = window.setInterval(() => {      
         getClientReportData(); 
         getClientStateData();
         getClientUnstakeStateData();
@@ -1009,6 +1008,15 @@ function Farms() {
       return () => window.clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
     }
   }, [])
+
+  useEffect(() => {
+    if(isLoggedIn) {      
+      getBalanceAccount();
+      getClientReportData(); 
+      getClientStateData();
+      getClientUnstakeStateData();     
+    }
+  }, [trans])
   
   return (
     <Main name="Staking">

@@ -78,7 +78,7 @@ import team2 from "assets/images/team-2.jpg";
 import logoSpotify from "assets/images/small-logos/logo-spotify.svg";
 
 //Elrond
-import { DappProvider, DappUI, logout, useGetAccountInfo } from '@elrondnetwork/dapp-core';
+import { DappProvider, DappUI, logout, useGetAccountInfo, useGetPendingTransactions } from '@elrondnetwork/dapp-core';
 import { Typography } from '@mui/material';
 import xConfigs from 'configs/envConfig.json';
 
@@ -95,6 +95,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator } = controller;
   const [openMenu, setOpenMenu] = useState(false);
   const route = useLocation().pathname.split("/").slice(1);
+  const transB = useGetPendingTransactions().hasPendingTransactions; 
 
   useEffect(() => {
     // Setting the navbar type
@@ -150,6 +151,19 @@ function DashboardNavbar({ absolute, light, isMini }) {
       console.error(error);
       }
   }
+
+  useEffect(() => {
+    if(isLoggedIn) {
+      getBalanceAccount();
+      //console.log("balanceAccount " + balanceAccount);
+    }
+  }, [isLoggedIn]);
+
+  useEffect(() => {
+    if(isLoggedIn) {
+      getBalanceAccount();
+    }
+  }, [transB]);
 
   let balanceAccount = 0;
   Object.values(balanceAccountTokens).map(element => {
@@ -262,36 +276,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
 
   var fls = address.slice(0,6);
   var lls = address.slice(55,62);
-
-  
-  let  accountInfoSection = 
-    <Grid container spacing={1} mt={2}> 
-      <Grid item xs={12} sm={12} md={6} lg={8}> 
-
-      </Grid>
-      
-    </Grid>  
-  ;
-
-  useEffect(() => {
-    if(isLoggedIn) {
-      getBalanceAccount();
-      //console.log("balanceAccount " + balanceAccount);
-    }
-  }, [isLoggedIn]);
-
-  //useEffect based on timer to display the current rewards and the modal with the list of rewards
-  const MINUTE_MS = 4000;
-  useEffect(() => {
-    if(isLoggedIn) {
-      const interval = window.setInterval(() => {
-        getBalanceAccount();
-      }, MINUTE_MS);
-
-      return () => window.clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
-    }
-  }, [])
-  
+ 
 
   if(isLoggedIn){
     return (   
@@ -315,7 +300,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
               fullWidth
               size="small"
             >             
-              <VuiTypography fontSize="13px" color="white">{fls} ... {lls}</VuiTypography>
+              <VuiTypography fontSize="12px" color="white">{fls} ... {lls}</VuiTypography>
             </VuiButton>   
           </Grid>
           <Grid item xs={12} sm={12} md={3} lg={2}> 
