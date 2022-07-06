@@ -135,8 +135,8 @@ function DashboardNavbar({ absolute, light, isMini }) {
   } = DappUI;
 
   //Get Account Balance
-  const [balanceAccountTokens, setBalanceAccountTokens] = useState([]); 
-  const customApi = xApiLink+address+'/tokens/';
+  const [balanceAccount, setBalanceAccount] = useState([]); 
+  const customApi = xApiLink+address+'/tokens/'+xToken;
 
   const getBalanceAccount = async () => {
       try {
@@ -146,11 +146,17 @@ function DashboardNavbar({ absolute, light, isMini }) {
           }
       });
       const json = await response.json();
-      setBalanceAccountTokens(json);
+      setBalanceAccount(json.balance);
       } catch (error) {
       console.error(error);
       }
   }
+
+  let balance = balanceAccount/1000000000000000000;
+  if(!balance){
+    balance = 0;
+  }
+  var balanceXLH = calc2(balance);
 
   useEffect(() => {
     if(isLoggedIn) {
@@ -164,20 +170,6 @@ function DashboardNavbar({ absolute, light, isMini }) {
       getBalanceAccount();
     }
   }, [transB]);
-
-  let balanceAccount = 0;
-  Object.values(balanceAccountTokens).map(element => {
-    if(element.identifier == xToken){
-      balanceAccount = element.balance;
-    }
-  }); 
-
-  let balance = balanceAccount/1000000000000000000;
-  if(!balance){
-    balance = 0;
-  }
-  var balanceXLH = calc2(balance);
-
 
   let connectSection = timeToConnect ? (
     <React.Fragment>

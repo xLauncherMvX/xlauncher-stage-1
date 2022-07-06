@@ -388,8 +388,8 @@ function Farms() {
   })
   
   //Get Account Balance
-  const [balanceAccountTokens, setBalanceAccountTokens] = useState([]);  
-  const customApi = xApiLink+address+'/tokens/';
+  const [balanceAccount, setBalanceAccount] = useState([]);  
+  const customApi = xApiLink+address+'/tokens/'+xToken;
 
   const getBalanceAccount = async () => {
       try {
@@ -399,18 +399,11 @@ function Farms() {
           }
       });
       const json = await response.json();
-      setBalanceAccountTokens(json);
+      setBalanceAccount(json.balance);
       } catch (error) {
       console.error(error);
       }
   }
-
-  let balanceAccount = 0;
-  Object.values(balanceAccountTokens).map(element => {
-    if(element.identifier == xToken){
-      balanceAccount = element.balance;
-    }
-  }); 
       
   var balanceXLH = balanceAccount/1000000000000000000;
   if(!balanceXLH){
@@ -1028,7 +1021,7 @@ function Farms() {
           <StakingCard
             title="Farm 1"
             lockedTime="0 days locked"
-            apr="40%"
+            apr="32%"
             myXLH={clientReportData[2]}
             unstakedAmount = {clientReportData[10]}
             myRewards={clientReportData[3]}
@@ -1096,7 +1089,7 @@ function Farms() {
           <StakingCard
             title="Farm 2"
             lockedTime="60 days locked"
-            apr="110%"
+            apr="95%"
             myXLH={clientReportData[4]}
             myRewards={clientReportData[5]}
             myRewardsColor={earned1Color2}
@@ -1164,7 +1157,7 @@ function Farms() {
           <StakingCard
             title="Farm 3"
             lockedTime="180 days locked"
-            apr="180%"
+            apr="160%"
             myXLH={clientReportData[6]}
             myRewards={clientReportData[7]}
             myRewardsColor={earned1Color3}
