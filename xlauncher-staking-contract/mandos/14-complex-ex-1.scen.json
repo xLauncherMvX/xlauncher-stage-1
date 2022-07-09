@@ -354,6 +354,8 @@
         "blockTimestamp": "47304000"
       }
     },
+
+
     {
       "step": "scCall",
       "txId": "claim-1-2",
@@ -504,23 +506,9 @@
         "refund": "*"
       }
     },
-    {
-      "step": "scCall",
-      "txId": "fund-contract",
-      "tx": {
-        "from": "address:owner",
-        "to": "sc:xlauncher-staking",
-        "function": "fundContract",
-        "esdtValue": [
-          {
-            "tokenIdentifier": "str:BCOIN-a00000",
-            "value": "1000000000000000000000"
-          }
-        ],
-        "gasLimit": "100,000,000",
-        "gasPrice": "0"
-      }
-    },
+
+
+
     {
       "step": "checkState",
       "accounts": {
@@ -528,7 +516,7 @@
           "nonce": "*",
           "balance": "0",
           "esdt": {
-            "str:BCOIN-a00000": "99999000000000000000000000"
+            "str:BCOIN-a00000": "100000000000000000000000000"
           },
           "storage": {},
           "code": ""
@@ -544,7 +532,7 @@
           "nonce": "*",
           "balance": "0",
           "esdt": {
-            "str:BCOIN-a00000": "4000000000000000000000"
+            "str:BCOIN-a00000": "3000000000000000000000"
           },
           "storage": {
             "str:variableContractSettings": {
@@ -641,8 +629,7 @@
               "2-pool_time_stamp_entry": "u64:31536000",
               "3-pool_time_stamp_last_collection": "u64:47304000",
               "4-pool_amount": "biguint:39999999999999890880"
-            },
-            "str:clientState|address:client1|str:.item|u32:7": {
+            },"str:clientState|address:client1|str:.item|u32:7": {
               "1-pool_id": "u32:1",
               "2-pool_time_stamp_entry": "u64:47304000",
               "3-pool_time_stamp_last_collection": "u64:47304000",
@@ -667,6 +654,24 @@
           },
           "code": "file:../output/xlauncher-staking.wasm"
         }
+      }
+    },
+
+    {
+      "step": "scCall",
+      "txId": "fund-contract",
+      "tx": {
+        "from": "address:owner",
+        "to": "sc:xlauncher-staking",
+        "function": "fundContract",
+        "esdtValue": [
+          {
+            "tokenIdentifier": "str:BCOIN-a00000",
+            "value": "1000000000000000000000"
+          }
+        ],
+        "gasLimit": "100,000,000",
+        "gasPrice": "0"
       }
     },
     {
@@ -751,7 +756,7 @@
         "value": "0",
         "arguments": [
           "1",
-          "2030099999999999556800"
+          "1015049999999999778400"
         ],
         "gasLimit": "100,000,000",
         "gasPrice": "0"
@@ -890,8 +895,8 @@
             "str:clientList|str:.index|address:client1": "1",
             "str:clientList|str:.item|u32:1": "address:client1",
             "str:unstakeState|address:client1": {
-              "0-total_unstaked_amount": "biguint:2030099999999999556800",
-              "1-requested_amount": "biguint:2030099999999999556800",
+              "0-total_unstaked_amount": "biguint:1015049999999999778400",
+              "1-requested_amount": "biguint:1015049999999999778400",
               "2-free_after_time_stamp": "u64:63936000"
             }
           },

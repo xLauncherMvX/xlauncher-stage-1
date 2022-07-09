@@ -950,7 +950,7 @@
         "value": "0",
         "arguments": [
           "1",
-          "2030099999999999556800"
+          "1015049999999999778400"
         ],
         "gasLimit": "100,000,000",
         "gasPrice": "0"
@@ -973,7 +973,7 @@
         "value": "0",
         "arguments": [
           "3",
-          "2121589999999999567360"
+          "1060789999999999783680"
         ],
         "gasLimit": "100,000,000",
         "gasPrice": "0"
@@ -1163,13 +1163,13 @@
             "str:clientList|str:.index|address:client2": "2",
             "str:clientList|str:.item|u32:2": "address:client2",
             "str:unstakeState|address:client1": {
-              "0-total_unstaked_amount": "biguint:2035175249999999360720",
-              "1-requested_amount": "biguint:2030099999999999556800",
+              "0-total_unstaked_amount": "biguint:1020125249999999582320",
+              "1-requested_amount": "biguint:1015049999999999778400",
               "2-free_after_time_stamp": "u64:63936000"
             },
             "str:unstakeState|address:client2": {
-              "0-total_unstaked_amount": "biguint:2142805999999999426480",
-              "1-requested_amount": "biguint:2121589999999999567360",
+              "0-total_unstaked_amount": "biguint:1082005999999999642800",
+              "1-requested_amount": "biguint:1060789999999999783680",
               "2-free_after_time_stamp": "u64:63936000"
             }
           },

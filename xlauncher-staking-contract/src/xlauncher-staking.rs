@@ -190,6 +190,7 @@ pub trait XLauncherStaking {
         total_amount: BigUint,
         requested_amount: BigUint,
     ) {
+        sc_print!("total unstake amount = {}", total_amount.clone());
         let client = self.blockchain().get_caller();
         let settings = self.variable_contract_settings().get();
         let unstake_lock_span: u64 = settings.unstake_lock_span;
@@ -279,7 +280,6 @@ pub trait XLauncherStaking {
 
             if unstake_time < current_time_stamp && total_items_value < amount {
                 selected_items.push(client_item.clone());
-
                 for k in 0..=(config_vector.len() - 1) {
                     let config_item = config_vector.get(k);
                     let item_rewards = self.calculate_rewards_v2(
@@ -287,9 +287,9 @@ pub trait XLauncherStaking {
                         config_item,
                         &current_time_stamp,
                     );
-                    total_items_value = total_items_value + client_item.pool_amount.clone();
                     total_rewards = total_rewards + item_rewards;
                 }
+                total_items_value = total_items_value + client_item.pool_amount.clone();
             }
         }
 
@@ -304,6 +304,8 @@ pub trait XLauncherStaking {
 
         //case 1 selected amount is exact amount staked
         if total_items_value == amount {
+            sc_print!("Case 1 amount={}, total_items_value={}",amount.clone(), total_items_value.clone());
+
             for i in 0..=(selected_items.len() - 1) {
                 let item = selected_items.get(i);
                 self.remove_client_item_from_storage(
@@ -321,6 +323,7 @@ pub trait XLauncherStaking {
 
         //case 2 amount is a bit smaller then total_items_value
         else if amount < total_items_value {
+            sc_print!("Case 2 amount={}, total_items_value={}",amount.clone(), total_items_value.clone());
             for i in 0..=(selected_items.len() - 1) {
                 let item = selected_items.get(i);
                 self.remove_client_item_from_storage(
@@ -867,6 +870,7 @@ pub trait XLauncherStaking {
             report_pool_items: ManagedVec::new(),
         };
         let current_time_stamp = self.blockchain().get_block_timestamp();
+        sc_print!("getClientReport time={}",current_time_stamp.clone());
         let var_setting = self.variable_contract_settings().get();
         let client_vector = self.client_state(&client);
 
@@ -885,20 +889,24 @@ pub trait XLauncherStaking {
                 pool_amount: BigUint::zero(),
                 rewards_amount: BigUint::zero(),
             };
-            for pc in 0..=(pool.apy_configuration.len() - 1) {
-                let pc_val = pool.apy_configuration.get(pc);
-                for c in 1..=client_vector.len() {
-                    let pc_clone = pc_val.clone();
-                    let client_item = client_vector.get(c);
-                    if client_item.pool_id == pul_id {
-                        rep_item.pool_amount =
-                            rep_item.pool_amount.clone() + client_item.pool_amount.clone();
+
+            for c in 1..=client_vector.len() {
+                let client_item = client_vector.get(c);
+                if client_item.pool_id == pul_id {
+                    rep_item.pool_amount =
+                        rep_item.pool_amount.clone() + client_item.pool_amount.clone();
+                    sc_print!("added value: pull_id={}, pull_amount={}", pul_id.clone(), rep_item.pool_amount.clone());
+                    for pc in 0..=(pool.apy_configuration.len() - 1) {
+
+                        let pc_val = pool.apy_configuration.get(pc);
+                        let pc_clone = pc_val.clone();
                         let item_reward = self.calculate_rewards_v2(
                             client_item.clone(),
                             pc_clone,
                             &current_time_stamp,
                         );
                         rep_item.rewards_amount = rep_item.rewards_amount.clone() + item_reward;
+                        sc_print!("rewards_amount value={}", rep_item.rewards_amount.clone());
                     }
                 }
             }
@@ -914,102 +922,8 @@ pub trait XLauncherStaking {
         return report;
     }
 
-    #[view(getClientReportV2)]
-    fn get_client_report_v2(
-        &self,
-        client: ManagedAddress,
-    ) -> MultiValueEncoded<MultiValue3<u32, BigUint, BigUint>> {
-        //let mut report_pool_items: ManagedVec<ReportClientPoolPoolItem<Self::Api>> = ManagedVec::new();
-        let mut multi_val_vec: MultiValueEncoded<MultiValue3<u32, BigUint, BigUint>> =
-            MultiValueEncoded::new();
-        let mut report = ReportClinet {
-            total_amount: BigUint::zero(),
-            total_rewards: BigUint::zero(),
-            report_pool_items: ManagedVec::new(),
-        };
-        let current_time_stamp = self.blockchain().get_block_timestamp();
-        let var_setting = self.variable_contract_settings().get();
-        let client_vector = self.client_state(&client);
 
-        if client_vector.len() == 0 {
-            //if clinet has no staked items we stop here
-            //return report;
-            return multi_val_vec;
-        }
 
-        let mut count = 0;
-        let pool_items = var_setting.pool_items;
-        for i in 0..=(pool_items.len() - 1) {
-            let pool = pool_items.get(i);
-            let pool_id = pool.id;
-            let mut rep_item = ReportClientPoolPoolItem {
-                pool_id: pool_id.clone(),
-                pool_amount: BigUint::zero(),
-                rewards_amount: BigUint::zero(),
-            };
-            for pc in 0..=(pool.apy_configuration.len() - 1) {
-                let pc_val = pool.apy_configuration.get(pc);
-                for c in 1..=client_vector.len() {
-                    let pc_clone = pc_val.clone();
-                    let client_item = client_vector.get(c);
-                    if client_item.pool_id == pool_id {
-                        rep_item.pool_amount =
-                            rep_item.pool_amount.clone() + client_item.pool_amount.clone();
-                        let item_reward = self.calculate_rewards_v2(
-                            client_item.clone(),
-                            pc_clone,
-                            &current_time_stamp,
-                        );
-                        rep_item.rewards_amount = rep_item.rewards_amount.clone() + item_reward;
-                    }
-                }
-            }
-            report.total_amount = report.total_amount.clone() + rep_item.pool_amount.clone();
-            report.total_rewards = report.total_rewards.clone() + rep_item.rewards_amount.clone();
-            if rep_item.pool_amount > BigUint::zero() {
-                count = count + 1;
-                multi_val_vec.push(MultiValue3::from((
-                    pool_id.clone(),
-                    rep_item.pool_amount.clone(),
-                    rep_item.rewards_amount.clone(),
-                )));
-                report.report_pool_items.push(rep_item);
-            }
-        }
-
-        //return report;
-        return multi_val_vec;
-    }
-
-    #[view(getClientReportV3)]
-    fn get_client_report_v3(
-        &self,
-        client: ManagedAddress,
-    ) -> MultiValueEncoded<MultiValue4<u32, u64, u64, BigUint>> {
-        let mut multi_val_vec: MultiValueEncoded<MultiValue4<u32, u64, u64, BigUint>> =
-            MultiValueEncoded::new();
-
-        let client_vector = self.client_state(&client);
-
-        if client_vector.len() == 0 {
-            //if client has no staked items we stop here
-            //return report;
-            return multi_val_vec;
-        }
-
-        for c in 1..=client_vector.len() {
-            let client_item = client_vector.get(c);
-
-            multi_val_vec.push(MultiValue4::from((
-                client_item.pool_id,
-                client_item.pool_time_stamp_entry,
-                client_item.pool_time_stamp_last_collection,
-                client_item.pool_amount,
-            )));
-        }
-
-        return multi_val_vec;
-    }
 
     #[view(getApiConfigReport1)]
     fn get_api_config_report_1(

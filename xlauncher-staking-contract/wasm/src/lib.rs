@@ -14,8 +14,6 @@ elrond_wasm_node::wasm_endpoints! {
         getApiConfigReport1
         getClientList
         getClientReport
-        getClientReportV2
-        getClientReportV3
         getClientState
         getTokenBalance
         getTotalStakedValue

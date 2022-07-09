@@ -502,7 +502,7 @@
         "value": "0",
         "arguments": [
           "1",
-          "2030099999999999556800"
+          "1015049999999999778400"
         ],
         "gasLimit": "100,000,000",
         "gasPrice": "0"
@@ -642,8 +642,8 @@
             "str:clientList|str:.index|address:client1": "1",
             "str:clientList|str:.item|u32:1": "address:client1",
             "str:unstakeState|address:client1": {
-              "0-total_unstaked_amount": "biguint:2035175249999999360720",
-              "1-requested_amount": "biguint:2030099999999999556800",
+              "0-total_unstaked_amount": "biguint:1020125249999999582320",
+              "1-requested_amount": "biguint:1015049999999999778400",
               "2-free_after_time_stamp": "u64:63936000"
             }
           },
