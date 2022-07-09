@@ -196,10 +196,10 @@
             "str:variableContractSettings": {
               "1-token_id": "nested:str:BCOIN-a00000",
               "2-min_amount": "biguint:250,000,000,000,000,000",
-              "3-no_rewords_time_span": "u64:864000",
+              "3-no_rewards_time_span": "u64:864000",
               "4-contract_is_active": "true",
-              "5-pull_items_vec_len": "u32:3",
-              "6-first_pull_item": {
+              "5-pool_items_vec_len": "u32:3",
+              "6-first_pool_item": {
                 "1-id": "u32:1",
                 "2-locking_time_span": "u64:0",
                 "3-apy_configuration_vec_len": "u32:1",
@@ -210,7 +210,7 @@
                   "4-end_timestamp": "u64:31536000"
                 }
               },
-              "7-second_pull_item": {
+              "7-second_pool_item": {
                 "1-id": "u32:2",
                 "2-locking_time_span": "u64:5184000",
                 "3-apy_configuration_vec_len": "u32:1",
@@ -221,7 +221,7 @@
                   "4-end_timestamp": "u64:31536000"
                 }
               },
-              "8-third_pull_item": {
+              "8-third_pool_item": {
                 "1-id": "u32:3",
                 "2-locking_time_span": "u64:15552000",
                 "3-apy_configuration_vec_len": "u32:1",
@@ -235,19 +235,20 @@
             },
             "str:clientState|address:client1|str:.len": "2",
             "str:clientState|address:client1|str:.item|u32:1": {
-              "1-pull_id": "u32:1",
-              "2-pull_time_stamp_entry": "u64:0",
-              "3-pull_time_stamp_last_collection": "u64:31536001",
-              "4-pull_amount": "biguint:1,000,000,000,000,000,000,000"
+              "1-pool_id": "u32:1",
+              "2-pool_time_stamp_entry": "u64:0",
+              "3-pool_time_stamp_last_collection": "u64:31536001",
+              "4-pool_amount": "biguint:1,000,000,000,000,000,000,000"
             },
             "str:clientState|address:client1|str:.item|u32:2": {
-              "1-pull_id": "u32:1",
-              "2-pull_time_stamp_entry": "u64:31536001",
-              "3-pull_time_stamp_last_collection": "u64:31536001",
-              "4-pull_amount": "biguint:2,499,999,999,999,953,760"
+              "1-pool_id": "u32:1",
+              "2-pool_time_stamp_entry": "u64:31536001",
+              "3-pool_time_stamp_last_collection": "u64:31536001",
+              "4-pool_amount": "biguint:2,499,999,999,999,953,760"
             },
             "str:totalStakedValue": "1,002,499,999,999,999,953,760",
             "str:clientList|str:.len": "1",
+            "str:clientList|str:.index|address:client1": "1",
             "str:clientList|str:.item|u32:1": "address:client1"
           },
           "code": "file:../output/xlauncher-staking.wasm"

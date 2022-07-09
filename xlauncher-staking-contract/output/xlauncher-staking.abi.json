@@ -10,7 +10,7 @@
         "contractCrate": {
             "name": "xlauncher-staking",
             "version": "0.1.0",
-            "git_version": "106687a"
+            "git_version": "23fa851"
         },
         "framework": {
             "name": "elrond-wasm",
@@ -29,11 +29,11 @@
                 "type": "BigUint"
             },
             {
-                "name": "pull_a_id",
+                "name": "pool_a_id",
                 "type": "u32"
             },
             {
-                "name": "pull_a_locking_time_span",
+                "name": "pool_a_locking_time_span",
                 "type": "u64"
             },
             {
@@ -53,11 +53,11 @@
                 "type": "u64"
             },
             {
-                "name": "pull_b_id",
+                "name": "pool_b_id",
                 "type": "u32"
             },
             {
-                "name": "pull_b_locking_time_span",
+                "name": "pool_b_locking_time_span",
                 "type": "u64"
             },
             {
@@ -77,11 +77,11 @@
                 "type": "u64"
             },
             {
-                "name": "pull_c_id",
+                "name": "pool_c_id",
                 "type": "u32"
             },
             {
-                "name": "pull_c_locking_time_span",
+                "name": "pool_c_locking_time_span",
                 "type": "u64"
             },
             {
@@ -131,7 +131,7 @@
             ],
             "inputs": [
                 {
-                    "name": "pull_id",
+                    "name": "pool_id",
                     "type": "u32"
                 }
             ],
@@ -148,7 +148,7 @@
             "mutability": "mutable",
             "inputs": [
                 {
-                    "name": "pull_id",
+                    "name": "pool_id",
                     "type": "u32"
                 },
                 {
@@ -159,14 +159,11 @@
             "outputs": []
         },
         {
-            "docs": [
-                "\\n    Multi value encoded fields\\n    - pull value,\\n    - rewords,\\n    - entry time stamp,\\n    - time_stamp_last_colection\\n    - current time stamp\\n    *"
-            ],
             "name": "claim",
             "mutability": "mutable",
             "inputs": [
                 {
-                    "name": "pull_id",
+                    "name": "pool_id",
                     "type": "u32"
                 }
             ],
@@ -177,7 +174,7 @@
             "mutability": "mutable",
             "inputs": [
                 {
-                    "name": "pull_id",
+                    "name": "pool_id",
                     "type": "u32"
                 }
             ],
@@ -203,7 +200,7 @@
             "outputs": []
         },
         {
-            "name": "updatePullSettings",
+            "name": "updatePoolSettings",
             "onlyOwner": true,
             "mutability": "mutable",
             "inputs": [
@@ -220,22 +217,22 @@
                     "type": "u64"
                 },
                 {
-                    "name": "pull_a_apy",
+                    "name": "pool_a_apy",
                     "type": "u64"
                 },
                 {
-                    "name": "pull_b_apy",
+                    "name": "pool_b_apy",
                     "type": "u64"
                 },
                 {
-                    "name": "pull_c_apy",
+                    "name": "pool_c_apy",
                     "type": "u64"
                 }
             ],
             "outputs": []
         },
         {
-            "name": "appendPullSettings",
+            "name": "appendPoolSettings",
             "onlyOwner": true,
             "mutability": "mutable",
             "inputs": [
@@ -252,15 +249,15 @@
                     "type": "u64"
                 },
                 {
-                    "name": "pull_a_apy",
+                    "name": "pool_a_apy",
                     "type": "u64"
                 },
                 {
-                    "name": "pull_b_apy",
+                    "name": "pool_b_apy",
                     "type": "u64"
                 },
                 {
-                    "name": "pull_c_apy",
+                    "name": "pool_c_apy",
                     "type": "u64"
                 }
             ],
@@ -282,33 +279,17 @@
             ]
         },
         {
-            "name": "getClientReportV2",
+            "name": "getApiConfigReport1",
             "mutability": "readonly",
             "inputs": [
                 {
-                    "name": "client",
-                    "type": "Address"
+                    "name": "pool_id",
+                    "type": "u32"
                 }
             ],
             "outputs": [
                 {
-                    "type": "variadic<multi<u32,BigUint,BigUint>>",
-                    "multi_result": true
-                }
-            ]
-        },
-        {
-            "name": "getClientReportV3",
-            "mutability": "readonly",
-            "inputs": [
-                {
-                    "name": "client",
-                    "type": "Address"
-                }
-            ],
-            "outputs": [
-                {
-                    "type": "variadic<multi<u32,u64,u64,BigUint>>",
+                    "type": "variadic<multi<u32,u64,u64,u64,u64>>",
                     "multi_result": true
                 }
             ]
@@ -334,7 +315,7 @@
             ],
             "outputs": [
                 {
-                    "type": "variadic<ClientPullState>",
+                    "type": "variadic<ClientPoolState>",
                     "multi_result": true
                 }
             ]
@@ -399,31 +380,28 @@
                 }
             ]
         },
-        "ClientPullState": {
+        "ClientPoolState": {
             "type": "struct",
-            "docs": [
-                "\\n\\n "
-            ],
             "fields": [
                 {
-                    "name": "pull_id",
+                    "name": "pool_id",
                     "type": "u32"
                 },
                 {
-                    "name": "pull_time_stamp_entry",
+                    "name": "pool_time_stamp_entry",
                     "type": "u64"
                 },
                 {
-                    "name": "pull_time_stamp_last_collection",
+                    "name": "pool_time_stamp_last_collection",
                     "type": "u64"
                 },
                 {
-                    "name": "pull_amount",
+                    "name": "pool_amount",
                     "type": "BigUint"
                 }
             ]
         },
-        "Pull": {
+        "Pool": {
             "type": "struct",
             "fields": [
                 {
@@ -440,19 +418,19 @@
                 }
             ]
         },
-        "ReportClientPullPullItem": {
+        "ReportClientPoolPoolItem": {
             "type": "struct",
             "fields": [
                 {
-                    "name": "pull_id",
+                    "name": "pool_id",
                     "type": "u32"
                 },
                 {
-                    "name": "pull_amount",
+                    "name": "pool_amount",
                     "type": "BigUint"
                 },
                 {
-                    "name": "rewords_amount",
+                    "name": "rewards_amount",
                     "type": "BigUint"
                 }
             ]
@@ -465,12 +443,12 @@
                     "type": "BigUint"
                 },
                 {
-                    "name": "total_rewords",
+                    "name": "total_rewards",
                     "type": "BigUint"
                 },
                 {
-                    "name": "report_pull_items",
-                    "type": "List<ReportClientPullPullItem>"
+                    "name": "report_pool_items",
+                    "type": "List<ReportClientPoolPoolItem>"
                 }
             ]
         },
@@ -511,8 +489,8 @@
                     "type": "bool"
                 },
                 {
-                    "name": "pull_items",
-                    "type": "List<Pull>"
+                    "name": "pool_items",
+                    "type": "List<Pool>"
                 }
             ]
         }

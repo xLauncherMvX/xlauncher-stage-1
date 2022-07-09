@@ -7,14 +7,13 @@
 elrond_wasm_node::wasm_endpoints! {
     xlauncher_staking
     (
-        appendPullSettings
+        appendPoolSettings
         claim
         claimUnstakedValue
         fundContract
+        getApiConfigReport1
         getClientList
         getClientReport
-        getClientReportV2
-        getClientReportV3
         getClientState
         getTokenBalance
         getTotalStakedValue
@@ -24,7 +23,7 @@ elrond_wasm_node::wasm_endpoints! {
         stake
         switchIsActiveFieldValue
         unstake
-        updatePullSettings
+        updatePoolSettings
         updateUnstakeLockSpan
     )
 }
