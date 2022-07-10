@@ -51,7 +51,7 @@ pub trait XLauncherPresale {
     #[payable("*")]
     fn fund_contract(
         &self,
-        #[payment_token] token_identifier: TokenIdentifier,
+        #[payment_token] token_identifier: EgldOrEsdtTokenIdentifier,
         #[payment] _payment: BigUint,
     ) {
         require!(!self.token_id().is_empty(), "Token id not set");
@@ -66,7 +66,9 @@ pub trait XLauncherPresale {
     #[view(getTokenBalance)]
     fn get_token_balance(&self) -> BigUint {
         let my_token_id = self.token_id().get();
-        let balance: BigUint = self.blockchain().get_sc_balance(&my_token_id, 0);
+
+        let egld_or_esdt_token_identifier = EgldOrEsdtTokenIdentifier::esdt(my_token_id);
+        let balance: BigUint = self.blockchain().get_sc_balance(&egld_or_esdt_token_identifier, 0);
         return balance;
     }
 
@@ -78,7 +80,9 @@ pub trait XLauncherPresale {
     #[payable("EGLD")]
     #[endpoint]
     fn buy(&self) {
-        let (payment_amount, payment_token) = self.call_value().payment_token_pair();
+        let egld_or_esdt_token_identifier = self.call_value().egld_or_single_esdt();
+        let payment_token = egld_or_esdt_token_identifier.token_identifier;
+        let payment_amount = egld_or_esdt_token_identifier.amount;
         require!(payment_token.is_egld(), "Only EGLD");
         require!(
             payment_amount >= self.min_amount().get(),
@@ -108,7 +112,7 @@ pub trait XLauncherPresale {
             .blockchain()
             .get_esdt_token_data(&caller, &token_id_val, 0)
             .amount;
-        let client_total_balance = (&result_esdt_token_amount + &client_token_balance);
+        let client_total_balance = &result_esdt_token_amount + &client_token_balance;
         let max_balance_val = self.max_balance().get();
         require!(
             client_total_balance <= max_balance_val,
@@ -116,7 +120,7 @@ pub trait XLauncherPresale {
         );
 
         self.send()
-            .direct(&caller, &token_id_val, 0, &result_esdt_token_amount, &[]);
+            .direct_esdt(&caller, &token_id_val, 0, &result_esdt_token_amount);
         /* let owner = self.blockchain().get_owner_address();
         self.send().direct_egld(
             &owner,
@@ -138,16 +142,17 @@ pub trait XLauncherPresale {
         let egld_balance = self.blockchain().get_balance(&sc_address);
 
         let my_token_id = self.token_id().get();
-        let token_balance = self.blockchain().get_sc_balance(&my_token_id, 0);
+        let egld_or_esdt_token_identifier = EgldOrEsdtTokenIdentifier::esdt(my_token_id.clone());
+        let token_balance = self.blockchain().get_sc_balance(&egld_or_esdt_token_identifier, 0);
 
-        let big_zero: BigUint = BigUint::from(0u32);
+        let big_zero: BigUint = BigUint::zero();
         if big_zero < token_balance {
             self.send()
-                .direct(&owner, &my_token_id, 0, &token_balance, &[]);
+                .direct_esdt(&owner, &my_token_id, 0, &token_balance);
         }
 
         if big_zero < egld_balance {
-            self.send().direct_egld(&owner, &egld_balance, &[])
+            self.send().direct_egld(&owner, &egld_balance)
         }
     }
 
