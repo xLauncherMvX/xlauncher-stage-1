@@ -15,7 +15,7 @@
         "function": "fundContract",
         "esdtValue": [
           {
-            "tokenIdentifier": "str:BCOIN-good00",
+            "tokenIdentifier": "str:BCOIN-a00000",
             "value": "100,000,000,000,000,000,000,000,000"
           }
         ],
@@ -30,7 +30,7 @@
           "nonce": "*",
           "balance": "0",
           "esdt": {
-            "str:BCOIN-good00": "0",
+            "str:BCOIN-a00000": "0",
             "str:BCOIN-bad000": "100,000,000,000,000,000,000"
           },
           "storage": {},
@@ -40,10 +40,10 @@
           "nonce": "*",
           "balance": "0",
           "esdt": {
-            "str:BCOIN-good00": "100,000,000,000,000,000,000,000,000"
+            "str:BCOIN-a00000": "100,000,000,000,000,000,000,000,000"
           },
           "storage": {
-            "str:tokenId": "str:BCOIN-good00",
+            "str:tokenId": "str:BCOIN-a00000",
             "str:price": "10,000,000,000,000,000,000,000",
             "str:minAmount": "250,000,000,000,000,000",
             "str:maxAmount": "5,000,000,000,000,000,000",

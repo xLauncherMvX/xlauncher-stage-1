@@ -74,7 +74,7 @@
           "nonce": "*",
           "balance": "1000000000000000000",
           "esdt": {
-            "str:BCOIN-good00": "99990000000000000000000000",
+            "str:BCOIN-a00000": "99990000000000000000000000",
             "str:BCOIN-bad000": "100,000,000,000,000,000,000"
           },
           "storage": {},
@@ -84,7 +84,7 @@
           "nonce": "2",
           "balance": "0",
           "esdt": {
-            "str:BCOIN-good00": "10,000,000,000,000,000,000,000"
+            "str:BCOIN-a00000": "10,000,000,000,000,000,000,000"
           },
           "storage": {}
         },
@@ -92,10 +92,10 @@
           "nonce": "*",
           "balance": "0",
           "esdt": {
-            "str:BCOIN-good00": "0"
+            "str:BCOIN-a00000": "0"
           },
           "storage": {
-            "str:tokenId": "str:BCOIN-good00",
+            "str:tokenId": "str:BCOIN-a00000",
             "str:price": "10,000,000,000,000,000,000,000",
             "str:minAmount": "250,000,000,000,000,000",
             "str:maxAmount": "5,000,000,000,000,000,000",
