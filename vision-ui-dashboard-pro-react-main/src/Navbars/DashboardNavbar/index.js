@@ -171,6 +171,15 @@ function DashboardNavbar({ absolute, light, isMini }) {
     }
   }, [transB]);
 
+  const openInNewTab = (url) => {
+    const newWindow = window.open(url, '_blank', 'noopener,noreferrer')
+    if (newWindow) newWindow.opener = null;
+  }
+
+  const openInSameTab = (url) => {
+    const newWindow = window.open(url, '_self', 'noopener,noreferrer')
+    if (newWindow) newWindow.opener = null;
+  }
   let connectSection = timeToConnect ? (
     <React.Fragment>
     <Grid container alignContent={'center'} mt={4} mb={4}>
@@ -282,8 +291,9 @@ function DashboardNavbar({ absolute, light, isMini }) {
           </Grid> 
           <Grid item xs={6} sm={6} md={3} lg={2}>  
             {connectButton}  
-          </Grid>         
-          <Grid item xs={12} sm={12} md={0} lg={4}> 
+          </Grid>   
+               
+          <Grid item xs={12} sm={12} md={0} lg={2}> 
   
           </Grid> 
           <Grid item xs={12} sm={12} md={3} lg={2}>
@@ -312,6 +322,18 @@ function DashboardNavbar({ absolute, light, isMini }) {
               </VuiTypography>         
             </VuiButton>   
           </Grid>
+          <Grid item xs={12} sm={12} md={3} lg={2}>  
+            <VuiButton 
+              fullWidth 
+              variant="contained"
+              color="error" 
+              size="small"
+              onClick={()=> openInNewTab('https://x-launcher.synaps.me')} 
+              sx={{ minWidth: 140}}
+            >
+              <VuiTypography fontSize="12px" color="white">KYC</VuiTypography>
+            </VuiButton>
+          </Grid>  
           {connectLoggedinSection}   
         </Grid>   
       </React.Fragment>
@@ -320,7 +342,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
     return (   
       <React.Fragment>    
         <Grid container spacing={1}> 
-          <Grid item xs={12} sm={12} md={6} lg={8}> 
+          <Grid item xs={12} sm={12} md={3} lg={6}> 
   
           </Grid>
           <Grid item xs={6} sm={6} md={3} lg={2}>  
@@ -331,7 +353,19 @@ function DashboardNavbar({ absolute, light, isMini }) {
           </Grid> 
           <Grid item xs={6} sm={6} md={3} lg={2}>  
             {connectButton}  
-          </Grid>          
+          </Grid>    
+          <Grid item xs={6} sm={6} md={3} lg={2}>  
+            <VuiButton 
+              fullWidth 
+              variant="contained"
+              color="error" 
+              size="small"
+              onClick={()=> openInNewTab('https://x-launcher.synaps.me')} 
+              sx={{ minWidth: 140}}
+            >
+              <VuiTypography fontSize="12px" color="white">KYC</VuiTypography>
+            </VuiButton>
+          </Grid>       
           {connectLoggedinSection}   
         </Grid>   
       </React.Fragment>
