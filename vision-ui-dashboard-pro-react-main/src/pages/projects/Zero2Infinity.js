@@ -44,7 +44,7 @@ function List() {
   const { values } = breakpoints;
 
   return (    
-    <Main name="Projects">      
+    <Main name="Zero2Infinity">      
       <Grid container spacing={3}>        
         <Grid item xs={12} md={6} xl={4}>
           <Card>
@@ -57,7 +57,7 @@ function List() {
               in order to collect rich data, take high definition images, manage communications and more, much more."
               action={{
                 type: "internal",
-                route: "/projects/Zero2Infinity",
+                route: "/dashboards/home",
                 color: "white",
                 label: "view",
               }}
