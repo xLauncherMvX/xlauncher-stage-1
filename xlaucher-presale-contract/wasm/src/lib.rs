@@ -10,6 +10,8 @@ elrond_wasm_node::wasm_endpoints! {
         buy
         collect
         fundContract
+        getClientBoughtValue
+        getClientList
         getMaxAmount
         getMaxBalance
         getMinAmount

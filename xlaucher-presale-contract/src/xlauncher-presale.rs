@@ -119,14 +119,9 @@ pub trait XLauncherPresale {
             "Buying that much will exceed max allowed token balance"
         );
 
+        self.append_client_if_needed();
         self.send()
             .direct_esdt(&caller, &token_id_val, 0, &result_esdt_token_amount);
-        /* let owner = self.blockchain().get_owner_address();
-        self.send().direct_egld(
-            &owner,
-            &payment_amount,
-            &[],
-        )*/
     }
 
     // NOTE
@@ -156,6 +151,14 @@ pub trait XLauncherPresale {
         }
     }
 
+    fn append_client_if_needed(&self) {
+        let mut clients_set = self.client_list();
+        let client = self.blockchain().get_caller();
+        if !clients_set.contains(&client) {
+            clients_set.insert(client);
+        }
+    }
+
     // storage
 
     // NOTE
@@ -180,4 +183,15 @@ pub trait XLauncherPresale {
     #[view(getMaxBalance)]
     #[storage_mapper("maxBalance")]
     fn max_balance(&self) -> SingleValueMapper<BigUint>;
+
+    #[view(getClientList)]
+    #[storage_mapper("clientList")]
+    fn client_list(&self) -> UnorderedSetMapper<ManagedAddress>;
+
+    #[view(getClientBoughtValue)]
+    #[storage_mapper("clientBoughtValue")]
+    fn get_client_bought_value(
+        &self,
+        client_address: &ManagedAddress,
+    ) -> SingleValueMapper<BigUint>;
 }
