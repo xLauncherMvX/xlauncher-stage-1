@@ -65,6 +65,7 @@
             "str:minAmount": "250,000,000,000,000,000",
             "str:maxAmount": "5,000,000,000,000,000,000",
             "str:maxBalance": "55,000,000,000,000,000,000,000",
+            "str:clientBoughtValue|address:buyer1": "2500000000000000000000",
             "str:clientList|str:.len": "1",
             "str:clientList|str:.index|address:buyer1": "1",
             "str:clientList|str:.item|u32:1": "address:buyer1"

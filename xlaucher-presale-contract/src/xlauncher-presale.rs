@@ -83,6 +83,7 @@ pub trait XLauncherPresale {
         let egld_or_esdt_token_identifier = self.call_value().egld_or_single_esdt();
         let payment_token = egld_or_esdt_token_identifier.token_identifier;
         let payment_amount = egld_or_esdt_token_identifier.amount;
+
         require!(payment_token.is_egld(), "Only EGLD");
         require!(
             payment_amount >= self.min_amount().get(),
@@ -97,7 +98,7 @@ pub trait XLauncherPresale {
         let current_price = self.price().get();
         let one_egld = BigUint::from(EGLD_DECIMALS_VALUE);
         let result_esdt_token_amount = (&current_price * &payment_amount) / one_egld;
-        
+
         // Maybe balance >= result_esdt_token_amount to cover all available ESDT amount
         require!(
             balance > result_esdt_token_amount,
@@ -108,16 +109,16 @@ pub trait XLauncherPresale {
         let caller = self.blockchain().get_caller();
         let token_id_val = self.token_id().get();
 
-        let client_token_balance = self
-            .blockchain()
-            .get_esdt_token_data(&caller, &token_id_val, 0)
-            .amount;
-        let client_total_balance = &result_esdt_token_amount + &client_token_balance;
+        let client_current_balance = self.client_bought_value(&caller).get();
+        let client_total_balance = &result_esdt_token_amount + &client_current_balance;
         let max_balance_val = self.max_balance().get();
+        sc_print!("current_value={}",client_current_balance);
         require!(
             client_total_balance <= max_balance_val,
             "Buying that much will exceed max allowed token balance"
         );
+        self.client_bought_value(&caller).set(client_total_balance);
+        sc_print!("Hello there client {}", result_esdt_token_amount.clone());
 
         self.append_client_if_needed();
         self.send()
@@ -190,7 +191,7 @@ pub trait XLauncherPresale {
 
     #[view(getClientBoughtValue)]
     #[storage_mapper("clientBoughtValue")]
-    fn get_client_bought_value(
+    fn client_bought_value(
         &self,
         client_address: &ManagedAddress,
     ) -> SingleValueMapper<BigUint>;
