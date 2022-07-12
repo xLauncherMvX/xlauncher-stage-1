@@ -48,7 +48,7 @@ setEnvTestnet() {
   PROXY=https://testnet-gateway.elrond.com
   CHAINID=T
   ENV_LOGS="testnet"
-  TOKEN_ID="XLH-0be7d1"
+  TOKEN_ID="XLH-b7f529"
   TOKEN_ID_HEX=$(echo -n ${TOKEN_ID} | xxd -p)
 }
 
