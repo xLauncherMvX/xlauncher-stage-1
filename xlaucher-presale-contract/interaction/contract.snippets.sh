@@ -23,20 +23,20 @@ MY_LOGS="interaction-logs"
 #envs logs values: devnet, testnet, mainnet
 #token id values: devnet=XLH-4f55ab, testnet=XLH-0be7d1, mainnet=XLH-8daa50
 
-INITIAL_PRICE=10000000000000000000000
-MIN_AMOUNT=250000000000000000
-MAX_AMOUNT=5000000000000000000
-MAX_BALANCE="55000${MY_DECIMALS}"
+INITIAL_PRICE="6500${MY_DECIMALS}"
+MIN_AMOUNT="6500${MY_DECIMALS}"
+MAX_AMOUNT="32500${MY_DECIMALS}"
+MAX_BALANCE="32500${MY_DECIMALS}"
 
 setEnvDevnet() {
   cp -f erdpy.data-storage-devnet.json erdpy.data-storage.json
   CURRENT_ENV="devnet"
-  PEM_FILE="${PROJECT}/../../utils/new-dev-wallet.pem"
+  PEM_FILE="${PROJECT}/../../wallets/users/devnet_owner_wallet.pem"
   ADDRESS=$(erdpy data load --key=address-devnet)
   PROXY=https://devnet-gateway.elrond.com
   CHAINID=D
   ENV_LOGS="devnet"
-  TOKEN_ID="XLH-4f55ab"
+  TOKEN_ID="XLH-4a7cc0"
   TOKEN_ID_HEX=$(echo -n ${TOKEN_ID} | xxd -p)
 }
 
@@ -95,7 +95,7 @@ updateContract() {
 fundContract() {
   method_name="0x$(echo -n 'fundContract' | xxd -p -u | tr -d '\n')"
   token_id="0x$(echo -n ${TOKEN_ID} | xxd -p -u | tr -d '\n')"
-  amount="100001${MY_DECIMALS}"
+  amount="100000${MY_DECIMALS}"
   erdpy --verbose contract call ${ADDRESS} --recall-nonce \
     --pem=${PEM_FILE} \
     --gas-limit=3000000 \
