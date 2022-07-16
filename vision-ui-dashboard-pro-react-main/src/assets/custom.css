@@ -161,3 +161,7 @@ dapp-core-ui-component .btn-primary:active {
     max-height: 35vh;
     scrollbar-color: rebeccapurple green;
 }
+
+.text-justified{
+    text-align: justify;
+}

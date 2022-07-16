@@ -50,8 +50,9 @@ import VuiButton from "components/VuiButton";
 import Breadcrumbs from "examples/Breadcrumbs";
 import NotificationItem from "examples/Items/NotificationItem";
 
-import "assets/index.css";
-import "assets/custom.css";
+import 'assets/index.css';
+import 'assets/custom.css';
+
 
 import { ReactComponent as XLauncherLogo } from "assets/images/logo.svg";
 
@@ -174,12 +175,13 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const openInNewTab = (url) => {
     const newWindow = window.open(url, '_blank', 'noopener,noreferrer')
     if (newWindow) newWindow.opener = null;
-  }
+  };
 
   const openInSameTab = (url) => {
     const newWindow = window.open(url, '_self', 'noopener,noreferrer')
     if (newWindow) newWindow.opener = null;
-  }
+  };
+
   let connectSection = timeToConnect ? (
     <React.Fragment>
     <Grid container alignContent={'center'} mt={4} mb={4}>
