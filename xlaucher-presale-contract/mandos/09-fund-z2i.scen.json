@@ -1,6 +1,6 @@
 {
   "name": "xlauncher-presale",
-  "comment": "deploy scenario",
+  "comment": "deploy-presale",
   "steps": [
     {
       "step": "setState",
@@ -9,6 +9,7 @@
           "nonce": "0",
           "balance": "0",
           "esdt": {
+            "str:BCOIN-a00000": "100,000,000,000,000,000,000,000,000",
             "str:BCOIN-b00000": "100,000,000,000,000,000,000,000,000"
           }
         }
@@ -62,6 +63,10 @@
         "gasPrice": "0"
       }
     },
+
+
+
+
     {
       "step": "checkState",
       "accounts": {
@@ -69,6 +74,7 @@
           "nonce": "*",
           "balance": "0",
           "esdt": {
+            "str:BCOIN-a00000": "100000000000000000000000000",
             "str:BCOIN-b00000": "0"
           },
           "storage": {},
@@ -91,5 +97,7 @@
         }
       }
     }
+
+
   ]
 }
