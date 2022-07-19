@@ -109,28 +109,7 @@
         "refund": "*"
       }
     },
-    {
-      "step": "scCall",
-      "txId": "claim-case-1",
-      "tx": {
-        "from": "address:client1",
-        "to": "sc:xlauncher-staking",
-        "value": "0",
-        "function": "claim",
-        "arguments": [
-          "1"
-        ],
-        "gasLimit": "100,000,000",
-        "gasPrice": "0"
-      },
-      "expect": {
-        "out": [],
-        "status": "0",
-        "message": "",
-        "gas": "*",
-        "refund": "*"
-      }
-    },
+
     {
       "step": "checkState",
       "accounts": {
@@ -205,7 +184,7 @@
           "code": "file:../../xlauncher-staking-contract/output/xlauncher-staking.wasm"
         },
         "address:client1": {
-          "nonce": "2",
+          "nonce": "1",
           "balance": "0",
           "esdt": {
             "str:BCOIN-a00000": "4,000,000,000,000,000,000,000"
