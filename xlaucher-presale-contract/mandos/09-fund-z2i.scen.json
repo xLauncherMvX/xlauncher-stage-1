@@ -63,10 +63,75 @@
         "gasPrice": "0"
       }
     },
-
-
-
-
+    {
+      "step": "checkState",
+      "accounts": {
+        "address:owner": {
+          "nonce": "*",
+          "balance": "0",
+          "esdt": {
+            "str:BCOIN-a00000": "100000000000000000000000000",
+            "str:BCOIN-b00000": "0"
+          },
+          "storage": {},
+          "code": ""
+        },
+        "sc:xlauncher-presale": {
+          "nonce": "*",
+          "balance": "0",
+          "esdt": {
+            "str:BCOIN-b00000": "100,000,000,000,000,000,000,000,000"
+          },
+          "storage": {
+            "str:tokenId": "str:BCOIN-b00000",
+            "str:price": "10,000,000,000,000,000,000,000",
+            "str:minAmount": "250,000,000,000,000,000",
+            "str:maxAmount": "5,000,000,000,000,000,000",
+            "str:maxBalance": "55,000,000,000,000,000,000,000"
+          },
+          "code": "file:../output/xlauncher-presale.wasm"
+        }
+      }
+    },
+    {
+      "step": "scDeploy",
+      "txId": "deploy",
+      "tx": {
+        "from": "address:owner",
+        "contractCode": "file:../../xlauncher-staking-contract/output/xlauncher-staking.wasm",
+        "arguments": [
+          "str:BCOIN-a00000",
+          "250,000,000,000,000,000",
+          "1",
+          "0",
+          "1",
+          "0",
+          "31536000",
+          "100",
+          "2",
+          "5184000",
+          "1",
+          "0",
+          "31536000",
+          "200",
+          "3",
+          "15552000",
+          "1",
+          "0",
+          "31536000",
+          "300"
+        ],
+        "gasLimit": "100,000,000",
+        "gasPrice": "0"
+      },
+      "expect": {
+        "out": [],
+        "status": "0",
+        "logs": [],
+        "gas": "*",
+        "refund": "*"
+      }
+    },
     {
       "step": "checkState",
       "accounts": {
@@ -97,7 +162,5 @@
         }
       }
     }
-
-
   ]
 }
