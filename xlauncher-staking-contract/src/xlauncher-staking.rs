@@ -121,9 +121,10 @@ pub trait XLauncherStaking {
     #[payable("*")]
     #[endpoint(fundContract)]
     fn fund_contract(&self) {
-        let token_id = self.call_value().token();
+        let egld_or_esdt_token_identifier = self.call_value().egld_or_single_esdt();
+        let token_id = egld_or_esdt_token_identifier.token_identifier;
         let settings: VariableContractSettings<Self::Api> = self.variable_contract_settings().get();
-        require!(token_id.is_valid_esdt_identifier(), "invalid token_id");
+        require!(token_id.is_valid(), "invalid token_id");
         require!(settings.token_id == token_id, "not the same token id");
     }
 
@@ -134,7 +135,8 @@ pub trait XLauncherStaking {
     fn get_token_balance(&self) -> BigUint {
         let settings: VariableContractSettings<Self::Api> = self.variable_contract_settings().get();
         let my_token_id = settings.token_id;
-        let balance: BigUint = self.blockchain().get_sc_balance(&my_token_id, 0);
+        let egld_or_esdt_token_identifier = EgldOrEsdtTokenIdentifier::esdt(my_token_id);
+        let balance: BigUint = self.blockchain().get_sc_balance(&egld_or_esdt_token_identifier, 0);
         return balance;
     }
 

@@ -1,10 +1,10 @@
 #![no_std]
 
-use xlauncher_staking::ProxyTrait as _;
 
 elrond_wasm::imports!();
 elrond_wasm::derive_imports!();
 
+use xlauncher_staking::ProxyTrait as _;
 const EGLD_DECIMALS_VALUE: u64 = 1_000_000_000_000_000_000;
 const ZERO: u64 = 0;
 
@@ -49,8 +49,8 @@ pub trait XLauncherPresale {
     // NOTE
     // You only check for the token identifier, so there is no need to use annotations, as they are not recommended anymore
     // You can use the Call Value API for the token identifier only -> self.call_value().token()
-    #[endpoint(fundContract)]
     #[payable("*")]
+    #[endpoint(fundContract)]
     fn fund_contract(
         &self,
         #[payment_token] token_identifier: EgldOrEsdtTokenIdentifier,
@@ -164,7 +164,7 @@ pub trait XLauncherPresale {
 
     // proxy
     #[proxy]
-    fn contract_proxy(&self, sc_address: ManagedAddress) -> contract_namespace::Proxy<Self::Api>;
+    fn contract_proxy(&self, sc_address: ManagedAddress) -> xlauncher_staking::Proxy<Self::Api>;
 
     // storage
 

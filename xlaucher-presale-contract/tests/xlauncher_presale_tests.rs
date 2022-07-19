@@ -8,6 +8,12 @@ fn world() -> BlockchainMock {
         "file:output/xlauncher-presale.wasm",
         xlauncher_presale::ContractBuilder,
     );
+
+    /*blockchain.register_contract_builder(
+        "file:../xlauncher-staking-contract/output/xlauncher-staking.wasm",
+        xlauncher_staking::ContractBuilder,
+    );*/
+
     blockchain
 }
 
