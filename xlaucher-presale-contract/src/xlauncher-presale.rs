@@ -1,5 +1,7 @@
 #![no_std]
 
+use xlauncher_staking::ProxyTrait as _;
+
 elrond_wasm::imports!();
 elrond_wasm::derive_imports!();
 
@@ -159,6 +161,10 @@ pub trait XLauncherPresale {
             clients_set.insert(client);
         }
     }
+
+    // proxy
+    #[proxy]
+    fn contract_proxy(&self, sc_address: ManagedAddress) -> contract_namespace::Proxy<Self::Api>;
 
     // storage
 
