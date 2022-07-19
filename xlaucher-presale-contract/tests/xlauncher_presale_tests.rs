@@ -9,10 +9,10 @@ fn world() -> BlockchainMock {
         xlauncher_presale::ContractBuilder,
     );
 
-    /*blockchain.register_contract_builder(
+    blockchain.register_contract_builder(
         "file:../xlauncher-staking-contract/output/xlauncher-staking.wasm",
         xlauncher_staking::ContractBuilder,
-    );*/
+    );
 
     blockchain
 }
@@ -25,4 +25,9 @@ fn buy_ok_scen_01() {
 #[test]
 fn test_pricing_for_presale_round_2() {
     elrond_wasm_debug::mandos_rs("mandos/08-test-pricing-for-presale-round-2.scen.json", world());
+}
+
+#[test]
+fn test_stake_and_buy_ok() {
+    elrond_wasm_debug::mandos_rs("mandos/09-stake-and-buy-ok.scen.json", world());
 }
