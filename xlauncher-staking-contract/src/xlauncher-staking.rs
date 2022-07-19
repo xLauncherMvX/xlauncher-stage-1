@@ -242,12 +242,11 @@ pub trait XLauncherStaking {
             "No funds available to claim"
         );
         let token_id = self.get_contract_token_id();
-        self.send().direct(
+        self.send().direct_esdt(
             &client,
             &token_id,
             0,
-            &unstake_state.total_unstaked_amount,
-            &[],
+            &unstake_state.total_unstaked_amount
         );
         self.unstake_state(&client).clear();
         self.decrement_total_staked_value(unstake_state.requested_amount);
@@ -392,7 +391,7 @@ pub trait XLauncherStaking {
         if total_rewards > 0_u64 {
             let token_id = self.get_contract_token_id();
             self.send()
-                .direct(&client, &token_id, 0, &total_rewards, &[]);
+                .direct_esdt(&client, &token_id, 0, &total_rewards);
         }
     }
 
