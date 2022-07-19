@@ -143,10 +143,13 @@ pub trait XLauncherStaking {
     #[payable("*")]
     #[endpoint(stake)]
     fn stake(&self, pool_id: u32) {
-        let (amount, token_id) = self.call_value().payment_token_pair();
+        let egld_or_esdt_token_identifier = self.call_value().egld_or_single_esdt();
+        let amount = egld_or_esdt_token_identifier.amount;
+        let token_id = egld_or_esdt_token_identifier.token_identifier;
+        //let (amount, token_id) = self.call_value().payment_token_pair();
         require!(self.contract_is_active(), "Contract is in maintenance");
         let settings: VariableContractSettings<Self::Api> = self.variable_contract_settings().get();
-        require!(token_id.is_valid_esdt_identifier(), "invalid token_id");
+        require!(token_id.is_valid(), "invalid token_id");
         require!(settings.token_id == token_id, "not the same token id");
         require!(
             self.pool_exists(pool_id.clone()),
