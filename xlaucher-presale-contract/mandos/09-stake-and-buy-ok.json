@@ -17,39 +17,15 @@
       "newAddresses": [
         {
           "creatorAddress": "address:owner",
-          "creatorNonce": "0",
+          "creatorNonce": "1",
           "newAddress": "sc:xlauncher-presale"
         },
         {
           "creatorAddress": "address:owner",
-          "creatorNonce": "1",
+          "creatorNonce": "0",
           "newAddress": "sc:xlauncher-staking"
         }
       ]
-    },
-    {
-      "step": "scDeploy",
-      "txId": "deploy-presale",
-      "tx": {
-        "from": "address:owner",
-        "contractCode": "file:../output/xlauncher-presale.wasm",
-        "arguments": [
-          "str:BCOIN-b00000",
-          "10,000,000,000,000,000,000,000",
-          "250,000,000,000,000,000",
-          "5,000,000,000,000,000,000",
-          "55,000,000,000,000,000,000,000"
-        ],
-        "gasLimit": "10,000,000",
-        "gasPrice": "0"
-      },
-      "expect": {
-        "out": [],
-        "status": "0",
-        "logs": [],
-        "gas": "*",
-        "refund": "*"
-      }
     },
     {
       "step": "scDeploy",
@@ -80,6 +56,30 @@
           "300"
         ],
         "gasLimit": "100,000,000",
+        "gasPrice": "0"
+      },
+      "expect": {
+        "out": [],
+        "status": "0",
+        "logs": [],
+        "gas": "*",
+        "refund": "*"
+      }
+    },
+    {
+      "step": "scDeploy",
+      "txId": "deploy-presale",
+      "tx": {
+        "from": "address:owner",
+        "contractCode": "file:../output/xlauncher-presale.wasm",
+        "arguments": [
+          "str:BCOIN-b00000",
+          "10,000,000,000,000,000,000,000",
+          "250,000,000,000,000,000",
+          "5,000,000,000,000,000,000",
+          "55,000,000,000,000,000,000,000"
+        ],
+        "gasLimit": "10,000,000",
         "gasPrice": "0"
       },
       "expect": {
