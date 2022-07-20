@@ -15,6 +15,7 @@ elrond_wasm_node::wasm_endpoints! {
         getClientList
         getClientReport
         getClientState
+        getClientTotalStakedValue
         getTokenBalance
         getTotalStakedValue
         getUnstakeState

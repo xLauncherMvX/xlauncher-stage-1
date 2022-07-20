@@ -43,9 +43,9 @@ version = "0.12.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6fbbf6988baa57f4d02500f63694712be2f833182954646c620354f3e0816ee9"
 dependencies = [
-    "arrayvec",
-    "elrond-codec-derive",
-    "wee_alloc",
+ "arrayvec",
+ "elrond-codec-derive",
+ "wee_alloc",
 ]
 
 [[package]]
@@ -66,13 +66,13 @@ version = "0.34.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1af4d31e313a630242fb0b35a32ff4a0dda3f3db73599ded805b53453e4e3042"
 dependencies = [
-    "bitflags",
-    "elrond-codec",
-    "elrond-wasm-derive",
-    "git-version",
-    "hashbrown",
-    "hex-literal",
-    "wee_alloc",
+ "bitflags",
+ "elrond-codec",
+ "elrond-wasm-derive",
+ "git-version",
+ "hashbrown",
+ "hex-literal",
+ "wee_alloc",
 ]
 
 [[package]]
@@ -94,7 +94,7 @@ version = "0.34.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0b495fd4e42b4bd4522ed9f21e60300a855c66f8757f071a38a132969a00955a"
 dependencies = [
-    "elrond-wasm",
+ "elrond-wasm",
 ]
 
 [[package]]
@@ -103,8 +103,8 @@ version = "0.34.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "4c7a79c0f0bc237ebfbff459b85731aa9c049a7a766438c97722e01aa65e27b6"
 dependencies = [
-    "elrond-wasm-node",
-    "wee_alloc",
+ "elrond-wasm-node",
+ "wee_alloc",
 ]
 
 [[package]]
@@ -292,7 +292,7 @@ checksum = "712e227841d057c1ee1cd2fb22fa7e5a5461ae8e48fa2ca79ec42cfc1931183f"
 name = "xlauncher-staking"
 version = "0.1.0"
 dependencies = [
-    "elrond-wasm",
+ "elrond-wasm",
 ]
 
 [[package]]

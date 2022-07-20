@@ -865,6 +865,13 @@ pub trait XLauncherStaking {
     }
 
     // reports
+    #[view(getClientTotalStakedValue)]
+    fn get_client_total_staked_value(&self, client: ManagedAddress) -> BigUint {
+        let report  = self.get_client_report(client);
+        let total_amount = report.total_amount;
+        sc_print!("Hello from staking contract val={}", total_amount);
+        return total_amount;
+    }
 
     #[view(getClientReport)]
     fn get_client_report(&self, client: ManagedAddress) -> ReportClinet<Self::Api> {

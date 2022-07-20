@@ -109,12 +109,15 @@ pub trait XLauncherPresale {
             "Not enough tokens for sale."
         );
 
+        let caller = self.blockchain().get_caller();
         //check staking contract
         sc_print!("Hello buy from preslae result_esdt_token_amount={}", result_esdt_token_amount);
-
+        let sc_address = self.staking_address().get();
+        let client_total_staked_value:BigUint  = self.contract_proxy(sc_address)
+            .get_client_total_staked_value(&caller)
+            .execute_on_dest_context();
 
         //sent token to caller
-        let caller = self.blockchain().get_caller();
         let token_id_val = self.token_id().get();
 
         let client_current_balance = self.client_bought_value(&caller).get();
