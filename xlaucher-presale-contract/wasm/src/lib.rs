@@ -16,6 +16,7 @@ elrond_wasm_node::wasm_endpoints! {
         getMaxBalance
         getMinAmount
         getPrice
+        getStakingAddress
         getTokenBalance
         getTokenId
     )

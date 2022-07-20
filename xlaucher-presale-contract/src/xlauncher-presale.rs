@@ -18,6 +18,7 @@ pub trait XLauncherPresale {
         min_amount: BigUint,
         max_amount_val: BigUint,
         max_balance_val: BigUint,
+        staking_address_val: ManagedAddress
     ) {
         require!(
             token_id.is_valid_esdt_identifier(),
@@ -36,6 +37,7 @@ pub trait XLauncherPresale {
         self.min_amount().set(min_amount);
         self.max_amount().set(max_amount_val);
         self.max_balance().set(max_balance_val);
+        self.staking_address().set(staking_address_val);
     }
 
     // I recommend to format the code before each commit (if you use VSCode) 
@@ -194,6 +196,11 @@ pub trait XLauncherPresale {
     #[view(getMaxBalance)]
     #[storage_mapper("maxBalance")]
     fn max_balance(&self) -> SingleValueMapper<BigUint>;
+
+    #[view(getStakingAddress)]
+    #[storage_mapper("stakingAddress")]
+    fn staking_address(&self) -> SingleValueMapper<ManagedAddress>;
+
 
     #[view(getClientList)]
     #[storage_mapper("clientList")]
