@@ -1021,7 +1021,7 @@ function Farms() {
           <StakingCard
             title="Farm 1"
             lockedTime="0 days locked"
-            apr="32%"
+            apr="30%"
             myXLH={clientReportData[2]}
             unstakedAmount = {clientReportData[10]}
             myRewards={clientReportData[3]}
@@ -1089,7 +1089,7 @@ function Farms() {
           <StakingCard
             title="Farm 2"
             lockedTime="60 days locked"
-            apr="95%"
+            apr="90%"
             myXLH={clientReportData[4]}
             myRewards={clientReportData[5]}
             myRewardsColor={earned1Color2}
@@ -1157,7 +1157,7 @@ function Farms() {
           <StakingCard
             title="Farm 3"
             lockedTime="180 days locked"
-            apr="160%"
+            apr="150%"
             myXLH={clientReportData[6]}
             myRewards={clientReportData[7]}
             myRewardsColor={earned1Color3}
