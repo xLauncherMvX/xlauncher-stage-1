@@ -101,7 +101,7 @@ pub trait XLauncherPresale {
 
         // Maybe balance >= result_esdt_token_amount to cover all available ESDT amount
         require!(
-            balance > result_esdt_token_amount,
+            balance >= result_esdt_token_amount,
             "Not enough tokens for sale."
         );
 
