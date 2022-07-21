@@ -31,8 +31,8 @@ MAX_BALANCE="32500${MY_DECIMALS}"
 setEnvDevnet() {
   cp -f erdpy.data-storage-devnet.json erdpy.data-storage.json
   CURRENT_ENV="devnet"
-  PEM_FILE="${PROJECT}/../../wallets/users/devnet_owner_wallet.pem"
-#  PEM_FILE="${PROJECT}/../../wallets/users/client1.pem"
+#  PEM_FILE="${PROJECT}/../../wallets/users/devnet_owner_wallet.pem"
+  PEM_FILE="${PROJECT}/../../wallets/users/client1.pem"
   ADDRESS=$(erdpy data load --key=address-devnet)
   PROXY=https://devnet-gateway.elrond.com
   CHAINID=D
@@ -98,7 +98,7 @@ fundContract() {
   method_name="0x$(echo -n 'fundContract' | xxd -p -u | tr -d '\n')"
   token_id="0x$(echo -n ${TOKEN_ID} | xxd -p -u | tr -d '\n')"
 #  amount="8500000${MY_DECIMALS}"
-  amount="6501${MY_DECIMALS}"
+  amount="6500${MY_DECIMALS}"
   erdpy --verbose contract call ${ADDRESS} --recall-nonce \
     --pem=${PEM_FILE} \
     --gas-limit=3000000 \
@@ -143,6 +143,13 @@ buyTokens() {
     --proxy=${PROXY} --chain=${CHAINID} \
     --send \
     --outfile="${MY_LOGS}/buyTokens-${ENV_LOGS}.json"
+}
+
+getClientBoughtValue() {
+  # erdpy wallet bech32 --decode erd1l43jz7v300geq3f9k6a8wwjksjs664u4r9wfrrcgrplka5ml22zsmye7px
+  erdpy --verbose contract query ${ADDRESS} --function="getClientBoughtValue" \
+      --arguments 0xfd632179917bd1904525b6ba773a5684a1ad5795195c918f08187f6ed37f5285 \
+      --proxy=${PROXY}
 }
 
 collect() {
