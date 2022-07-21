@@ -31,8 +31,8 @@ MAX_BALANCE="32500${MY_DECIMALS}"
 setEnvDevnet() {
   cp -f erdpy.data-storage-devnet.json erdpy.data-storage.json
   CURRENT_ENV="devnet"
-#  PEM_FILE="${PROJECT}/../../wallets/users/devnet_owner_wallet.pem"
-  PEM_FILE="${PROJECT}/../../wallets/users/client1.pem"
+  PEM_FILE="${PROJECT}/../../wallets/users/devnet_owner_wallet.pem"
+#  PEM_FILE="${PROJECT}/../../wallets/users/client1.pem"
   ADDRESS=$(erdpy data load --key=address-devnet)
   PROXY=https://devnet-gateway.elrond.com
   CHAINID=D
@@ -44,8 +44,8 @@ setEnvDevnet() {
 setEnvTestnet() {
   cp -f erdpy.data-storage-testnet.json erdpy.data-storage.json
   CURRENT_ENV="testnet"
-#  PEM_FILE="${PROJECT}/../../wallets/users/testnet_owner_wallet.pem"
-  PEM_FILE="${PROJECT}/../../wallets/users/client1.pem"
+  PEM_FILE="${PROJECT}/../../wallets/users/testnet_owner_wallet.pem"
+#  PEM_FILE="${PROJECT}/../../wallets/users/client1.pem"
   ADDRESS=$(erdpy data load --key=address-devnet)
   PROXY=https://testnet-gateway.elrond.com
   CHAINID=T
