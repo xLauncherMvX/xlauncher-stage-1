@@ -4,7 +4,9 @@
     "provider": "https://gateway.elrond.com",
     "token": "XLH-8daa50",
     "apiLink": "https://api.elrond.com/accounts/",
-    "apiResponse": "https://api.elrond.com/accounts/erd1qqqqqqqqqqqqqpgqdy3tyfye72r2u8ahg7wwmm7yuu48vdqt4d6q27mvjm/tokens/XLH-8daa50",
-    "presaleAddress": "erd1qqqqqqqqqqqqqpgqdy3tyfye72r2u8ahg7wwmm7yuu48vdqt4d6q27mvjm",
-    "oldStakeAddress" : "erd1qqqqqqqqqqqqqpgqvfp2xkxhwvrvrcrxzs6e3vz4sz2ms7m0pa7qkrd5ll"
+    "apiResponse": "https://api.elrond.com/accounts/erd1qqqqqqqqqqqqqpgqgeg28lufkusqnj6yxh5ucq065x7fs82v4d6qm7njx9/tokens/XLH-8daa50",
+    "presaleAddress": "erd1qqqqqqqqqqqqqpgqgeg28lufkusqnj6yxh5ucq065x7fs82v4d6qm7njx9",
+    "oldStakeAddress" : "erd1qqqqqqqqqqqqqpgqvfp2xkxhwvrvrcrxzs6e3vz4sz2ms7m0pa7qkrd5ll",
+    "maxBalance": 8500000,
+    "date": "July 22, 2022 19:00:00 GMT+03:00"
 }

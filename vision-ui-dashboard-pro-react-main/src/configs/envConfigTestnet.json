@@ -4,7 +4,9 @@
     "provider": "https://testnet-gateway.elrond.com",
     "token": "XLH-b7f529",
     "apiLink": "https://testnet-api.elrond.com/accounts/",
-    "apiResponse": "https://testnet-api.elrond.com/accounts/erd1qqqqqqqqqqqqqpgqrvc0vklltk8us4ftcf79cm3fhx7vtm72pa7q7zql3t/tokens/XLH-0be7d1",
-    "presaleAddress": "erd1qqqqqqqqqqqqqpgqrvc0vklltk8us4ftcf79cm3fhx7vtm72pa7q7zql3t",
-    "oldStakeAddress" : "erd1qqqqqqqqqqqqqpgqvfp2xkxhwvrvrcrxzs6e3vz4sz2ms7m0pa7qkrd5ll"
+    "apiResponse": "https://testnet-api.elrond.com/accounts/erd1qqqqqqqqqqqqqpgqnzv4ewtz27xerejtdztcvyv35q6swy3hpa7qlyndck/tokens/XLH-b7f529",
+    "presaleAddress": "erd1qqqqqqqqqqqqqpgqnzv4ewtz27xerejtdztcvyv35q6swy3hpa7qlyndck",
+    "oldStakeAddress" : "erd1qqqqqqqqqqqqqpgqvfp2xkxhwvrvrcrxzs6e3vz4sz2ms7m0pa7qkrd5ll",
+    "maxBalance": 8500000,
+    "date": "July 22, 2022 19:00:00 GMT+03:00"
 }

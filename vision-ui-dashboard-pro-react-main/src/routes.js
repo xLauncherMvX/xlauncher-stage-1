@@ -74,14 +74,15 @@ import Home from "pages/dashboards/home";
 import Zero2Infinity from "pages/projects/Zero2Infinity";
 import Staking from "pages/staking/farms";
 import Projects from "pages/projects/list";
-import Finished from "pages/miscellaneous/finished"
+import Finished from "pages/miscellaneous/finished";
+import XLH from "pages/presale/xlh";
 
 // React icons
 import { IoDocument } from "react-icons/io5";
 import { IoBuild } from "react-icons/io5";
 import { IoDocuments } from "react-icons/io5";
 import { FaShoppingCart, FaPiedPiperPp } from "react-icons/fa";
-import { IoHome, IoServer } from "react-icons/io5";
+import { IoHome, IoServer, IoCart } from "react-icons/io5";
 
 const routes = [
   {
@@ -124,12 +125,36 @@ const routes = [
         route: "/projects/list",
         component: Projects
       }
-      // {
-      //   name: "Finished",
-      //   key: "miscellaneous",
-      //   route: "/miscellaneous/finished",
-      //   component: Finished
-      // }
+    ]
+  },
+  {
+    // type: "collapse",
+    name: "Miscellaneous",
+    key: "miscellaneous",
+    icon: <IoHome size="15px" color="inherit" />,
+    collapse: [
+      {
+        name: "Finished",
+        key: "miscellaneous",
+        route: "/miscellaneous/finished",
+        component: Finished
+      }
+    ]
+  },
+
+  //Presale Pages
+  {
+    type: "collapse",
+    name: "Presale",
+    key: "presale",
+    icon: <IoCart size="15px" color="inherit" />,
+    collapse: [
+      {
+        name: "XLauncher",
+        key: "presale",
+        route: "/presale/xlh",
+        component: XLH
+      }
     ]
   },
 

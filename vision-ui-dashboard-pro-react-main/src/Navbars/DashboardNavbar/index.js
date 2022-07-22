@@ -279,7 +279,57 @@ function DashboardNavbar({ absolute, light, isMini }) {
 
   var fls = address.slice(0,6);
   var lls = address.slice(55,62);
+
+  const [whitelistData, setWhitelistData] = useState(null);
+  const getData=()=>{
+    fetch('whitelist.json'
+    ,{
+      headers : { 
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+       }
+    })
+    .then(function(response){
+      //console.log(response);
+      return response.json();
+    })
+    .then(function(myJson) {
+      //console.log(myJson);
+      setWhitelistData(myJson);
+    });
+  }
+
+  var whitelistVar = [];
+  var whitelistSwitcher = false;
+  if(!whitelistData){
+    whitelistVar.addresses = [];
+  }else{
+    whitelistVar = whitelistData;
+  }
+  if(isLoggedIn){
+    whitelistVar.addresses.map(name => {
+      if(name == address){
+        whitelistSwitcher = true;
+      }
+    })
+  }
+
+  var whitelistColor = "error";
+  if(whitelistSwitcher){
+    whitelistColor = "success"
+  }
  
+  useEffect(() => {    
+    if(isLoggedIn) {
+      getData();
+    }
+  }, [isLoggedIn]);
+
+  useEffect(() => {    
+    if(isLoggedIn) {
+      getData();
+    }
+  }, []);
 
   if(isLoggedIn){
     return (   
@@ -328,7 +378,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
             <VuiButton 
               fullWidth 
               variant="contained"
-              color="error" 
+              color={whitelistColor}
               size="small"
               onClick={()=> openInNewTab('https://x-launcher.synaps.me')} 
               sx={{ minWidth: 140}}
@@ -360,7 +410,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
             <VuiButton 
               fullWidth 
               variant="contained"
-              color="error" 
+              color={whitelistColor}
               size="small"
               onClick={()=> openInNewTab('https://x-launcher.synaps.me')} 
               sx={{ minWidth: 140}}
