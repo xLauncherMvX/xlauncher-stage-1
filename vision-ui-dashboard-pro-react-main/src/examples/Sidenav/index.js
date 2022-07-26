@@ -93,11 +93,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
     return () => window.removeEventListener("resize", handleMiniSidenav);
   }, [dispatch, location]);
 
-  useEffect(() => {
-    if (window.innerWidth < 1440) {
-      setTransparentSidenav(dispatch, false);
-    }
-  }, []);
+ 
 
   // Render all the nested collapse items from the routes.js
   const renderNestedCollapse = (collapse) => {

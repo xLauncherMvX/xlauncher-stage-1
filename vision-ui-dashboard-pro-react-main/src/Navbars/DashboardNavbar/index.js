@@ -15,7 +15,7 @@
 
 */
 import * as React from 'react';
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useLayoutEffect } from "react";
 
 // react-router components
 import { useLocation, Link } from "react-router-dom";
@@ -50,8 +50,9 @@ import VuiButton from "components/VuiButton";
 import Breadcrumbs from "examples/Breadcrumbs";
 import NotificationItem from "examples/Items/NotificationItem";
 
-import "assets/index.css";
-import "assets/custom.css";
+import 'assets/index.css';
+import 'assets/custom.css';
+
 
 import { ReactComponent as XLauncherLogo } from "assets/images/logo.svg";
 
@@ -78,8 +79,15 @@ import team2 from "assets/images/team-2.jpg";
 import logoSpotify from "assets/images/small-logos/logo-spotify.svg";
 
 //Elrond
-import { DappProvider, DappUI, logout, useGetAccountInfo } from '@elrondnetwork/dapp-core';
+import { DappProvider, DappUI, logout, useGetAccountInfo, useGetPendingTransactions } from '@elrondnetwork/dapp-core';
 import { Typography } from '@mui/material';
+import xConfigs from 'configs/envConfig.json';
+
+function calc2(theform) {
+  var with2Decimals = theform.toString().match(/^-?\d+(?:\.\d{0,2})?/)[0];
+  var value = with2Decimals;
+  return value;
+}
 
 function DashboardNavbar({ absolute, light, isMini }) {
   
@@ -88,6 +96,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator } = controller;
   const [openMenu, setOpenMenu] = useState(false);
   const route = useLocation().pathname.split("/").slice(1);
+  const transB = useGetPendingTransactions().hasPendingTransactions; 
 
   useEffect(() => {
     // Setting the navbar type
@@ -101,21 +110,18 @@ function DashboardNavbar({ absolute, light, isMini }) {
     function handleTransparentNavbar() {
       setTransparentNavbar(dispatch, (fixedNavbar && window.scrollY === 0) || !fixedNavbar);
     }
-
-    /** 
-     The event listener that's calling the handleTransparentNavbar function when 
-     scrolling the window.
-    */
-    //window.addEventListener("scroll", handleTransparentNavbar);
-
-    // Call the handleTransparentNavbar function to set the state with the initial value.
-    handleTransparentNavbar();
-
-    // Remove event listener on cleanup
-    //return () => window.removeEventListener("scroll", handleTransparentNavbar);
   }, [dispatch, fixedNavbar]);
 
   const handleMiniSidenav = () => setMiniSidenav(dispatch, !miniSidenav);
+
+  //Config Variables
+  let xProvider = xConfigs['provider'];
+  let xToken = xConfigs["token"];
+  let xStakeAddress = xConfigs["stakeAddress"];
+  let xApiLink = xConfigs["apiLink"];
+  let xApiResponse = xConfigs["apiResponse"];
+  let xPresaleAddress = xConfigs["presaleAddress"];
+  let xOldStakeAddress = xConfigs["oldStakeAddress"];
 
   //Elrond login
   const { address, account } = useGetAccountInfo();
@@ -129,12 +135,55 @@ function DashboardNavbar({ absolute, light, isMini }) {
     ExtensionLoginButton
   } = DappUI;
 
-  const [dataAccount, setDataAccount] = useState([]);
+  //Get Account Balance
+  const [balanceAccount, setBalanceAccount] = useState([]); 
+  const customApi = xApiLink+address+'/tokens/'+xToken;
 
+  const getBalanceAccount = async () => {
+      try {
+      const response = await fetch(customApi, { 
+          headers: {
+              'Accept': 'application/json',
+          }
+      });
+      const json = await response.json();
+      setBalanceAccount(json.balance);
+      } catch (error) {
+      console.error(error);
+      }
+  }
 
+  let balance = balanceAccount/1000000000000000000;
+  if(!balance){
+    balance = 0;
+  }
+  var balanceXLH = calc2(balance);
+
+  useEffect(() => {
+    if(isLoggedIn) {
+      getBalanceAccount();
+      //console.log("balanceAccount " + balanceAccount);
+    }
+  }, [isLoggedIn]);
+
+  useEffect(() => {
+    if(isLoggedIn) {
+      getBalanceAccount();
+    }
+  }, [transB]);
+
+  const openInNewTab = (url) => {
+    const newWindow = window.open(url, '_blank', 'noopener,noreferrer')
+    if (newWindow) newWindow.opener = null;
+  };
+
+  const openInSameTab = (url) => {
+    const newWindow = window.open(url, '_self', 'noopener,noreferrer')
+    if (newWindow) newWindow.opener = null;
+  };
 
   let connectSection = timeToConnect ? (
-    <>
+    <React.Fragment>
     <Grid container alignContent={'center'} mt={4} mb={4}>
         <Grid item xs={12} sm={12} md={4} lg={4}>
 
@@ -193,7 +242,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
           </Box>
         </Grid>
       </Grid>
-    </>
+    </React.Fragment>
   ) : (
     ""
   );
@@ -228,33 +277,153 @@ function DashboardNavbar({ absolute, light, isMini }) {
     </VuiButton>
   );
 
-  let xlhAccount = isLoggedIn ? (
-    ""
-  ):(
-    ""
-  );
+  var fls = address.slice(0,6);
+  var lls = address.slice(55,62);
 
-  return (   
-      <>
-        
-          <Grid container spacing={1} > 
-            <Grid item xs={12} sm={12} md={6} lg={8}> 
+  const [whitelistData, setWhitelistData] = useState(null);
+  const getData=()=>{
+    fetch('whitelist.json'
+    ,{
+      headers : { 
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+       }
+    })
+    .then(function(response){
+      //console.log(response);
+      return response.json();
+    })
+    .then(function(myJson) {
+      //console.log(myJson);
+      setWhitelistData(myJson);
+    });
+  }
 
-            </Grid>
-            <Grid item xs={6} sm={6} md={3} lg={2}>  
-              <VuiButton fullWidth variant="outlined" color="light" size="small" onClick={handleMiniSidenav} sx={{ minWidth: 140}}>
-                <Icon>{miniSidenav ? "menu_open" : "menu"}</Icon>&nbsp;
-                Menu
-              </VuiButton>
-            </Grid> 
-            <Grid item xs={6} sm={6} md={3} lg={2}>  
-              {connectButton}  
-            </Grid>            
-            {connectLoggedinSection}   
+  var whitelistVar = [];
+  var whitelistSwitcher = false;
+  if(!whitelistData){
+    whitelistVar.addresses = [];
+  }else{
+    whitelistVar = whitelistData;
+  }
+  if(isLoggedIn){
+    whitelistVar.addresses.map(name => {
+      if(name == address){
+        whitelistSwitcher = true;
+      }
+    })
+  }
+
+  var whitelistColor = "error";
+  if(whitelistSwitcher){
+    whitelistColor = "success"
+  }
+ 
+  useEffect(() => {    
+    if(isLoggedIn) {
+      getData();
+    }
+  }, [isLoggedIn]);
+
+  useEffect(() => {    
+    if(isLoggedIn) {
+      getData();
+    }
+  }, []);
+
+  if(isLoggedIn){
+    return (   
+      <React.Fragment>    
+        <Grid container spacing={1}>           
+          <Grid item xs={6} sm={6} md={3} lg={2}>  
+            <VuiButton fullWidth variant="outlined" color="light" size="small" onClick={handleMiniSidenav} sx={{ minWidth: 140}}>
+              <Icon>{miniSidenav ? "menu_open" : "menu"}</Icon>&nbsp;
+              Menu
+            </VuiButton>
           </Grid> 
-                 
-      </>
-  );
+          <Grid item xs={6} sm={6} md={3} lg={2}>  
+            {connectButton}  
+          </Grid>   
+               
+          <Grid item xs={12} sm={12} md={0} lg={2}> 
+  
+          </Grid> 
+          <Grid item xs={12} sm={12} md={3} lg={2}>
+            <VuiButton
+              color="info"
+              fullWidth
+              size="small"
+            >             
+              <VuiTypography fontSize="12px" color="white">{fls} ... {lls}</VuiTypography>
+            </VuiButton>   
+          </Grid>
+          <Grid item xs={12} sm={12} md={3} lg={2}> 
+            <VuiButton
+              color="info"
+              fullWidth
+              size="small"
+            >    
+              <VuiTypography
+              fontSize="12px"
+              color="white"
+              >     
+                {new Intl.NumberFormat("ro-Ro", {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                }).format(balanceXLH)} &nbsp; XLH     
+              </VuiTypography>         
+            </VuiButton>   
+          </Grid>
+          <Grid item xs={12} sm={12} md={3} lg={2}>  
+            <VuiButton 
+              fullWidth 
+              variant="contained"
+              color={whitelistColor}
+              size="small"
+              onClick={()=> openInNewTab('https://x-launcher.synaps.me')} 
+              sx={{ minWidth: 140}}
+            >
+              <VuiTypography fontSize="12px" color="white">KYC</VuiTypography>
+            </VuiButton>
+          </Grid>  
+          {connectLoggedinSection}   
+        </Grid>   
+      </React.Fragment>
+    );
+  }else{
+    return (   
+      <React.Fragment>    
+        <Grid container spacing={1}> 
+          <Grid item xs={12} sm={12} md={3} lg={6}> 
+  
+          </Grid>
+          <Grid item xs={6} sm={6} md={3} lg={2}>  
+            <VuiButton fullWidth variant="outlined" color="light" size="small" onClick={handleMiniSidenav} sx={{ minWidth: 140}}>
+              <Icon>{miniSidenav ? "menu_open" : "menu"}</Icon>&nbsp;
+              Menu
+            </VuiButton>
+          </Grid> 
+          <Grid item xs={6} sm={6} md={3} lg={2}>  
+            {connectButton}  
+          </Grid>    
+          <Grid item xs={6} sm={6} md={3} lg={2}>  
+            <VuiButton 
+              fullWidth 
+              variant="contained"
+              color={whitelistColor}
+              size="small"
+              onClick={()=> openInNewTab('https://x-launcher.synaps.me')} 
+              sx={{ minWidth: 140}}
+            >
+              <VuiTypography fontSize="12px" color="white">KYC</VuiTypography>
+            </VuiButton>
+          </Grid>       
+          {connectLoggedinSection}   
+        </Grid>   
+      </React.Fragment>
+    );
+  }
+  
 }
 
 export default DashboardNavbar;

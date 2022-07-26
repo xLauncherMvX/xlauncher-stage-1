@@ -71,31 +71,34 @@ import SignUpBasic from "layouts/authentication/sign-up/basic";
 import SignUpCover from "layouts/authentication/sign-up/cover";
 import SignUpIllustration from "layouts/authentication/sign-up/illustration";
 import Home from "pages/dashboards/home";
+import Zero2Infinity from "pages/projects/Zero2Infinity";
 import Staking from "pages/staking/farms";
 import Projects from "pages/projects/list";
+import Finished from "pages/miscellaneous/finished";
+import XLH from "pages/presale/xlh";
 
 // React icons
 import { IoDocument } from "react-icons/io5";
 import { IoBuild } from "react-icons/io5";
 import { IoDocuments } from "react-icons/io5";
 import { FaShoppingCart, FaPiedPiperPp } from "react-icons/fa";
-import { IoHome, IoServer } from "react-icons/io5";
+import { IoHome, IoServer, IoCart } from "react-icons/io5";
 
 const routes = [
-  // {
-  //   type: "collapse",
-  //   name: "Home",
-  //   key: "dashboards",
-  //   icon: <IoHome size="15px" color="inherit" />,
-  //   collapse: [
-  //     {
-  //       name: "Dashboard",
-  //       key: "dashboards",
-  //       route: "/dashboards/home",
-  //       component: Home
-  //     }
-  //   ]
-  // },
+  {
+    // type: "collapse",
+    name: "Home",
+    key: "dashboards",
+    icon: <IoHome size="15px" color="inherit" />,
+    collapse: [
+      {
+        name: "Dashboard",
+        key: "dashboards",
+        route: "/dashboards/home",
+        component: Home
+      }
+    ]
+  },
   {
     type: "collapse",
     name: "Staking",
@@ -123,7 +126,52 @@ const routes = [
         component: Projects
       }
     ]
-  }
+  },
+  {
+    // type: "collapse",
+    name: "Miscellaneous",
+    key: "miscellaneous",
+    icon: <IoHome size="15px" color="inherit" />,
+    collapse: [
+      {
+        name: "Finished",
+        key: "miscellaneous",
+        route: "/miscellaneous/finished",
+        component: Finished
+      }
+    ]
+  },
+
+  //Presale Pages
+  {
+    type: "collapse",
+    name: "Presale",
+    key: "presale",
+    icon: <IoCart size="15px" color="inherit" />,
+    collapse: [
+      {
+        name: "XLauncher",
+        key: "presale",
+        route: "/presale/xlh",
+        component: XLH
+      }
+    ]
+  },
+
+  //Project Pages
+  {
+    name: "Lista Proiecte",
+    key: "projects",
+    icon: <IoHome size="15px" color="inherit" />,
+    collapse: [
+      {
+        name: "Zero2Infinity",
+        key: "projects",
+        route: "/projects/Zero2Infinity",
+        component: Zero2Infinity
+      }
+    ]
+  },
 ];
 
 export default routes;

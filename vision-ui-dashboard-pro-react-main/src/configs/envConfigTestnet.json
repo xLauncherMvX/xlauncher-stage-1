@@ -1,0 +1,12 @@
+{
+    "environment": "testnet",
+    "stakeAddress": "erd1qqqqqqqqqqqqqpgqdw9gatcwzlsdtvjwu3mveln57g0quyzzpa7q9jg84s",
+    "provider": "https://testnet-gateway.elrond.com",
+    "token": "XLH-b7f529",
+    "apiLink": "https://testnet-api.elrond.com/accounts/",
+    "apiResponse": "https://testnet-api.elrond.com/accounts/erd1qqqqqqqqqqqqqpgqnzv4ewtz27xerejtdztcvyv35q6swy3hpa7qlyndck/tokens/XLH-b7f529",
+    "presaleAddress": "erd1qqqqqqqqqqqqqpgqnzv4ewtz27xerejtdztcvyv35q6swy3hpa7qlyndck",
+    "oldStakeAddress" : "erd1qqqqqqqqqqqqqpgqvfp2xkxhwvrvrcrxzs6e3vz4sz2ms7m0pa7qkrd5ll",
+    "maxBalance": 8500000,
+    "date": "July 22, 2022 19:00:00 GMT+03:00"
+}

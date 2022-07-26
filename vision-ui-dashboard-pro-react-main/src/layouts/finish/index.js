@@ -58,7 +58,7 @@ import { FaShoppingCart } from "react-icons/fa";
 import { BsGlobe } from "react-icons/bs";
 import { IoWallet, IoDocumentText } from "react-icons/io5";
 
-function Main(props) {
+function Finish(props) {
   const { values } = breakpoints;
   const [controller, dispatch] = useVisionUIController();
   const { miniSidenav, direction, layout, sidenavColor } = controller;
@@ -95,28 +95,11 @@ function Main(props) {
     });
 
     return (        
-      <DashboardLayout>
-          <CssBaseline />  
-          {/* <Globe
-              display={{ xs: "none", md: "block" }}
-              position="absolute"
-              top="10%"
-              left="30%"
-              mt={{ xs: -12, lg: 1 }}
-              mr={{ xs: 0, md: -10, lg: 10 }}
-              canvasStyle={{ marginTop: "3rem"}}
-          /> */}
-          <DashboardNavbar/> 
-          <Sidenav
-              color="info"
-              brandName="XLauncher"
-              routes={routes}
-              onMouseEnter={handleOnMouseEnter}
-              onMouseLeave={handleOnMouseLeave}
-          />    
+      <div>
+          <CssBaseline />            
           <Grid container>
-              <Grid item lg={12}>
-                  <VuiBox mb={7} p={1} mt={5}>
+              <Grid item xs={12} textAlign={"center"}>
+                  <VuiBox p={1} mt={5}>
                       <VuiTypography
                           variant={window.innerWidth < values.sm ? "h3" : "h2"}
                           textTransform="capitalize"
@@ -127,12 +110,18 @@ function Main(props) {
                       </VuiTypography>
                   </VuiBox>                    
               </Grid>
-              <Grid item lg={12}>
-                  {props.children}
+              <Grid item lg={12} textAlign={"center"}>
+                <Globe
+                    display={{  xs: "none",sm: "none", md: "block" }}                    
+                    mt={{ lg: 1 }}
+                    mr={10}
+                    ml={{md: 20, lg: 10}}
+                    canvasStyle={{ marginTop: "3rem"}}
+                />  
               </Grid>                
           </Grid>          
-      </DashboardLayout>
+      </div>
     );
 }
 
-export default Main;
+export default Finish;

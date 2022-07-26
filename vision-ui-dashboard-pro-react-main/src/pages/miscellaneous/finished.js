@@ -37,36 +37,16 @@ import { FaShoppingCart } from "react-icons/fa";
 import { BsGlobe } from "react-icons/bs";
 import { IoWallet, IoDocumentText } from "react-icons/io5";
 
-import Main from "layouts/main";
-import DefaultProjectCard from "cards/DefaultProjectCard";
-import profile1 from "assets/images/zero2InfinityMini.jpeg";
-function List() {
+import Finish from "layouts/finish";
+
+function Finished() {
   const { values } = breakpoints;
 
   return (    
-    <Main name="Projects">      
-      <Grid container spacing={3}>               
-        <Grid item xs={12} md={4} xl={4}>
-          <Card>
-            <DefaultProjectCard
-              image={profile1}
-              label="project #1"
-              title="Zero 2 Infinity"
-              description="
-              Zero 2 Infinity mission: enable people with a project and a passion to place themselves above the Earth 
-              in order to collect rich data, take high definition images, manage communications and more, much more."
-              action={{
-                type: "internal",
-                route: "/projects/Zero2Infinity",
-                color: "white",
-                label: "view",
-              }}
-            />
-          </Card>
-        </Grid>        
-      </Grid>
-    </Main>
+    <Finish name="Testing period is over, thank you!">
+
+    </Finish>
   );
 }
 
-export default List;
+export default Finished;

@@ -32,6 +32,8 @@ import { useTimeline } from "examples/Timeline/context";
 // Custom styles for the TimelineItem
 import { timelineItem, timelineItemIcon } from "examples/Timeline/TimelineItem/styles";
 
+import "assets/custom.css";
+
 function TimelineItem({ color, icon, title, dateTime, description, badges, isWidgets, lastItem }) {
   const isDark = useTimeline();
 
@@ -86,7 +88,6 @@ function TimelineItem({ color, icon, title, dateTime, description, badges, isWid
         ml={5.75}
         pt={description ? 0.7 : 0.5}
         lineHeight={0}
-        maxWidth="30rem"
         sx={{
           transform: "translate(0px, -17px)",
         }}
@@ -99,7 +100,7 @@ function TimelineItem({ color, icon, title, dateTime, description, badges, isWid
             {dateTime}
           </VuiTypography>
         </VuiBox>
-        <VuiBox mt={2} mb={1.5}>
+        <VuiBox mt={2} mb={1.5} className="text-justified">
           {description ? (
             <VuiTypography variant="button" fontWeight="regular" color="text">
               {description}

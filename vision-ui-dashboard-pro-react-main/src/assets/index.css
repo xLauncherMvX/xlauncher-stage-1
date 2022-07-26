@@ -2051,29 +2051,37 @@ a > .dapp-core-ui-component code {
 }
 .dapp-core-ui-component .btn-primary {
   color: #fff;
-  background-color: #1b46c2;
-  border-color: #1b46c2;
+    min-width: 200px;
+    background-color: #4318ff;
+    border-radius: 0.75rem;
+    min-height: 2rem;
+    padding: 0.5rem 2rem;
+    font-size: 0.65rem;
+    border: none;
+    font-family: "Plus Jakarta Display","Helvetica","Arial",sans-serif;
+    text-transform: uppercase;
+    font-weight: 700;
+    transition: all 0.5s ease-out;   
+    text-align: center; 
 }
-.dapp-core-ui-component .btn-primary:hover {
-  color: #fff;
-  background-color: #163aa0;
-  border-color: #153695;
+.dapp-core-ui-component .btn-primary:hover,
+dapp-core-ui-component .btn-primary:active {    
+    background-color: #4318ff;
+    border: 1px solid white;
+    color: white;
 }
 .dapp-core-ui-component .btn-primary:focus, .dapp-core-ui-component .btn-primary.focus {
-  color: #fff;
-  background-color: #163aa0;
-  border-color: #153695;
-  box-shadow: 0 0 0 0.2rem rgba(61, 98, 203, 0.5);
+  background-color: #4318ff;
+  border: 1px solid white;
+  color: white;
 }
 .dapp-core-ui-component .btn-primary.disabled, .dapp-core-ui-component .btn-primary:disabled {
-  color: #fff;
-  background-color: #1b46c2;
-  border-color: #1b46c2;
+  background-color: #4318ff;
+  border: 1px solid white;
 }
 .dapp-core-ui-component .btn-primary:not(:disabled):not(.disabled):active, .dapp-core-ui-component .btn-primary:not(:disabled):not(.disabled).active, .show > .dapp-core-ui-component .btn-primary.dropdown-toggle {
-  color: #fff;
-  background-color: #153695;
-  border-color: #13328a;
+  background-color: #4318ff;
+  border: 1px solid white;
 }
 .dapp-core-ui-component .btn-primary:not(:disabled):not(.disabled):active:focus, .dapp-core-ui-component .btn-primary:not(:disabled):not(.disabled).active:focus, .show > .dapp-core-ui-component .btn-primary.dropdown-toggle:focus {
   box-shadow: 0 0 0 0.2rem rgba(61, 98, 203, 0.5);
@@ -3848,10 +3856,14 @@ a > .dapp-core-ui-component code {
   flex-direction: column;
   min-width: 0;
   word-wrap: break-word;
-  background-color: #fff;
+  background-color: #060b28f0;
   background-clip: border-box;
-  border: 1px solid rgba(0, 0, 0, 0.125);
+  border: 1px solid black;
   border-radius: 0.25rem;
+  padding: 5px;
+  z-index: 10;
+  margin-top: 100px;
+  margin-bottom: 100px;
 }
 .dapp-core-ui-component .card > hr {
   margin-right: 0;
@@ -4831,6 +4843,12 @@ a.dapp-core-ui-component .badge-dark:focus, a.dapp-core-ui-component .badge-dark
   width: auto;
   margin: 0.5rem;
   pointer-events: none;
+  margin-bottom: 50px;
+  background-color: #060b28f0;
+  color: white;
+  border: 1px solid #17a2b8;
+  top: 30px; 
+  border-radius: 5%;
 }
 .modal.fade .dapp-core-ui-component .modal-dialog {
   transition: transform 0.3s ease-out;
@@ -4890,11 +4908,12 @@ a.dapp-core-ui-component .badge-dark:focus, a.dapp-core-ui-component .badge-dark
   flex-direction: column;
   width: 100%;
   pointer-events: auto;
-  background-color: #fff;
+  background-color: transparent;
   background-clip: padding-box;
-  border: 1px solid rgba(0, 0, 0, 0.2);
+  border: none;
   border-radius: 0.3rem;
   outline: 0;
+  z-index: 10;
 }
 .dapp-core-ui-component .modal-backdrop {
   position: fixed;
@@ -4957,6 +4976,7 @@ a.dapp-core-ui-component .badge-dark:focus, a.dapp-core-ui-component .badge-dark
   .dapp-core-ui-component .modal-dialog {
     max-width: 500px;
     margin: 1.75rem auto;
+    left: 10%;
   }
   .dapp-core-ui-component .modal-dialog-scrollable {
     max-height: calc(100% - 3.5rem);
@@ -5638,7 +5658,7 @@ a.dapp-core-ui-component .badge-dark:focus, a.dapp-core-ui-component .badge-dark
   display: flex !important;
 }
 .dapp-core-ui-component .d-inline-flex {
-  display: inline-flex !important;
+  display: inline-block !important;
 }
 @media (min-width: 576px) {
   .dapp-core-ui-component .d-sm-none {
