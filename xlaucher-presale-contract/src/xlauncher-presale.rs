@@ -104,7 +104,7 @@ pub trait XLauncherPresale {
         require!(balance > ZERO, "No more tokens to sale.");
         let current_price = self.price().get();
         let one_egld = BigUint::from(EGLD_DECIMALS_VALUE);
-        let result_esdt_token_amount = (&current_price * &payment_amount) / one_egld;
+        let result_esdt_token_amount = (&current_price * &payment_amount) / &one_egld;
 
         // Maybe balance >= result_esdt_token_amount to cover all available ESDT amount
         require!(
@@ -121,8 +121,9 @@ pub trait XLauncherPresale {
             .execute_on_dest_context();
 
         let x_val = BigUint::from(25_u64);
-        let ten_k = BigUint::from(10_000_u64);
-        let client_max_amount = &client_total_staked_value * &x_val / &ten_k;
+        let ten_k = BigUint::from(10_000_0_u64);
+        let client_max_amount_egld = &client_total_staked_value * &x_val / &ten_k;
+        let client_max_amount = (&current_price * &client_max_amount_egld) / &one_egld;
         let mut final_max_amount = self.max_amount().get();
         if client_max_amount < final_max_amount {
             final_max_amount = client_max_amount.clone();

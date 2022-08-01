@@ -31,3 +31,9 @@ fn test_pricing_for_presale_round_2() {
 fn test_stake_and_buy_ok() {
     elrond_wasm_debug::mandos_rs("mandos/09-stake-and-buy-ok.scen.json", world());
 }
+
+#[test]
+fn test_stake_and_buy_ok_10() {
+    elrond_wasm_debug::mandos_rs("mandos/010-stake-and-buy-ok.scen.json", world());
+}
+
