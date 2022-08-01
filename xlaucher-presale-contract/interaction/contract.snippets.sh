@@ -38,6 +38,8 @@ setEnvDevnet() {
   ENV_LOGS="devnet"
   TOKEN_ID="XLH-4a7cc0"
   TOKEN_ID_HEX=$(echo -n ${TOKEN_ID} | xxd -p)
+  # erdpy wallet bech32 --decode erd1qqqqqqqqqqqqqpgqcq2z33gfnj898czyzj2hs4a7u2frdtucpa7qhc05sn
+  STAKING_ADDRESS="0x00000000000000000500c01428c5099c8e53e04414957857bee29236af980f7c"
 }
 
 setEnvTestnet() {
@@ -71,9 +73,9 @@ printCurrentEnv(){
 
 deploy() {
   erdpy --verbose contract deploy --project=${PROJECT} --recall-nonce --pem=${PEM_FILE} \
-    --gas-limit=30000000 --send --outfile="${MY_LOGS}/deploy-${ENV_LOGS}.json" \
+    --gas-limit=50000000 --send --outfile="${MY_LOGS}/deploy-${ENV_LOGS}.json" \
     --proxy=${PROXY} --chain=${CHAINID} \
-    --arguments "0x${TOKEN_ID_HEX}" ${INITIAL_PRICE} ${MIN_AMOUNT} ${MAX_AMOUNT} ${MAX_BALANCE} || return
+    --arguments "0x${TOKEN_ID_HEX}" ${INITIAL_PRICE} ${MIN_AMOUNT} ${MAX_AMOUNT} ${MAX_BALANCE} ${STAKING_ADDRESS} || return
 
   TRANSACTION=$(erdpy data parse --file="${MY_LOGS}/deploy-${ENV_LOGS}.json" --expression="data['emitted_tx']['hash']")
   ADDRESS=$(erdpy data parse --file="${MY_LOGS}/deploy-${ENV_LOGS}.json" --expression="data['emitted_tx']['address']")
