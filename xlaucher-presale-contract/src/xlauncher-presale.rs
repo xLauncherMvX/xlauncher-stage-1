@@ -90,9 +90,11 @@ pub trait XLauncherPresale {
         let payment_amount = egld_or_esdt_token_identifier.amount;
 
         require!(payment_token.is_egld(), "Only EGLD");
+        let min_amount = self.min_amount().get();
         require!(
             payment_amount >= self.min_amount().get(),
-            "Payment amount is too low"
+            "Payment amount is too low, payment_amount={}, min_amount={}",
+            payment_amount, min_amount
         );
         require!(
             payment_amount <= self.max_amount().get(),
