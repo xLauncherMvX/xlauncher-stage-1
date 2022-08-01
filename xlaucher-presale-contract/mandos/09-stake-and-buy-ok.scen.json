@@ -1,6 +1,6 @@
 {
   "name": "xlauncher-presale",
-  "comment": "deploy-presale",
+  "comment": "stake-and-buy-ok",
   "steps": [
     {
       "step": "setState",
@@ -15,7 +15,7 @@
         },
         "address:client1": {
           "nonce": "0",
-          "balance": "1,000,000,000,000,000,000",
+          "balance": "1,250,000,000,000,000,000",
           "esdt": {
             "str:BCOIN-a00000": "5,000,000,000,000,000,000,000"
           }
@@ -81,10 +81,10 @@
         "contractCode": "file:../output/xlauncher-presale.wasm",
         "arguments": [
           "str:BCOIN-b00000",
-          "10,000,000,000,000,000,000,000",
-          "250,000,000,000,000,000",
-          "5,000,000,000,000,000,000",
-          "55,000,000,000,000,000,000,000",
+          "1,000,000000000000000000",
+          "1,250,000000000000000000",
+          "25,000,000000000000000000",
+          "25,000,000000000000000000",
           "sc:xlauncher-staking"
         ],
         "gasLimit": "10,000,000",
@@ -126,7 +126,7 @@
         "esdtValue": [
           {
             "tokenIdentifier": "str:BCOIN-a00000",
-            "value": "1,000,000,000,000,000,000,000"
+            "value": "5,000,000,000,000,000,000,000"
           }
         ],
         "arguments": [
@@ -148,7 +148,7 @@
       "tx": {
         "from": "address:client1",
         "to": "sc:xlauncher-presale",
-        "value": "1,000,000,000,000,000,000",
+        "value": "1,250,000,000,000,000,000",
         "function": "buy",
         "arguments": [],
         "gasLimit": "10,000,000",
