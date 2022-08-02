@@ -182,7 +182,7 @@ getTokenBalance() {
 stake() {
   method_name="0x$(echo -n 'stake' | xxd -p -u | tr -d '\n')"
   token_id="0x$(echo -n ${TOKEN_ID} | xxd -p -u | tr -d '\n')"
-  amount="1000${MY_DECIMALS}"
+  amount="5000${MY_DECIMALS}"
   pool_id="1"
   erdpy --verbose contract call ${ADDRESS} --recall-nonce \
     --pem=${CLIENT_PEM} \
