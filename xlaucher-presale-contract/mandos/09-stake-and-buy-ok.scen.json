@@ -176,25 +176,25 @@
           "nonce": "2",
           "balance": "0",
           "esdt": {
-            "str:BCOIN-b00000": "10,000,000,000,000,000,000,000",
-            "str:BCOIN-a00000": "4000000000000000000000"
+            "str:BCOIN-b00000": "1250000000000000000000",
+            "str:BCOIN-a00000": "0"
           },
           "storage": {}
         },
         "sc:xlauncher-presale": {
           "nonce": "*",
-          "balance": "1000000000000000000",
+          "balance": "1250000000000000000",
           "esdt": {
-            "str:BCOIN-b00000": "99990000000000000000000000"
+            "str:BCOIN-b00000": "99998750000000000000000000"
           },
           "storage": {
             "str:tokenId": "str:BCOIN-b00000",
-            "str:price": "10,000,000,000,000,000,000,000",
-            "str:minAmount": "250,000,000,000,000,000",
-            "str:maxAmount": "5,000,000,000,000,000,000",
-            "str:maxBalance": "55,000,000,000,000,000,000,000",
+            "str:price": "1000000000000000000000",
+            "str:minAmount": "1250000000000000000",
+            "str:maxAmount": "25000000000000000000000",
+            "str:maxBalance": "25000000000000000000000",
             "str:stakingAddress": "sc:xlauncher-staking",
-            "str:clientBoughtValue|address:client1": "10000000000000000000000",
+            "str:clientBoughtValue|address:client1": "1250000000000000000000",
             "str:clientList|str:.len": "1",
             "str:clientList|str:.index|address:client1": "1",
             "str:clientList|str:.item|u32:1": "address:client1"
@@ -205,7 +205,7 @@
           "nonce": "*",
           "balance": "0",
           "esdt": {
-            "str:BCOIN-a00000": "1,000,000,000,000,000,000,000"
+            "str:BCOIN-a00000": "5000000000000000000000"
           },
           "storage": {
             "str:variableContractSettings": {
@@ -253,9 +253,9 @@
               "1-pool_id": "u32:1",
               "2-pool_time_stamp_entry": "u64:0",
               "3-pool_time_stamp_last_collection": "u64:0",
-              "4-pool_amount": "biguint:1,000,000,000,000,000,000,000"
+              "4-pool_amount": "biguint:5,000,000000000000000000"
             },
-            "str:totalStakedValue": "1000000000000000000000",
+            "str:totalStakedValue": "5000000000000000000000",
             "str:clientList|str:.len": "1",
             "str:clientList|str:.index|address:client1": "1",
             "str:clientList|str:.item|u32:1": "address:client1"

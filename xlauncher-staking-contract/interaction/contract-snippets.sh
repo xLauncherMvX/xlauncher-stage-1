@@ -6,7 +6,7 @@ MIN_AMOUNT=250000000000000000
 
 MY_LOGS="interaction-logs"
 
-
+CLIENT_PEM="${PROJECT}/../../wallets/users/client1.pem"
 
 setEnvDevnet() {
   PULL_A_ID="1"
@@ -183,9 +183,9 @@ stake() {
   method_name="0x$(echo -n 'stake' | xxd -p -u | tr -d '\n')"
   token_id="0x$(echo -n ${TOKEN_ID} | xxd -p -u | tr -d '\n')"
   amount="1000${MY_DECIMALS}"
-  pool_id="3"
+  pool_id="1"
   erdpy --verbose contract call ${ADDRESS} --recall-nonce \
-    --pem=${PEM_FILE} \
+    --pem=${CLIENT_PEM} \
     --gas-limit=8000000 \
     --proxy=${PROXY} --chain=${CHAINID} \
     --function="ESDTTransfer" \
