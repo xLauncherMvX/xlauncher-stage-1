@@ -23,11 +23,11 @@ MY_LOGS="interaction-logs"
 #envs logs values: devnet, testnet, mainnet
 #token id values: devnet=XLH-4f55ab, testnet=XLH-0be7d1, mainnet=XLH-8daa50
 
-INITIAL_PRICE="6500${MY_DECIMALS}"
-MIN_AMOUNT="6500${MY_DECIMALS}"
-MAX_AMOUNT="32500${MY_DECIMALS}"
-MAX_BALANCE="32500${MY_DECIMALS}"
-
+INITIAL_PRICE="1000${MY_DECIMALS}"
+MIN_AMOUNT="1250000000000000000"
+MAX_AMOUNT="25000000000000000000"
+MAX_BALANCE="25000000000000000000"
+CLIENT_PEM="${PROJECT}/../../wallets/users/client1.pem"
 setEnvDevnet() {
   cp -f erdpy.data-storage-devnet.json erdpy.data-storage.json
   CURRENT_ENV="devnet"
@@ -38,8 +38,8 @@ setEnvDevnet() {
   ENV_LOGS="devnet"
   TOKEN_ID="XLH-4a7cc0"
   TOKEN_ID_HEX=$(echo -n ${TOKEN_ID} | xxd -p)
-  # erdpy wallet bech32 --decode erd1qqqqqqqqqqqqqpgqcq2z33gfnj898czyzj2hs4a7u2frdtucpa7qhc05sn
-  STAKING_ADDRESS="0x00000000000000000500c01428c5099c8e53e04414957857bee29236af980f7c"
+  # erdpy wallet bech32 --decode erd1qqqqqqqqqqqqqpgqxmeg3k0ty84hm3f8n9wdfpukspc0asj3pa7qtt6j0t
+  STAKING_ADDRESS="0x0000000000000000050036f288d9eb21eb7dc527995cd487968070fec2510f7c"
 }
 
 setEnvTestnet() {
@@ -67,7 +67,7 @@ setEnvMainnet() {
   TOKEN_ID_HEX=$(echo -n ${TOKEN_ID} | xxd -p)
 }
 
-printCurrentEnv(){
+printCurrentEnv() {
   echo ${CURRENT_ENV}
 }
 
@@ -89,9 +89,9 @@ deploy() {
 
 updateContract() {
   erdpy --verbose contract upgrade ${ADDRESS} --project=${PROJECT} --recall-nonce --pem=${PEM_FILE} \
-    --gas-limit=30000000 --send --outfile="${MY_LOGS}/deploy-${ENV_LOGS}.json" \
+    --gas-limit=50000000 --send --outfile="${MY_LOGS}/deploy-${ENV_LOGS}.json" \
     --proxy=${PROXY} --chain=${CHAINID} \
-    --arguments "0x${TOKEN_ID_HEX}" ${INITIAL_PRICE} ${MIN_AMOUNT} ${MAX_AMOUNT} ${MAX_BALANCE}
+    --arguments "0x${TOKEN_ID_HEX}" ${INITIAL_PRICE} ${MIN_AMOUNT} ${MAX_AMOUNT} ${MAX_BALANCE} ${STAKING_ADDRESS}
 }
 
 fundContract() {
@@ -135,10 +135,10 @@ getMaxBalance() {
 
 buyTokens() {
   erdpy --verbose contract call ${ADDRESS} --recall-nonce \
-    --pem=${PEM_FILE} \
-    --gas-limit=3000000 \
+    --pem=${CLIENT_PEM} \
+    --gas-limit=100000000 \
     --function="buy" \
-    --value=1000000000000000000 \
+    --value=1250000000000000000 \
     --proxy=${PROXY} --chain=${CHAINID} \
     --send \
     --outfile="${MY_LOGS}/buyTokens-${ENV_LOGS}.json"
