@@ -130,22 +130,16 @@ export default function CountdownTimer(){
     useEffect(() => {
         getContractBalance();
         getDateReached();
-    }, []);  
-
-    useEffect(() => {
-        getContractBalance();
-        getDateReached();
     }, [isLoggedIn]);  
 
     const MINUTE_MS = 1000;
-    useEffect(() => {    
-        if(isLoggedIn) {
-        const interval = window.setInterval(() => {      
+    useEffect(() => {   
+        const interval = window.setInterval(() => {    
+            getContractBalance();  
             getDateReached();
         }, MINUTE_MS);
 
         return () => window.clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
-        }
     }, [])
         
     // Render a countdown
