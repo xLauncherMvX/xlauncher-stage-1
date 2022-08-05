@@ -314,9 +314,9 @@ function DashboardNavbar({ absolute, light, isMini }) {
     })
   }
 
-  var whitelistColor = "error";
+  var whitelistColor = "info";
   if(whitelistSwitcher){
-    whitelistColor = "success"
+    whitelistColor = "info"
   }
  
   useEffect(() => {    

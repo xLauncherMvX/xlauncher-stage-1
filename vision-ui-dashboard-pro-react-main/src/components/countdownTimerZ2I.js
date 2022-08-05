@@ -15,7 +15,7 @@ import VuiBadge from "components/VuiBadge";
 import VuiButton from "components/VuiButton";
 import VuiProgress from "components/VuiProgress";
 
-import xConfigs from 'configs/envConfig.json';
+import xConfigs from 'configs/z2iConfig.json';
 import "assets/custom.css";
 import "assets/index.css";
 
@@ -34,7 +34,7 @@ export default function CountdownTimer(){
     const { address, account } = useGetAccountInfo();
     const isLoggedIn = Boolean(address);
 
-    //Query the smart contract to get the amount of xlh
+    //Query the smart contract to get the amount of Z2I
     const [contractBalance, setContractBalance] = useState(0);
     const getContractBalance = async () => {
         try {
@@ -50,7 +50,7 @@ export default function CountdownTimer(){
         } 
     }
 
-    var maxBalance = 8500000;
+    var maxBalance = xMaxBalance;
     var maxBalanceFixed = new Intl.NumberFormat('ro-Ro', { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(maxBalance);
     var balanceLeft = maxBalance + 1 - (contractBalance/1000000000000000000);
 
@@ -92,7 +92,7 @@ export default function CountdownTimer(){
                             <p className='seedsale-text'>Sold out</p>
                         </span>
                         <VuiProgress variant="gradient" value={procentsOneDigit} color='success'/>
-                        <VuiTypography variant="h5" color="white" align={'center'} mt={2}> {balanceLeftFixed} / {maxBalanceFixed} XLH sold</VuiTypography>
+                        <VuiTypography variant="h5" color="white" align={'center'} mt={2}> {balanceLeftFixed} / {maxBalanceFixed} Z2I sold</VuiTypography>
                     </div>
                 ;
             }else{
@@ -102,7 +102,7 @@ export default function CountdownTimer(){
                             <DateCountdown dateTo={xDate}/>
                         </a>   
                         <VuiProgress variant="gradient" value={procentsOneDigit} color='success'/>
-                        <VuiTypography variant="h5" color="white" align={'center'} mt={2}> {balanceLeftFixed} / {maxBalanceFixed} XLH sold</VuiTypography>
+                        <VuiTypography variant="h5" color="white" align={'center'} mt={2}> {balanceLeftFixed} / {maxBalanceFixed} Z2I sold</VuiTypography>
                     </div>
                 ;
             }
@@ -122,7 +122,7 @@ export default function CountdownTimer(){
                         <DateCountdown dateTo={xDate}/>
                     </a>   
                     <VuiProgress variant="gradient" value={procentsOneDigit} color='success'/>
-                    <VuiTypography variant="h5" color="white" align={'center'} mt={2}> {balanceLeftFixed} / {maxBalanceFixed} XLH sold</VuiTypography>
+                    <VuiTypography variant="h5" color="white" align={'center'} mt={2}> {balanceLeftFixed} / {maxBalanceFixed} Z2I sold</VuiTypography>
                 </div>
             ;
     }

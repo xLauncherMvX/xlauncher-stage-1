@@ -1,0 +1,12 @@
+{
+    "environment": "mainnet",
+    "stakeAddress": "erd1qqqqqqqqqqqqqpgql0yx4uetca8g4wmr96d9z7094vj3uhpt4d6qm5srfk",
+    "provider": "https://gateway.elrond.com",
+    "token": "XLH-8daa50",
+    "apiLink": "https://api.elrond.com/accounts/",
+    "apiResponse": "https://api.elrond.com/accounts/erd1qqqqqqqqqqqqqpgqehtn7eltja83v40700d3kpeghdnzt8lc4d6qutn2eg/tokens/Z2I-e9f0ff",
+    "presaleAddress": "erd1qqqqqqqqqqqqqpgqehtn7eltja83v40700d3kpeghdnzt8lc4d6qutn2eg",
+    "presaleToken": "Z2I-e9f0ff",
+    "maxBalance": 2000000,
+    "date": "August 05, 2022 21:00:00 GMT+03:00"
+}

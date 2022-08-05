@@ -76,6 +76,7 @@ import Staking from "pages/staking/farms";
 import Projects from "pages/projects/list";
 import Finished from "pages/miscellaneous/finished";
 import XLH from "pages/presale/xlh";
+import Z2I from "pages/presale/z2i";
 
 // React icons
 import { IoDocument } from "react-icons/io5";
@@ -154,6 +155,12 @@ const routes = [
         key: "presale",
         route: "/presale/xlh",
         component: XLH
+      },
+      {
+        name: "Zero2Infinity",
+        key: "presalez2i",
+        route: "/presale/z2i",
+        component: Z2I
       }
     ]
   },

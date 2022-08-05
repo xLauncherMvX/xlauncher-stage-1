@@ -1,0 +1,514 @@
+{
+    "buildInfo": {
+        "rustc": {
+            "version": "1.60.0-nightly",
+            "commitHash": "ec4bcaac450279b029f3480b8b8f1b82ab36a5eb",
+            "commitDate": "2022-01-15",
+            "channel": "Nightly",
+            "short": "rustc 1.60.0-nightly (ec4bcaac4 2022-01-15)"
+        },
+        "contractCrate": {
+            "name": "xlauncher-staking",
+            "version": "0.1.0",
+            "git_version": "e962362"
+        },
+        "framework": {
+            "name": "elrond-wasm",
+            "version": "0.34.0"
+        }
+    },
+    "name": "XLauncherStaking",
+    "constructor": {
+        "inputs": [
+            {
+                "name": "token_id",
+                "type": "TokenIdentifier"
+            },
+            {
+                "name": "min_amount",
+                "type": "BigUint"
+            },
+            {
+                "name": "pool_a_id",
+                "type": "u32"
+            },
+            {
+                "name": "pool_a_locking_time_span",
+                "type": "u64"
+            },
+            {
+                "name": "apy_a0_id",
+                "type": "u32"
+            },
+            {
+                "name": "apy_a0_start",
+                "type": "u64"
+            },
+            {
+                "name": "apy_a0_end",
+                "type": "u64"
+            },
+            {
+                "name": "apy_a0_apy",
+                "type": "u64"
+            },
+            {
+                "name": "pool_b_id",
+                "type": "u32"
+            },
+            {
+                "name": "pool_b_locking_time_span",
+                "type": "u64"
+            },
+            {
+                "name": "apy_b0_id",
+                "type": "u32"
+            },
+            {
+                "name": "apy_b0_start",
+                "type": "u64"
+            },
+            {
+                "name": "apy_b0_end",
+                "type": "u64"
+            },
+            {
+                "name": "apy_b0_apy",
+                "type": "u64"
+            },
+            {
+                "name": "pool_c_id",
+                "type": "u32"
+            },
+            {
+                "name": "pool_c_locking_time_span",
+                "type": "u64"
+            },
+            {
+                "name": "apy_c0_id",
+                "type": "u32"
+            },
+            {
+                "name": "apy_c0_start",
+                "type": "u64"
+            },
+            {
+                "name": "apy_c0_end",
+                "type": "u64"
+            },
+            {
+                "name": "apy_c0_apy",
+                "type": "u64"
+            }
+        ],
+        "outputs": []
+    },
+    "endpoints": [
+        {
+            "name": "fundContract",
+            "mutability": "mutable",
+            "payableInTokens": [
+                "*"
+            ],
+            "inputs": [],
+            "outputs": []
+        },
+        {
+            "name": "getTokenBalance",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "BigUint"
+                }
+            ]
+        },
+        {
+            "name": "stake",
+            "mutability": "mutable",
+            "payableInTokens": [
+                "*"
+            ],
+            "inputs": [
+                {
+                    "name": "pool_id",
+                    "type": "u32"
+                }
+            ],
+            "outputs": []
+        },
+        {
+            "name": "claimUnstakedValue",
+            "mutability": "mutable",
+            "inputs": [],
+            "outputs": []
+        },
+        {
+            "name": "unstake",
+            "mutability": "mutable",
+            "inputs": [
+                {
+                    "name": "pool_id",
+                    "type": "u32"
+                },
+                {
+                    "name": "amount",
+                    "type": "BigUint"
+                }
+            ],
+            "outputs": []
+        },
+        {
+            "name": "claim",
+            "mutability": "mutable",
+            "inputs": [
+                {
+                    "name": "pool_id",
+                    "type": "u32"
+                }
+            ],
+            "outputs": []
+        },
+        {
+            "name": "reinvest",
+            "mutability": "mutable",
+            "inputs": [
+                {
+                    "name": "pool_id",
+                    "type": "u32"
+                }
+            ],
+            "outputs": []
+        },
+        {
+            "name": "switchIsActiveFieldValue",
+            "onlyOwner": true,
+            "mutability": "mutable",
+            "inputs": [],
+            "outputs": []
+        },
+        {
+            "name": "updateUnstakeLockSpan",
+            "onlyOwner": true,
+            "mutability": "mutable",
+            "inputs": [
+                {
+                    "name": "unstake_lock_span",
+                    "type": "u64"
+                }
+            ],
+            "outputs": []
+        },
+        {
+            "name": "updatePoolSettings",
+            "onlyOwner": true,
+            "mutability": "mutable",
+            "inputs": [
+                {
+                    "name": "apy_id",
+                    "type": "u32"
+                },
+                {
+                    "name": "apy_start",
+                    "type": "u64"
+                },
+                {
+                    "name": "apy_end",
+                    "type": "u64"
+                },
+                {
+                    "name": "pool_a_apy",
+                    "type": "u64"
+                },
+                {
+                    "name": "pool_b_apy",
+                    "type": "u64"
+                },
+                {
+                    "name": "pool_c_apy",
+                    "type": "u64"
+                }
+            ],
+            "outputs": []
+        },
+        {
+            "name": "appendPoolSettings",
+            "onlyOwner": true,
+            "mutability": "mutable",
+            "inputs": [
+                {
+                    "name": "apy_id",
+                    "type": "u32"
+                },
+                {
+                    "name": "apy_start",
+                    "type": "u64"
+                },
+                {
+                    "name": "apy_end",
+                    "type": "u64"
+                },
+                {
+                    "name": "pool_a_apy",
+                    "type": "u64"
+                },
+                {
+                    "name": "pool_b_apy",
+                    "type": "u64"
+                },
+                {
+                    "name": "pool_c_apy",
+                    "type": "u64"
+                }
+            ],
+            "outputs": []
+        },
+        {
+            "name": "getClientTotalStakedValue",
+            "mutability": "readonly",
+            "inputs": [
+                {
+                    "name": "client",
+                    "type": "Address"
+                }
+            ],
+            "outputs": [
+                {
+                    "type": "BigUint"
+                }
+            ]
+        },
+        {
+            "name": "getClientReport",
+            "mutability": "readonly",
+            "inputs": [
+                {
+                    "name": "client",
+                    "type": "Address"
+                }
+            ],
+            "outputs": [
+                {
+                    "type": "ReportClinet"
+                }
+            ]
+        },
+        {
+            "name": "getApiConfigReport1",
+            "mutability": "readonly",
+            "inputs": [
+                {
+                    "name": "pool_id",
+                    "type": "u32"
+                }
+            ],
+            "outputs": [
+                {
+                    "type": "variadic<multi<u32,u64,u64,u64,u64>>",
+                    "multi_result": true
+                }
+            ]
+        },
+        {
+            "name": "getVariableContractSettings",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "VariableContractSettings"
+                }
+            ]
+        },
+        {
+            "name": "getClientState",
+            "mutability": "readonly",
+            "inputs": [
+                {
+                    "name": "client_address",
+                    "type": "Address"
+                }
+            ],
+            "outputs": [
+                {
+                    "type": "variadic<ClientPoolState>",
+                    "multi_result": true
+                }
+            ]
+        },
+        {
+            "name": "getUnstakeState",
+            "mutability": "readonly",
+            "inputs": [
+                {
+                    "name": "client_address",
+                    "type": "Address"
+                }
+            ],
+            "outputs": [
+                {
+                    "type": "UnstakeState"
+                }
+            ]
+        },
+        {
+            "name": "getClientList",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "variadic<Address>",
+                    "multi_result": true
+                }
+            ]
+        },
+        {
+            "name": "getTotalStakedValue",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "BigUint"
+                }
+            ]
+        }
+    ],
+    "events": [],
+    "hasCallback": false,
+    "types": {
+        "ApyConfiguration": {
+            "type": "struct",
+            "fields": [
+                {
+                    "name": "id",
+                    "type": "u32"
+                },
+                {
+                    "name": "apy",
+                    "type": "u64"
+                },
+                {
+                    "name": "start_timestamp",
+                    "type": "u64"
+                },
+                {
+                    "name": "end_timestamp",
+                    "type": "u64"
+                }
+            ]
+        },
+        "ClientPoolState": {
+            "type": "struct",
+            "fields": [
+                {
+                    "name": "pool_id",
+                    "type": "u32"
+                },
+                {
+                    "name": "pool_time_stamp_entry",
+                    "type": "u64"
+                },
+                {
+                    "name": "pool_time_stamp_last_collection",
+                    "type": "u64"
+                },
+                {
+                    "name": "pool_amount",
+                    "type": "BigUint"
+                }
+            ]
+        },
+        "Pool": {
+            "type": "struct",
+            "fields": [
+                {
+                    "name": "id",
+                    "type": "u32"
+                },
+                {
+                    "name": "locking_time_span",
+                    "type": "u64"
+                },
+                {
+                    "name": "apy_configuration",
+                    "type": "List<ApyConfiguration>"
+                }
+            ]
+        },
+        "ReportClientPoolPoolItem": {
+            "type": "struct",
+            "fields": [
+                {
+                    "name": "pool_id",
+                    "type": "u32"
+                },
+                {
+                    "name": "pool_amount",
+                    "type": "BigUint"
+                },
+                {
+                    "name": "rewards_amount",
+                    "type": "BigUint"
+                }
+            ]
+        },
+        "ReportClinet": {
+            "type": "struct",
+            "fields": [
+                {
+                    "name": "total_amount",
+                    "type": "BigUint"
+                },
+                {
+                    "name": "total_rewards",
+                    "type": "BigUint"
+                },
+                {
+                    "name": "report_pool_items",
+                    "type": "List<ReportClientPoolPoolItem>"
+                }
+            ]
+        },
+        "UnstakeState": {
+            "type": "struct",
+            "fields": [
+                {
+                    "name": "total_unstaked_amount",
+                    "type": "BigUint"
+                },
+                {
+                    "name": "requested_amount",
+                    "type": "BigUint"
+                },
+                {
+                    "name": "free_after_time_stamp",
+                    "type": "u64"
+                }
+            ]
+        },
+        "VariableContractSettings": {
+            "type": "struct",
+            "fields": [
+                {
+                    "name": "token_id",
+                    "type": "TokenIdentifier"
+                },
+                {
+                    "name": "min_amount",
+                    "type": "BigUint"
+                },
+                {
+                    "name": "unstake_lock_span",
+                    "type": "u64"
+                },
+                {
+                    "name": "contract_is_active",
+                    "type": "bool"
+                },
+                {
+                    "name": "pool_items",
+                    "type": "List<Pool>"
+                }
+            ]
+        }
+    }
+}
