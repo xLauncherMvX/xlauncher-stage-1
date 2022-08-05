@@ -67,8 +67,10 @@ setEnvMainnet() {
   CHAINID=1
   ENV_LOGS="mainnet"
   #TOKEN_ID="BCOIN-efba9c"
-  TOKEN_ID="XLH-8daa50"
+  TOKEN_ID="Z2I-e9f0ff"
   TOKEN_ID_HEX=$(echo -n ${TOKEN_ID} | xxd -p)
+  # erdpy wallet bech32 --decode erd1qqqqqqqqqqqqqpgql0yx4uetca8g4wmr96d9z7094vj3uhpt4d6qm5srfk
+  STAKING_ADDRESS="0x00000000000000000500fbc86af32bc74e8abb632e9a5179e5ab251e5c2bab74"
 }
 
 printCurrentEnv() {
@@ -101,8 +103,8 @@ updateContract() {
 fundContract() {
   method_name="0x$(echo -n 'fundContract' | xxd -p -u | tr -d '\n')"
   token_id="0x$(echo -n ${TOKEN_ID} | xxd -p -u | tr -d '\n')"
-#  amount="20000001${MY_DECIMALS}"
-  amount="10001${MY_DECIMALS}"
+  #  amount="20000001${MY_DECIMALS}"
+  amount="1${MY_DECIMALS}"
   erdpy --verbose contract call ${ADDRESS} --recall-nonce \
     --pem=${PEM_FILE} \
     --gas-limit=3000000 \
