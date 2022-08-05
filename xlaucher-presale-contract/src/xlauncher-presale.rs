@@ -123,25 +123,25 @@ pub trait XLauncherPresale {
         let x_val = BigUint::from(25_u64);
         let ten_k = BigUint::from(10_000_0_u64);
         let client_max_amount_egld = &client_total_staked_value * &x_val / &ten_k;
-        let client_max_amount = (&current_price * &client_max_amount_egld) / &one_egld;
-        let mut final_max_amount = self.max_amount().get();
-        if client_max_amount < final_max_amount {
-            final_max_amount = client_max_amount.clone();
+        let client_max_balance = (&current_price * &client_max_amount_egld) / &one_egld;
+        let mut val_max_balance = self.max_balance().get();
+        if client_max_balance <= val_max_balance {
+            val_max_balance = client_max_balance.clone();
         }
 
-        sc_print!("Debug info client_total_staked_value={}, x_val={}, ten_k={}, client_max_amount={}, final_max_amount={}, max_amount={}",
-            client_total_staked_value, x_val, ten_k, client_max_amount, final_max_amount, self.max_amount().get());
+        sc_print!("Debug info client_total_staked_value={}, x_val={}, ten_k={}, client_max_balance={}, val_max_balance={}, max_amount={}",
+            client_total_staked_value, x_val, ten_k, client_max_balance, val_max_balance, self.max_amount().get());
 
         let token_id_val = self.token_id().get();
 
         let client_current_balance = self.client_bought_value(&caller).get();
         let client_total_balance = &result_esdt_token_amount + &client_current_balance;
-        let max_balance_val = self.max_balance().get();
+        let _max_balance_val = self.max_balance().get();
         sc_print!("current_value={}",client_current_balance);
         require!(
-            client_total_balance <= client_max_amount,
-            "Buying that much will exceed max allowed token balance client_total_balance={},  client_max_amount={}",
-            client_total_balance, client_max_amount
+            client_total_balance <= client_max_balance,
+            "Buying that much will exceed max allowed client balance client_total_balance={},  client_max_balance={}",
+            client_total_balance, client_max_balance
         );
         self.client_bought_value(&caller).set(client_total_balance);
         sc_print!("Hello there client {}", result_esdt_token_amount.clone());
