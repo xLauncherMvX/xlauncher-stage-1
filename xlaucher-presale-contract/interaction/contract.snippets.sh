@@ -39,7 +39,7 @@ setEnvDevnet() {
   TOKEN_ID="XLH-4a7cc0"
   TOKEN_ID_HEX=$(echo -n ${TOKEN_ID} | xxd -p)
   # erdpy wallet bech32 --decode erd1qqqqqqqqqqqqqpgqxmeg3k0ty84hm3f8n9wdfpukspc0asj3pa7qtt6j0t
-#  STAKING_ADDRESS="0x0000000000000000050036f288d9eb21eb7dc527995cd487968070fec2510f7c"
+  #  STAKING_ADDRESS="0x0000000000000000050036f288d9eb21eb7dc527995cd487968070fec2510f7c"
   # erdpy wallet bech32 --decode erd1qqqqqqqqqqqqqpgq9md7j669nmngxsgznpqmn50cqa4363hrpa7ql0k9vn
   STAKING_ADDRESS="0x000000000000000005002edbe96b459ee68341029841b9d1f8076b1d46e30f7c"
 }
@@ -52,8 +52,10 @@ setEnvTestnet() {
   PROXY=https://testnet-gateway.elrond.com
   CHAINID=T
   ENV_LOGS="testnet"
-  TOKEN_ID="XLH-b7f529"
+  TOKEN_ID="Z2I-ffb426"
   TOKEN_ID_HEX=$(echo -n ${TOKEN_ID} | xxd -p)
+  # erdpy wallet bech32 --decode erd1qqqqqqqqqqqqqpgqdw9gatcwzlsdtvjwu3mveln57g0quyzzpa7q9jg84s
+  STAKING_ADDRESS="0x000000000000000005006b8a8eaf0e17e0d5b24ee476ccfe74f21e0e10420f7c"
 }
 
 setEnvMainnet() {
