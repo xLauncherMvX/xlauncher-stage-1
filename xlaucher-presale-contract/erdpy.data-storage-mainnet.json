@@ -1,6 +1,6 @@
 {
     "*": {
-        "address-devnet": "erd1qqqqqqqqqqqqqpgqgeg28lufkusqnj6yxh5ucq065x7fs82v4d6qm7njx9",
-        "deployTransaction-devnet": "000078fee54afa30cfd100db741875ad8b5ec244688e791d68165b515dc07f0b"
+        "address-devnet": "erd1qqqqqqqqqqqqqpgqkv4zlrta9m980q6q2sv3pe906qea2vhj4d6qsnudtu",
+        "deployTransaction-devnet": "b5d2d9b1a5e8ebb4f3f2cac0c582b914be9355a476c915ef08e3797cfe5d693a"
     }
 }
