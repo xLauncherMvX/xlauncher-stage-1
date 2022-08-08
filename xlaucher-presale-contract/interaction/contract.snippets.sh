@@ -10,7 +10,7 @@ PROJECT="${PWD}"
 #deploy transaction values: this is the same for all networks
 DEPLOY_TRANSACTION=$(erdpy data load --key=deployTransaction-devnet)
 
-MY_DECIMALS="000000000000000000"
+
 
 #devnet proxy and chain
 #devnet=https://devnet-gateway.elrond.com
@@ -23,21 +23,24 @@ MY_LOGS="interaction-logs"
 #envs logs values: devnet, testnet, mainnet
 #token id values: devnet=XLH-4f55ab, testnet=XLH-0be7d1, mainnet=XLH-8daa50
 
-INITIAL_PRICE="6500${MY_DECIMALS}"
-MIN_AMOUNT="1${MY_DECIMALS}"
-MAX_AMOUNT="5${MY_DECIMALS}"
-MAX_BALANCE="32500${MY_DECIMALS}"
+MY_DECIMALS="000000000000000000"
+SMALL_DECIMALS="00000000000000000"
+
+INITIAL_PRICE="800${MY_DECIMALS}"
+MIN_AMOUNT="5${SMALL_DECIMALS}"
+MAX_AMOUNT="10${MY_DECIMALS}"
+MAX_BALANCE="8000${MY_DECIMALS}"
 
 setEnvDevnet() {
   cp -f erdpy.data-storage-devnet.json erdpy.data-storage.json
   CURRENT_ENV="devnet"
-#  PEM_FILE="${PROJECT}/../../wallets/users/devnet_owner_wallet.pem"
-  PEM_FILE="${PROJECT}/../../wallets/users/client1.pem"
+  PEM_FILE="${PROJECT}/../../wallets/users/devnet_owner_wallet.pem"
+#  PEM_FILE="${PROJECT}/../../wallets/users/client1.pem"
   ADDRESS=$(erdpy data load --key=address-devnet)
   PROXY=https://devnet-gateway.elrond.com
   CHAINID=D
   ENV_LOGS="devnet"
-  TOKEN_ID="XLH-4a7cc0"
+  TOKEN_ID="Z2I-2d796b"
   TOKEN_ID_HEX=$(echo -n ${TOKEN_ID} | xxd -p)
 }
 
@@ -97,7 +100,7 @@ updateContract() {
 fundContract() {
   method_name="0x$(echo -n 'fundContract' | xxd -p -u | tr -d '\n')"
   token_id="0x$(echo -n ${TOKEN_ID} | xxd -p -u | tr -d '\n')"
-  amount="8500001${MY_DECIMALS}"
+  amount="500001${MY_DECIMALS}"
 #  amount="58501${MY_DECIMALS}"
 #  amount="1${MY_DECIMALS}"
   erdpy --verbose contract call ${ADDRESS} --recall-nonce \
