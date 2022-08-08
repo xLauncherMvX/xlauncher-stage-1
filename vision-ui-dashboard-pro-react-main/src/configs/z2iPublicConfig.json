@@ -1,0 +1,20 @@
+{
+    "environment": "mainnet",
+    "provider": "https://gateway.elrond.com",
+    "apiLink": "https://api.elrond.com/accounts/",
+    "apiResponse": "https://api.elrond.com/accounts/erd1qqqqqqqqqqqqqpgqkv4zlrta9m980q6q2sv3pe906qea2vhj4d6qsnudtu/tokens/Z2I-e9f0ff",
+    "presaleAddress": "erd1qqqqqqqqqqqqqpgqkv4zlrta9m980q6q2sv3pe906qea2vhj4d6qsnudtu",
+    "token": "Z2I-e9f0ff",
+    "maxBalance": 500000,
+    "date": "August 08, 2022 19:00:00 GMT+03:00",
+    "startingTokenAmount": 400,
+    "startingEGLDAmount": 500000000000000000,
+    "increasingTokenAmount": 400,
+    "increasingEGLDAmount": 500000000000000000,
+    "minTokenAmount": 400,
+    "minEGLDAmount": 500000000000000000,
+    "maxTokenAmount": 8000,
+    "maxEGLDAmount": 10000000000000000000,
+    "tokenName": "Z2I",
+    "label" : "Zero2Infinity"
+}

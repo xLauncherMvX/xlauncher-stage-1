@@ -77,6 +77,7 @@ import Projects from "pages/projects/list";
 import Finished from "pages/miscellaneous/finished";
 import XLH from "pages/presale/xlh";
 import Z2I from "pages/presale/z2i";
+import Z2IPublic from "pages/publicSale/z2iPublic";
 
 // React icons
 import { IoDocument } from "react-icons/io5";
@@ -146,7 +147,7 @@ const routes = [
   //Presale Pages
   {
     type: "collapse",
-    name: "Presale",
+    name: "Sales",
     key: "presale",
     icon: <IoCart size="15px" color="inherit" />,
     collapse: [
@@ -156,11 +157,17 @@ const routes = [
         route: "/presale/xlh",
         component: XLH
       },
+      // {
+      //   name: "Zero2Infinity",
+      //   key: "presalez2i",
+      //   route: "/presale/z2i",
+      //   component: Z2I
+      // }
       {
         name: "Zero2Infinity",
-        key: "presalez2i",
-        route: "/presale/z2i",
-        component: Z2I
+        key: "publicSaleZ2I",
+        route: "/publicSale/z2iPublic",
+        component: Z2IPublic
       }
     ]
   },
