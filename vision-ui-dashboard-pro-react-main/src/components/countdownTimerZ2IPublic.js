@@ -105,7 +105,7 @@ export default function CountdownTimer(){
             displayTimer =
             <div className="show-counter" align={'center'}>                
                 <span className="odometer-block">
-                    <p className='seedsale-text'>Sold out</p>
+                    <p className='seedsale-text'>Public Sale Ended</p>
                 </span>
             </div>
         ;
