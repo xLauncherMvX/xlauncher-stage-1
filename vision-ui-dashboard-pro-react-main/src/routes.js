@@ -78,6 +78,7 @@ import Finished from "pages/miscellaneous/finished";
 import XLH from "pages/presale/xlh";
 import Z2I from "pages/presale/z2i";
 import Z2IPublic from "pages/publicSale/z2iPublic";
+import EstarGames from "pages/projects/EstarGames";
 
 // React icons
 import { IoDocument } from "react-icons/io5";
@@ -180,9 +181,15 @@ const routes = [
     collapse: [
       {
         name: "Zero2Infinity",
-        key: "projects",
+        key: "projects1",
         route: "/projects/Zero2Infinity",
         component: Zero2Infinity
+      },
+      {
+        name: "EstarGames",
+        key: "projects2",
+        route: "/projects/EstarGames",
+        component: EstarGames
       }
     ]
   },
