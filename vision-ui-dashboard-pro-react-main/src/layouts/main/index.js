@@ -58,12 +58,26 @@ import { FaShoppingCart } from "react-icons/fa";
 import { BsGlobe } from "react-icons/bs";
 import { IoWallet, IoDocumentText } from "react-icons/io5";
 
+import typography from "assets/theme/base/typography";
+
+const style = {
+  textAlign: "center",
+  padding: "20px",
+  position: "relative",
+  left: "0",
+  bottom: "0",
+  height: "60px",
+  width: "100%",
+  marginTop: "60px"
+};
+
 function Main(props) {
   const { values } = breakpoints;
   const [controller, dispatch] = useVisionUIController();
   const { miniSidenav, direction, layout, sidenavColor } = controller;
   const [onMouseEnter, setOnMouseEnter] = useState(false);
   const { pathname } = useLocation();
+  const { size } = typography;
 
   // Open sidenav when mouse enter on mini sidenav
   const handleOnMouseEnter = () => {
@@ -130,7 +144,33 @@ function Main(props) {
               <Grid item lg={12}>
                   {props.children}
               </Grid>                
-          </Grid>          
+          </Grid>  
+          <div>
+            <div style={style}>
+              <iframe src='https://egld.community/api/products/fdc676ce-0ec1-4460-b59f-c74d4ec2eef9/upvotes/embed' width='290' height='70' className="custom-footer"></iframe>
+            <VuiBox
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              flexWrap="wrap"
+              align="center"
+              color="white"
+              fontSize={size.sm}
+              px={1.5}
+            >
+              &copy; {new Date().getFullYear()}, made with
+              <VuiBox fontSize={size.md} color="text" mb={-0.5} mx={0.25} align="center">
+                <Icon color="error" fontSize="inherit">
+                  favorite
+                </Icon>
+              </VuiBox>
+              by 
+              <VuiTypography variant="h6" fontWeight="medium" color="white">
+                &nbsp;XLauncher Team&nbsp;
+              </VuiTypography>
+            </VuiBox>
+            </div>
+          </div>    
       </DashboardLayout>
     );
 }

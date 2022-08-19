@@ -265,3 +265,15 @@ dapp-core-ui-component .btn-primary:active {
 .css-1jin3da-MuiLinearProgress-root.MuiLinearProgress-root {
     background: white !important;
 }
+
+.custom-footer{
+    border-radius: 8px;
+    border: none;
+    width: 290px;
+    height: 70px;
+}
+@media screen and (max-width: 768px) {
+    .custom-footer{
+        margin-left: -5px;
+    } 
+}
