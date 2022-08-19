@@ -108,7 +108,7 @@ function DefaultProjectCard({ image, label, title, description, action, authors 
             </VuiTypography>
           )}
         </VuiBox>
-        <VuiBox mb={3} lineHeight={0} className="text-justified">
+        <VuiBox mb={3} lineHeight={0} className="text-justified" sx={{minHeight: "120px"}}>
           <VuiTypography variant="button" fontWeight="regular" color="text">
             {description}
           </VuiTypography>
