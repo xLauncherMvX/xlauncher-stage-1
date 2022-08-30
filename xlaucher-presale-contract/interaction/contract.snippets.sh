@@ -160,3 +160,22 @@ collect() {
     --send \
     --outfile="${MY_LOGS}/fundContract-${ENV_LOGS}.json"
 }
+
+switchSellIsActiveToFalse(){
+  erdpy --verbose contract call ${ADDRESS} --recall-nonce \
+      --pem=${PEM_FILE} \
+      --gas-limit=8000000 \
+      --proxy=${PROXY} --chain=${CHAINID} \
+      --function="switchSellIsActiveToFalse" \
+      --send \
+      --outfile="${MY_LOGS}/switchSellIsActiveToFalse-${ENV_LOGS}.json"
+}
+
+getClientBoughtValue() {
+  # erdpy wallet bech32 --decode erd1m98v82l4vkkejlwjka944r7nhlrf8j4xjefw03m0d2tzt5pywgyqfsq39v
+  timestamp=$(date +%s)
+  echo "query timestamp=${timestamp}"
+  erdpy --verbose contract query ${ADDRESS} --function="getClientBoughtValue" \
+    --arguments 0xd94ec3abf565ad997dd2b74b5a8fd3bfc693caa69652e7c76f6a9625d0247208 \
+    --proxy=${PROXY}
+}
