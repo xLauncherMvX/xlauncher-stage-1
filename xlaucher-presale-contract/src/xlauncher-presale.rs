@@ -88,7 +88,7 @@ pub trait XLauncherPresale {
         let egld_or_esdt_token_identifier = self.call_value().egld_or_single_esdt();
         let payment_token = egld_or_esdt_token_identifier.token_identifier;
         let payment_amount = egld_or_esdt_token_identifier.amount;
-
+        require!(self.sell_is_active(), "Sell is not active");
         require!(payment_token.is_egld(), "Only EGLD");
         let min_amount = self.min_amount().get();
         require!(
@@ -186,6 +186,22 @@ pub trait XLauncherPresale {
         }
     }
 
+    fn sell_is_active(&self) -> bool {
+        return if self.sell_active_state().is_empty() {
+            false
+        } else {
+            self.sell_active_state().get()
+        }
+    }
+
+    #[only_owner]
+    #[endpoint(switchSellIsActiveToTrue)]
+    fn switch_sell_is_active_to_true(&self) {
+        let simple_id = 1_u64;
+        sc_print!("hello from switch_sell_is_active_to_true {}", simple_id);
+        self.sell_active_state().set(true);
+    }
+
     // proxy
     #[proxy]
     fn contract_proxy(&self, sc_address: ManagedAddress) -> xlauncher_staking::Proxy<Self::Api>;
@@ -218,6 +234,10 @@ pub trait XLauncherPresale {
     #[view(getStakingAddress)]
     #[storage_mapper("stakingAddress")]
     fn staking_address(&self) -> SingleValueMapper<ManagedAddress>;
+
+    #[view(getSellActiveState)]
+    #[storage_mapper("sellActiveState")]
+    fn sell_active_state(&self) -> SingleValueMapper<bool>;
 
 
     #[view(getClientList)]

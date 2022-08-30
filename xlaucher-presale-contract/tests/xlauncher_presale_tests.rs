@@ -33,6 +33,11 @@ fn test_stake_and_buy_ok() {
 }
 
 #[test]
+fn test_stake_and_buy_ok_009() {
+    elrond_wasm_debug::mandos_rs("mandos/009-stake-and-buy-ok.scen.json", world());
+}
+
+#[test]
 fn test_stake_and_buy_ok_10() {
     elrond_wasm_debug::mandos_rs("mandos/010-stake-and-buy-ok.scen.json", world());
 }

@@ -16,9 +16,11 @@ elrond_wasm_node::wasm_endpoints! {
         getMaxBalance
         getMinAmount
         getPrice
+        getSellActiveState
         getStakingAddress
         getTokenBalance
         getTokenId
+        switchSellIsActiveToTrue
     )
 }
 

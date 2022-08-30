@@ -117,6 +117,17 @@
     },
     {
       "step": "scCall",
+      "txId": "switch-sell-to-true",
+      "tx": {
+        "from": "address:owner",
+        "to": "sc:xlauncher-presale",
+        "function": "switchSellIsActiveToTrue",
+        "gasLimit": "100,000,000",
+        "gasPrice": "0"
+      }
+    },
+    {
+      "step": "scCall",
       "txId": "stake-good-coin",
       "tx": {
         "from": "address:client1",
@@ -188,6 +199,7 @@
             "str:BCOIN-b00000": "99998750000000000000000000"
           },
           "storage": {
+            "str:sellActiveState": "true",
             "str:tokenId": "str:BCOIN-b00000",
             "str:price": "1000000000000000000000",
             "str:minAmount": "1250000000000000000",

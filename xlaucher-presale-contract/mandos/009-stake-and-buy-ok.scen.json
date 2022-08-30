@@ -115,6 +115,7 @@
         "gasPrice": "0"
       }
     },
+
     {
       "step": "scCall",
       "txId": "stake-good-coin",
@@ -155,6 +156,35 @@
         "gasPrice": "0"
       },
       "expect": {
+        "status": "4",
+        "message": "str:Sell is not active",
+        "gas": "*",
+        "refund": "*"
+      }
+    },
+    {
+      "step": "scCall",
+      "txId": "fund-presale",
+      "tx": {
+        "from": "address:owner",
+        "to": "sc:xlauncher-presale",
+        "function": "switchSellIsActiveToTrue",
+        "gasLimit": "100,000,000",
+        "gasPrice": "0"
+      }
+    },
+    {
+      "step": "scCall",
+      "tx": {
+        "from": "address:client1",
+        "to": "sc:xlauncher-presale",
+        "value": "1,250,000000000000000",
+        "function": "buy",
+        "arguments": [],
+        "gasLimit": "10,000,000",
+        "gasPrice": "0"
+      },
+      "expect": {
         "status": "",
         "gas": "*",
         "refund": "*"
@@ -173,7 +203,7 @@
           "code": ""
         },
         "address:client1": {
-          "nonce": "2",
+          "nonce": "3",
           "balance": "0",
           "esdt": {
             "str:BCOIN-b00000": "1250000000000000000000",
@@ -188,6 +218,7 @@
             "str:BCOIN-b00000": "99998750000000000000000000"
           },
           "storage": {
+            "str:sellActiveState": "true",
             "str:tokenId": "str:BCOIN-b00000",
             "str:price": "1000000000000000000000",
             "str:minAmount": "1250000000000000000",
