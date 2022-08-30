@@ -8,6 +8,8 @@ elrond_wasm_node::wasm_endpoints! {
     xlauncher_presale
     (
         buy
+        buyback
+        clientBuybackValue
         collect
         fundContract
         getClientBoughtValue

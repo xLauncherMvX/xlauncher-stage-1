@@ -151,6 +151,22 @@ pub trait XLauncherPresale {
             .direct_esdt(&caller, &token_id_val, 0, &result_esdt_token_amount);
     }
 
+    #[payable("*")]
+    #[endpoint(buyback)]
+    fn buyback(&self) {
+        let egld_or_esdt_token_identifier = self.call_value().egld_or_single_esdt();
+        let amount = egld_or_esdt_token_identifier.amount;
+        let token_id = egld_or_esdt_token_identifier.token_identifier;
+
+        require!(token_id.is_valid(), "invalid token_id");
+        let my_token_id = self.token_id().get();
+        require!(my_token_id == token_id, "not the same token id");
+
+        let client = self.blockchain().get_caller();
+        let client_current_buyback_balance = self.client_buyback_value(&client).get();
+        sc_print!("client_current_buyback_balance={}",client_current_buyback_balance);
+    }
+
     // NOTE
     // No need for get_balance() method as you can use get_sc_balance for EGLD as well
     // From Docs: For fungible ESDT, nonce should be 0. To get the EGLD balance, you can simply pass TokenIdentifier::egld() as parameter
@@ -191,7 +207,7 @@ pub trait XLauncherPresale {
             false
         } else {
             self.sell_active_state().get()
-        }
+        };
     }
 
     #[only_owner]
@@ -255,6 +271,13 @@ pub trait XLauncherPresale {
     #[view(getClientBoughtValue)]
     #[storage_mapper("clientBoughtValue")]
     fn client_bought_value(
+        &self,
+        client_address: &ManagedAddress,
+    ) -> SingleValueMapper<BigUint>;
+
+    #[view(clientBuybackValue)]
+    #[storage_mapper("clientBuybackValue")]
+    fn client_buyback_value(
         &self,
         client_address: &ManagedAddress,
     ) -> SingleValueMapper<BigUint>;

@@ -43,7 +43,7 @@ fn test_stake_and_buy_ok_10() {
 }
 
 #[test]
-fn test_stake_and_buy_ok_11() {
-    elrond_wasm_debug::mandos_rs("mandos/011-stake-and-buy-max-allowed-ok.scen.json", world());
+fn test_stake_and_buyback_ok_012() {
+    elrond_wasm_debug::mandos_rs("mandos/012-stake-and-buyback-max-allowed-ok.scen.json", world());
 }
 
