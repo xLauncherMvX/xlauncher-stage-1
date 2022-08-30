@@ -161,10 +161,24 @@ pub trait XLauncherPresale {
         require!(token_id.is_valid(), "invalid token_id");
         let my_token_id = self.token_id().get();
         require!(my_token_id == token_id, "not the same token id");
+        require!(BigUint::zero()< amount,"amount needs to be grater then zero");
 
         let client = self.blockchain().get_caller();
+        let presale_balance = self.client_bought_value(&client).get();
         let client_current_buyback_balance = self.client_buyback_value(&client).get();
-        sc_print!("client_current_buyback_balance={}",client_current_buyback_balance);
+        sc_print!("client_current_buyback_balance={}",&client_current_buyback_balance);
+
+        let client_total_buyback_balance = &client_current_buyback_balance + &amount;
+        require!(
+            &client_total_buyback_balance <= &presale_balance,
+            "Returning that much will exceed the amount you both during presale: presale-value={}, total-buyback={}",
+            presale_balance, client_total_buyback_balance
+        );
+        self.client_buyback_value(&client).set(client_total_buyback_balance);
+
+        let current_price = self.price().get();
+        let one_egld = BigUint::from(EGLD_DECIMALS_VALUE);
+        let e = (&amount * &one_egld) / &current_price;
     }
 
     // NOTE
