@@ -202,6 +202,14 @@ pub trait XLauncherPresale {
         self.sell_active_state().set(true);
     }
 
+    #[only_owner]
+    #[endpoint(switchSellIsActiveToFalse)]
+    fn switch_sell_is_active_to_false(&self) {
+        let simple_id = 1_u64;
+        sc_print!("hello from switch_sell_is_active_to_false {}", simple_id);
+        self.sell_active_state().set(false);
+    }
+
     // proxy
     #[proxy]
     fn contract_proxy(&self, sc_address: ManagedAddress) -> xlauncher_staking::Proxy<Self::Api>;
