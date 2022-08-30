@@ -178,7 +178,9 @@ pub trait XLauncherPresale {
 
         let current_price = self.price().get();
         let one_egld = BigUint::from(EGLD_DECIMALS_VALUE);
-        let e = (&amount * &one_egld) / &current_price;
+        let egld_value = (&amount * &one_egld) / &current_price;
+
+        self.send().direct_egld(&client, &egld_value)
     }
 
     // NOTE

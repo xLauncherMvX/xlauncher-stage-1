@@ -229,7 +229,7 @@
         },
         "address:client1": {
           "nonce": "4",
-          "balance": "0",
+          "balance": "25,000,000,000,000,000,000",
           "esdt": {
             "str:BCOIN-b00000": "0",
             "str:BCOIN-a00000": "0"
@@ -238,7 +238,7 @@
         },
         "sc:xlauncher-presale": {
           "nonce": "*",
-          "balance": "25000000000000000000",
+          "balance": "0",
           "esdt": {
             "str:BCOIN-b00000": "100000000000000000000000000"
           },
