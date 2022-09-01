@@ -1,8 +1,8 @@
 {
-    "environment": "devnet",
-    "provider": "https://devnet-gateway.elrond.com",
-    "token": "XLH-4a7cc0",
-    "apiLink": "https://devnet-api.elrond.com/accounts/",
-    "apiResponse": "https://devnet-api.elrond.com/accounts/erd1qqqqqqqqqqqqqpgqpmtw8ehgllrcq7qx7kzpdwyr8536p0z8pa7q598xd9/tokens/XLH-4a7cc0",
-    "presaleAddress": "erd1qqqqqqqqqqqqqpgqpmtw8ehgllrcq7qx7kzpdwyr8536p0z8pa7q598xd9"
+    "environment": "mainnet",
+    "provider": "https://gateway.elrond.com",
+    "token": "Z2I-e9f0ff",
+    "apiLink": "https://api.elrond.com/accounts/",
+    "apiResponse": "https://api.elrond.com/accounts/erd1qqqqqqqqqqqqqpgqehtn7eltja83v40700d3kpeghdnzt8lc4d6qutn2eg/tokens/Z2I-e9f0ff",
+    "presaleAddress": "erd1qqqqqqqqqqqqqpgqehtn7eltja83v40700d3kpeghdnzt8lc4d6qutn2eg"
 }

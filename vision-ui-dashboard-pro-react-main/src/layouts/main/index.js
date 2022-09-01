@@ -166,7 +166,7 @@ function Main(props) {
               </VuiBox>
               by 
               <VuiTypography variant="h6" fontWeight="medium" color="white">
-                &nbsp;XLauncher Team&nbsp;
+                &nbsp; the XLauncher Team&nbsp;
               </VuiTypography>
             </VuiBox>
             </div>

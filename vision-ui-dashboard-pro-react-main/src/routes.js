@@ -149,7 +149,7 @@ const routes = [
   //Presale Pages
   {
     type: "collapse",
-    name: "Presale",
+    name: "Presales",
     key: "presale",
     icon: <IoCart size="15px" color="inherit" />,
     collapse: [
@@ -171,7 +171,7 @@ const routes = [
   //Public Sales Pages
   {
     type: "collapse",
-    name: "Public Sale",
+    name: "Public Sales",
     key: "publicSales",
     icon: <IoCart size="15px" color="inherit" />,
     collapse: [
@@ -187,7 +187,7 @@ const routes = [
   //Refunds Pages
   {
     type: "collapse",
-    name: "Refund",
+    name: "Refunds",
     key: "refunds",
     icon: <IoArrowUndo size="15px" color="inherit" />,
     collapse: [      
