@@ -63,6 +63,7 @@ import {
   TransactionPayload,
   ContractFunction
 } from "@elrondnetwork/erdjs/out";
+import {BigNumber} from "bignumber.js"
 
 import xConfigs from 'configs/z2iRefundConfig.json';
 import "assets/custom.css";
@@ -75,18 +76,27 @@ const { sendTransactions } = transactionServices;
 function Z2IRefund() {
   const { values } = breakpoints;
   let xPresaleAddress = xConfigs["presaleAddress"];
+  let xToken = xConfigs["token"];
 
-  const contractByToken = async (z2iAmount) => {
-    console.log('Time to buy', z2iAmount);
+  const contractByToken = async (tokenAmount) => {
+    console.log("Formatting refund transaction");
 
-    console.log("Formatting transaction");
+    let multiplier = 1000000000000000000;
+    let finalTokenAmount = tokenAmount * multiplier;
+    let SData = TransactionPayload.contractCall()
+    .setFunction(new ContractFunction("ESDTTransfer"))
+    .setArgs([
+        BytesValue.fromUTF8(xToken),
+        new BigUIntValue(new BigNumber(finalTokenAmount)),
+        BytesValue.fromUTF8("buyback")
+    ])
+    .build().toString();
+
     const createRefundTransaction = {
-      value: z2iAmount,
-      data: [
-        "buyback",
-      ].join("@"),
+      value: "0",
+      data: SData,
       receiver: xPresaleAddress,
-      gasLimit: 15_000_000,
+      gasLimit: 8000000,
     };
 
     await refreshAccount();
@@ -94,12 +104,12 @@ function Z2IRefund() {
     const { sessionId /*, error*/ } = await sendTransactions({
       transactions: [createRefundTransaction],
       transactionsDisplayInfo: {
-        processingMessage: "Processing Refund transaction",
-        errorMessage: "An error has occured during Refund",
-        successMessage: "Refund transaction successful",
+        processingMessage: "Refund Transaction",
+        errorMessage: "An error has occured during Refund Transaction",
+        successMessage: "Refund Transaction successful",
       },
       redirectAfterSign: true,
-      callbackRoute: '/refunds/z2iPublic'
+      callbackRoute: '/#/refunds/z2iRefund'
     });
     if (sessionId != null) {
       console.log("sessionId", sessionId);

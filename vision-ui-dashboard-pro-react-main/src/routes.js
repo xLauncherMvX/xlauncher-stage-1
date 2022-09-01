@@ -194,7 +194,7 @@ const routes = [
       {
         name: "Zero2Infinity",
         key: "refundsZ2I",
-        route: "/refunds/z2iPublic",
+        route: "/refunds/z2iRefund",
         component: Z2IRefund
       }
     ]

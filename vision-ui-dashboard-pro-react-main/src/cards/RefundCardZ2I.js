@@ -154,20 +154,23 @@ export default function RefundCardZ2I({ contractByToken }) {
   };
 
   var aux = calc0(boughtAmount - refundedAmount);
+  if(balanceToken < aux){
+    aux = balanceToken;
+  }
   const setMaxAmount = () => {
     setZ2IAmount(aux);
     setEgldAmount(aux * 1000000000000000);
   };
 
   //Check if the wallet has the required tokens
-  var tokensInWallet = false;
-  if(z2iAmount <= accountBalance){
-    tokensInWallet = true;
-  }
+  // var tokensInWallet = false;
+  // if(z2iAmount <= accountBalance){
+  //   tokensInWallet = true;
+  // }
 
   //Disable max button if max amount of z2i was bought
   var maxbutton = "";
-  if((refundedAmount == boughtAmount) || trans || !tokensInWallet){
+  if((refundedAmount == boughtAmount) || trans){
     maxbutton=
       <VuiButton
           variant="outlined"
@@ -195,7 +198,7 @@ export default function RefundCardZ2I({ contractByToken }) {
 
   //Buy Button Section
   var buttonShow;
-  if(isLoggedIn && !trans && aux && tokensInWallet){
+  if(isLoggedIn && !trans && aux){
     buttonShow = 
       <VuiButton
         mt={10}
@@ -284,7 +287,7 @@ export default function RefundCardZ2I({ contractByToken }) {
             onChange={e => handleSliderChange(e.target.value)}
             step={50}
             min={0}        
-            max={calc0(boughtAmount-refundedAmount)}   
+            max={aux}   
           />        
         </Grid>  
         <Grid item xs={1} textAlign="center">
