@@ -245,11 +245,14 @@ claimUnstakedValue() {
  }
 
 getClientReport() {
+  # client
+  # erdpy wallet bech32 --decode erd1m98v82l4vkkejlwjka944r7nhlrf8j4xjefw03m0d2tzt5pywgyqfsq39v
+
   # erdpy wallet bech32 --decode erd1mhhnd3ux2duwc9824dhelherdj3gvzn04erdw29l8cyr5z8fpa7quda68z
   timestamp=$(date +%s)
   echo "query timestamp=${timestamp}"
   erdpy --verbose contract query ${ADDRESS} --function="getClientReport" \
-    --arguments 0x81cf39701dc55313e1e4b56ca6989c66df3e6dc53eddb03d02e326ee648cfcff \
+    --arguments 0xd94ec3abf565ad997dd2b74b5a8fd3bfc693caa69652e7c76f6a9625d0247208 \
     --proxy=${PROXY}
 }
 

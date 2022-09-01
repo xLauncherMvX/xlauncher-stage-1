@@ -171,11 +171,46 @@ switchSellIsActiveToFalse(){
       --outfile="${MY_LOGS}/switchSellIsActiveToFalse-${ENV_LOGS}.json"
 }
 
+switchSellIsActiveToTrue(){
+  erdpy --verbose contract call ${ADDRESS} --recall-nonce \
+      --pem=${PEM_FILE} \
+      --gas-limit=8000000 \
+      --proxy=${PROXY} --chain=${CHAINID} \
+      --function="switchSellIsActiveToTrue" \
+      --send \
+      --outfile="${MY_LOGS}/switchSellIsActiveToTrue-${ENV_LOGS}.json"
+}
+
+buyback() {
+  method_name="0x$(echo -n 'buyback' | xxd -p -u | tr -d '\n')"
+  token_id="0x$(echo -n ${TOKEN_ID} | xxd -p -u | tr -d '\n')"
+  #  amount="2000001${MY_DECIMALS}"
+  amount="1${MY_DECIMALS}"
+  erdpy --verbose contract call ${ADDRESS} --recall-nonce \
+    --pem=${CLIENT_PEM} \
+    --gas-limit=5000000 \
+    --proxy=${PROXY} --chain=${CHAINID} \
+    --function="ESDTTransfer" \
+    --arguments $token_id $amount $method_name \
+    --send \
+    --outfile="${MY_LOGS}/buyback-${ENV_LOGS}.json"
+}
+
 getClientBoughtValue() {
+  # clinet address
   # erdpy wallet bech32 --decode erd1m98v82l4vkkejlwjka944r7nhlrf8j4xjefw03m0d2tzt5pywgyqfsq39v
   timestamp=$(date +%s)
   echo "query timestamp=${timestamp}"
   erdpy --verbose contract query ${ADDRESS} --function="getClientBoughtValue" \
+    --arguments 0xd94ec3abf565ad997dd2b74b5a8fd3bfc693caa69652e7c76f6a9625d0247208 \
+    --proxy=${PROXY}
+}
+
+getClientBuybackValue() {
+  # erdpy wallet bech32 --decode erd1m98v82l4vkkejlwjka944r7nhlrf8j4xjefw03m0d2tzt5pywgyqfsq39v
+  timestamp=$(date +%s)
+  echo "query timestamp=${timestamp}"
+  erdpy --verbose contract query ${ADDRESS} --function="clientBuybackValue" \
     --arguments 0xd94ec3abf565ad997dd2b74b5a8fd3bfc693caa69652e7c76f6a9625d0247208 \
     --proxy=${PROXY}
 }
