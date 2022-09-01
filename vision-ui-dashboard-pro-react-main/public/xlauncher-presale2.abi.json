@@ -1,0 +1,224 @@
+{
+    "buildInfo": {
+        "rustc": {
+            "version": "1.60.0-nightly",
+            "commitHash": "ec4bcaac450279b029f3480b8b8f1b82ab36a5eb",
+            "commitDate": "2022-01-15",
+            "channel": "Nightly",
+            "short": "rustc 1.60.0-nightly (ec4bcaac4 2022-01-15)"
+        },
+        "contractCrate": {
+            "name": "xlauncher-presale",
+            "version": "0.1.0",
+            "git_version": "57fc1fa"
+        },
+        "framework": {
+            "name": "elrond-wasm",
+            "version": "0.34.0"
+        }
+    },
+    "name": "XLauncherPresale",
+    "constructor": {
+        "inputs": [
+            {
+                "name": "token_id",
+                "type": "TokenIdentifier"
+            },
+            {
+                "name": "initial_price",
+                "type": "BigUint"
+            },
+            {
+                "name": "min_amount",
+                "type": "BigUint"
+            },
+            {
+                "name": "max_amount_val",
+                "type": "BigUint"
+            },
+            {
+                "name": "max_balance_val",
+                "type": "BigUint"
+            },
+            {
+                "name": "staking_address_val",
+                "type": "Address"
+            }
+        ],
+        "outputs": []
+    },
+    "endpoints": [
+        {
+            "name": "fundContract",
+            "mutability": "mutable",
+            "payableInTokens": [
+                "*"
+            ],
+            "inputs": [],
+            "outputs": []
+        },
+        {
+            "name": "getTokenBalance",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "BigUint"
+                }
+            ]
+        },
+        {
+            "name": "buy",
+            "mutability": "mutable",
+            "payableInTokens": [
+                "EGLD"
+            ],
+            "inputs": [],
+            "outputs": []
+        },
+        {
+            "name": "buyback",
+            "mutability": "mutable",
+            "payableInTokens": [
+                "*"
+            ],
+            "inputs": [],
+            "outputs": []
+        },
+        {
+            "name": "collect",
+            "onlyOwner": true,
+            "mutability": "mutable",
+            "inputs": [],
+            "outputs": []
+        },
+        {
+            "name": "switchSellIsActiveToTrue",
+            "onlyOwner": true,
+            "mutability": "mutable",
+            "inputs": [],
+            "outputs": []
+        },
+        {
+            "name": "switchSellIsActiveToFalse",
+            "onlyOwner": true,
+            "mutability": "mutable",
+            "inputs": [],
+            "outputs": []
+        },
+        {
+            "name": "getTokenId",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "TokenIdentifier"
+                }
+            ]
+        },
+        {
+            "name": "getPrice",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "BigUint"
+                }
+            ]
+        },
+        {
+            "name": "getMinAmount",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "BigUint"
+                }
+            ]
+        },
+        {
+            "name": "getMaxAmount",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "BigUint"
+                }
+            ]
+        },
+        {
+            "name": "getMaxBalance",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "BigUint"
+                }
+            ]
+        },
+        {
+            "name": "getStakingAddress",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "Address"
+                }
+            ]
+        },
+        {
+            "name": "getSellActiveState",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "bool"
+                }
+            ]
+        },
+        {
+            "name": "getClientList",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "variadic<Address>",
+                    "multi_result": true
+                }
+            ]
+        },
+        {
+            "name": "getClientBoughtValue",
+            "mutability": "readonly",
+            "inputs": [
+                {
+                    "name": "client_address",
+                    "type": "Address"
+                }
+            ],
+            "outputs": [
+                {
+                    "type": "BigUint"
+                }
+            ]
+        },
+        {
+            "name": "clientBuybackValue",
+            "mutability": "readonly",
+            "inputs": [
+                {
+                    "name": "client_address",
+                    "type": "Address"
+                }
+            ],
+            "outputs": [
+                {
+                    "type": "BigUint"
+                }
+            ]
+        }
+    ],
+    "events": [],
+    "hasCallback": false,
+    "types": {}
+}

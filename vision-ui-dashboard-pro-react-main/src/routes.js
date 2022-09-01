@@ -78,6 +78,7 @@ import Finished from "pages/miscellaneous/finished";
 import XLH from "pages/presale/xlh";
 import Z2I from "pages/presale/z2i";
 import Z2IPublic from "pages/publicSale/z2iPublic";
+import Z2IRefund from "pages/refunds/z2iRefund";
 import EstarGames from "pages/projects/EstarGames";
 
 // React icons
@@ -85,11 +86,11 @@ import { IoDocument } from "react-icons/io5";
 import { IoBuild } from "react-icons/io5";
 import { IoDocuments } from "react-icons/io5";
 import { FaShoppingCart, FaPiedPiperPp } from "react-icons/fa";
-import { IoHome, IoServer, IoCart } from "react-icons/io5";
+import { IoHome, IoServer, IoCart, IoArrowUndo } from "react-icons/io5";
 
 const routes = [
   {
-    // type: "collapse",
+    //type: "collapse",
     name: "Home",
     key: "dashboards",
     icon: <IoHome size="15px" color="inherit" />,
@@ -148,7 +149,7 @@ const routes = [
   //Presale Pages
   {
     type: "collapse",
-    name: "Sales",
+    name: "Presale",
     key: "presale",
     icon: <IoCart size="15px" color="inherit" />,
     collapse: [
@@ -158,17 +159,43 @@ const routes = [
         route: "/presale/xlh",
         component: XLH
       },
-      // {
-      //   name: "Zero2Infinity",
-      //   key: "presalez2i",
-      //   route: "/presale/z2i",
-      //   component: Z2I
-      // }
+      {
+        name: "Zero2Infinity",
+        key: "presalez2i",
+        route: "/presale/z2i",
+        component: Z2I
+      }
+    ]
+  },
+
+  //Public Sales Pages
+  {
+    type: "collapse",
+    name: "Public Sale",
+    key: "publicSales",
+    icon: <IoCart size="15px" color="inherit" />,
+    collapse: [
       {
         name: "Zero2Infinity",
         key: "publicSaleZ2I",
         route: "/publicSale/z2iPublic",
         component: Z2IPublic
+      }
+    ]
+  },
+
+  //Refunds Pages
+  {
+    type: "collapse",
+    name: "Refund",
+    key: "refunds",
+    icon: <IoArrowUndo size="15px" color="inherit" />,
+    collapse: [      
+      {
+        name: "Zero2Infinity",
+        key: "refundsZ2I",
+        route: "/refunds/z2iPublic",
+        component: Z2IRefund
       }
     ]
   },

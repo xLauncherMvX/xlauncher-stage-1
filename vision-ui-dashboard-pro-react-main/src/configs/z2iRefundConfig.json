@@ -1,0 +1,8 @@
+{
+    "environment": "devnet",
+    "provider": "https://devnet-gateway.elrond.com",
+    "token": "XLH-4a7cc0",
+    "apiLink": "https://devnet-api.elrond.com/accounts/",
+    "apiResponse": "https://devnet-api.elrond.com/accounts/erd1qqqqqqqqqqqqqpgqpmtw8ehgllrcq7qx7kzpdwyr8536p0z8pa7q598xd9/tokens/XLH-4a7cc0",
+    "presaleAddress": "erd1qqqqqqqqqqqqqpgqpmtw8ehgllrcq7qx7kzpdwyr8536p0z8pa7q598xd9"
+}

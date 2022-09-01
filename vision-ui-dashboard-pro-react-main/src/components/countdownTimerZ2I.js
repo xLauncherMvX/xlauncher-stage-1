@@ -77,10 +77,15 @@ export default function CountdownTimer(){
     }
 
     //Check if collect function was called
-    var collected = false;
+    //var collected = false;
+    //Overwrite collected to stop the sale
+    var collected = true;
     if((contractBalance/1000000000000000000 == 0) || !contractBalance && dateReached){
         collected = true;
     }
+
+    console.log("contractBalance " + contractBalance);
+    console.log("dateReached " + dateReached);
 
     let displayTimer;  
     if(dateReached){
