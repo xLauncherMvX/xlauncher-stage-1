@@ -345,8 +345,29 @@ function DashboardNavbar({ absolute, light, isMini }) {
             {connectButton}  
           </Grid>   
                
-          <Grid item xs={12} sm={12} md={0} lg={2}> 
-  
+          <Grid item xs={6} sm={6} md={3} lg={2}>  
+            <VuiButton 
+              fullWidth 
+              variant="outlined"
+              color="light"
+              size="small"
+              onClick={()=> openInNewTab('https://x-launcher.synaps.me')} 
+              sx={{ minWidth: 140}}
+            >
+              KYC
+            </VuiButton>
+          </Grid>  
+          <Grid item xs={6} sm={6} md={3} lg={2}>  
+            <VuiButton 
+              fullWidth 
+              variant="outlined"
+              color="light"
+              size="small"
+              onClick={()=> openInNewTab('https://docs.google.com/forms/d/1J9m1eeW83E8fjcc--j9EAiusoIDupmzoyybRIUbWsnA/')} 
+              sx={{ minWidth: 140}}
+            >
+              APPLY TO US
+            </VuiButton>
           </Grid> 
           <Grid item xs={12} sm={12} md={3} lg={2}>
             <VuiButton
@@ -373,19 +394,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
                 }).format(balanceXLH)} &nbsp; XLH     
               </VuiTypography>         
             </VuiButton>   
-          </Grid>
-          <Grid item xs={12} sm={12} md={3} lg={2}>  
-            <VuiButton 
-              fullWidth 
-              variant="contained"
-              color={whitelistColor}
-              size="small"
-              onClick={()=> openInNewTab('https://x-launcher.synaps.me')} 
-              sx={{ minWidth: 140}}
-            >
-              <VuiTypography fontSize="12px" color="white">KYC</VuiTypography>
-            </VuiButton>
-          </Grid>  
+          </Grid> 
           {connectLoggedinSection}   
         </Grid>   
       </React.Fragment>
@@ -394,7 +403,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
     return (   
       <React.Fragment>    
         <Grid container spacing={1}> 
-          <Grid item xs={12} sm={12} md={3} lg={6}> 
+          <Grid item xs={12} sm={12} md={0} lg={4}> 
   
           </Grid>
           <Grid item xs={6} sm={6} md={3} lg={2}>  
@@ -408,16 +417,28 @@ function DashboardNavbar({ absolute, light, isMini }) {
           </Grid>    
           <Grid item xs={6} sm={6} md={3} lg={2}>  
             <VuiButton 
-              fullWidth 
-              variant="contained"
-              color={whitelistColor}
+              fullWidth
+              variant="outlined"
+              color="white"
               size="small"
               onClick={()=> openInNewTab('https://x-launcher.synaps.me')} 
               sx={{ minWidth: 140}}
             >
-              <VuiTypography fontSize="12px" color="white">KYC</VuiTypography>
+              KYC
             </VuiButton>
-          </Grid>       
+          </Grid>     
+          <Grid item xs={6} sm={6} md={3} lg={2}>  
+            <VuiButton 
+              fullWidth 
+              variant="outlined"
+              color="white"
+              size="small"
+              onClick={()=> openInNewTab('https://docs.google.com/forms/d/1J9m1eeW83E8fjcc--j9EAiusoIDupmzoyybRIUbWsnA/')} 
+              sx={{ minWidth: 140}}
+            >
+              APPLY TO US
+            </VuiButton>
+          </Grid>    
           {connectLoggedinSection}   
         </Grid>   
       </React.Fragment>

@@ -164,9 +164,9 @@ function Main(props) {
                   favorite
                 </Icon>
               </VuiBox>
-              by 
+              by the 
               <VuiTypography variant="h6" fontWeight="medium" color="white">
-                &nbsp; the XLauncher Team&nbsp;
+                &nbsp;XLauncher Team&nbsp;
               </VuiTypography>
             </VuiBox>
             </div>
