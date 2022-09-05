@@ -363,7 +363,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
               variant="outlined"
               color="light"
               size="small"
-              onClick={()=> openInNewTab('https://docs.google.com/forms/d/1J9m1eeW83E8fjcc--j9EAiusoIDupmzoyybRIUbWsnA/')} 
+              onClick={()=> openInNewTab('https://forms.gle/XdiY6kTF2fNUcxZy8')} 
               sx={{ minWidth: 140}}
             >
               APPLY TO US
@@ -433,7 +433,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
               variant="outlined"
               color="white"
               size="small"
-              onClick={()=> openInNewTab('https://docs.google.com/forms/d/1J9m1eeW83E8fjcc--j9EAiusoIDupmzoyybRIUbWsnA/')} 
+              onClick={()=> openInNewTab('https://forms.gle/XdiY6kTF2fNUcxZy8')} 
               sx={{ minWidth: 140}}
             >
               APPLY TO US
