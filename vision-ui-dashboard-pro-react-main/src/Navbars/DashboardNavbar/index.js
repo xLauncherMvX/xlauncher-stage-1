@@ -344,8 +344,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
           <Grid item xs={6} sm={6} md={3} lg={2}>  
             {connectButton}  
           </Grid>   
-               
-          <Grid item xs={6} sm={6} md={3} lg={2}>  
+          {/* <Grid item xs={6} sm={6} md={3} lg={2}>  
             <VuiButton 
               fullWidth 
               variant="outlined"
@@ -355,6 +354,18 @@ function DashboardNavbar({ absolute, light, isMini }) {
               sx={{ minWidth: 140}}
             >
               KYC
+            </VuiButton>
+          </Grid>   */}
+          <Grid item xs={6} sm={6} md={3} lg={2}>  
+            <VuiButton 
+              fullWidth 
+              variant="outlined"
+              color="light"
+              size="small"
+              onClick={()=> openInNewTab('https://xoxno.com/buy/XLauncher/XLauncherOrigins')} 
+              sx={{ minWidth: 140}}
+            >
+              NFT Mint
             </VuiButton>
           </Grid>  
           <Grid item xs={6} sm={6} md={3} lg={2}>  
@@ -421,10 +432,10 @@ function DashboardNavbar({ absolute, light, isMini }) {
               variant="outlined"
               color="white"
               size="small"
-              onClick={()=> openInNewTab('https://x-launcher.synaps.me')} 
+              onClick={()=> openInNewTab('https://xoxno.com/buy/XLauncher/XLauncherOrigins')} 
               sx={{ minWidth: 140}}
             >
-              KYC
+              NFT Mint
             </VuiButton>
           </Grid>     
           <Grid item xs={6} sm={6} md={3} lg={2}>  
