@@ -90,7 +90,7 @@ import { IoHome, IoServer, IoCart, IoArrowUndo } from "react-icons/io5";
 
 const routes = [
   {
-    //type: "collapse",
+    type: "collapse",
     name: "Home",
     key: "dashboards",
     icon: <IoHome size="15px" color="inherit" />,

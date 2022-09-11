@@ -1,19 +1,19 @@
-/** 
+/**
 
-=========================================================
-* Vision UI PRO React - v1.0.0
-=========================================================
+ =========================================================
+ * Vision UI PRO React - v1.0.0
+ =========================================================
 
-* Product Page: https://www.creative-tim.com/product/vision-ui-dashboard-pro-react
-* Copyright 2021 Creative Tim (https://www.creative-tim.com/)
+ * Product Page: https://www.creative-tim.com/product/vision-ui-dashboard-pro-react
+ * Copyright 2021 Creative Tim (https://www.creative-tim.com/)
 
-* Design and Coded by Simmmple & Creative Tim
+ * Design and Coded by Simmmple & Creative Tim
 
-=========================================================
+ =========================================================
 
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Visionware.
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Visionware.
 
-*/
+ */
 import React, { useState, useEffect, useLayoutEffect } from "react";
 // @mui material components
 import Card from "@mui/material/Card";
@@ -24,6 +24,7 @@ import typography from "assets/theme/base/typography";
 // Vision UI Dashboard PRO React components
 import VuiBox from "components/VuiBox";
 import VuiTypography from "components/VuiTypography";
+import VuiButton from "components/VuiButton";
 import MiniStatisticsCard from "examples/Cards/StatisticsCards/MiniStatisticsCard";
 import Footer from "examples/FooterXLH";
 import Globe from "examples/Globe";
@@ -65,6 +66,11 @@ import {
 import Main from "layouts/main";
 import xConfigs from 'configs/envConfig.json';
 
+function calc3(theform) {
+  var with3Decimals = theform.toString().match(/^-?\d+(?:\.\d{0,3})?/)[0];
+  return parseFloat(with3Decimals);
+}
+
 function Home() {
   //Config Variables
   let xProvider = xConfigs['provider'];
@@ -72,19 +78,18 @@ function Home() {
   let xStakeAddress = xConfigs["stakeAddress"];
 
   const { address, account } = useGetAccountInfo();
-  const isLoggedIn = Boolean(address); 
+  const isLoggedIn = Boolean(address);
+  let multiplier = 1000000000000000000;
 
   //Get the list of the clients that have staked xlh
   const [clientsNumberData, setClientsNumberData] = useState(0);
-  const [clientsListData, setClientListData] = useState([]);  
+  const [clientsListData, setClientListData] = useState([]);
   const getClientsListData = async () => {
     try {
       let providerCSD = new ProxyProvider(xProvider);
       await NetworkConfig.getDefault().sync(providerCSD);
 
-      let stringAddressCSD = xStakeAddress;
-      let addressCSD = new Address(stringAddressCSD);
-
+      let addressCSD = new Address(xStakeAddress);
       const abiLocationCSD = `${process.env.PUBLIC_URL}/xlauncher-staking.abi.json`;
 
       let abiRegistryCSD = await AbiRegistry.load({
@@ -105,28 +110,34 @@ function Home() {
       let myListCSD = responseCSD.firstValue.valueOf();
       //console.log("myListCSD " + JSON.stringify(myListCSD, null, 2));
 
-      myListCSD.map((client) => {
-        setClientListData(clientsListData => [...clientsListData, client]);
-      });
-      setClientsNumberData(myListCSD.length);      
+      setClientListData(myListCSD);
+      setClientsNumberData(myListCSD.length);
+      return myListCSD;
 
     } catch (error) {
       console.log(error);
     }
   };
 
-  const [clientReportData, setClientReportData] = useState(["", "", "", "", "", "", "", ""]);
-  let xMultiplier = 1000000000000000000;
-
+  //Get the required data for each wallet
+  const [farm1Amount, setFarm1Amount] = useState(0);
+  const [farm2Amount, setFarm2Amount] = useState(0);
+  const [farm3Amount, setFarm3Amount] = useState(0);
   const [farm1List, setFarm1List] = useState([]);
-  const getClientReportData = async () => {
+  const [farm2List, setFarm2List] = useState([]);
+  const [farm3List, setFarm3List] = useState([]);
+  const auxList1 = [];
+  const auxList2 = [];
+  const auxList3 = [];
+  var nr1 = 0;
+  var nr2 = 0;
+  var nr3 = 0;
+  async function getClientReportData(customAddress) {
     try {
       let providerCRD = new ProxyProvider(xProvider);
       await NetworkConfig.getDefault().sync(providerCRD);
 
-      let stringAddressCRD = xStakeAddress;
-      let addressCRD = new Address(stringAddressCRD);
-
+      let addressCRD = new Address(xStakeAddress);
       const abiLocationCRD = `${process.env.PUBLIC_URL}/xlauncher-staking.abi.json`;
 
       let abiRegistryCRD = await AbiRegistry.load({
@@ -140,47 +151,116 @@ function Home() {
       });
 
       let interactionCRD = contractCRD.methods.getClientReport([
-        new AddressValue(new Address(address)),
+        new AddressValue(new Address(customAddress)),
       ]);
 
       let queryResponseCRD = await contractCRD.runQuery(providerCRD, interactionCRD.buildQuery());
 
       let responseCRD = interactionCRD.interpretQueryResponse(queryResponseCRD);
       let myList = responseCRD.firstValue.valueOf();
-      console.log("myList " + JSON.stringify(myList, null, 2));
-
-      let amountFormat = 1000000000000000000;
-      let totalAmount = myList["total_amount"].toFixed(2) / amountFormat;
-      let totalRewards = myList["total_rewords"].toFixed(2) / amountFormat;
-
+      //console.log("myList " + JSON.stringify(myList, null, 2));
       myList["report_pull_items"].map((client1) => {
-        if(client1.pool_id == 1){
-          setFarm1List(farm1List => [address]);
+        if (client1.pool_id == 1) {
+          auxList1.push(customAddress);
+          nr1 += (parseFloat(client1.pool_amount)/multiplier);
+        }
+        if (client1.pool_id == 2) {
+          auxList2.push(customAddress);
+          nr2 += (parseFloat(client1.pool_amount)/multiplier);
+        }
+        if (client1.pool_id == 3) {
+          auxList3.push(customAddress);
+          nr3 += (parseFloat(client1.pool_amount)/multiplier);
         }
       });
-
     } catch (error) {
       console.log(error);
     }
-  };
+    setFarm1Amount(nr1);
+    setFarm2Amount(nr2);
+    setFarm3Amount(nr3);
+    setFarm1List(auxList1);
+    setFarm2List(auxList2);
+    setFarm3List(auxList3);
+  }
 
-console.log("farm1List " + farm1List);
-  const MINUTE_MS = 5000;
-  useEffect(() => {    
-    if(isLoggedIn) {
-      const interval = window.setInterval(() => {      
-        //getClientsListData(); 
-        getClientReportData();
-      }, MINUTE_MS);
+  function getAllData() {
+    getClientsListData();
+    clientsListData.map((customAddress) => {
+      getClientReportData(customAddress);
+    });
+    console.log("farm1List: " + farm1List);
+    console.log("farm2List: " + farm2List);
+    console.log("farm3List: " + farm3List);
 
-      return () => window.clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
-    }
-  }, [])
+    console.log("farm1List.length: " + farm1List.length);
+    console.log("farm2List.length: " + farm2List.length);
+    console.log("farm3List.length: " + farm3List.length);
+  }
 
-  return (    
-    <Main name="Home">
+  useEffect(() => {
+    getAllData();
+  },[]);
 
-    </Main>
+  return (
+      <Main name="">
+        <Grid container mt={2} align={"center"}>
+          <Grid item xs={12}>
+            <VuiButton onClick={()=>getAllData()}>
+              Click me
+            </VuiButton>
+          </Grid>
+          <Grid item xs={3}>
+            <Grid container>
+              <Grid item xs={12}>
+                <VuiTypography variant="md" fontWeight="bold" color="white">
+                  Total Staked Farm 1:
+                </VuiTypography>
+              </Grid>
+            </Grid>
+            <Grid container>
+              <Grid item xs={12}>
+                <VuiTypography variant="md" color="success">
+                  {calc3(farm1Amount)}
+                </VuiTypography>
+              </Grid>
+            </Grid>
+          </Grid>
+          <Grid item xs={3}>
+            <Grid container>
+              <Grid item xs={12}>
+                <VuiTypography variant="md" fontWeight="bold" color="white">
+                  Total Staked Farm 2:
+                </VuiTypography>
+              </Grid>
+            </Grid>
+            <Grid container>
+              <Grid item xs={12}>
+                <VuiTypography variant="md" color="success">
+                  {calc3(farm2Amount)}
+                </VuiTypography>
+              </Grid>
+            </Grid>
+          </Grid>
+          <Grid item xs={3}>
+            <Grid container>
+              <Grid item xs={12}>
+                <VuiTypography variant="md" fontWeight="bold" color="white">
+                  Total Staked Farm 3:
+                </VuiTypography>
+              </Grid>
+            </Grid>
+            <Grid container>
+              <Grid item xs={12}>
+                <VuiTypography variant="md" color="success">
+                  {calc3(farm3Amount)}
+                </VuiTypography>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
+
+      </Main>
   );
 }
 
