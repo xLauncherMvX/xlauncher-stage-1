@@ -159,37 +159,37 @@ const routes = [
         key: "estarGames",
         route: "/presale/estarGames",
         component: EstarGamesSale
-      },
-      {
-        name: "XLauncher",
-        key: "presale",
-        route: "/presale/xlh",
-        component: XLH
-      },
-      {
-        name: "Zero2Infinity",
-        key: "presalez2i",
-        route: "/presale/z2i",
-        component: Z2I
       }
+      // {
+      //   name: "XLauncher",
+      //   key: "presale",
+      //   route: "/presale/xlh",
+      //   component: XLH
+      // },
+      // {
+      //   name: "Zero2Infinity",
+      //   key: "presalez2i",
+      //   route: "/presale/z2i",
+      //   component: Z2I
+      // }
     ]
   },
 
   //Public Sales Pages
-  {
-    type: "collapse",
-    name: "Public Sales",
-    key: "publicSales",
-    icon: <IoCart size="15px" color="inherit" />,
-    collapse: [
-      {
-        name: "Zero2Infinity",
-        key: "publicSaleZ2I",
-        route: "/publicSale/z2iPublic",
-        component: Z2IPublic
-      }
-    ]
-  },
+  // {
+  //   type: "collapse",
+  //   name: "Public Sales",
+  //   key: "publicSales",
+  //   icon: <IoCart size="15px" color="inherit" />,
+  //   collapse: [
+  //     {
+  //       name: "Zero2Infinity",
+  //       key: "publicSaleZ2I",
+  //       route: "/publicSale/z2iPublic",
+  //       component: Z2IPublic
+  //     }
+  //   ]
+  // },
 
   //Refunds Pages
   {
