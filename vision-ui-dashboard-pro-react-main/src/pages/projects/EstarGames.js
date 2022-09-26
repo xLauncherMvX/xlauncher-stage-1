@@ -79,6 +79,11 @@ function List() {
         </Grid>      
         <Grid item xs={12} md={8} xl={8}>
           <Card>
+            <VuiBox textAlign="center" mb={3}>
+              <VuiTypography color="white" variant="h2">
+                29.09.2022
+              </VuiTypography>
+            </VuiBox>
             <VuiBox
               component="img"
               src={profile1}
@@ -86,7 +91,7 @@ function List() {
               borderRadius="15px"  
               width="100%"
               height="100%"            
-            />            
+            />
             <VuiBox display="flex" justifyContent="center" mt={1} mb={3}>
               <IconButton className="float-right" color="white" onClick={()=> openInNewTab("https://equistar.estar.games/")}>          
                 <WebsiteIcon fontSize="small" />

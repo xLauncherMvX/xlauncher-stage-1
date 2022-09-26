@@ -78,6 +78,11 @@ function List() {
         </Grid>      
         <Grid item xs={12} md={8} xl={8}>
           <Card>
+            <VuiBox textAlign="center" mb={3}>
+              <VuiTypography color="white" variant="h2">
+                05.08.2022
+              </VuiTypography>
+            </VuiBox>
             <VuiBox
               component="img"
               src={profile1}

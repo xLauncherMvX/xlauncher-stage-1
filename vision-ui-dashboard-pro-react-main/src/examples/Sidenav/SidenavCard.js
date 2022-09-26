@@ -86,7 +86,7 @@ function SidenavCard() {
                     Blog
                 </VuiButton>
             </VuiBox>
-            <VuiBox mt="3px">
+            <VuiBox mt="5px">
                 <VuiButton
                     component={Link}
                     href="https://x-launcher.com/files/Whitepaper.pdf"
