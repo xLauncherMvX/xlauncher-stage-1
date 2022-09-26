@@ -59,36 +59,60 @@ function SidenavCard() {
           <VuiTypography variant="h6" color="white">
             Need info?
           </VuiTypography>
-          <VuiBox mb={1.825} mt={-1}>
-            <VuiTypography variant="caption" color="white" fontWeight="regular">
-              Please check our whitepaper
-            </VuiTypography>
-          </VuiBox>
-          <VuiButton
-            component={Link}
-            href="https://x-launcher.com/files/Whitepaper.pdf"
-            target="_blank"
-            rel="noreferrer"
-            size="small"
-            sx={({ palette: { gradients, white }, functions: { linearGradient } }) => ({
-              color: `${white.main} !important`,
-              background: linearGradient(
-                gradients.cardDark.main,
-                gradients.cardDark.state,
-                gradients.cardDark.deg
-              ),
-              "&:hover": {
-                background: linearGradient(
-                  gradients.cardDark.main,
-                  gradients.cardDark.state,
-                  gradients.cardDark.deg
-                ),
-              },
-            })}
-            fullWidth
-          >
-            WHITEPAPER
-          </VuiButton>
+            <VuiBox mt="15px">
+                <VuiButton
+                    component={Link}
+                    href="https://medium.com/@xlauncher"
+                    target="_blank"
+                    rel="noreferrer"
+                    size="small"
+                    sx={({ palette: { gradients, white }, functions: { linearGradient } }) => ({
+                        color: `${white.main} !important`,
+                        background: linearGradient(
+                            gradients.cardDark.main,
+                            gradients.cardDark.state,
+                            gradients.cardDark.deg
+                        ),
+                        "&:hover": {
+                            background: linearGradient(
+                                gradients.cardDark.main,
+                                gradients.cardDark.state,
+                                gradients.cardDark.deg
+                            ),
+                        },
+                    })}
+                    fullWidth
+                >
+                    Blog
+                </VuiButton>
+            </VuiBox>
+            <VuiBox mt="3px">
+                <VuiButton
+                    component={Link}
+                    href="https://x-launcher.com/files/Whitepaper.pdf"
+                    target="_blank"
+                    rel="noreferrer"
+                    size="small"
+                    sx={({ palette: { gradients, white }, functions: { linearGradient } }) => ({
+                      color: `${white.main} !important`,
+                      background: linearGradient(
+                        gradients.cardDark.main,
+                        gradients.cardDark.state,
+                        gradients.cardDark.deg
+                      ),
+                      "&:hover": {
+                        background: linearGradient(
+                          gradients.cardDark.main,
+                          gradients.cardDark.state,
+                          gradients.cardDark.deg
+                        ),
+                      },
+                    })}
+                    fullWidth
+                >
+                    WHITEPAPER
+                </VuiButton>
+            </VuiBox>
         </VuiBox>
       </CardContent>
     </Card>
