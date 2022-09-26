@@ -466,7 +466,7 @@ export default function EstarPricingCard({ contractByXlh }) {
           <Slider
             value={z2iAmount}
             onChange={e => handleSliderChange(e.target.value)}
-            step={2900}
+            step={1450}
             min={0}        
             max={calc0(maxZ2I - boughtAmount)}   
           />        
