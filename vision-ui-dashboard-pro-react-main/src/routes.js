@@ -80,6 +80,7 @@ import Z2I from "pages/presale/z2i";
 import Z2IPublic from "pages/publicSale/z2iPublic";
 import Z2IRefund from "pages/refunds/z2iRefund";
 import EstarGames from "pages/projects/EstarGames";
+import EstarGamesSale from "pages/presale/estarGames";
 
 // React icons
 import { IoDocument } from "react-icons/io5";
@@ -90,7 +91,7 @@ import { IoHome, IoServer, IoCart, IoArrowUndo } from "react-icons/io5";
 
 const routes = [
   {
-    type: "collapse",
+    //type: "collapse",
     name: "Home",
     key: "dashboards",
     icon: <IoHome size="15px" color="inherit" />,
@@ -153,6 +154,12 @@ const routes = [
     key: "presale",
     icon: <IoCart size="15px" color="inherit" />,
     collapse: [
+      {
+        name: "EstarGames",
+        key: "estarGames",
+        route: "/presale/estarGames",
+        component: EstarGamesSale
+      },
       {
         name: "XLauncher",
         key: "presale",

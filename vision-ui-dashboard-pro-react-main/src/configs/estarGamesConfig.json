@@ -1,0 +1,12 @@
+ {
+    "environment": "devnet",
+    "stakeAddress": "erd1qqqqqqqqqqqqqpgq9md7j669nmngxsgznpqmn50cqa4363hrpa7ql0k9vn",
+    "provider": "https://devnet-gateway.elrond.com",
+    "token": "XLH-cb26c7",
+    "apiLink": "https://devnet-api.elrond.com/accounts/",
+    "apiResponse": "https://devnet-api.elrond.com/accounts/erd1qqqqqqqqqqqqqpgqpmtw8ehgllrcq7qx7kzpdwyr8536p0z8pa7q598xd9/tokens/XLH-4a7cc0",
+    "presaleAddress": "erd1qqqqqqqqqqqqqpgqpmtw8ehgllrcq7qx7kzpdwyr8536p0z8pa7q598xd9",
+    "presaleToken": "XLH-4a7cc0",
+    "maxBalance": 2000000,
+    "date": "August 05, 2022 21:00:00 GMT+03:00"
+}

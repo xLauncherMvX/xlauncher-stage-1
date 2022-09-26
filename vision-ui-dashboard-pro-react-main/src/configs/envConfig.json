@@ -1,11 +1,11 @@
 {
-    "environment": "mainnet",
-    "stakeAddress": "erd1qqqqqqqqqqqqqpgql0yx4uetca8g4wmr96d9z7094vj3uhpt4d6qm5srfk",
-    "provider": "https://gateway.elrond.com",
-    "token": "XLH-8daa50",
-    "apiLink": "https://api.elrond.com/accounts/",
-    "apiResponse": "https://api.elrond.com/accounts/erd1qqqqqqqqqqqqqpgqgeg28lufkusqnj6yxh5ucq065x7fs82v4d6qm7njx9/tokens/XLH-8daa50",
-    "presaleAddress": "erd1qqqqqqqqqqqqqpgqgeg28lufkusqnj6yxh5ucq065x7fs82v4d6qm7njx9",
+    "environment": "devnet",
+    "stakeAddress": "erd1qqqqqqqqqqqqqpgq9md7j669nmngxsgznpqmn50cqa4363hrpa7ql0k9vn",
+    "provider": "https://devnet-gateway.elrond.com",
+    "token": "XLH-cb26c7",
+    "apiLink": "https://devnet-api.elrond.com/accounts/",
+    "apiResponse": "https://devnet-api.elrond.com/accounts/erd1qqqqqqqqqqqqqpgqcq2z33gfnj898czyzj2hs4a7u2frdtucpa7qhc05sn/tokens/XLH-4a7cc0",
+    "presaleAddress": "erd1qqqqqqqqqqqqqpgqcq2z33gfnj898czyzj2hs4a7u2frdtucpa7qhc05sn",
     "oldStakeAddress" : "erd1qqqqqqqqqqqqqpgqvfp2xkxhwvrvrcrxzs6e3vz4sz2ms7m0pa7qkrd5ll",
     "maxBalance": 8500000,
     "date": "July 22, 2022 19:00:00 GMT+03:00"
