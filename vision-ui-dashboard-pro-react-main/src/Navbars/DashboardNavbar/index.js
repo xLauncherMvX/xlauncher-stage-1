@@ -82,6 +82,19 @@ import logoSpotify from "assets/images/small-logos/logo-spotify.svg";
 import { DappProvider, DappUI, logout, useGetAccountInfo, useGetPendingTransactions } from '@elrondnetwork/dapp-core';
 import { Typography } from '@mui/material';
 import xConfigs from 'configs/envConfig.json';
+import Slider from "@mui/material/Slider";
+
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  boxShadow: 5,
+  bgcolor: '#060b28f0',
+  borderRadius: "25px",
+  p: 4
+};
 
 function calc2(theform) {
   var with2Decimals = theform.toString().match(/^-?\d+(?:\.\d{0,2})?/)[0];
@@ -158,6 +171,13 @@ function DashboardNavbar({ absolute, light, isMini }) {
     balance = 0;
   }
   var balanceXLH = calc2(balance);
+
+  //Modal
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   useEffect(() => {
     if(isLoggedIn) {
@@ -318,16 +338,71 @@ function DashboardNavbar({ absolute, light, isMini }) {
   if(whitelistSwitcher){
     whitelistColor = "info"
   }
+
+  //Get the nfts account amount
+  const [rustNFTS, setRustNFTS] = useState(0);
+  const [bronzeNFTS, setBronzeNFTS] = useState(0);
+  const [silverNFTS, setSilverNFTS] = useState(0);
+  const [goldNFTS, setGoldNFTS] = useState(0);
+  const [platinumNFTS, setPlatinumNFTS] = useState(0);
+  const [legendaryNFTS, setLegendaryNFTS] = useState(0);
+  const [acountNFTs, setAcountNFTs] = useState(0);
+  const getAcountNFTS = async () => {
+    try {
+      const response = await fetch(
+          'https://api.elrond.com/accounts/erd1x97ph6udergp87pnuxll67kv82y2v7l9mzvnjrhuh69xu3k2q7cqdtj85r/nfts?size=500&search=XLHO-5135c9',
+          {
+            headers: {
+              'Accept': 'application/json',
+            }
+          });
+      const json = await response.json();
+      let countRust = 0;
+      let countBronze = 0;
+      let countSilver = 0;
+      let countGold = 0;
+      let countPlatinum = 0;
+      let countLegendary = 0;
+      if(json){
+        json.map(item => {
+          if(item.metadata.attributes[3].value == "rust"){
+            countRust += 1;
+          }else if (item.metadata.attributes[3].value == "bronze"){
+            countBronze += 1;
+          }else if (item.metadata.attributes[3].value == "silver"){
+            countSilver += 1;
+          }else if (item.metadata.attributes[3].value == "gold"){
+            countGold += 1;
+          }else if (item.metadata.attributes[3].value == "platinum"){
+            countPlatinum += 1;
+          }else if (item.metadata.attributes[3].value == "orange"){
+            countLegendary += 1;
+          }
+
+        })
+        setRustNFTS(countRust);
+        setBronzeNFTS(countBronze);
+        setSilverNFTS(countSilver);
+        setGoldNFTS(countGold);
+        setPlatinumNFTS(countPlatinum);
+        setLegendaryNFTS(countLegendary);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
  
   useEffect(() => {    
     if(isLoggedIn) {
       getData();
+      getAcountNFTS();
     }
   }, [isLoggedIn]);
 
   useEffect(() => {    
     if(isLoggedIn) {
       getData();
+      getAcountNFTS();
     }
   }, []);
 
@@ -394,12 +469,13 @@ function DashboardNavbar({ absolute, light, isMini }) {
               color="info"
               fullWidth
               size="small"
+              onClick={() => handleOpen()}
             >    
               <VuiTypography
               fontSize="12px"
               color="white"
               >     
-                {new Intl.NumberFormat("ro-Ro", {
+                {new Intl.NumberFormat("en-En", {
                   minimumFractionDigits: 2,
                   maximumFractionDigits: 2,
                 }).format(balanceXLH)} &nbsp; XLH     
@@ -407,7 +483,164 @@ function DashboardNavbar({ absolute, light, isMini }) {
             </VuiButton>   
           </Grid> 
           {connectLoggedinSection}   
-        </Grid>   
+        </Grid>
+        {/* Modal Stake */}
+        <Modal
+            aria-labelledby="transition-modal-title"
+            aria-describedby="transition-modal-description"
+            open={open}
+            onClose={handleClose}
+            closeAfterTransition
+            BackdropComponent={Backdrop}
+            BackdropProps={{
+              timeout: 500,
+            }}
+        >
+          <Fade in={open}>
+            <Box sx={style}>
+              <VuiBox sx={{ minHeight: "250px" }} className="farm-card">
+                <VuiButton
+                    variant="gradient"
+                    size="small"
+                    color="error"
+                    iconOnly className="float-right"
+                    onClick={() =>  handleClose()}
+                >
+                  <Icon>close</Icon>
+                </VuiButton>
+                <VuiBox display="flex" mb="12px">
+                  <VuiBox display="flex" flexDirection="column" lineHeight={0}>
+                    <VuiTypography
+                        fontSize={16}
+                        fontWeight="medium"
+                        color="white"
+                        textTransform="capitalize"
+                        id="transition-modal-title"
+                    >
+                      Balance Details:
+                    </VuiTypography>
+                  </VuiBox>
+                </VuiBox>
+                <VuiBox id="transition-modal-description" sx={{ mt: 1 }} textAlign={"center"}>
+                  <VuiTypography
+                      fontSize={14}
+                      color="success"
+                      textTransform="capitalize"
+                  >
+                    Tokens:
+                  </VuiTypography>
+                  <Divider light />
+                  <Grid container>
+                    <Grid item xs={6}>
+                      <VuiTypography
+                          fontSize={12}
+                          color="white"
+                          textTransform="capitalize"
+                          marginBottom="5px"
+                          marginTop="2px"
+                      >
+                        {new Intl.NumberFormat("en-En", {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        }).format(balanceXLH)}
+                        &nbsp; &nbsp; XLH
+                      </VuiTypography>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <VuiTypography
+                          fontSize={12}
+                          color="white"
+                          textTransform="capitalize"
+                          marginBottom="5px"
+                          marginTop="2px"
+                      >
+                        {calc2(account.balance/1000000000000000000)}
+                        &nbsp; &nbsp; EGLD
+                      </VuiTypography>
+                    </Grid>
+                  </Grid>
+                  <VuiTypography
+                      fontSize={14}
+                      color="success"
+                      textTransform="capitalize"
+                      mt={5}
+                  >
+                    XLH Origins NFTS ({rustNFTS + bronzeNFTS + silverNFTS + goldNFTS + platinumNFTS + legendaryNFTS})
+                  </VuiTypography>
+                  <Divider light />
+                  <Grid container>
+                    <Grid item xs={4}>
+                      <VuiTypography
+                          fontSize={12}
+                          color="white"
+                          textTransform="capitalize"
+                          marginBottom="5px"
+                          marginTop="2px"
+                      >
+                        Rust: {rustNFTS}
+                      </VuiTypography>
+                    </Grid>
+                    <Grid item xs={4}>
+                      <VuiTypography
+                          fontSize={12}
+                          color="white"
+                          textTransform="capitalize"
+                          marginBottom="5px"
+                          marginTop="2px"
+                      >
+                        Bronze: {bronzeNFTS}
+                      </VuiTypography>
+                    </Grid>
+                    <Grid item xs={4}>
+                      <VuiTypography
+                          fontSize={12}
+                          color="white"
+                          textTransform="capitalize"
+                          marginBottom="5px"
+                          marginTop="2px"
+                      >
+                        Silver: {silverNFTS}
+                      </VuiTypography>
+                    </Grid>
+                    <Grid item xs={4}>
+                      <VuiTypography
+                          fontSize={12}
+                          color="white"
+                          textTransform="capitalize"
+                          marginBottom="5px"
+                          marginTop="2px"
+                      >
+                        Gold: {goldNFTS}
+                      </VuiTypography>
+                    </Grid>
+                    <Grid item xs={4}>
+                      <VuiTypography
+                          fontSize={12}
+                          color="white"
+                          textTransform="capitalize"
+                          marginBottom="5px"
+                          marginTop="2px"
+                      >
+                        Platinum: {platinumNFTS}
+                      </VuiTypography>
+                    </Grid>
+                    <Grid item xs={4}>
+                      <VuiTypography
+                          fontSize={12}
+                          color="white"
+                          textTransform="capitalize"
+                          marginBottom="5px"
+                          marginTop="2px"
+                      >
+                        Legendary: {legendaryNFTS}
+                      </VuiTypography>
+                    </Grid>
+                  </Grid>
+                </VuiBox>
+              </VuiBox>
+            </Box>
+          </Fade>
+        </Modal>
       </React.Fragment>
     );
   }else{

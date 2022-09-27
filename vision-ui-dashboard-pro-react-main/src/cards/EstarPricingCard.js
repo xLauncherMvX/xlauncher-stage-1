@@ -218,7 +218,6 @@ export default function EstarPricingCard({ contractByXlh }) {
         setPlatinumNFTS(countPlatinum);
         setLegendaryNFTS(countLegendary);
       }
-      setContractBalance(json.balance);
     } catch (error) {
       console.error(error);
     }
