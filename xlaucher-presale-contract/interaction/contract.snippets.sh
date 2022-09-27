@@ -31,13 +31,13 @@ MAX_BALANCE="362500${MY_DECIMALS}"
 setEnvDevnet() {
   cp -f erdpy.data-storage-devnet.json erdpy.data-storage.json
   CURRENT_ENV="devnet"
-#  PEM_FILE="${PROJECT}/../../wallets/users/devnet_owner_wallet.pem"
-  PEM_FILE="${PROJECT}/../../wallets/users/client1.pem"
+  PEM_FILE="${PROJECT}/../../wallets/users/devnet_owner_wallet.pem"
+  #PEM_FILE="${PROJECT}/../../wallets/users/client1.pem"
   ADDRESS=$(erdpy data load --key=address-devnet)
   PROXY=https://devnet-gateway.elrond.com
   CHAINID=D
   ENV_LOGS="devnet"
-  TOKEN_ID="ESTAR-c02f65"
+  TOKEN_ID="ESTAR-024281"
   TOKEN_ID_HEX=$(echo -n ${TOKEN_ID} | xxd -p)
 }
 
@@ -45,7 +45,7 @@ setEnvTestnet() {
   cp -f erdpy.data-storage-testnet.json erdpy.data-storage.json
   CURRENT_ENV="testnet"
   PEM_FILE="${PROJECT}/../../wallets/users/testnet_owner_wallet.pem"
-#  PEM_FILE="${PROJECT}/../../wallets/users/client1.pem"
+  #PEM_FILE="${PROJECT}/../../wallets/users/client1.pem"
   ADDRESS=$(erdpy data load --key=address-devnet)
   PROXY=https://testnet-gateway.elrond.com
   CHAINID=T
@@ -67,7 +67,7 @@ setEnvMainnet() {
   TOKEN_ID_HEX=$(echo -n ${TOKEN_ID} | xxd -p)
 }
 
-printCurrentEnv(){
+printCurrentEnv() {
   echo ${CURRENT_ENV}
 }
 
@@ -97,9 +97,9 @@ updateContract() {
 fundContract() {
   method_name="0x$(echo -n 'fundContract' | xxd -p -u | tr -d '\n')"
   token_id="0x$(echo -n ${TOKEN_ID} | xxd -p -u | tr -d '\n')"
-  amount="8500001${MY_DECIMALS}"
-#  amount="58501${MY_DECIMALS}"
-#  amount="1${MY_DECIMALS}"
+  amount="11600001${MY_DECIMALS}"
+  #  amount="58501${MY_DECIMALS}"
+  #  amount="1${MY_DECIMALS}"
   erdpy --verbose contract call ${ADDRESS} --recall-nonce \
     --pem=${PEM_FILE} \
     --gas-limit=3000000 \
@@ -149,8 +149,8 @@ buyTokens() {
 getClientBoughtValue() {
   # erdpy wallet bech32 --decode erd1l43jz7v300geq3f9k6a8wwjksjs664u4r9wfrrcgrplka5ml22zsmye7px
   erdpy --verbose contract query ${ADDRESS} --function="getClientBoughtValue" \
-      --arguments 0xfd632179917bd1904525b6ba773a5684a1ad5795195c918f08187f6ed37f5285 \
-      --proxy=${PROXY}
+    --arguments 0xfd632179917bd1904525b6ba773a5684a1ad5795195c918f08187f6ed37f5285 \
+    --proxy=${PROXY}
 }
 
 collect() {
