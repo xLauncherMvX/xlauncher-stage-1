@@ -23,10 +23,10 @@ MY_LOGS="interaction-logs"
 #envs logs values: devnet, testnet, mainnet
 #token id values: devnet=XLH-4f55ab, testnet=XLH-0be7d1, mainnet=XLH-8daa50
 
-INITIAL_PRICE="6500${MY_DECIMALS}"
+INITIAL_PRICE="14500${MY_DECIMALS}"
 MIN_AMOUNT="1${MY_DECIMALS}"
-MAX_AMOUNT="5${MY_DECIMALS}"
-MAX_BALANCE="32500${MY_DECIMALS}"
+MAX_AMOUNT="25${MY_DECIMALS}"
+MAX_BALANCE="362500${MY_DECIMALS}"
 
 setEnvDevnet() {
   cp -f erdpy.data-storage-devnet.json erdpy.data-storage.json
@@ -37,7 +37,7 @@ setEnvDevnet() {
   PROXY=https://devnet-gateway.elrond.com
   CHAINID=D
   ENV_LOGS="devnet"
-  TOKEN_ID="XLH-4a7cc0"
+  TOKEN_ID="ESTAR-c02f65"
   TOKEN_ID_HEX=$(echo -n ${TOKEN_ID} | xxd -p)
 }
 
