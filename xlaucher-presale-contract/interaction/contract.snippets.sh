@@ -63,7 +63,7 @@ setEnvMainnet() {
   CHAINID=1
   ENV_LOGS="mainnet"
   #TOKEN_ID="BCOIN-efba9c"
-  TOKEN_ID="XLH-8daa50"
+  TOKEN_ID="ESTAR-afaaf0"
   TOKEN_ID_HEX=$(echo -n ${TOKEN_ID} | xxd -p)
 }
 
