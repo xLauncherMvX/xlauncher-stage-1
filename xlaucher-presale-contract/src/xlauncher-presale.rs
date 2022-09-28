@@ -4,6 +4,7 @@ elrond_wasm::imports!();
 elrond_wasm::derive_imports!();
 
 const EGLD_DECIMALS_VALUE: u64 = 1_000_000_000_000_000_000;
+const ESTAR_DECIMAL_DIFFERANCE: u64 = 1_000_000_000_000_000_0;
 const ZERO: u64 = 0;
 
 #[elrond_wasm::derive::contract]
@@ -97,7 +98,8 @@ pub trait XLauncherPresale {
         require!(balance > ZERO, "No more tokens to sale.");
         let current_price = self.price().get();
         let one_egld = BigUint::from(EGLD_DECIMALS_VALUE);
-        let result_esdt_token_amount = (&current_price * &payment_amount) / one_egld;
+        let estar_dec_differance = BigUint::from(ESTAR_DECIMAL_DIFFERANCE);
+        let result_esdt_token_amount = (&current_price * &payment_amount) / one_egld / estar_dec_differance;
 
         // Maybe balance >= result_esdt_token_amount to cover all available ESDT amount
         require!(

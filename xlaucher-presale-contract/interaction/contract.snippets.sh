@@ -11,6 +11,7 @@ PROJECT="${PWD}"
 DEPLOY_TRANSACTION=$(erdpy data load --key=deployTransaction-devnet)
 
 MY_DECIMALS="000000000000000000"
+ESTAR_DECIMAL="00"
 
 #devnet proxy and chain
 #devnet=https://devnet-gateway.elrond.com
@@ -37,7 +38,7 @@ setEnvDevnet() {
   PROXY=https://devnet-gateway.elrond.com
   CHAINID=D
   ENV_LOGS="devnet"
-  TOKEN_ID="ESTAR-024281"
+  TOKEN_ID="ESTAR2D-4de494"
   TOKEN_ID_HEX=$(echo -n ${TOKEN_ID} | xxd -p)
 }
 
@@ -97,7 +98,7 @@ updateContract() {
 fundContract() {
   method_name="0x$(echo -n 'fundContract' | xxd -p -u | tr -d '\n')"
   token_id="0x$(echo -n ${TOKEN_ID} | xxd -p -u | tr -d '\n')"
-  amount="11600001${MY_DECIMALS}"
+  amount="11600001${ESTAR_DECIMAL}"
   #  amount="58501${MY_DECIMALS}"
   #  amount="1${MY_DECIMALS}"
   erdpy --verbose contract call ${ADDRESS} --recall-nonce \

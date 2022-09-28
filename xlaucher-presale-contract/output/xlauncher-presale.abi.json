@@ -10,7 +10,7 @@
         "contractCrate": {
             "name": "xlauncher-presale",
             "version": "0.1.0",
-          "git_version": "20ef861"
+          "git_version": "ccc887f-modified"
         },
         "framework": {
             "name": "elrond-wasm",
