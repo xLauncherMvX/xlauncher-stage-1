@@ -91,7 +91,7 @@ const style = {
   transform: 'translate(-50%, -50%)',
   width: 400,
   boxShadow: 5,
-  bgcolor: '#060b28f0',
+  bgcolor: 'rgba(6,11,40,0.94)',
   borderRadius: "25px",
   p: 4
 };
@@ -347,10 +347,11 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const [platinumNFTS, setPlatinumNFTS] = useState(0);
   const [legendaryNFTS, setLegendaryNFTS] = useState(0);
   const [acountNFTs, setAcountNFTs] = useState(0);
+  var nftApiLink = "https://api.elrond.com/accounts/" + address + "/nfts?size=500&search=XLHO-5135c9";
   const getAcountNFTS = async () => {
     try {
       const response = await fetch(
-          'https://api.elrond.com/accounts/erd1x97ph6udergp87pnuxll67kv82y2v7l9mzvnjrhuh69xu3k2q7cqdtj85r/nfts?size=500&search=XLHO-5135c9',
+          nftApiLink,
           {
             headers: {
               'Accept': 'application/json',
@@ -405,6 +406,11 @@ function DashboardNavbar({ absolute, light, isMini }) {
       getAcountNFTS();
     }
   }, []);
+
+  var egldAccount = account.balance/1000000000000000000;
+  if(!egldAccount){
+    egldAccount = 0;
+  }
 
   if(isLoggedIn){
     return (   
@@ -554,7 +560,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
                           marginBottom="5px"
                           marginTop="2px"
                       >
-                        {calc2(account.balance/1000000000000000000)}
+                        {calc2(egldAccount)}
                         &nbsp; &nbsp; EGLD
                       </VuiTypography>
                     </Grid>

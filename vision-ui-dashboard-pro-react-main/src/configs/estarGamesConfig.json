@@ -1,12 +1,12 @@
  {
-    "environment": "devnet",
-    "stakeAddress": "erd1qqqqqqqqqqqqqpgq9md7j669nmngxsgznpqmn50cqa4363hrpa7ql0k9vn",
-    "provider": "https://devnet-gateway.elrond.com",
-    "token": "XLH-cb26c7",
-    "apiLink": "https://devnet-api.elrond.com/accounts/",
-    "apiResponse": "https://devnet-api.elrond.com/accounts/erd1qqqqqqqqqqqqqpgqpmtw8ehgllrcq7qx7kzpdwyr8536p0z8pa7q598xd9/tokens/XLH-4a7cc0",
-    "presaleAddress": "erd1qqqqqqqqqqqqqpgqpmtw8ehgllrcq7qx7kzpdwyr8536p0z8pa7q598xd9",
-    "presaleToken": "XLH-4a7cc0",
-    "maxBalance": 2000000,
-    "date": "August 05, 2022 21:00:00 GMT+03:00"
+    "environment": "mainnet",
+    "stakeAddress": "erd1qqqqqqqqqqqqqpgql0yx4uetca8g4wmr96d9z7094vj3uhpt4d6qm5srfk",
+    "provider": "https://gateway.elrond.com",
+    "token": "XLH-8daa50",
+    "apiLink": "https://api.elrond.com/accounts/",
+    "apiResponse": "https://api.elrond.com/accounts/erd1qqqqqqqqqqqqqpgqmzqvjgys7ds4ndcz0avpfwq09w89sn2g4d6ql7yu28/tokens/ESTAR-afaaf0",
+    "presaleAddress": "erd1qqqqqqqqqqqqqpgqmzqvjgys7ds4ndcz0avpfwq09w89sn2g4d6ql7yu28",
+    "presaleToken": "ESTAR-afaaf0",
+    "maxBalance": 11600000,
+    "date": "September 29, 2022 20:00:00 GMT+03:00"
 }

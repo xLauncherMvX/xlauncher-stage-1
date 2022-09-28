@@ -37,7 +37,7 @@ import { BsGlobe } from "react-icons/bs";
 import { IoWallet, IoDocumentText } from "react-icons/io5";
 
 import Main from "layouts/main";
-import CountdownTimer from "components/countdownTimerZ2I";
+import CountdownTimer from "components/countdownTimerEstar";
 import profile1 from "assets/images/zero2InfinityMini.jpeg";
 import EstarPriceCard from "cards/EstarPricingCard";
 import VuiButton from "components/VuiButton";
@@ -86,7 +86,7 @@ function EstarGames() {
         "buy",
       ].join("@"),
       receiver: xPresaleAddress,
-      gasLimit: 35_000_000,
+      gasLimit: 15_000_000,
     };
 
     await refreshAccount();

@@ -96,75 +96,57 @@ export default function EstarPricingCard({ contractByXlh }) {
       }
   }
 
-  //Check the amount of tokens already bought by client
+  //Check the amount of tokens already bought by client and the staked value
   const [boughtAmount, setBoughtAmount] = useState(0);
-  const getBoughtAmount = async () => {
+  const [clientReportData, setClientReportData] = useState(0);
+  async function getBoughtAmount () {
     try {
       let provider = new ProxyProvider(xProvider);
       await NetworkConfig.getDefault().sync(provider);
 
+      //Bought Amount
       let addressBA = new Address(xPresaleAddress);
-      const abiLocation = `${process.env.PUBLIC_URL}/xlauncher-presale.abi.json`;
-
+      const abiLocation = `${process.env.PUBLIC_URL}/xlauncher-presale3.abi.json`;
       let abiRegistry = await AbiRegistry.load({
         urls: [abiLocation],
       });
       let abi = new SmartContractAbi(abiRegistry, [`XLauncherPresale`]);
-
       let contract = new SmartContract({
         address: addressBA,
         abi: abi,
       });
-
       let interaction = contract.methods.getClientBoughtValue([
         new AddressValue(new Address(address)),
       ]);
-
       let queryResponse = await contract.runQuery(provider, interaction.buildQuery());
-
       let response = interaction.interpretQueryResponse(queryResponse);
       let myList = response.firstValue.valueOf();
       //console.log("myList " + myList);
-      setBoughtAmount(myList/1000000000000000000);
+      setBoughtAmount(myList/100);
 
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
-  //Check the max amount of staked xlh
-  const [clientReportData, setClientReportData] = useState(0);
-  const getClientReportData = async () => {
-    try {
-      let providerCRD = new ProxyProvider(xProvider);
-      await NetworkConfig.getDefault().sync(providerCRD);
+      //staked value
       let addressCRD = new Address(xStakeAddress);
-
       const abiLocationCRD = `${process.env.PUBLIC_URL}/xlauncher-staking2.abi.json`;
-
       let abiRegistryCRD = await AbiRegistry.load({
         urls: [abiLocationCRD],
       });
       let abiCRD = new SmartContractAbi(abiRegistryCRD, [`XLauncherStaking`]);
-
       let contractCRD = new SmartContract({
         address: addressCRD,
         abi: abiCRD,
       });
-
       let interactionCRD = contractCRD.methods.getClientReport([
         new AddressValue(new Address(address)),
       ]);
-
-      let queryResponseCRD = await contractCRD.runQuery(providerCRD, interactionCRD.buildQuery());
-
+      let queryResponseCRD = await contractCRD.runQuery(provider, interactionCRD.buildQuery());
       let responseCRD = interactionCRD.interpretQueryResponse(queryResponseCRD);
-      let myList = responseCRD.firstValue.valueOf();
+      let myList2 = responseCRD.firstValue.valueOf();
       //console.log("myList " + JSON.stringify(myList, null, 2));
-
       let amountFormat = 1000000000000000000;
-      let totalAmount = calc0(myList["total_amount"]/ amountFormat);
+      let totalAmount = calc0(myList2["total_amount"]/ amountFormat);
       setClientReportData(totalAmount);
+
     } catch (error) {
       console.log(error);
     }
@@ -178,10 +160,11 @@ export default function EstarPricingCard({ contractByXlh }) {
   const [platinumNFTS, setPlatinumNFTS] = useState(0);
   const [legendaryNFTS, setLegendaryNFTS] = useState(0);
   const [acountNFTs, setAcountNFTs] = useState(0);
+  var nftApiLink = "https://api.elrond.com/accounts/" + address + "/nfts?size=500&search=XLHO-5135c9";
   const getAcountNFTS = async () => {
     try {
       const response = await fetch(
-          'https://api.elrond.com/accounts/erd1x97ph6udergp87pnuxll67kv82y2v7l9mzvnjrhuh69xu3k2q7cqdtj85r/nfts?size=500&search=XLHO-5135c9',
+          nftApiLink,
     {
         headers: {
           'Accept': 'application/json',
@@ -222,28 +205,27 @@ export default function EstarPricingCard({ contractByXlh }) {
       console.error(error);
     }
   }
-  
+
   //Calculate how much z2i can be bought based on the staked xlh
   var maxStaked = clientReportData * 14500 / 4000;
   var maxNfts = (rustNFTS * 36250) + (bronzeNFTS * 72500) + (silverNFTS * 108750) + (goldNFTS * 108750) + (platinumNFTS * 145500) + (legendaryNFTS * 362500);
-  var maxZ2I = maxStaked + maxNfts - boughtAmount;
-  if(maxZ2I >= 362500){
-    maxZ2I = 362500;
+  var maxZ2IIntermediate = maxStaked + maxNfts;
+  if(maxZ2IIntermediate >= 362500){
+    maxZ2IIntermediate = 362500;
   }
-  console.log("maxStaked " + maxStaked);
-  console.log("maxNfts " + maxNfts);
-  console.log("boughtAmount " + boughtAmount);
+  var maxZ2I = maxZ2IIntermediate - boughtAmount;
 
   //Check if max amount of tokens were sold
-  var balanceLeft = xMaxBalance - (contractBalance/1000000000000000000);
+  var balanceLeft = xMaxBalance - (contractBalance/100);
   if(balanceLeft < 0 || !balanceLeft){
       balanceLeft = 0;
   }
+
   var soldOut = false;
   if(balanceLeft >= xMaxBalance - 10){
     soldOut = true;
   }
-  
+
   //Increase the amount of xlh + egld according to user preferences
   const [z2iAmount, setZ2IAmount] = React.useState(0);
   const [egldAmount, setEgldAmount] = React.useState(0);
@@ -256,7 +238,7 @@ export default function EstarPricingCard({ contractByXlh }) {
     setZ2IAmount(maxZ2I);
     setEgldAmount((maxZ2I)/14500  * 1000000000000000000);
   };
- 
+
   //Check if countdown is over
   const [dateReached, setDateReached] = useState(false);
   const getDateReached = async () => {
@@ -268,31 +250,31 @@ export default function EstarPricingCard({ contractByXlh }) {
       setDateReached(true);
     }else{
       setDateReached(false);
-    }       
+    }
   }
 
   //Check if the client has enough egld to buy the selected z2i amount
   var minEgld = true;
   var availableEgld = account.balance/1000000000000000000;
-  var requiredEgld = egldAmount/1000000000000000000;  
+  var requiredEgld = egldAmount/1000000000000000000;
   if(requiredEgld > availableEgld){
     minEgld = false;
     //console.log(requiredEgld + ' < ' + availableEgld);
-  }  
+  }
 
   //Check if the min amount of z2i was passed
   var z2iMinAmount = false;
   if(z2iAmount >= 14500){
     z2iMinAmount = true;
-  }  
+  }
 
   //Check if the max amount of z2i was reached
   var z2iAmountReached = false;
-  var maxZ2IAmount = maxZ2I - boughtAmount;
+  var maxZ2IAmount = 362500 - boughtAmount;
   var desiredZ2I = z2iAmount;
   if(desiredZ2I > maxZ2IAmount){
     z2iAmountReached = true;
-  }  
+  }
 
   //Disable max button if max amount of z2i was bought
   var maxbutton = "";
@@ -307,7 +289,7 @@ export default function EstarPricingCard({ contractByXlh }) {
         >
           Max
       </VuiButton>
-    ;    
+    ;
   }else{
     maxbutton=
       <VuiButton
@@ -324,23 +306,24 @@ export default function EstarPricingCard({ contractByXlh }) {
 
   //Check if collect function was called
   var collected = false;
-  if((contractBalance/1000000000000000000 == 0) || !contractBalance && dateReached){
+  if((contractBalance/100 == 0) || !contractBalance && dateReached){
     collected = true;
   }
+
 
   //Buy Button Section
   var buttonShow;
   //if(isLoggedIn && !xlhAmountReached && whitelistSwitcher && !trans && dateReached && !soldOut){
-  if(isLoggedIn && !z2iAmountReached && !trans && dateReached && !soldOut && z2iMinAmount){
+  if(isLoggedIn && !z2iAmountReached && !trans && dateReached && z2iMinAmount && !soldOut){
     if(collected){
-      buttonShow = "";
+      buttonShow = " ";
     }else{
       if(!z2iAmountReached){
         if(minEgld){
-          buttonShow = 
+          buttonShow =
             <VuiButton
               mt={10}
-              fullWidth              
+              fullWidth
               color={'primary'}
               onClick={()=>contractByXlh(egldAmount)}
             >
@@ -348,58 +331,56 @@ export default function EstarPricingCard({ contractByXlh }) {
             </VuiButton>
           ;
         }else{
-          buttonShow = 
+          buttonShow =
             <VuiButton
               mt={10}
-              fullWidth              
+              fullWidth
               color={'primary'}
             >
               Insufficient EGLD
             </VuiButton>
           ;
-        }        
+        }
       }else{
-        buttonShow = 
+        buttonShow =
           <VuiButton
             mt={10}
-            fullWidth              
+            fullWidth
             color={'primary'}
           >
             ESTAR Limit Exceeded
           </VuiButton>
         ;
-      }      
+      }
     }
   }else{
     buttonShow = " ";
   }
-    
-  useEffect(() => {    
+
+  useEffect(() => {
     if(isLoggedIn) {
       getAccountBalance();
       getContractBalance();
       getDateReached();
-      getClientReportData();
       getBoughtAmount();
       getAcountNFTS();
     }
   }, [isLoggedIn]);
 
-  useEffect(() => {    
+  useEffect(() => {
     if(isLoggedIn) {
       getAccountBalance();
       getContractBalance();
       getDateReached();
-      getClientReportData();
       getBoughtAmount();
       getAcountNFTS();
     }
   }, []);
 
   const MINUTE_MS = 1000;
-  useEffect(() => {    
+  useEffect(() => {
     if(isLoggedIn) {
-      const interval = window.setInterval(() => {      
+      const interval = window.setInterval(() => {
         getDateReached();
       }, MINUTE_MS);
 
@@ -408,12 +389,11 @@ export default function EstarPricingCard({ contractByXlh }) {
   }, []);
 
   const MINUTE_MS2 = 3000;
-  useEffect(() => {    
+  useEffect(() => {
     if(isLoggedIn) {
-      const interval = window.setInterval(() => {   
+      const interval = window.setInterval(() => {
         getAccountBalance();
         getContractBalance();
-        getClientReportData();
         getBoughtAmount();
         //getAcountNFTS();
       }, MINUTE_MS2);
@@ -441,7 +421,7 @@ export default function EstarPricingCard({ contractByXlh }) {
               {z2iAmount}
             </VuiTypography>
             <VuiTypography variant="h5" color="text">
-              &nbsp;&nbsp; Estar
+              &nbsp;&nbsp; ESTAR
             </VuiTypography>
           </VuiBox>          
         </Grid>
@@ -467,7 +447,7 @@ export default function EstarPricingCard({ contractByXlh }) {
             onChange={e => handleSliderChange(e.target.value)}
             step={1450}
             min={0}        
-            max={calc0(maxZ2I - boughtAmount)}   
+            max={calc0(maxZ2I)}
           />        
         </Grid>  
         <Grid item xs={1} textAlign="center">
