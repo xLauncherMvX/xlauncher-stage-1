@@ -81,6 +81,7 @@ import Z2IPublic from "pages/publicSale/z2iPublic";
 import Z2IRefund from "pages/refunds/z2iRefund";
 import EstarGames from "pages/projects/EstarGames";
 import EstarGamesSale from "pages/presale/estarGames";
+import Team from "pages/miscellaneous/team";
 
 // React icons
 import { IoDocument } from "react-icons/io5";
@@ -224,6 +225,21 @@ const routes = [
         key: "projects2",
         route: "/projects/EstarGames",
         component: EstarGames
+      }
+    ]
+  },
+
+  //Miscellaneous Pages
+  {
+    name: "Others",
+    key: "others",
+    icon: <IoHome size="15px" color="inherit" />,
+    collapse: [
+      {
+        name: "Team",
+        key: "team",
+        route: "/miscellaneous/Team",
+        component: Team
       }
     ]
   },

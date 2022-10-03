@@ -44,17 +44,7 @@ function SidenavCard() {
   return (
     <Card sx={(theme) => card(theme, { miniSidenav })}>
       <CardContent sx={(theme) => cardContent(theme, { sidenavColor, transparentSidenav })}>
-        <VuiBox
-          bgColor="white"
-          width="2rem"
-          height="2rem"
-          borderRadius="md"
-          shadow="md"
-          mb={2}
-          sx={cardIconBox}
-        >
-          <AiFillStar color={info.main} />
-        </VuiBox>
+
         <VuiBox lineHeight={1}>
           <VuiTypography variant="h6" color="white">
             Need info?
@@ -84,6 +74,33 @@ function SidenavCard() {
                     fullWidth
                 >
                     Blog
+                </VuiButton>
+            </VuiBox>
+            <VuiBox mt="5px">
+                <VuiButton
+                    component={Link}
+                    href="/#/miscellaneous/team"
+                    target="_blank"
+                    rel="noreferrer"
+                    size="small"
+                    sx={({ palette: { gradients, white }, functions: { linearGradient } }) => ({
+                        color: `${white.main} !important`,
+                        background: linearGradient(
+                            gradients.cardDark.main,
+                            gradients.cardDark.state,
+                            gradients.cardDark.deg
+                        ),
+                        "&:hover": {
+                            background: linearGradient(
+                                gradients.cardDark.main,
+                                gradients.cardDark.state,
+                                gradients.cardDark.deg
+                            ),
+                        },
+                    })}
+                    fullWidth
+                >
+                    TEAM
                 </VuiButton>
             </VuiBox>
             <VuiBox mt="5px">
