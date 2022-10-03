@@ -189,7 +189,7 @@ export default function EstarPricingCard({ contractByXlh }) {
             countGold += 1;
           }else if (item.metadata.attributes[3].value == "platinum"){
             countPlatinum += 1;
-          }else if (item.metadata.attributes[3].value == "orange"){
+          }else if (item.metadata.attributes[3].value == "Orange"){
             countLegendary += 1;
           }
 

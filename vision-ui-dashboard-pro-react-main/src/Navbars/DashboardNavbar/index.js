@@ -297,8 +297,8 @@ function DashboardNavbar({ absolute, light, isMini }) {
     </VuiButton>
   );
 
-  var fls = address.slice(0,6);
-  var lls = address.slice(55,62);
+  var fls = address.slice(0,20);
+  var lls = address.slice(50,62);
 
   const [whitelistData, setWhitelistData] = useState(null);
   const getData=()=>{
@@ -376,7 +376,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
             countGold += 1;
           }else if (item.metadata.attributes[3].value == "platinum"){
             countPlatinum += 1;
-          }else if (item.metadata.attributes[3].value == "orange"){
+          }else if (item.metadata.attributes[3].value == "Orange"){
             countLegendary += 1;
           }
 
@@ -412,6 +412,16 @@ function DashboardNavbar({ absolute, light, isMini }) {
     egldAccount = 0;
   }
 
+  //Copy utility
+  const [isCopied, setIsCopied] = React.useState(false);
+  function CopyToClipboard(text) {
+    navigator.clipboard.writeText(text);
+    setIsCopied(true);
+    setTimeout(() => {
+      setIsCopied(false);
+    }, 1500);
+  }
+
   if(isLoggedIn){
     return (   
       <React.Fragment>    
@@ -437,6 +447,10 @@ function DashboardNavbar({ absolute, light, isMini }) {
               KYC
             </VuiButton>
           </Grid>   */}
+          <Grid item xs={12} sm={12} md={3} lg={2}>
+
+          </Grid>
+
           <Grid item xs={6} sm={6} md={3} lg={2}>  
             <VuiButton 
               fullWidth 
@@ -460,32 +474,16 @@ function DashboardNavbar({ absolute, light, isMini }) {
             >
               APPLY TO US
             </VuiButton>
-          </Grid> 
-          <Grid item xs={12} sm={12} md={3} lg={2}>
-            <VuiButton
-              color="info"
-              fullWidth
-              size="small"
-            >             
-              <VuiTypography fontSize="12px" color="white">{fls} ... {lls}</VuiTypography>
-            </VuiButton>   
           </Grid>
           <Grid item xs={12} sm={12} md={3} lg={2}> 
             <VuiButton
-              color="info"
+              variant="outlined"
+              color="light"
               fullWidth
               size="small"
               onClick={() => handleOpen()}
-            >    
-              <VuiTypography
-              fontSize="12px"
-              color="white"
-              >     
-                {new Intl.NumberFormat("en-En", {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                }).format(balanceXLH)} &nbsp; XLH     
-              </VuiTypography>         
+            >
+              MY ACCOUNT
             </VuiButton>   
           </Grid> 
           {connectLoggedinSection}   
@@ -523,7 +521,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
                         textTransform="capitalize"
                         id="transition-modal-title"
                     >
-                      Balance Details:
+                      Account Details:
                     </VuiTypography>
                   </VuiBox>
                 </VuiBox>
@@ -532,6 +530,45 @@ function DashboardNavbar({ absolute, light, isMini }) {
                       fontSize={14}
                       color="success"
                       textTransform="capitalize"
+                  >
+                    Address:
+                  </VuiTypography>
+                  <Divider light />
+                  <Grid container>
+                    <Grid item xs={11} sm={11} md={11} lg={11}>
+                      <VuiTypography fontSize="12px" color="white">
+                        {fls} ... {lls}
+                      </VuiTypography>
+                    </Grid>
+                    <Grid item xs={1} sm={1} md={1} lg={1}>
+                      <VuiBox mt="-10px">
+                        {!isCopied ?
+                          <VuiButton
+                            variant="text"
+                            size="medium"
+                            iconOnly
+                            onClick={() =>  CopyToClipboard(address)}
+                          >
+                            <Icon>copy</Icon>
+                          </VuiButton>
+                        :
+                            <VuiButton
+                                variant="text"
+                                size="medium"
+                                iconOnly
+                            >
+                              <Icon>check</Icon>
+                            </VuiButton>
+                        }
+                      </VuiBox>
+                    </Grid>
+                  </Grid>
+
+                  <VuiTypography
+                      fontSize={14}
+                      color="success"
+                      textTransform="capitalize"
+                      mt={4}
                   >
                     Tokens:
                   </VuiTypography>
@@ -565,11 +602,12 @@ function DashboardNavbar({ absolute, light, isMini }) {
                       </VuiTypography>
                     </Grid>
                   </Grid>
+
                   <VuiTypography
                       fontSize={14}
                       color="success"
                       textTransform="capitalize"
-                      mt={5}
+                      mt={4}
                   >
                     XLH Origins NFTS ({rustNFTS + bronzeNFTS + silverNFTS + goldNFTS + platinumNFTS + legendaryNFTS})
                   </VuiTypography>
