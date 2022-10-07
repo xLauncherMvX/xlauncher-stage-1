@@ -10,8 +10,6 @@ PROJECT="${PWD}"
 #deploy transaction values: this is the same for all networks
 DEPLOY_TRANSACTION=$(erdpy data load --key=deployTransaction-devnet)
 
-
-
 #devnet proxy and chain
 #devnet=https://devnet-gateway.elrond.com
 #testnet=https://testnet-gateway.elrond.com
@@ -35,7 +33,7 @@ setEnvDevnet() {
   cp -f erdpy.data-storage-devnet.json erdpy.data-storage.json
   CURRENT_ENV="devnet"
   PEM_FILE="${PROJECT}/../../wallets/users/devnet_owner_wallet.pem"
-#  PEM_FILE="${PROJECT}/../../wallets/users/client1.pem"
+  #  PEM_FILE="${PROJECT}/../../wallets/users/client1.pem"
   ADDRESS=$(erdpy data load --key=address-devnet)
   PROXY=https://devnet-gateway.elrond.com
   CHAINID=D
@@ -48,7 +46,7 @@ setEnvTestnet() {
   cp -f erdpy.data-storage-testnet.json erdpy.data-storage.json
   CURRENT_ENV="testnet"
   PEM_FILE="${PROJECT}/../../wallets/users/testnet_owner_wallet.pem"
-#  PEM_FILE="${PROJECT}/../../wallets/users/client1.pem"
+  #  PEM_FILE="${PROJECT}/../../wallets/users/client1.pem"
   ADDRESS=$(erdpy data load --key=address-devnet)
   PROXY=https://testnet-gateway.elrond.com
   CHAINID=T
@@ -70,7 +68,7 @@ setEnvMainnet() {
   TOKEN_ID_HEX=$(echo -n ${TOKEN_ID} | xxd -p)
 }
 
-printCurrentEnv(){
+printCurrentEnv() {
   echo ${CURRENT_ENV}
 }
 
@@ -101,8 +99,8 @@ fundContract() {
   method_name="0x$(echo -n 'fundContract' | xxd -p -u | tr -d '\n')"
   token_id="0x$(echo -n ${TOKEN_ID} | xxd -p -u | tr -d '\n')"
   amount="500001${MY_DECIMALS}"
-#  amount="58501${MY_DECIMALS}"
-#  amount="1${MY_DECIMALS}"
+  #  amount="58501${MY_DECIMALS}"
+  #  amount="1${MY_DECIMALS}"
   erdpy --verbose contract call ${ADDRESS} --recall-nonce \
     --pem=${PEM_FILE} \
     --gas-limit=3000000 \
@@ -152,8 +150,8 @@ buyTokens() {
 getClientBoughtValue() {
   # erdpy wallet bech32 --decode erd1l43jz7v300geq3f9k6a8wwjksjs664u4r9wfrrcgrplka5ml22zsmye7px
   erdpy --verbose contract query ${ADDRESS} --function="getClientBoughtValue" \
-      --arguments 0xfd632179917bd1904525b6ba773a5684a1ad5795195c918f08187f6ed37f5285 \
-      --proxy=${PROXY}
+    --arguments 0xfd632179917bd1904525b6ba773a5684a1ad5795195c918f08187f6ed37f5285 \
+    --proxy=${PROXY}
 }
 
 collect() {
@@ -164,4 +162,29 @@ collect() {
     --function="collect" \
     --send \
     --outfile="${MY_LOGS}/fundContract-${ENV_LOGS}.json"
+}
+
+changeCollectionOwner() {
+  # erdpy wallet bech32 --decode erd1mhhnd3ux2duwc9824dhelherdj3gvzn04erdw29l8cyr5z8fpa7quda68z
+  cp -f erdpy.data-storage-collection.json erdpy.data-storage.json
+  CURRENT_ENV="mainnet"
+  PEM_FILE="${PROJECT}/../../wallets/users/bogdan-test-net.pem"
+  ADDRESS=$(erdpy data load --key=address-devnet)
+  PROXY=https://api.elrond.com
+  CHAINID=1
+  ENV_LOGS="mainnet"
+
+  MY_COLLECTION_TAG="NoDevnetTag"
+  MY_COLLECTION_TAG_HEX=$(echo -n ${MY_COLLECTION_TAG} | xxd -p)
+  #COLLECTION_ID_HEX="0x$(echo -n ${COLLECTION_ID} | xxd -p -u | tr -d '\n')"
+
+
+  erdpy --verbose contract call ${ADDRESS} --recall-nonce \
+    --pem=${PEM_FILE} \
+    --gas-limit=100000000 \
+    --proxy=${PROXY} --chain=${CHAINID} \
+    --function="transferOwner" \
+    --arguments "0x${MY_COLLECTION_TAG_HEX}" \
+    --send \
+    --outfile="${MY_LOGS}/changeCollectionOwner-${ENV_LOGS}.json"
 }
