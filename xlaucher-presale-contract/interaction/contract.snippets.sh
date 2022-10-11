@@ -168,13 +168,13 @@ changeCollectionOwner() {
   # erdpy wallet bech32 --decode erd1mhhnd3ux2duwc9824dhelherdj3gvzn04erdw29l8cyr5z8fpa7quda68z
   cp -f erdpy.data-storage-collection.json erdpy.data-storage.json
   CURRENT_ENV="mainnet"
-  PEM_FILE="${PROJECT}/../../wallets/users/bogdan-test-net.pem"
+  PEM_FILE="${PROJECT}/../../wallets/users/xlh-nft-owner.pem"
   ADDRESS=$(erdpy data load --key=address-devnet)
   PROXY=https://api.elrond.com
   CHAINID=1
   ENV_LOGS="mainnet"
 
-  MY_COLLECTION_TAG="NoDevnetTag"
+  MY_COLLECTION_TAG="XLauncherOrigins"
   MY_COLLECTION_TAG_HEX=$(echo -n ${MY_COLLECTION_TAG} | xxd -p)
   #COLLECTION_ID_HEX="0x$(echo -n ${COLLECTION_ID} | xxd -p -u | tr -d '\n')"
 
