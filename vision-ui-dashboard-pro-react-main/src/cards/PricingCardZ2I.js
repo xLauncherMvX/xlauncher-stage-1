@@ -1,20 +1,13 @@
 import React, {useState, useEffect} from 'react';
-import { FaPlus, FaMinus } from 'react-icons/fa';
-import { DappUI, useGetAccountInfo, useGetPendingTransactions } from '@elrondnetwork/dapp-core';
+import { useGetAccountInfo, useGetPendingTransactions } from '@elrondnetwork/dapp-core';
 import {
   AbiRegistry,
   Address,
   AddressValue,
-  Balance,
-  BigUIntValue,
-  BytesValue,
-  Interaction,
   NetworkConfig,
   ProxyProvider,
   SmartContract,
   SmartContractAbi,
-  TransactionPayload,
-  ContractFunction
 } from "@elrondnetwork/erdjs/out";
 import xConfigs from 'configs/z2iPublicConfig.json';
 
@@ -53,6 +46,7 @@ export default function PricingCard({ contractByToken }) {
   let xMaxEGLDAmount = xConfigs["maxEGLDAmount"];
   let xTokenName = xConfigs["tokenName"];
   let xLabel = xConfigs["label"];
+  let multiplier = 1000000000000000000;
 
   //Get token balance
   const [accountBalance, setAccountBalance] = useState(0); 
@@ -71,7 +65,7 @@ export default function PricingCard({ contractByToken }) {
       }
   }
 
-  var balanceToken = accountBalance/1000000000000000000;
+  var balanceToken = accountBalance/multiplier;
   if(!balanceToken){
     balanceToken = 0;
   }
@@ -121,7 +115,7 @@ export default function PricingCard({ contractByToken }) {
       let response = interaction.interpretQueryResponse(queryResponse);
       let myList = response.firstValue.valueOf();
       //console.log("myList " + myList);
-      setBoughtAmount(myList/1000000000000000000);
+      setBoughtAmount(myList/multiplier);
 
     } catch (error) {
       console.log(error);
@@ -129,7 +123,7 @@ export default function PricingCard({ contractByToken }) {
   };
 
   //Check if max amount of tokens were sold
-  var balanceLeft = xMaxBalance - (contractBalance/1000000000000000000);
+  var balanceLeft = xMaxBalance - (contractBalance/multiplier);
   if(balanceLeft < 0 || !balanceLeft){
       balanceLeft = 0;
   }
@@ -189,8 +183,8 @@ export default function PricingCard({ contractByToken }) {
 
   //Check if the client has enough egld to buy the selected token amount
   var minEgld = true;
-  var availableEgld = account.balance/1000000000000000000;
-  var requiredEgld = egldAmount/1000000000000000000;  
+  var availableEgld = account.balance/multiplier;
+  var requiredEgld = egldAmount/multiplier;
   if(requiredEgld > availableEgld){
     minEgld = false;
     //console.log(requiredEgld + ' < ' + availableEgld);
@@ -206,7 +200,7 @@ export default function PricingCard({ contractByToken }) {
 
   //Check if collect function was called
   var collected = false;
-  if((contractBalance/1000000000000000000 == 0) || !contractBalance && dateReached){
+  if((contractBalance/multiplier == 0) || !contractBalance && dateReached){
     collected = true;
   }
 
@@ -325,7 +319,7 @@ export default function PricingCard({ contractByToken }) {
           </VuiBox>
           <VuiBox display="flex" justifyContent="center" alignItems="center" textAlign="center" mt={2}>
             <VuiTypography  variant="h4" color="white">
-              {egldAmount/1000000000000000000} EGLD
+              {egldAmount/multiplier} EGLD
             </VuiTypography>
           </VuiBox>          
         </Grid> 

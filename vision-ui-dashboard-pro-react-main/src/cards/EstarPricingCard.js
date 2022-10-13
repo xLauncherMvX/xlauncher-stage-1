@@ -1,27 +1,19 @@
 import React, {useState, useEffect} from 'react';
-import { FaPlus, FaMinus } from 'react-icons/fa';
-import { DappUI, useGetAccountInfo, useGetPendingTransactions } from '@elrondnetwork/dapp-core';
+import { useGetAccountInfo, useGetPendingTransactions } from '@elrondnetwork/dapp-core';
 import {
   AbiRegistry,
   Address,
   AddressValue,
-  Balance,
-  BigUIntValue,
-  BytesValue,
-  Interaction,
   NetworkConfig,
   ProxyProvider,
   SmartContract,
   SmartContractAbi,
-  TransactionPayload,
-  ContractFunction
 } from "@elrondnetwork/erdjs/out";
 import xConfigs from 'configs/estarGamesConfig.json';
 
 // @mui material components
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
-import Icon from "@mui/material/Icon";
 import Divider from "@mui/material/Divider";
 import Slider from '@mui/material/Slider';
 
@@ -30,8 +22,6 @@ import VuiBox from "components/VuiBox";
 import VuiTypography from "components/VuiTypography";
 import VuiBadge from "components/VuiBadge";
 import VuiButton from "components/VuiButton";
-import VuiInput from "components/VuiInput";
-
 
 function calc0(theform) {
   var with1Decimal = theform.toString().match(/^-?\d+(?:\\d{0})?/)[0];
@@ -49,54 +39,31 @@ export default function EstarPricingCard({ contractByXlh }) {
 
   //Config Variables
   let xProvider = xConfigs['provider'];
-  let xToken = xConfigs["token"];
-  let xToken2 = xConfigs["presaleToken"];
   let xStakeAddress = xConfigs["stakeAddress"];
-  let xApiLink = xConfigs["apiLink"];
   let xApiResponse = xConfigs["apiResponse"];
   let xPresaleAddress = xConfigs["presaleAddress"];
   let xMaxBalance = xConfigs["maxBalance"]; 
-  let xDate = xConfigs["date"];    
-
-  //Get token balance
-  const [accountBalance, setAccountBalance] = useState(0); 
-  const customApi = xApiLink+address+'/tokens/'+xToken2;
-  const getAccountBalance = async () => {
-      try {
-      const response = await fetch(customApi, { 
-          headers: {
-              'Accept': 'application/json',
-          }
-      });
-      const json = await response.json();
-      setAccountBalance(json.balance);
-      } catch (error) {
-      console.error(error);
-      }
-  }
-
-  var tokenBalance = accountBalance/1000000000000000000;
-  if(!tokenBalance){
-    tokenBalance = 0;
-  }
+  let xDate = xConfigs["date"];
+  let egldMultiplier = 1000000000000000000;
+  let estarMultiplier = 100;
 
   //Query the smart contract to get the amount of token
-  const [contractBalance, setContractBalance] = useState(0);
-  const getContractBalance = async () => {
-      try {
-          const response = await fetch(xApiResponse, { 
-          headers: {
-              'Accept': 'application/json',
-          }
+  const [contractEstarBalance, setContractEstarBalance] = useState(0);
+  const getContractEstarBalance = async () => {
+    try {
+      const response = await fetch(xApiResponse, {
+        headers: {
+          'Accept': 'application/json',
+        }
       });
       const json = await response.json();
-      setContractBalance(json.balance);
-      } catch (error) {
+      setContractEstarBalance(json.balance/estarMultiplier);
+    } catch (error) {
       console.error(error);
-      }
+    }
   }
 
-  //Check the amount of tokens already bought by client and the staked value
+  //Check the amount of estar already bought by client and the staked value
   const [boughtAmount, setBoughtAmount] = useState(0);
   const [clientReportData, setClientReportData] = useState(0);
   async function getBoughtAmount () {
@@ -122,8 +89,7 @@ export default function EstarPricingCard({ contractByXlh }) {
       let response = interaction.interpretQueryResponse(queryResponse);
       let myList = response.firstValue.valueOf();
       //console.log("myList " + myList);
-      setBoughtAmount(myList/100);
-
+      setBoughtAmount(myList/estarMultiplier);
 
       //staked value
       let addressCRD = new Address(xStakeAddress);
@@ -143,8 +109,7 @@ export default function EstarPricingCard({ contractByXlh }) {
       let responseCRD = interactionCRD.interpretQueryResponse(queryResponseCRD);
       let myList2 = responseCRD.firstValue.valueOf();
       //console.log("myList " + JSON.stringify(myList, null, 2));
-      let amountFormat = 1000000000000000000;
-      let totalAmount = calc0(myList2["total_amount"]/ amountFormat);
+      let totalAmount = calc0(myList2["total_amount"]/ egldMultiplier);
       setClientReportData(totalAmount);
 
     } catch (error) {
@@ -179,20 +144,27 @@ export default function EstarPricingCard({ contractByXlh }) {
       let countLegendary = 0;
       if(json){
         json.map(item => {
-          if(item.metadata.attributes[3].value == "rust"){
-            countRust += 1;
-          }else if (item.metadata.attributes[3].value == "bronze"){
-            countBronze += 1;
-          }else if (item.metadata.attributes[3].value == "silver"){
-            countSilver += 1;
-          }else if (item.metadata.attributes[3].value == "gold"){
-            countGold += 1;
-          }else if (item.metadata.attributes[3].value == "platinum"){
-            countPlatinum += 1;
-          }else if (item.metadata.attributes[3].value == "Orange"){
-            countLegendary += 1;
+          let nftSwitcher = item.metadata.attributes[3].value;
+          switch (nftSwitcher) {
+            case "rust":
+              countRust += 1;
+              break;
+            case "bronze":
+              countBronze += 1;
+              break;
+            case "silver":
+              countSilver += 1;
+              break;
+            case "gold":
+              countGold += 1;
+              break;
+            case "platinum":
+              countPlatinum += 1;
+              break;
+            case "Orange":
+              countLegendary += 1;
+              break;
           }
-
         })
         setRustNFTS(countRust);
         setBronzeNFTS(countBronze);
@@ -206,17 +178,17 @@ export default function EstarPricingCard({ contractByXlh }) {
     }
   }
 
-  //Calculate how much z2i can be bought based on the staked xlh
+  //Calculate how much estar can be bought based on the staked xlh
   var maxStaked = clientReportData * 14500 / 4000;
   var maxNfts = (rustNFTS * 36250) + (bronzeNFTS * 72500) + (silverNFTS * 108750) + (goldNFTS * 108750) + (platinumNFTS * 145500) + (legendaryNFTS * 362500);
-  var maxZ2IIntermediate = maxStaked + maxNfts;
-  if(maxZ2IIntermediate >= 362500){
-    maxZ2IIntermediate = 362500;
+  var maxEstarIntermediate = maxStaked + maxNfts;
+  if(maxEstarIntermediate >= 362500){
+    maxEstarIntermediate = 362500;
   }
-  var maxZ2I = maxZ2IIntermediate - boughtAmount;
+  var maxEstar = maxEstarIntermediate - boughtAmount;
 
   //Check if max amount of tokens were sold
-  var balanceLeft = xMaxBalance - (contractBalance/100);
+  var balanceLeft = xMaxBalance - contractEstarBalance;
   if(balanceLeft < 0 || !balanceLeft){
       balanceLeft = 0;
   }
@@ -227,16 +199,16 @@ export default function EstarPricingCard({ contractByXlh }) {
   }
 
   //Increase the amount of xlh + egld according to user preferences
-  const [z2iAmount, setZ2IAmount] = React.useState(0);
+  const [estarAmount, setEstarAmount] = React.useState(0);
   const [egldAmount, setEgldAmount] = React.useState(0);
 
   const handleSliderChange = (value) => {
-    setZ2IAmount(value);
-    setEgldAmount(value/14500  * 1000000000000000000);
+    setEstarAmount(value);
+    setEgldAmount(value/14500  * egldMultiplier);
   };
   const setMaxAmount = () => {
-    setZ2IAmount(maxZ2I);
-    setEgldAmount((maxZ2I)/14500  * 1000000000000000000);
+    setEstarAmount(maxEstar);
+    setEgldAmount((maxEstar)/14500  * egldMultiplier);
   };
 
   //Check if countdown is over
@@ -253,32 +225,32 @@ export default function EstarPricingCard({ contractByXlh }) {
     }
   }
 
-  //Check if the client has enough egld to buy the selected z2i amount
+  //Check if the client has enough egld to buy the selected estar amount
   var minEgld = true;
-  var availableEgld = account.balance/1000000000000000000;
-  var requiredEgld = egldAmount/1000000000000000000;
+  var availableEgld = account.balance/egldMultiplier;
+  var requiredEgld = egldAmount/egldMultiplier;
   if(requiredEgld > availableEgld){
     minEgld = false;
     //console.log(requiredEgld + ' < ' + availableEgld);
   }
 
-  //Check if the min amount of z2i was passed
-  var z2iMinAmount = false;
-  if(z2iAmount >= 14500){
-    z2iMinAmount = true;
+  //Check if the min amount of estar was passed
+  var estarMinAmount = false;
+  if(estarAmount >= 14500){
+    estarMinAmount = true;
   }
 
-  //Check if the max amount of z2i was reached
-  var z2iAmountReached = false;
-  var maxZ2IAmount = 362500 - boughtAmount;
-  var desiredZ2I = z2iAmount;
-  if(desiredZ2I > maxZ2IAmount){
-    z2iAmountReached = true;
+  //Check if the max amount of estar was reached
+  var estarAmountReached = false;
+  var maxEstarAmount = 362500 - boughtAmount;
+  var desiredEstar = estarAmount;
+  if(desiredEstar > maxEstarAmount){
+    estarAmountReached = true;
   }
 
-  //Disable max button if max amount of z2i was bought
+  //Disable max button if max amount of estar was bought
   var maxbutton = "";
-  if(boughtAmount == maxZ2I){
+  if(boughtAmount == maxEstar){
     maxbutton=
       <VuiButton
           variant="outlined"
@@ -306,19 +278,18 @@ export default function EstarPricingCard({ contractByXlh }) {
 
   //Check if collect function was called
   var collected = false;
-  if((contractBalance/100 == 0) || !contractBalance && dateReached){
+  if((contractEstarBalance == 0) || !contractEstarBalance && dateReached){
     collected = true;
   }
-
 
   //Buy Button Section
   var buttonShow;
   //if(isLoggedIn && !xlhAmountReached && whitelistSwitcher && !trans && dateReached && !soldOut){
-  if(isLoggedIn && !z2iAmountReached && !trans && dateReached && z2iMinAmount && !soldOut){
+  if(isLoggedIn && !estarAmountReached && !trans && dateReached && estarMinAmount && !soldOut){
     if(collected){
       buttonShow = " ";
     }else{
-      if(!z2iAmountReached){
+      if(!estarAmountReached){
         if(minEgld){
           buttonShow =
             <VuiButton
@@ -359,8 +330,7 @@ export default function EstarPricingCard({ contractByXlh }) {
 
   useEffect(() => {
     if(isLoggedIn) {
-      getAccountBalance();
-      getContractBalance();
+      getContractEstarBalance();
       getDateReached();
       getBoughtAmount();
       getAcountNFTS();
@@ -369,8 +339,7 @@ export default function EstarPricingCard({ contractByXlh }) {
 
   useEffect(() => {
     if(isLoggedIn) {
-      getAccountBalance();
-      getContractBalance();
+      getContractEstarBalance();
       getDateReached();
       getBoughtAmount();
       getAcountNFTS();
@@ -392,8 +361,7 @@ export default function EstarPricingCard({ contractByXlh }) {
   useEffect(() => {
     if(isLoggedIn) {
       const interval = window.setInterval(() => {
-        getAccountBalance();
-        getContractBalance();
+        getContractEstarBalance();
         getBoughtAmount();
         //getAcountNFTS();
       }, MINUTE_MS2);
@@ -418,7 +386,7 @@ export default function EstarPricingCard({ contractByXlh }) {
         <Grid item xs={12} textAlign="center">
           <VuiBox display="flex" justifyContent="center" alignItems="center" textAlign="center">
             <VuiTypography  variant="h1" color="white">
-              {z2iAmount}
+              {estarAmount}
             </VuiTypography>
             <VuiTypography variant="h5" color="text">
               &nbsp;&nbsp; ESTAR
@@ -431,7 +399,7 @@ export default function EstarPricingCard({ contractByXlh }) {
           </VuiBox>
           <VuiBox display="flex" justifyContent="center" alignItems="center" textAlign="center" mt={2}>
             <VuiTypography  variant="h4" color="white">
-            {calc3(egldAmount/1000000000000000000)} EGLD
+            {calc3(egldAmount/egldMultiplier)} EGLD
             </VuiTypography>
           </VuiBox>          
         </Grid> 
@@ -443,11 +411,11 @@ export default function EstarPricingCard({ contractByXlh }) {
             <Divider light />
           </VuiBox>
           <Slider
-            value={z2iAmount}
+            value={estarAmount}
             onChange={e => handleSliderChange(e.target.value)}
             step={1450}
             min={0}        
-            max={calc0(maxZ2I)}
+            max={calc0(maxEstar)}
           />        
         </Grid>  
         <Grid item xs={1} textAlign="center">

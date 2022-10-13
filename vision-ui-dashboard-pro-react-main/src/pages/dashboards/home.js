@@ -1,66 +1,22 @@
-/**
-
- =========================================================
- * Vision UI PRO React - v1.0.0
- =========================================================
-
- * Product Page: https://www.creative-tim.com/product/vision-ui-dashboard-pro-react
- * Copyright 2021 Creative Tim (https://www.creative-tim.com/)
-
- * Design and Coded by Simmmple & Creative Tim
-
- =========================================================
-
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Visionware.
-
- */
 import React, { useState, useEffect, useLayoutEffect } from "react";
 // @mui material components
-import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
-import breakpoints from "assets/theme/base/breakpoints";
-// Vision UI Dashboard PRO React base styles
-import typography from "assets/theme/base/typography";
 // Vision UI Dashboard PRO React components
-import VuiBox from "components/VuiBox";
 import VuiTypography from "components/VuiTypography";
 import VuiButton from "components/VuiButton";
-import MiniStatisticsCard from "examples/Cards/StatisticsCards/MiniStatisticsCard";
-import Footer from "examples/FooterXLH";
-import Globe from "examples/Globe";
-// Vision UI Dashboard PRO React example components
-import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
-import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-
-
-// icons
-import { FaShoppingCart } from "react-icons/fa";
-import { BsGlobe } from "react-icons/bs";
-import { IoWallet, IoDocumentText } from "react-icons/io5";
 
 //Elrond
 import {
-  DappUI,
-  logout,
-  refreshAccount,
-  transactionServices,
-  useGetAccountInfo,
-  useGetPendingTransactions
+  useGetAccountInfo
 } from "@elrondnetwork/dapp-core";
 import {
   AbiRegistry,
   Address,
   AddressValue,
-  Balance,
-  BigUIntValue,
-  BytesValue,
-  Interaction,
   NetworkConfig,
   ProxyProvider,
   SmartContract,
-  SmartContractAbi,
-  TransactionPayload,
-  ContractFunction
+  SmartContractAbi
 } from "@elrondnetwork/erdjs/out";
 
 import Main from "layouts/main";
@@ -74,7 +30,6 @@ function calc3(theform) {
 function Home() {
   //Config Variables
   let xProvider = xConfigs['provider'];
-  let xToken = xConfigs["token"];
   let xStakeAddress = xConfigs["stakeAddress"];
 
   const { address, account } = useGetAccountInfo();
@@ -189,13 +144,6 @@ function Home() {
     clientsListData.map((customAddress) => {
       getClientReportData(customAddress);
     });
-    console.log("farm1List: " + farm1List);
-    console.log("farm2List: " + farm2List);
-    console.log("farm3List: " + farm3List);
-
-    console.log("farm1List.length: " + farm1List.length);
-    console.log("farm2List.length: " + farm2List.length);
-    console.log("farm3List.length: " + farm3List.length);
   }
 
   useEffect(() => {

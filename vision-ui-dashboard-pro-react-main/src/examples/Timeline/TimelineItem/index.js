@@ -34,17 +34,8 @@ import { timelineItem, timelineItemIcon } from "examples/Timeline/TimelineItem/s
 
 import "assets/custom.css";
 
-function TimelineItem({ color, icon, title, dateTime, description, badges, isWidgets, lastItem }) {
+function TimelineItem({ color, icon, title, description, isWidgets, lastItem }) {
   const isDark = useTimeline();
-
-  const renderBadges = badges.items.map((badge, key) => {
-    const badgeKey = `badge-${key}`;
-    return (
-      <VuiBox key={badgeKey} mr={key === badges.items.length - 1 ? 0 : 0.5}>
-        <VuiBadge color={badges.color} size="sm" badgeContent={badge} container variant="basic" />
-      </VuiBox>
-    );
-  });
 
   return (
     <VuiBox
@@ -95,11 +86,6 @@ function TimelineItem({ color, icon, title, dateTime, description, badges, isWid
         <VuiTypography variant="button" fontWeight="medium" color={isDark ? "white" : "white"}>
           {title}
         </VuiTypography>
-        <VuiBox mt={0.5}>
-          <VuiTypography variant="caption" fontWeight="medium" color={isDark ? "white" : "text"}>
-            {dateTime}
-          </VuiTypography>
-        </VuiBox>
         <VuiBox mt={2} mb={1.5} className="text-justified">
           {description ? (
             <VuiTypography variant="button" fontWeight="regular" color="text">
@@ -107,11 +93,6 @@ function TimelineItem({ color, icon, title, dateTime, description, badges, isWid
             </VuiTypography>
           ) : null}
         </VuiBox>
-        {badges.items.length > 0 ? (
-          <VuiBox display="flex" pb={lastItem ? 1 : 2}>
-            {renderBadges}
-          </VuiBox>
-        ) : null}
       </VuiBox>
     </VuiBox>
   );
@@ -120,10 +101,6 @@ function TimelineItem({ color, icon, title, dateTime, description, badges, isWid
 // Setting default values for the props of TimelineItem
 TimelineItem.defaultProps = {
   color: "info",
-  badges: {
-    color: "white",
-    items: [],
-  },
   lastItem: false,
   description: "",
 };
@@ -140,11 +117,8 @@ TimelineItem.propTypes = {
     "dark",
     "light",
   ]),
-  icon: PropTypes.node.isRequired,
   title: PropTypes.string.isRequired,
-  dateTime: PropTypes.string.isRequired,
   description: PropTypes.string,
-  badges: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])),
   lastItem: PropTypes.bool,
   isWidgets: PropTypes.bool,
 };

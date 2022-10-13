@@ -1,57 +1,14 @@
-/** 
-
-=========================================================
-* Vision UI PRO React - v1.0.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/vision-ui-dashboard-pro-react
-* Copyright 2021 Creative Tim (https://www.creative-tim.com/)
-
-* Design and Coded by Simmmple & Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Visionware.
-
-*/
-
 // react-router-dom components
 import { Link } from "react-router-dom";
-
-// prop-types is a library for typechecking of props
-import PropTypes from "prop-types";
-
-// @mui material components
-import Tooltip from "@mui/material/Tooltip";
 
 // Vision UI Dashboard PRO React components
 import VuiBox from "components/VuiBox";
 import VuiTypography from "components/VuiTypography";
 import VuiButton from "components/VuiButton";
-import VuiAvatar from "components/VuiAvatar";
 
 import "assets/custom.css";
 
-function DefaultProjectCard({ image, label, title, description, action, authors }) {
-  const renderAuthors = authors.map(({ image: media, name }) => (
-    <Tooltip key={name} title={name} placement="bottom">
-      <VuiAvatar
-        src={media}
-        alt={name}
-        size="xs"
-        sx={({ borders: { borderWidth }, palette: { grey } }) => ({
-          border: `${borderWidth[2]} solid ${grey[700]}`,
-          cursor: "pointer",
-          position: "relative",
-          ml: -1.25,
-
-          "&:hover, &:focus": {
-            zIndex: "10",
-          },
-        })}
-      />
-    </Tooltip>
-  ));
+function DefaultProjectCard({ image, label, title, description, action }) {
 
   return (
     <VuiBox
@@ -137,41 +94,10 @@ function DefaultProjectCard({ image, label, title, description, action, authors 
               {action.label}
             </VuiButton>
           )}
-          <VuiBox display="flex">{renderAuthors}</VuiBox>
         </VuiBox>
       </VuiBox>
     </VuiBox>
   );
 }
-
-// Setting default values for the props of DefaultProjectCard
-DefaultProjectCard.defaultProps = {
-  authors: [],
-};
-
-// Typechecking props for the DefaultProjectCard
-DefaultProjectCard.propTypes = {
-  image: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
-  action: PropTypes.shape({
-    type: PropTypes.oneOf(["external", "internal"]),
-    route: PropTypes.string.isRequired,
-    color: PropTypes.oneOf([
-      "white",
-      "text",
-      "info",
-      "success",
-      "warning",
-      "error",
-      "light",
-      "dark",
-      "white",
-    ]).isRequired,
-    label: PropTypes.string.isRequired,
-  }).isRequired,
-  authors: PropTypes.arrayOf(PropTypes.object),
-};
 
 export default DefaultProjectCard;

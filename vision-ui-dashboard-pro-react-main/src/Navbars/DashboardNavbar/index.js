@@ -1,88 +1,37 @@
-/** 
-
-=========================================================
-* Vision UI PRO React - v1.0.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/vision-ui-dashboard-pro-react
-* Copyright 2021 Creative Tim (https://www.creative-tim.com/)
-
-* Design and Coded by Simmmple & Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Visionware.
-
-*/
 import * as React from 'react';
 import { useState, useEffect, useRef, useLayoutEffect } from "react";
 
 // react-router components
-import { useLocation, Link } from "react-router-dom";
-
-// prop-types is a library for typechecking of props.
-import PropTypes from "prop-types";
+import { useLocation } from "react-router-dom";
 
 // @material-ui core components
-import Card from "@mui/material/Card";
 import Divider from "@mui/material/Divider";
-import Tooltip from "@mui/material/Tooltip";
 import Backdrop from '@mui/material/Backdrop';
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Button from "@mui/material/Button";
-import Menu from "@mui/material/Menu";
 import Box from '@mui/material/Box';
 import Icon from "@mui/material/Icon";
 import Grid from "@mui/material/Grid";
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 // Vision UI Dashboard PRO React components
 import VuiBox from "components/VuiBox";
 import VuiTypography from "components/VuiTypography";
-import VuiInput from "components/VuiInput";
 import VuiButton from "components/VuiButton";
-
-// Vision UI Dashboard PRO React example components
-import Breadcrumbs from "examples/Breadcrumbs";
-import NotificationItem from "examples/Items/NotificationItem";
 
 import 'assets/index.css';
 import 'assets/custom.css';
-
-
-import { ReactComponent as XLauncherLogo } from "assets/images/logo.svg";
-
-// Custom styles for DashboardNavbar
-import {
-  navbar,
-  navbarContainer,
-  navbarRow,
-  navbarIconButton,
-  navbarDesktopMenu,
-  navbarMobileMenu,
-} from "examples/Navbars/DashboardNavbar/styles";
 
 // Vision UI Dashboard PRO React context
 import {
   useVisionUIController,
   setTransparentNavbar,
   setMiniSidenav,
-  setOpenConfigurator,
 } from "context";
 
-// Images
-import team2 from "assets/images/team-2.jpg";
-import logoSpotify from "assets/images/small-logos/logo-spotify.svg";
-
 //Elrond
-import { DappProvider, DappUI, logout, useGetAccountInfo, useGetPendingTransactions } from '@elrondnetwork/dapp-core';
-import { Typography } from '@mui/material';
+import { DappUI, logout, useGetAccountInfo, useGetPendingTransactions } from '@elrondnetwork/dapp-core';
 import xConfigs from 'configs/envConfig.json';
-import Slider from "@mui/material/Slider";
+import {isEmptyArray} from "formik";
 
 const style = {
   position: 'absolute',
@@ -128,13 +77,9 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const handleMiniSidenav = () => setMiniSidenav(dispatch, !miniSidenav);
 
   //Config Variables
-  let xProvider = xConfigs['provider'];
   let xToken = xConfigs["token"];
-  let xStakeAddress = xConfigs["stakeAddress"];
   let xApiLink = xConfigs["apiLink"];
-  let xApiResponse = xConfigs["apiResponse"];
-  let xPresaleAddress = xConfigs["presaleAddress"];
-  let xOldStakeAddress = xConfigs["oldStakeAddress"];
+  let multiplier = 1000000000000000000;
 
   //Elrond login
   const { address, account } = useGetAccountInfo();
@@ -148,29 +93,29 @@ function DashboardNavbar({ absolute, light, isMini }) {
     ExtensionLoginButton
   } = DappUI;
 
-  //Get Account Balance
-  const [balanceAccount, setBalanceAccount] = useState([]); 
-  const customApi = xApiLink+address+'/tokens/'+xToken;
+  //Get Account Tokens Balance
+  const [xlhBalance, setXlhBalance] = useState(0);
+  const customApi = xApiLink+address+'/tokens?size=5000';
 
-  const getBalanceAccount = async () => {
+  const getAccountTokens = async () => {
       try {
       const response = await fetch(customApi, { 
           headers: {
               'Accept': 'application/json',
           }
       });
+
       const json = await response.json();
-      setBalanceAccount(json.balance);
+      json.map(item => {
+        switch (item.identifier) {
+          case xToken:
+            setXlhBalance(item.balance/multiplier);
+        }
+      })
       } catch (error) {
       console.error(error);
       }
   }
-
-  let balance = balanceAccount/1000000000000000000;
-  if(!balance){
-    balance = 0;
-  }
-  var balanceXLH = calc2(balance);
 
   //Modal
   const [open, setOpen] = useState(false);
@@ -181,14 +126,14 @@ function DashboardNavbar({ absolute, light, isMini }) {
 
   useEffect(() => {
     if(isLoggedIn) {
-      getBalanceAccount();
+      getAccountTokens();
       //console.log("balanceAccount " + balanceAccount);
     }
   }, [isLoggedIn]);
 
   useEffect(() => {
     if(isLoggedIn) {
-      getBalanceAccount();
+      getAccountTokens();
     }
   }, [transB]);
 
@@ -366,20 +311,27 @@ function DashboardNavbar({ absolute, light, isMini }) {
       let countLegendary = 0;
       if(json){
         json.map(item => {
-          if(item.metadata.attributes[3].value == "rust"){
-            countRust += 1;
-          }else if (item.metadata.attributes[3].value == "bronze"){
-            countBronze += 1;
-          }else if (item.metadata.attributes[3].value == "silver"){
-            countSilver += 1;
-          }else if (item.metadata.attributes[3].value == "gold"){
-            countGold += 1;
-          }else if (item.metadata.attributes[3].value == "platinum"){
-            countPlatinum += 1;
-          }else if (item.metadata.attributes[3].value == "Orange"){
-            countLegendary += 1;
+          let nftSwitcher = item.metadata.attributes[3].value;
+          switch (nftSwitcher) {
+            case "rust":
+              countRust += 1;
+              break;
+            case "bronze":
+              countBronze += 1;
+              break;
+            case "silver":
+              countSilver += 1;
+              break;
+            case "gold":
+              countGold += 1;
+              break;
+            case "platinum":
+              countPlatinum += 1;
+              break;
+            case "Orange":
+              countLegendary += 1;
+              break;
           }
-
         })
         setRustNFTS(countRust);
         setBronzeNFTS(countBronze);
@@ -407,7 +359,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
     }
   }, []);
 
-  var egldAccount = account.balance/1000000000000000000;
+  var egldAccount = account.balance/multiplier;
   if(!egldAccount){
     egldAccount = 0;
   }
@@ -457,10 +409,10 @@ function DashboardNavbar({ absolute, light, isMini }) {
               variant="outlined"
               color="light"
               size="small"
-              onClick={()=> openInNewTab('https://xoxno.com/buy/XLauncher/XLauncherOrigins')} 
+              onClick={()=> openInNewTab('https://www.frameit.gg/marketplace/XLHO-5135c9/items')}
               sx={{ minWidth: 140}}
             >
-              NFT Mint
+              XLH NFT Mint
             </VuiButton>
           </Grid>  
           <Grid item xs={6} sm={6} md={3} lg={2}>  
@@ -582,10 +534,10 @@ function DashboardNavbar({ absolute, light, isMini }) {
                           marginBottom="5px"
                           marginTop="2px"
                       >
-                        {new Intl.NumberFormat("en-En", {
+                        {new Intl.NumberFormat("en-GB", {
                           minimumFractionDigits: 2,
                           maximumFractionDigits: 2,
-                        }).format(balanceXLH)}
+                        }).format(xlhBalance)}
                         &nbsp; &nbsp; XLH
                       </VuiTypography>
                     </Grid>
@@ -709,10 +661,10 @@ function DashboardNavbar({ absolute, light, isMini }) {
               variant="outlined"
               color="white"
               size="small"
-              onClick={()=> openInNewTab('https://xoxno.com/buy/XLauncher/XLauncherOrigins')} 
+              onClick={()=> openInNewTab('https://www.frameit.gg/marketplace/XLHO-5135c9/items')}
               sx={{ minWidth: 140}}
             >
-              NFT Mint
+              XLH NFT Mint
             </VuiButton>
           </Grid>     
           <Grid item xs={6} sm={6} md={3} lg={2}>  
@@ -732,7 +684,6 @@ function DashboardNavbar({ absolute, light, isMini }) {
       </React.Fragment>
     );
   }
-  
 }
 
 export default DashboardNavbar;

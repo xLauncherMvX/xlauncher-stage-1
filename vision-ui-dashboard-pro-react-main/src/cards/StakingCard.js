@@ -1,24 +1,4 @@
-/** 
-
-=========================================================
-* Vision UI PRO React - v1.0.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/vision-ui-dashboard-pro-react
-* Copyright 2021 Creative Tim (https://www.creative-tim.com/)
-
-* Design and Coded by Simmmple & Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Visionware.
-
-*/
-
 import React, { useState, useEffect } from "react";
-
-// react-router components
-import { Link } from "react-router-dom";
 
 // @mui material components
 import Card from "@mui/material/Card";
@@ -29,20 +9,9 @@ import Backdrop from '@mui/material/Backdrop';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Icon from '@mui/material/Icon';
-import { Scrollbars } from "react-custom-scrollbars";
 import Slider from '@mui/material/Slider';
-
-// Scrollbar configs
-import {
-  renderThumb,
-  renderTrack,
-  renderView
-} from "examples/Scrollbar";
 
 // Vision UI Dashboard PRO React components
 import VuiBox from "components/VuiBox";
@@ -52,11 +21,9 @@ import VuiInput from "components/VuiInput";
 
 import { ReactComponent as XLauncherLogo } from "assets/images/logo.svg";
 import "assets/custom.css";
-import { IoHome } from "react-icons/io5";
 
 import { faAnglesDown } from '@fortawesome/free-solid-svg-icons/faAnglesDown';
 import { faAnglesUp } from '@fortawesome/free-solid-svg-icons/faAnglesUp';
-import { faInfo } from '@fortawesome/free-solid-svg-icons/faInfo';
 import { faCircleInfo } from '@fortawesome/free-solid-svg-icons/faCircleInfo';
 
 const style = {
@@ -383,7 +350,7 @@ function StakingCard({
                       marginTop="2px"
                     >
                       Balance: 
-                      {new Intl.NumberFormat("ro-Ro", {
+                      {new Intl.NumberFormat("en-GB", {
                         minimumFractionDigits: 2, 
                         maximumFractionDigits: 2,
                       }).format(xlhBalance)} 

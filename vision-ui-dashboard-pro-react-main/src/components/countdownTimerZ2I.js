@@ -1,38 +1,25 @@
 import DateCountdown from "components/dateCountdown";
 import React, {useState, useEffect} from 'react';
-import { DappUI, useGetAccountInfo, useGetPendingTransactions } from '@elrondnetwork/dapp-core';
-
-// @mui material components
-import Grid from "@mui/material/Grid";
-import Card from "@mui/material/Card";
-import Icon from "@mui/material/Icon";
-import Divider from "@mui/material/Divider";
+import { useGetAccountInfo } from '@elrondnetwork/dapp-core';
 
 // Vision UI Dashboard PRO React components
 import VuiBox from "components/VuiBox";
 import VuiTypography from "components/VuiTypography";
-import VuiBadge from "components/VuiBadge";
-import VuiButton from "components/VuiButton";
 import VuiProgress from "components/VuiProgress";
 
 import xConfigs from 'configs/z2iConfig.json';
 import "assets/custom.css";
 import "assets/index.css";
 
-//Config Variables
-let xProvider = xConfigs['provider'];
-let xToken = xConfigs["token"];
-let xStakeAddress = xConfigs["stakeAddress"];
-let xApiLink = xConfigs["apiLink"];
-let xApiResponse = xConfigs["apiResponse"];
-let xPresaleAddress = xConfigs["presaleAddress"];
-let xOldStakeAddress = xConfigs["oldStakeAddress"];  
-let xMaxBalance = xConfigs["maxBalance"]; 
-let xDate = xConfigs["date"];   
-
 export default function CountdownTimer(){
     const { address, account } = useGetAccountInfo();
     const isLoggedIn = Boolean(address);
+
+    //Config Variables
+    let xApiResponse = xConfigs["apiResponse"];
+    let xMaxBalance = xConfigs["maxBalance"];
+    let xDate = xConfigs["date"];
+    let tokenMultiplier = 1000000000000000000;
 
     //Query the smart contract to get the amount of Z2I
     const [contractBalance, setContractBalance] = useState(0);
@@ -51,8 +38,8 @@ export default function CountdownTimer(){
     }
 
     var maxBalance = xMaxBalance;
-    var maxBalanceFixed = new Intl.NumberFormat('ro-Ro', { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(maxBalance);
-    var balanceLeft = maxBalance + 1 - (contractBalance/1000000000000000000);
+    var maxBalanceFixed = new Intl.NumberFormat('en-GB', { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(maxBalance);
+    var balanceLeft = maxBalance + 1 - (contractBalance/tokenMultiplier);
 
     if(balanceLeft < 0 || !balanceLeft){
         balanceLeft = 0;
@@ -60,7 +47,7 @@ export default function CountdownTimer(){
     var procents = balanceLeft * 100 / maxBalance;
     var procentsOneDigit = 0;
     procentsOneDigit = parseFloat(procents).toFixed(1);    
-    var balanceLeftFixed = new Intl.NumberFormat('ro-Ro', { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(balanceLeft);
+    var balanceLeftFixed = new Intl.NumberFormat('en-GB', { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(balanceLeft);
 
     //Check if countdown is over
     const [dateReached, setDateReached] = useState(false);
@@ -80,12 +67,9 @@ export default function CountdownTimer(){
     //var collected = false;
     //Overwrite collected to stop the sale
     var collected = true;
-    if((contractBalance/1000000000000000000 == 0) || !contractBalance && dateReached){
+    if((contractBalance/tokenMultiplier == 0) || !contractBalance && dateReached){
         collected = true;
     }
-
-    console.log("contractBalance " + contractBalance);
-    console.log("dateReached " + dateReached);
 
     let displayTimer;  
     if(dateReached){

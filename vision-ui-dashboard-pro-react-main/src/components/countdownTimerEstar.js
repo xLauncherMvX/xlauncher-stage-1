@@ -1,42 +1,35 @@
 import DateCountdown from "components/dateCountdown";
 import React, {useState, useEffect} from 'react';
-import { DappUI, useGetAccountInfo, useGetPendingTransactions } from '@elrondnetwork/dapp-core';
-
-// @mui material components
-import Grid from "@mui/material/Grid";
-import Card from "@mui/material/Card";
-import Icon from "@mui/material/Icon";
-import Divider from "@mui/material/Divider";
+import {useGetAccountInfo } from '@elrondnetwork/dapp-core';
 
 // Vision UI Dashboard PRO React components
 import VuiBox from "components/VuiBox";
 import VuiTypography from "components/VuiTypography";
-import VuiBadge from "components/VuiBadge";
-import VuiButton from "components/VuiButton";
 import VuiProgress from "components/VuiProgress";
 
 import xConfigs from 'configs/estarGamesConfig.json';
 import "assets/custom.css";
 import "assets/index.css";
 
-//Config Variables
-let xProvider = xConfigs['provider'];
-let xToken = xConfigs["token"];
-let xStakeAddress = xConfigs["stakeAddress"];
-let xApiLink = xConfigs["apiLink"];
-let xApiResponse = xConfigs["apiResponse"];
-let xPresaleAddress = xConfigs["presaleAddress"];
-let xOldStakeAddress = xConfigs["oldStakeAddress"];  
-let xMaxBalance = xConfigs["maxBalance"]; 
-let xDate = xConfigs["date"];   
+function calc1(theform) {
+    var with1Decimal = theform.toString().match(/^-?\d+(?:\.\d{0,1})?/)[0];
+    var value = with1Decimal;
+    return parseFloat(value);
+}
 
 export default function CountdownTimer(){
-    const { address, account } = useGetAccountInfo();
+    const { address } = useGetAccountInfo();
     const isLoggedIn = Boolean(address);
 
-    //Query the smart contract to get the amount of Z2I
-    const [contractBalance, setContractBalance] = useState(0);
-    const getContractBalance = async () => {
+    //Config Variables
+    let xApiResponse = xConfigs["apiResponse"];
+    let xMaxBalance = xConfigs["maxBalance"];
+    let xDate = xConfigs["date"];
+    let tokenMultiplier = 100;
+
+    //Query the smart contract to get the amount of token
+    const [contractEstarBalance, setContractEstarBalance] = useState(0);
+    const getContractEstarBalance = async () => {
         try {
             const response = await fetch(xApiResponse, { 
                 headers: {
@@ -44,23 +37,21 @@ export default function CountdownTimer(){
                 }
             });
             const json = await response.json();
-            setContractBalance(json.balance);
+            setContractEstarBalance(json.balance/tokenMultiplier);
         } catch (error) {
             console.error(error);
         } 
     }
-
-    var maxBalance = xMaxBalance;
-    var maxBalanceFixed = new Intl.NumberFormat('ro-Ro', { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(maxBalance);
-    var balanceLeft = maxBalance + 1 - (contractBalance/100);
+    
+    var xMaxBalanceFixed = new Intl.NumberFormat('en-GB', { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(xMaxBalance);
+    var balanceLeft = xMaxBalance + 1 - contractEstarBalance;
 
     if(balanceLeft < 0 || !balanceLeft){
         balanceLeft = 0;
     }
-    var procents = balanceLeft * 100 / maxBalance;
-    var procentsOneDigit = 0;
-    procentsOneDigit = parseFloat(procents).toFixed(1);    
-    var balanceLeftFixed = new Intl.NumberFormat('ro-Ro', { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(balanceLeft);
+    var procents = balanceLeft * 100 / xMaxBalance;
+    var procentsOneDigit = calc1(procents);
+    var balanceLeftFixed = new Intl.NumberFormat('en-GB', { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(balanceLeft);
 
     //Check if countdown is over
     const [dateReached, setDateReached] = useState(false);
@@ -77,24 +68,22 @@ export default function CountdownTimer(){
     }
 
     //Check if collect function was called
-    //var collected = false;
-    //Overwrite collected to stop the sale
     var collected = false;
-    if((contractBalance/100 == 0) || !contractBalance && dateReached){
+    if((contractEstarBalance == 0) || !contractEstarBalance && dateReached){
         collected = true;
     }
 
     let displayTimer;  
     if(dateReached){
         if(!collected){
-            if(balanceLeft+1 >= maxBalance){
+            if(balanceLeft+1 >= xMaxBalance){
                 displayTimer =
                     <div className="show-counter" align={'center'}>                
                         <span className="odometer-block">
                             <p className='seedsale-text'>Sold out</p>
                         </span>
                         <VuiProgress variant="gradient" value={procentsOneDigit} color='success'/>
-                        <VuiTypography variant="h5" color="white" align={'center'} mt={2}> {balanceLeftFixed} / {maxBalanceFixed} ESTAR sold</VuiTypography>
+                        <VuiTypography variant="h5" color="white" align={'center'} mt={2}> {balanceLeftFixed} / {xMaxBalanceFixed} ESTAR sold</VuiTypography>
                     </div>
                 ;
             }else{
@@ -104,7 +93,7 @@ export default function CountdownTimer(){
                             <DateCountdown dateTo={xDate}/>
                         </a>   
                         <VuiProgress variant="gradient" value={procentsOneDigit} color='success'/>
-                        <VuiTypography variant="h5" color="white" align={'center'} mt={2}> {balanceLeftFixed} / {maxBalanceFixed} ESTAR sold</VuiTypography>
+                        <VuiTypography variant="h5" color="white" align={'center'} mt={2}> {balanceLeftFixed} / {xMaxBalanceFixed} ESTAR sold</VuiTypography>
                     </div>
                 ;
             }
@@ -124,20 +113,20 @@ export default function CountdownTimer(){
                         <DateCountdown dateTo={xDate}/>
                     </a>   
                     <VuiProgress variant="gradient" value={procentsOneDigit} color='success'/>
-                    <VuiTypography variant="h5" color="white" align={'center'} mt={2}> {balanceLeftFixed} / {maxBalanceFixed} ESTAR sold</VuiTypography>
+                    <VuiTypography variant="h5" color="white" align={'center'} mt={2}> {balanceLeftFixed} / {xMaxBalanceFixed} ESTAR sold</VuiTypography>
                 </div>
             ;
     }
 
     useEffect(() => {
-        getContractBalance();
+        getContractEstarBalance();
         getDateReached();
     }, [isLoggedIn]);  
 
     const MINUTE_MS = 1000;
     useEffect(() => {   
         const interval = window.setInterval(() => {    
-            getContractBalance();  
+            getContractEstarBalance();  
             getDateReached();
         }, MINUTE_MS);
 

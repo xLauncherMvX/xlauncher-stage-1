@@ -1,57 +1,15 @@
-/** 
-
-=========================================================
-* Vision UI PRO React - v1.0.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/vision-ui-dashboard-pro-react
-* Copyright 2021 Creative Tim (https://www.creative-tim.com/)
-
-* Design and Coded by Simmmple & Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Visionware.
-
-*/
-//Display an object in a stylized way in console
-//console.log(JSON.stringify(contract, null, 2));
-
 import React, { useState, useEffect, useLayoutEffect } from "react";
-
-// react-router components
-import { Route, Switch, Redirect, useLocation } from "react-router-dom";
-// react-router components
-import { Link } from "react-router-dom";
-
 // @mui material components
-import { ThemeProvider } from "@mui/material/styles";
-import CssBaseline from "@mui/material/CssBaseline";
-import Icon from "@mui/material/Icon";
-import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
-import breakpoints from "assets/theme/base/breakpoints";
 
 // Vision UI Dashboard PRO React components
-import VuiBox from "components/VuiBox";
-import VuiBadgeDot from "components/VuiBadgeDot";
 import VuiTypography from "components/VuiTypography";
-import MiniStatisticsCard from "examples/Cards/StatisticsCards/MiniStatisticsCard";
-import Footer from "examples/FooterXLH";
-import Globe from "examples/Globe";
-import VuiButton from "components/VuiButton";
-import { Scrollbars } from "react-custom-scrollbars";
 
 // Plugins custom css
 import "assets/theme/base/plugins.css";
 import "assets/custom.css";
 
-// icons
-import { FaShoppingCart } from "react-icons/fa";
-import { BsGlobe } from "react-icons/bs";
-import { IoWallet, IoDocumentText } from "react-icons/io5";
-
-//Ciio custom components
+//My custom components
 import Main from "layouts/main";
 import StakingCard from "cards/StakingCard";
 import CompleteUnstakeCard from "cards/CompleteUnstakeCard";
@@ -59,7 +17,6 @@ import CompleteUnstakeCard from "cards/CompleteUnstakeCard";
 //Elrond
 import {
   DappUI,
-  logout,
   refreshAccount,
   transactionServices,
   useGetAccountInfo,
@@ -69,10 +26,8 @@ import {
   AbiRegistry,
   Address,
   AddressValue,
-  Balance,
   BigUIntValue,
   BytesValue,
-  Interaction,
   NetworkConfig,
   ProxyProvider,
   SmartContract,
@@ -81,7 +36,6 @@ import {
   ContractFunction
 } from "@elrondnetwork/erdjs/out";
 import {BigNumber} from "bignumber.js"
-import { element, object } from "prop-types";
 import xConfigs from 'configs/envConfig.json';
 
 const { SignTransactionsModals, TransactionsToastList, NotificationModal } = DappUI;
@@ -112,9 +66,6 @@ function Farms() {
   let xToken = xConfigs["token"];
   let xStakeAddress = xConfigs["stakeAddress"];
   let xApiLink = xConfigs["apiLink"];
-  let xApiResponse = xConfigs["apiResponse"];
-  let xPresaleAddress = xConfigs["presaleAddress"];
-  let xOldStakeAddress = xConfigs["oldStakeAddress"];
 
   //Elrond login
   const { address, account } = useGetAccountInfo();
@@ -123,40 +74,32 @@ function Farms() {
   const [clientReportData, setClientReportData] = useState(["", "", "", "", "", "", "", ""]);
   let xMultiplier = 1000000000000000000;
 
-
   const getClientReportData = async () => {
     try {
       let providerCRD = new ProxyProvider(xProvider);
       await NetworkConfig.getDefault().sync(providerCRD);
 
-      let stringAddressCRD = xStakeAddress;
-      let addressCRD = new Address(stringAddressCRD);
-
+      let addressCRD = new Address(xStakeAddress);
       const abiLocationCRD = `${process.env.PUBLIC_URL}/xlauncher-staking.abi.json`;
-
       let abiRegistryCRD = await AbiRegistry.load({
         urls: [abiLocationCRD],
       });
       let abiCRD = new SmartContractAbi(abiRegistryCRD, [`XLauncherStaking`]);
-
       let contractCRD = new SmartContract({
         address: addressCRD,
         abi: abiCRD,
       });
-
       let interactionCRD = contractCRD.methods.getClientReport([
         new AddressValue(new Address(address)),
       ]);
-
       let queryResponseCRD = await contractCRD.runQuery(providerCRD, interactionCRD.buildQuery());
 
       let responseCRD = interactionCRD.interpretQueryResponse(queryResponseCRD);
       let myList = responseCRD.firstValue.valueOf();
       //console.log("myList " + JSON.stringify(myList, null, 2));
 
-      let amountFormat = 1000000000000000000;
-      let totalAmount = myList["total_amount"].toFixed(2) / amountFormat;
-      let totalRewards = myList["total_rewords"].toFixed(2) / amountFormat;
+      let totalAmount = myList["total_amount"].toFixed(2) / xMultiplier;
+      let totalRewards = myList["total_rewords"].toFixed(2) / xMultiplier;
 
       let farm1Amount = 0;
       let farm1Rewards = 0;
@@ -166,51 +109,23 @@ function Farms() {
       let farm3Rewards = 0;
 
       if (myList["report_pull_items"]) {
-        if (myList["report_pull_items"][0]) {
-          if (myList["report_pull_items"][0]["pool_id"] == "1") {
-            farm1Amount = myList["report_pull_items"][0]["pool_amount"].toFixed() / amountFormat;
-            farm1Rewards =
-              myList["report_pull_items"][0]["rewords_amount"].toFixed() / amountFormat;
-          } else if (myList["report_pull_items"][0]["pool_id"] == "2") {
-            farm2Amount = myList["report_pull_items"][0]["pool_amount"].toFixed() / amountFormat;
-            farm2Rewards =
-              myList["report_pull_items"][0]["rewords_amount"].toFixed() / amountFormat;
-          } else if (myList["report_pull_items"][0]["pool_id"] == "3") {
-            farm3Amount = myList["report_pull_items"][0]["pool_amount"].toFixed() / amountFormat;
-            farm3Rewards =
-              myList["report_pull_items"][0]["rewords_amount"].toFixed() / amountFormat;
-          }
-        }
-        if (myList["report_pull_items"][1]) {
-          if (myList["report_pull_items"][1]["pool_id"] == "1") {
-            farm1Amount = myList["report_pull_items"][1]["pool_amount"].toFixed() / amountFormat;
-            farm1Rewards =
-              myList["report_pull_items"][1]["rewords_amount"].toFixed() / amountFormat;
-          } else if (myList["report_pull_items"][1]["pool_id"] == "2") {
-            farm2Amount = myList["report_pull_items"][1]["pool_amount"].toFixed() / amountFormat;
-            farm2Rewards =
-              myList["report_pull_items"][1]["rewords_amount"].toFixed() / amountFormat;
-          } else if (myList["report_pull_items"][1]["pool_id"] == "3") {
-            farm3Amount = myList["report_pull_items"][1]["pool_amount"].toFixed() / amountFormat;
-            farm3Rewards =
-              myList["report_pull_items"][1]["rewords_amount"].toFixed() / amountFormat;
-          }
-        }
-        if (myList["report_pull_items"][2]) {
-          if (myList["report_pull_items"][2]["pool_id"] == "1") {
-            farm1Amount = myList["report_pull_items"][2]["pool_amount"].toFixed() / amountFormat;
-            farm1Rewards =
-              myList["report_pull_items"][2]["rewords_amount"].toFixed() / amountFormat;
-          } else if (myList["report_pull_items"][2]["pool_id"] == "2") {
-            farm2Amount = myList["report_pull_items"][2]["pool_amount"].toFixed() / amountFormat;
-            farm2Rewards =
-              myList["report_pull_items"][2]["rewords_amount"].toFixed() / amountFormat;
-          } else if (myList["report_pull_items"][2]["pool_id"] == "3") {
-            farm3Amount = myList["report_pull_items"][2]["pool_amount"].toFixed() / amountFormat;
-            farm3Rewards =
-              myList["report_pull_items"][2]["rewords_amount"].toFixed() / amountFormat;
-          }
-        }
+          myList["report_pull_items"].map(item0 => {
+            let switcher = parseInt(item0.pool_id);
+            switch (switcher) {
+              case 1:
+                farm1Amount = item0.pool_amount.toFixed() / xMultiplier;
+                farm1Rewards = item0.rewords_amount.toFixed() / xMultiplier;
+                break;
+              case 2:
+                farm2Amount = item0.pool_amount.toFixed() / xMultiplier;
+                farm2Rewards = item0.rewords_amount.toFixed() / xMultiplier;
+                break;
+              case 3:
+                farm3Amount = item0.pool_amount.toFixed() / xMultiplier;
+                farm3Rewards = item0.rewords_amount.toFixed() / xMultiplier;
+                break;
+            }
+          })
       }
 
       let totalAmountF = parseFloat(totalAmount).toFixed(2);
@@ -223,35 +138,35 @@ function Farms() {
       let farm3RewardsF = parseFloat(farm3Rewards).toFixed(2);
 
       let myReturnList = [
-        new Intl.NumberFormat("ro-Ro", {
+        new Intl.NumberFormat("en-GB", {
           minimumFractionDigits: 2,
           maximumFractionDigits: 2,
         }).format(totalAmountF),
-        new Intl.NumberFormat("ro-Ro", {
+        new Intl.NumberFormat("en-GB", {
           minimumFractionDigits: 2,
           maximumFractionDigits: 2,
         }).format(totalRewardsF),
-        new Intl.NumberFormat("ro-Ro", {
+        new Intl.NumberFormat("en-GB", {
           minimumFractionDigits: 2,
           maximumFractionDigits: 2,
         }).format(farm1AmountF),
-        new Intl.NumberFormat("ro-Ro", {
+        new Intl.NumberFormat("en-GB", {
           minimumFractionDigits: 2,
           maximumFractionDigits: 2,
         }).format(farm1RewardsF),
-        new Intl.NumberFormat("ro-Ro", {
+        new Intl.NumberFormat("en-GB", {
           minimumFractionDigits: 2,
           maximumFractionDigits: 2,
         }).format(farm2AmountF),
-        new Intl.NumberFormat("ro-Ro", {
+        new Intl.NumberFormat("en-GB", {
           minimumFractionDigits: 2,
           maximumFractionDigits: 2,
         }).format(farm2RewardsF),
-        new Intl.NumberFormat("ro-Ro", {
+        new Intl.NumberFormat("en-GB", {
           minimumFractionDigits: 2,
           maximumFractionDigits: 2,
         }).format(farm3AmountF),
-        new Intl.NumberFormat("ro-Ro", {
+        new Intl.NumberFormat("en-GB", {
           minimumFractionDigits: 2,
           maximumFractionDigits: 2,
         }).format(farm3RewardsF),
@@ -278,12 +193,9 @@ function Farms() {
     try {
       let providerCSD = new ProxyProvider(xProvider);
       await NetworkConfig.getDefault().sync(providerCSD);
-
-      let stringAddressCSD = xStakeAddress;
-      let addressCSD = new Address(stringAddressCSD);
-
+      
+      let addressCSD = new Address(xStakeAddress);
       const abiLocationCSD = `${process.env.PUBLIC_URL}/xlauncher-staking.abi.json`;
-
       let abiRegistryCSD = await AbiRegistry.load({
         urls: [abiLocationCSD],
       });
@@ -293,11 +205,9 @@ function Farms() {
         address: addressCSD,
         abi: abiCSD,
       });
-
       let interactionCSD = contractCSD.methods.getClientState([
         new AddressValue(new Address(address)),
       ]);
-
       let queryResponseCSD = await contractCSD.runQuery(providerCSD, interactionCSD.buildQuery());
 
       let responseCSD = interactionCSD.interpretQueryResponse(queryResponseCSD);
@@ -308,14 +218,18 @@ function Farms() {
       let pool2 = [];
       let pool3 = [];
       Object.values(myListCSD).map(element => {
-        if(element["pool_id"] == "1"){
-          pool1.push(element);
-        }
-        if(element["pool_id"] == "2"){
-          pool2.push(element);
-        }
-        if(element["pool_id"] == "3"){
-          pool3.push(element);
+        let elementSwitcher = parseInt(element.pool_id);
+        switch (elementSwitcher) {
+          case 1:
+            pool1.push(element);
+            break;
+          case 2:
+            pool2.push(element);
+            break;
+          case 3:
+            pool3.push(element);
+            break;
+
         }
       });   
       setClientStateData1(pool1); 
@@ -332,7 +246,7 @@ function Farms() {
   let cs2Aux = clientStateData2.sort((a,b) => a.pool_time_stamp_entry > b.pool_time_stamp_entry? 1 : -1);
   const client2 =  Object.values(cs2Aux).map(person => {
     let amountClient2 = parseFloat(person.pool_amount) / xMultiplier;
-    let amountClient2Formatted = new Intl.NumberFormat("ro-Ro", 
+    let amountClient2Formatted = new Intl.NumberFormat("en-GB", 
     {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
@@ -361,12 +275,12 @@ function Farms() {
   let cs3Aux = clientStateData3.sort((a,b) => a.pool_time_stamp_entry > b.pool_time_stamp_entry? 1 : -1);
   const client3 =  Object.values(cs3Aux).map(person3 => {
     let amountClient3 = parseFloat(person3.pool_amount) / xMultiplier;
-    let amountClient3Formatted = new Intl.NumberFormat("ro-Ro", 
+    let amountClient3Formatted = new Intl.NumberFormat("en-GB", 
     {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     }).format(amountClient3);
-    //TODO   + 15552000
+    // 15552000
     let entryClient3 = (parseFloat(person3.pool_time_stamp_entry)  + 15552000) * 1000;
     let date3 = new Date(entryClient3).toLocaleDateString("en-GB", options);
     let keyItem3 = person3.pool_id.toString() + person3.pool_amount.toString() +
@@ -386,28 +300,29 @@ function Farms() {
       </Grid>
     )
   })
-  
-  //Get Account Balance
-  const [balanceAccount, setBalanceAccount] = useState([]);  
-  const customApi = xApiLink+address+'/tokens/'+xToken;
 
-  const getBalanceAccount = async () => {
-      try {
-      const response = await fetch(customApi, { 
-          headers: {
-              'Accept': 'application/json',
-          }
+  //Get Account Tokens Balance
+  const [xlhBalance, setXlhBalance] = useState(0);
+  const customApi = xApiLink+address+'/tokens?size=5000';
+
+  const getAccountTokens = async () => {
+    try {
+      const response = await fetch(customApi, {
+        headers: {
+          'Accept': 'application/json',
+        }
       });
+
       const json = await response.json();
-      setBalanceAccount(json.balance);
-      } catch (error) {
+      json.map(item => {
+        switch (item.identifier) {
+          case xToken:
+            setXlhBalance(item.balance/xMultiplier);
+        }
+      })
+    } catch (error) {
       console.error(error);
-      }
-  }
-      
-  var balanceXLH = balanceAccount/1000000000000000000;
-  if(!balanceXLH){
-    balanceXLH = 0;
+    }
   }
 
   //Set the amount of xlh for staking from the input or max button
@@ -419,7 +334,7 @@ function Farms() {
     setXlhAmountS(event.target.value);
   };
   const setMaxAmountS = () => {
-    setXlhAmountS(calc2(balanceXLH));
+    setXlhAmountS(calc2(xlhBalance));
   }
 
   //Calculate the gas limit parameters
@@ -435,8 +350,6 @@ function Farms() {
 
   var n3 = countItems3 * (countItems3 + 1) / 2;
   var l3 = 80000 * (10 * countItems3 + n3) + 10000000 + (1000000 * countItems3);
-
-  
 
   let gasLimit1 = 10000000;
   let gasLimit2 = 10000000;
@@ -736,7 +649,7 @@ function Farms() {
   const options2 = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
   let c2Aux = clientStateData2.sort((a,b) => a.pool_time_stamp_entry < b.pool_time_stamp_entry? 1 : -1);
   Object.values(c2Aux).map(item2 => {
-    //TODO   + 5184000
+    // 5184000
     let entry2  = (parseFloat(item2.pool_time_stamp_entry) + 5184000) * 1000;
     let unlockedTimeItemDays2 = (entry2 - timestamp) / 86400000;
     let unlockedTimeItemHours2 = (entry2 - timestamp) / 3600000;
@@ -800,21 +713,16 @@ function Farms() {
       let providerCUSD = new ProxyProvider(xProvider);
       await NetworkConfig.getDefault().sync(providerCUSD);
 
-      let stringAddressCUSD = xStakeAddress;
-      let addressCUSD = new Address(stringAddressCUSD);
-
+      let addressCUSD = new Address(xStakeAddress);
       const abiLocationCUSD = `${process.env.PUBLIC_URL}/xlauncher-staking.abi.json`;
-
       let abiRegistryCUSD = await AbiRegistry.load({
         urls: [abiLocationCUSD],
       });
       let abiCUSD = new SmartContractAbi(abiRegistryCUSD, [`XLauncherStaking`]);
-
       let contractCUSD = new SmartContract({
         address: addressCUSD,
         abi: abiCUSD,
       });
-
       let interactionCUSD = contractCUSD.methods.getUnstakeState([
         new AddressValue(new Address(address)),
       ]);
@@ -845,7 +753,7 @@ function Farms() {
         } 
 
         let AmountCU = parseFloat(myListCUSD.requested_amount) / xMultiplier;
-        let AmountCUF = new Intl.NumberFormat("ro-Ro", {
+        let AmountCUF = new Intl.NumberFormat("en-GB", {
           minimumFractionDigits: 2,
           maximumFractionDigits: 2,
         }).format(AmountCU);
@@ -929,7 +837,7 @@ function Farms() {
   }
 
   let disabledStakeButton;
-  if(xlhAmountS == 0 || xlhAmountS > balanceXLH){
+  if(xlhAmountS == 0 || xlhAmountS > xlhBalance){
     disabledStakeButton = true;
   }else{
     disabledStakeButton = false;
@@ -984,7 +892,7 @@ function Farms() {
       getClientReportData(); 
       getClientStateData();
       getClientUnstakeStateData();
-      getBalanceAccount();
+      getAccountTokens();
     }
   }, [isLoggedIn]);
 
@@ -1004,7 +912,7 @@ function Farms() {
 
   useEffect(() => {
     if(isLoggedIn) {      
-      getBalanceAccount();
+      getAccountTokens();
       getClientReportData(); 
       getClientStateData();
       getClientUnstakeStateData();     
@@ -1026,7 +934,7 @@ function Farms() {
             unstakedAmount = {clientReportData[10]}
             myRewards={clientReportData[3]}
             myRewardsColor={earned1Color1}
-            xlhBalance={balanceXLH}     
+            xlhBalance={xlhBalance}
             modalFarmName="Farm 1"  
             lockedRewardsLabel = "&nbsp;"
             mbv="11px"
@@ -1093,7 +1001,7 @@ function Farms() {
             myXLH={clientReportData[4]}
             myRewards={clientReportData[5]}
             myRewardsColor={earned1Color2}
-            xlhBalance={balanceXLH}
+            xlhBalance={xlhBalance}
             unstakedAmount = {calc2(unstakedAmount2)}
             lockedRewardsLabel = "My Locked XLH:"
             mbv="-8px"
@@ -1161,7 +1069,7 @@ function Farms() {
             myXLH={clientReportData[6]}
             myRewards={clientReportData[7]}
             myRewardsColor={earned1Color3}
-            xlhBalance={balanceXLH}
+            xlhBalance={xlhBalance}
             unstakedAmount = {calc2(unstakedAmount3)}
             lockedRewardsLabel = "My Locked XLH:"
             mbv="-8px"

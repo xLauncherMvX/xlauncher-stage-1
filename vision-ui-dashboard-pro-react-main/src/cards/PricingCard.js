@@ -1,20 +1,13 @@
 import React, {useState, useEffect} from 'react';
-import { FaPlus, FaMinus } from 'react-icons/fa';
-import { DappUI, useGetAccountInfo, useGetPendingTransactions } from '@elrondnetwork/dapp-core';
+import { useGetAccountInfo, useGetPendingTransactions } from '@elrondnetwork/dapp-core';
 import {
   AbiRegistry,
   Address,
   AddressValue,
-  Balance,
-  BigUIntValue,
-  BytesValue,
-  Interaction,
   NetworkConfig,
   ProxyProvider,
   SmartContract,
-  SmartContractAbi,
-  TransactionPayload,
-  ContractFunction
+  SmartContractAbi
 } from "@elrondnetwork/erdjs/out";
 import xConfigs from 'configs/envConfig.json';
 
@@ -37,36 +30,11 @@ export default function PricingCard({ contractByXlh }) {
 
   //Config Variables
   let xProvider = xConfigs['provider'];
-  let xToken = xConfigs["token"];
-  let xStakeAddress = xConfigs["stakeAddress"];
-  let xApiLink = xConfigs["apiLink"];
   let xApiResponse = xConfigs["apiResponse"];
   let xPresaleAddress = xConfigs["presaleAddress"];
-  let xOldStakeAddress = xConfigs["oldStakeAddress"];  
   let xMaxBalance = xConfigs["maxBalance"]; 
-  let xDate = xConfigs["date"];    
-
-  //Get xlh balance
-  const [accountBalance, setAccountBalance] = useState(0); 
-  const customApi = xApiLink+address+'/tokens/'+xToken;
-  const getAccountBalance = async () => {
-      try {
-      const response = await fetch(customApi, { 
-          headers: {
-              'Accept': 'application/json',
-          }
-      });
-      const json = await response.json();
-      setAccountBalance(json.balance);
-      } catch (error) {
-      console.error(error);
-      }
-  }
-
-  var balanceXLH = accountBalance/1000000000000000000;
-  if(!balanceXLH){
-    balanceXLH = 0;
-  }
+  let xDate = xConfigs["date"];
+  let multiplier = 1000000000000000000;
 
   //Query the smart contract to get the amount of xlh
   const [contractBalance, setContractBalance] = useState(0);
@@ -113,7 +81,7 @@ export default function PricingCard({ contractByXlh }) {
       let response = interaction.interpretQueryResponse(queryResponse);
       let myList = response.firstValue.valueOf();
       //console.log("myList " + myList);
-      setBoughtAmount(myList/1000000000000000000);
+      setBoughtAmount(myList/multiplier);
 
     } catch (error) {
       console.log(error);
@@ -123,7 +91,7 @@ export default function PricingCard({ contractByXlh }) {
   
 
   //Check if max amount of tokens were sold
-  var balanceLeft = xMaxBalance - (contractBalance/1000000000000000000);
+  var balanceLeft = xMaxBalance - (contractBalance/multiplier);
   if(balanceLeft < 0 || !balanceLeft){
       balanceLeft = 0;
   }
@@ -134,39 +102,35 @@ export default function PricingCard({ contractByXlh }) {
   
   //Increase the amount of xlh + egld according to user preferences
   const [xlhAmount, setXlhAmount] = React.useState(6500);
-  const [egldAmount, setEgldAmount] = React.useState(1000000000000000000);
+  const [egldAmount, setEgldAmount] = React.useState(multiplier);
 
   const increaseAmount = () => {
     let xlhInc = 3250;
     let newXlhVal = xlhAmount + xlhInc;
     if(newXlhVal <= 32500 - boughtAmount){ 
       setXlhAmount(newXlhVal);
-      //console.log(newXlhVal);
     }
 
-    let egldInc = 500000000000000000;
+    let egldInc = 0.5 * multiplier;
     let newEgldVal = egldAmount + egldInc;
-    if((newEgldVal <= 5000000000000000000) && (newXlhVal <= 32500 - boughtAmount)){ 
+    if((newEgldVal <= 5 * multiplier) && (newXlhVal <= 32500 - boughtAmount)){
       setEgldAmount(newEgldVal);
-      //console.log(newEgldVal);
     }    
     console.log('Time to increase');
   };
 
   //Decrease the amount of xlh + egld according to user preferences
   const decreaseAmount = () => {
-    let egldInc = 500000000000000000;
+    let egldInc = 0.5 * multiplier;
     let newEgldVal = egldAmount - egldInc;
-    if(newEgldVal >= 1000000000000000000){      
+    if(newEgldVal >= multiplier){
       setEgldAmount(newEgldVal);
-      //console.log(newEgldVal);
     }
     
     let xlhInc = 3250;
     let newXlhVal = xlhAmount - xlhInc;
     if(newXlhVal >= 6500){ 
       setXlhAmount(newXlhVal);
-      //console.log(newXlhVal);
     }
     console.log('Time to decrease');
   };
@@ -222,11 +186,10 @@ export default function PricingCard({ contractByXlh }) {
 
   //Check if the client has enough egld to buy the selected xlh amount
   var minEgld = true;
-  var availableEgld = account.balance/1000000000000000000;
-  var requiredEgld = egldAmount/1000000000000000000;  
+  var availableEgld = account.balance/multiplier;
+  var requiredEgld = egldAmount/multiplier;
   if(requiredEgld > availableEgld){
     minEgld = false;
-    //console.log(requiredEgld + ' < ' + availableEgld);
   }  
 
   //Check if the max amount of xlh was reached
@@ -239,7 +202,7 @@ export default function PricingCard({ contractByXlh }) {
 
   //Check if collect function was called
   var collected = false;
-  if((contractBalance/1000000000000000000 == 0) || !contractBalance && dateReached){
+  if((contractBalance/multiplier == 0) || !contractBalance && dateReached){
     collected = true;
   }
 
@@ -292,7 +255,6 @@ export default function PricingCard({ contractByXlh }) {
   useEffect(() => {    
     if(isLoggedIn) {
       getData();
-      getAccountBalance();
       getContractBalance();
       getDateReached();
     }
@@ -301,7 +263,6 @@ export default function PricingCard({ contractByXlh }) {
   useEffect(() => {    
     if(isLoggedIn) {
       getData();
-      getAccountBalance();
       getContractBalance();
       getDateReached();
       getBoughtAmount();
@@ -324,7 +285,6 @@ export default function PricingCard({ contractByXlh }) {
     if(isLoggedIn) {
       const interval = window.setInterval(() => {      
         getData();
-        getAccountBalance();
         getContractBalance();
         getBoughtAmount();
       }, MINUTE_MS2);
@@ -362,7 +322,7 @@ export default function PricingCard({ contractByXlh }) {
           </VuiBox>
           <VuiBox display="flex" justifyContent="center" alignItems="center" textAlign="center" mt={2}>
             <VuiTypography  variant="h4" color="white">
-              {egldAmount/1000000000000000000} EGLD
+              {egldAmount/multiplier} EGLD
             </VuiTypography>
           </VuiBox>          
         </Grid> 

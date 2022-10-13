@@ -1,27 +1,19 @@
 import React, {useState, useEffect} from 'react';
-import { FaPlus, FaMinus } from 'react-icons/fa';
-import { DappUI, useGetAccountInfo, useGetPendingTransactions } from '@elrondnetwork/dapp-core';
+import { useGetAccountInfo, useGetPendingTransactions } from '@elrondnetwork/dapp-core';
 import {
   AbiRegistry,
   Address,
   AddressValue,
-  Balance,
-  BigUIntValue,
-  BytesValue,
-  Interaction,
   NetworkConfig,
   ProxyProvider,
   SmartContract,
-  SmartContractAbi,
-  TransactionPayload,
-  ContractFunction
+  SmartContractAbi
 } from "@elrondnetwork/erdjs/out";
 import xConfigs from 'configs/z2iConfig.json';
 
 // @mui material components
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
-import Icon from "@mui/material/Icon";
 import Divider from "@mui/material/Divider";
 import Slider from '@mui/material/Slider';
 
@@ -30,8 +22,6 @@ import VuiBox from "components/VuiBox";
 import VuiTypography from "components/VuiTypography";
 import VuiBadge from "components/VuiBadge";
 import VuiButton from "components/VuiButton";
-import VuiInput from "components/VuiInput";
-
 
 function calc0(theform) {
   var with1Decimal = theform.toString().match(/^-?\d+(?:\\d{0})?/)[0];
@@ -46,14 +36,14 @@ export default function PricingCard({ contractByXlh }) {
 
   //Config Variables
   let xProvider = xConfigs['provider'];
-  let xToken = xConfigs["token"];
   let xToken2 = xConfigs["presaleToken"];
   let xStakeAddress = xConfigs["stakeAddress"];
   let xApiLink = xConfigs["apiLink"];
   let xApiResponse = xConfigs["apiResponse"];
   let xPresaleAddress = xConfigs["presaleAddress"];
   let xMaxBalance = xConfigs["maxBalance"]; 
-  let xDate = xConfigs["date"];    
+  let xDate = xConfigs["date"];
+  let multiplier = 1000000000000000000;
 
   //Get z2i balance
   const [accountBalance, setAccountBalance] = useState(0); 
@@ -72,7 +62,7 @@ export default function PricingCard({ contractByXlh }) {
       }
   }
 
-  var balanceZ2I = accountBalance/1000000000000000000;
+  var balanceZ2I = accountBalance/multiplier;
   if(!balanceZ2I){
     balanceZ2I = 0;
   }
@@ -122,7 +112,7 @@ export default function PricingCard({ contractByXlh }) {
       let response = interaction.interpretQueryResponse(queryResponse);
       let myList = response.firstValue.valueOf();
       //console.log("myList " + myList);
-      setBoughtAmount(myList/1000000000000000000);
+      setBoughtAmount(myList/multiplier);
 
     } catch (error) {
       console.log(error);
@@ -136,11 +126,8 @@ export default function PricingCard({ contractByXlh }) {
       let providerCRD = new ProxyProvider(xProvider);
       await NetworkConfig.getDefault().sync(providerCRD);
 
-      let stringAddressCRD = xStakeAddress;
-      let addressCRD = new Address(stringAddressCRD);
-
+      let addressCRD = new Address(xStakeAddress);
       const abiLocationCRD = `${process.env.PUBLIC_URL}/xlauncher-staking2.abi.json`;
-
       let abiRegistryCRD = await AbiRegistry.load({
         urls: [abiLocationCRD],
       });
@@ -150,7 +137,6 @@ export default function PricingCard({ contractByXlh }) {
         address: addressCRD,
         abi: abiCRD,
       });
-
       let interactionCRD = contractCRD.methods.getClientReport([
         new AddressValue(new Address(address)),
       ]);
@@ -161,8 +147,7 @@ export default function PricingCard({ contractByXlh }) {
       let myList = responseCRD.firstValue.valueOf();
       //console.log("myList " + JSON.stringify(myList, null, 2));
 
-      let amountFormat = 1000000000000000000;
-      let totalAmount = calc0(myList["total_amount"]/ amountFormat);
+      let totalAmount = calc0(myList["total_amount"]/ multiplier);
       setClientReportData(totalAmount);
     } catch (error) {
       console.log(error);
@@ -176,7 +161,7 @@ export default function PricingCard({ contractByXlh }) {
   }
 
   //Check if max amount of tokens were sold
-  var balanceLeft = xMaxBalance - (contractBalance/1000000000000000000);
+  var balanceLeft = xMaxBalance - (contractBalance/multiplier);
   if(balanceLeft < 0 || !balanceLeft){
       balanceLeft = 0;
   }
@@ -214,8 +199,8 @@ export default function PricingCard({ contractByXlh }) {
 
   //Check if the client has enough egld to buy the selected z2i amount
   var minEgld = true;
-  var availableEgld = account.balance/1000000000000000000;
-  var requiredEgld = egldAmount/1000000000000000000;  
+  var availableEgld = account.balance/multiplier;
+  var requiredEgld = egldAmount/multiplier;
   if(requiredEgld > availableEgld){
     minEgld = false;
     //console.log(requiredEgld + ' < ' + availableEgld);
@@ -265,7 +250,7 @@ export default function PricingCard({ contractByXlh }) {
 
   //Check if collect function was called
   var collected = false;
-  if((contractBalance/1000000000000000000 == 0) || !contractBalance && dateReached){
+  if((contractBalance/multiplier == 0) || !contractBalance && dateReached){
     collected = true;
   }
 
@@ -389,7 +374,7 @@ export default function PricingCard({ contractByXlh }) {
           </VuiBox>
           <VuiBox display="flex" justifyContent="center" alignItems="center" textAlign="center" mt={2}>
             <VuiTypography  variant="h4" color="white">
-            {egldAmount/1000000000000000000} EGLD
+            {egldAmount/multiplier} EGLD
             </VuiTypography>
           </VuiBox>          
         </Grid> 

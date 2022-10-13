@@ -1,27 +1,19 @@
 import React, {useState, useEffect} from 'react';
-import { FaPlus, FaMinus } from 'react-icons/fa';
-import { DappUI, useGetAccountInfo, useGetPendingTransactions } from '@elrondnetwork/dapp-core';
+import { useGetAccountInfo, useGetPendingTransactions } from '@elrondnetwork/dapp-core';
 import {
   AbiRegistry,
   Address,
   AddressValue,
-  Balance,
-  BigUIntValue,
-  BytesValue,
-  Interaction,
   NetworkConfig,
   ProxyProvider,
   SmartContract,
-  SmartContractAbi,
-  TransactionPayload,
-  ContractFunction
+  SmartContractAbi
 } from "@elrondnetwork/erdjs/out";
 import xConfigs from 'configs/z2iRefundConfig.json';
 
 // @mui material components
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
-import Icon from "@mui/material/Icon";
 import Divider from "@mui/material/Divider";
 import Slider from '@mui/material/Slider';
 
@@ -30,7 +22,6 @@ import VuiBox from "components/VuiBox";
 import VuiTypography from "components/VuiTypography";
 import VuiBadge from "components/VuiBadge";
 import VuiButton from "components/VuiButton";
-import VuiInput from "components/VuiInput";
 
 
 function calc0(theform) {
@@ -49,6 +40,7 @@ export default function RefundCardZ2I({ contractByToken }) {
   let xToken = xConfigs["token"];
   let xPresaleAddress = xConfigs["presaleAddress"]; 
   let xApiLink = xConfigs["apiLink"];
+  let multiplier = 1000000000000000000;
 
   //Check the amount of z2i bought by client
   const [boughtAmount, setBoughtAmount] = useState(0);
@@ -79,7 +71,7 @@ export default function RefundCardZ2I({ contractByToken }) {
       let response = interaction.interpretQueryResponse(queryResponse);
       let myList = response.firstValue.valueOf();
       //console.log("myList " + myList);
-      setBoughtAmount(myList/1000000000000000000);
+      setBoughtAmount(myList/multiplier);
 
     } catch (error) {
       console.log(error);
@@ -115,7 +107,7 @@ export default function RefundCardZ2I({ contractByToken }) {
       let response = interaction.interpretQueryResponse(queryResponse);
       let myList = response.firstValue.valueOf();
       //console.log("myList " + myList);
-      setRefundedAmount(myList/1000000000000000000);
+      setRefundedAmount(myList/multiplier);
 
     } catch (error) {
       console.log(error);
@@ -139,7 +131,7 @@ export default function RefundCardZ2I({ contractByToken }) {
       }
   }
 
-  var balanceToken = accountBalance/1000000000000000000;
+  var balanceToken = accountBalance/multiplier;
   if(!balanceToken){
     balanceToken = 0;
   }
@@ -271,7 +263,7 @@ export default function RefundCardZ2I({ contractByToken }) {
           </VuiBox>
           <VuiBox display="flex" justifyContent="center" alignItems="center" textAlign="center" mt={2}>
             <VuiTypography  variant="h4" color="white">
-            {egldAmount/1000000000000000000} EGLD
+            {egldAmount/multiplier} EGLD
             </VuiTypography>
           </VuiBox>          
         </Grid> 
