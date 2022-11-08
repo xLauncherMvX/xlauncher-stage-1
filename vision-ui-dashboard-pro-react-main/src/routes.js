@@ -43,7 +43,7 @@ import { IoHome, IoServer, IoCart, IoArrowUndo } from "react-icons/io5";
 
 const routes = [
   {
-    //type: "collapse",
+    // type: "collapse",
     name: "Home",
     key: "dashboards",
     icon: <IoHome size="15px" color="inherit" />,
@@ -56,6 +56,14 @@ const routes = [
       }
     ]
   },
+  {
+    type: "link",
+    name: "Dashboard",
+    key: "dashboards",
+    icon: <IoHome size="15px" color="inherit" />,
+    href: "/"
+  },
+
   {
     type: "collapse",
     name: "Staking",
@@ -144,20 +152,20 @@ const routes = [
   // },
 
   //Refunds Pages
-  {
-    type: "collapse",
-    name: "Refunds",
-    key: "refunds",
-    icon: <IoArrowUndo size="15px" color="inherit" />,
-    collapse: [      
-      {
-        name: "Zero2Infinity",
-        key: "refundsZ2I",
-        route: "/refunds/z2iRefund",
-        component: Z2IRefund
-      }
-    ]
-  },
+  // {
+  //   type: "collapse",
+  //   name: "Refunds",
+  //   key: "refunds",
+  //   icon: <IoArrowUndo size="15px" color="inherit" />,
+  //   collapse: [
+  //     {
+  //       name: "Zero2Infinity",
+  //       key: "refundsZ2I",
+  //       route: "/refunds/z2iRefund",
+  //       component: Z2IRefund
+  //     }
+  //   ]
+  // },
 
   //Project Pages
   {

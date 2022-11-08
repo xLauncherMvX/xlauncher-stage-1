@@ -27,26 +27,45 @@ import Icon from "@mui/material/Icon";
 import VuiBox from "components/VuiBox";
 import VuiTypography from "components/VuiTypography";
 
-function DefaultInfoCard({ color, icon, title, description, value }) {
+function DefaultInfoCard({ color, icon, title, description, value, mt, imgSrc }) {
   return (
     <Card sx={{ height: "100%", pt: "25px" }}>
-      <VuiBox display="flex" justifyContent="center" mb="22px">
-        <VuiBox
-          display="grid"
-          justifyContent="center"
-          alignItems="center"
-          bgColor={color}
-          color="white"
-          width="64px"
-          height="64px"
-          shadow="md"
-          borderRadius="lg"
-        >
-          {icon}
+      {icon? (
+          <VuiBox display="flex" justifyContent="center" mb="22px">
+              <VuiBox
+                  display="grid"
+                  justifyContent="center"
+                  alignItems="center"
+                  bgColor={color}
+                  color="white"
+                  width="64px"
+                  height="64px"
+                  shadow="md"
+                  borderRadius="lg"
+              >
+                  {icon}
+              </VuiBox>
+          </VuiBox>
+      ):(
+          ""
+      )}
+    {imgSrc ? (
+        <VuiBox display="flex" justifyContent="center" mb="22px">
+            <VuiBox
+                display="grid"
+                justifyContent="center"
+                alignItems="center"
+                component="img"
+                src={imgSrc}
+                width="100px"
+                height="130px"
+            />
         </VuiBox>
-      </VuiBox>
+    ):(
+        ""
+    )}
       <VuiBox textAlign="center" lineHeight={1.25} display="flex" flexDirection="column">
-        <VuiTypography variant="lg" color="white" textTransform="capitalize" mb="4px">
+        <VuiTypography variant="h6" color="white" textTransform="capitalize" mb="4px">
           {title}
         </VuiTypography>
         {description && (
@@ -56,7 +75,7 @@ function DefaultInfoCard({ color, icon, title, description, value }) {
         )}
         {description && !value ? null : <Divider light />}
         {value && (
-          <VuiTypography variant="lg" color="white" fontWeight="bold" fontSize={{ xl: 20 }}>
+          <VuiTypography variant="lg" color="success" fontWeight="bold" fontSize={{ xl: 20 }}>
             {value}
           </VuiTypography>
         )}
@@ -69,13 +88,11 @@ function DefaultInfoCard({ color, icon, title, description, value }) {
 DefaultInfoCard.defaultProps = {
   color: "info",
   value: "",
-  description: "",
+  description: ""
 };
 
 // Typechecking props for the DefaultInfoCard
 DefaultInfoCard.propTypes = {
-  color: PropTypes.oneOf(["primary", "secondary", "info", "success", "warning", "error", "dark"]),
-  icon: PropTypes.node.isRequired,
   title: PropTypes.string.isRequired,
   description: PropTypes.string,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),

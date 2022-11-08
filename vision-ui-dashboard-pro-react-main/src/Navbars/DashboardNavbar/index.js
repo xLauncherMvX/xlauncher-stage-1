@@ -285,13 +285,13 @@ function DashboardNavbar({ absolute, light, isMini }) {
   }
 
   //Get the nfts account amount
-  const [rustNFTS, setRustNFTS] = useState(0);
-  const [bronzeNFTS, setBronzeNFTS] = useState(0);
-  const [silverNFTS, setSilverNFTS] = useState(0);
-  const [goldNFTS, setGoldNFTS] = useState(0);
-  const [platinumNFTS, setPlatinumNFTS] = useState(0);
-  const [legendaryNFTS, setLegendaryNFTS] = useState(0);
-  const [acountNFTs, setAcountNFTs] = useState(0);
+  const [rustNFTS, setRustNFTS] = useState("0");
+  const [bronzeNFTS, setBronzeNFTS] = useState("0");
+  const [silverNFTS, setSilverNFTS] = useState("0");
+  const [goldNFTS, setGoldNFTS] = useState("0");
+  const [platinumNFTS, setPlatinumNFTS] = useState("0");
+  const [legendaryNFTS, setLegendaryNFTS] = useState("0");
+  const [acountNFTs, setAcountNFTs] = useState("0");
   var nftApiLink = "https://api.elrond.com/accounts/" + address + "/nfts?size=500&search=XLHO-5135c9";
   const getAcountNFTS = async () => {
     try {
@@ -303,12 +303,12 @@ function DashboardNavbar({ absolute, light, isMini }) {
             }
           });
       const json = await response.json();
-      let countRust = 0;
-      let countBronze = 0;
-      let countSilver = 0;
-      let countGold = 0;
-      let countPlatinum = 0;
-      let countLegendary = 0;
+      var countRust = 0;
+      var countBronze = 0;
+      var countSilver = 0;
+      var countGold = 0;
+      var countPlatinum = 0;
+      var countLegendary = 0;
       if(json){
         json.map(item => {
           let nftSwitcher = item.metadata.attributes[3].value;

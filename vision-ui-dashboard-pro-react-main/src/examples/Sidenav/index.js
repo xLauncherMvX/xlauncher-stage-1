@@ -62,6 +62,9 @@ import {
 
 // Vision UI Dashboard PRO React context
 import { useVisionUIController, setMiniSidenav, setTransparentSidenav } from "context";
+import VuiButton from "../../components/VuiButton";
+import WebsiteIcon from "@mui/icons-material/Link";
+import IconButton from "@mui/material/IconButton";
 
 function Sidenav({ color, brand, brandName, routes, ...rest }) {
   const [openCollapse, setOpenCollapse] = useState(false);
@@ -214,20 +217,32 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
       } else if (type === "divider") {
         returnValue = <Divider key={key} />;
       } else if (type === "link") {
-        returnValue = 
-        <Link
-          href={href}
-          key={key}
-          sx={{ textDecoration: "none" }}
-        >
-          <SidenavCollapse
-            color={color}
-            name={name}
-            icon={icon}
-            active={key === collapseName}
-            noCollapse={noCollapse}
-          />
-        </Link>;
+        returnValue =
+            // <div className="class1">
+            //   <VuiTypography
+            //       component="a"
+            //       href={href}
+            //       variant="body2"
+            //       color="white"
+            //       fontWeight="regular"
+            //   >
+            //     <Icon color={"info"} className="class2">{icon}</Icon>
+            //     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            //     See more
+            //
+            //   </VuiTypography>
+            // </div>
+            <VuiButton
+              variant="text"
+              size="large"
+              className="class1"
+              sx={{marginLeft: 2.3}}
+              href={href}
+              key={key}
+            >
+              <Icon color={"info"} className="class2">{icon}</Icon>
+              <VuiTypography fontWeight="regular" color="white" variant="subtitle2" sx={{marginLeft: 1.8, fontSize: "14px"}}>{name}</VuiTypography>
+            </VuiButton>
     }  
 
       return returnValue;

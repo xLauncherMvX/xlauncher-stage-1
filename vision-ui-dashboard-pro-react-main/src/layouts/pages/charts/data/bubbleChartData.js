@@ -64,13 +64,11 @@ export const bubbleChartOptions = {
   tooltip: {
     theme: "dark",
   },
-  stroke: {
-    show: false,
-  },
   dataLabels: {
     enabled: false,
   },
   stroke: {
+    show: false,
     curve: "smooth",
   },
   xaxis: {

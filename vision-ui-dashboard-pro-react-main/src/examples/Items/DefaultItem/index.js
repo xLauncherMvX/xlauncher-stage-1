@@ -30,14 +30,14 @@ import VuiTypography from "components/VuiTypography";
 // custom styles for the DefaultItem
 import { defaultItemIconBox } from "examples/Items/DefaultItem/styles";
 
-const DefaultItem = forwardRef(({ color, icon, title, description, ...rest }, ref) => (
+const DefaultItem = forwardRef(({ color, textColor, icon, title, description, ...rest }, ref) => (
   <VuiBox {...rest} ref={ref} display="flex" alignItems="center">
     <VuiBox sx={(theme) => defaultItemIconBox(theme, { color })}>{icon}</VuiBox>
     <VuiBox ml={2} lineHeight={1}>
       <VuiTypography display="block" variant="button" color="white" fontWeight="bold">
         {title}
       </VuiTypography>
-      <VuiTypography variant="button" fontWeight="regular" color="text">
+      <VuiTypography variant="button" fontWeight="regular" color={textColor}>
         {description}
       </VuiTypography>
     </VuiBox>
@@ -47,14 +47,14 @@ const DefaultItem = forwardRef(({ color, icon, title, description, ...rest }, re
 // Setting default values for the props of DefaultItem
 DefaultItem.defaultProps = {
   color: "info",
+  textColor: "text"
 };
 
 // Typechecking props for the DefaultItem
 DefaultItem.propTypes = {
   color: PropTypes.oneOf(["primary", "secondary", "info", "success", "warning", "error", "dark"]),
   icon: PropTypes.node.isRequired,
-  title: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired
 };
 
 export default DefaultItem;
