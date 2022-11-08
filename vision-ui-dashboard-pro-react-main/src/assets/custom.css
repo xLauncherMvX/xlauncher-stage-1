@@ -230,14 +230,14 @@ dapp-core-ui-component .btn-primary:active {
   
   .odometerStart{
     display: inline-block;
-    animation-name: moveup 0.25s;
+    /*animation-name: moveup 0.25s;*/
     animation: moveup 0.25s;
     -webkit-animation: moveup 0.25s;
     animation-fill-mode: forwards;
   }
   .odometerEnd{
     display: inline-block;
-    animation-name: movedown 0.25s;
+    /*animation-name: movedown 0.25s;*/
     animation: movedown 0.25s;
     -webkit-animation: movedown 0.25s;
     animation-fill-mode: forwards;
