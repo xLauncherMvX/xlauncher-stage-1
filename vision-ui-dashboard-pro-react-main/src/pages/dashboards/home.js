@@ -416,7 +416,7 @@ function Home() {
         formatedPriceLabels[i] = getDayMonth(element);
       });
       var formatedPriceValues = {};
-      json.o.forEach((element2,j) => {
+      json.c.forEach((element2,j) => {
         formatedPriceValues[j] = calc4(element2);
       });
       setPriceLabels(formatedPriceLabels);
