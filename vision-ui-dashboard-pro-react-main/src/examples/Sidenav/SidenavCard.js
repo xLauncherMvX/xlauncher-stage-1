@@ -79,8 +79,8 @@ function SidenavCard() {
             <VuiBox mt="5px">
                 <VuiButton
                     component={Link}
-                    href="/#/miscellaneous/team"
-                    target="_blank"
+                    href="/#/team"
+                    target="_self"
                     rel="noreferrer"
                     size="small"
                     sx={({ palette: { gradients, white }, functions: { linearGradient } }) => ({

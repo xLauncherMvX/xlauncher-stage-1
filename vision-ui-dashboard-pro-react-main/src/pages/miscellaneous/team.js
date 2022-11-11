@@ -14,9 +14,11 @@ import bogdan from "assets/images/team/bogdan.jpg";
 import cosmin from "assets/images/team/cosmin.jpg";
 import ionut from "assets/images/team/ionut.jpg";
 import radu from "assets/images/team/radu.jpg";
+import arcStake from "assets/images/partners/arc_stake.jpeg";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import WebsiteIcon from "@mui/icons-material/Public";
 import IconButton from "@mui/material/IconButton";
+import React from "react";
 
 const openInNewTab = (url) => {
     const newWindow = window.open(url, '_blank', 'noopener,noreferrer')
@@ -129,6 +131,31 @@ function Team() {
                     <IconButton color="white" onClick={()=> openInNewTab("https://arcstake.com/")}>
                         <WebsiteIcon fontSize="large" />
                     </IconButton>
+                </Grid>
+            </Grid>
+            <Grid container spacing={3}  mt={3}>
+                <Grid item xs={12} lg={12}>
+                    <VuiTypography
+                        variant={window.innerWidth < values.sm ? "h3" : "h2"}
+                        textTransform="capitalize"
+                        fontWeight="bold"
+                        color="white"
+                    >
+                        Partners
+                    </VuiTypography>
+                </Grid>
+                <Grid item xs={12} md={4} lg={4} align={"center"} mt={4} alignItems={"center"}>
+                    <VuiBox
+                        component="img"
+                        src={arcStake}
+                        mb="8px"
+                        borderRadius="15px"
+                        width="250px"
+                        height="100px"
+                    />
+                    <VuiTypography variant="h4" fontWeight="bold" color="light">
+                        ARC Stake
+                    </VuiTypography>
                 </Grid>
             </Grid>
         </Main>

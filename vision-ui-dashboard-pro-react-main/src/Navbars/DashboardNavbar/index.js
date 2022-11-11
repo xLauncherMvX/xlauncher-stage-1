@@ -218,16 +218,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
   }  
 
   let connectButton = isLoggedIn ? (
-    <VuiButton 
-      fullWidth
-      variant="outlined" 
-      color="light" 
-      size="small" 
-      sx={{ minWidth: 145}}
-      onClick={() => logout(`${window.location.origin}/`)}
-    >
-        Disconnect
-    </VuiButton>
+    ""
   ) : (
     <VuiButton 
       fullWidth
@@ -377,57 +368,17 @@ function DashboardNavbar({ absolute, light, isMini }) {
   if(isLoggedIn){
     return (   
       <React.Fragment>    
-        <Grid container spacing={1}>           
-          <Grid item xs={6} sm={6} md={3} lg={2}>  
+        <Grid container spacing={1}>
+          <Grid item xs={12} sm={12} md={6} lg={8}>
+
+          </Grid>
+          <Grid item xs={6} sm={6} md={3} lg={2}>
             <VuiButton fullWidth variant="outlined" color="light" size="small" onClick={handleMiniSidenav} sx={{ minWidth: 140}}>
               <Icon>{miniSidenav ? "menu_open" : "menu"}</Icon>&nbsp;
               Menu
             </VuiButton>
-          </Grid> 
-          <Grid item xs={6} sm={6} md={3} lg={2}>  
-            {connectButton}  
-          </Grid>   
-          {/* <Grid item xs={6} sm={6} md={3} lg={2}>  
-            <VuiButton 
-              fullWidth 
-              variant="outlined"
-              color="light"
-              size="small"
-              onClick={()=> openInNewTab('https://x-launcher.synaps.me')} 
-              sx={{ minWidth: 140}}
-            >
-              KYC
-            </VuiButton>
-          </Grid>   */}
-          <Grid item xs={12} sm={12} md={3} lg={2}>
-
           </Grid>
-
-          <Grid item xs={6} sm={6} md={3} lg={2}>  
-            <VuiButton 
-              fullWidth 
-              variant="outlined"
-              color="light"
-              size="small"
-              onClick={()=> openInNewTab('https://www.frameit.gg/marketplace/XLHO-5135c9/items')}
-              sx={{ minWidth: 140}}
-            >
-              XLH NFT Mint
-            </VuiButton>
-          </Grid>  
-          <Grid item xs={6} sm={6} md={3} lg={2}>  
-            <VuiButton 
-              fullWidth 
-              variant="outlined"
-              color="light"
-              size="small"
-              onClick={()=> openInNewTab('https://forms.gle/XdiY6kTF2fNUcxZy8')} 
-              sx={{ minWidth: 140}}
-            >
-              APPLY TO US
-            </VuiButton>
-          </Grid>
-          <Grid item xs={12} sm={12} md={3} lg={2}> 
+          <Grid item xs={6} sm={6} md={3} lg={2}>
             <VuiButton
               variant="outlined"
               color="light"
@@ -462,7 +413,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
                     iconOnly className="float-right"
                     onClick={() =>  handleClose()}
                 >
-                  <Icon>close</Icon>
+                  <Icon sx={{marginLeft: -0.1}}>close</Icon>
                 </VuiButton>
                 <VuiBox display="flex" mb="12px">
                   <VuiBox display="flex" flexDirection="column" lineHeight={0}>
@@ -525,111 +476,132 @@ function DashboardNavbar({ absolute, light, isMini }) {
                     Tokens:
                   </VuiTypography>
                   <Divider light />
-                  <Grid container>
-                    <Grid item xs={6}>
+                  <Grid container height={"100%"}>
+                    <Grid item xs={12}  className="overflow-item">
+                      <Grid container>
+                        <Grid item xs={6}>
+                          <VuiTypography
+                              fontSize={12}
+                              color="white"
+                              textTransform="capitalize"
+                              marginBottom="5px"
+                              marginTop="2px"
+                          >
+                            {new Intl.NumberFormat("en-GB", {
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            }).format(xlhBalance)}
+                            &nbsp; &nbsp; XLH
+                          </VuiTypography>
+                        </Grid>
+                        <Grid item xs={6}>
+                          <VuiTypography
+                              fontSize={12}
+                              color="white"
+                              textTransform="capitalize"
+                              marginBottom="5px"
+                              marginTop="2px"
+                          >
+                            {calc2(egldAccount)}
+                            &nbsp; &nbsp; EGLD
+                          </VuiTypography>
+                        </Grid>
+                      </Grid>
+
                       <VuiTypography
-                          fontSize={12}
-                          color="white"
+                          fontSize={14}
+                          color="success"
                           textTransform="capitalize"
-                          marginBottom="5px"
-                          marginTop="2px"
+                          mt={4}
                       >
-                        {new Intl.NumberFormat("en-GB", {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2,
-                        }).format(xlhBalance)}
-                        &nbsp; &nbsp; XLH
+                        XLH Origins NFTS ({rustNFTS + bronzeNFTS + silverNFTS + goldNFTS + platinumNFTS + legendaryNFTS})
                       </VuiTypography>
-                    </Grid>
-                    <Grid item xs={6}>
-                      <VuiTypography
-                          fontSize={12}
-                          color="white"
-                          textTransform="capitalize"
-                          marginBottom="5px"
-                          marginTop="2px"
-                      >
-                        {calc2(egldAccount)}
-                        &nbsp; &nbsp; EGLD
-                      </VuiTypography>
+                      <Divider light />
+                      <Grid container>
+                        <Grid item xs={4}>
+                          <VuiTypography
+                              fontSize={12}
+                              color="white"
+                              textTransform="capitalize"
+                              marginBottom="5px"
+                              marginTop="2px"
+                          >
+                            Rust: {rustNFTS}
+                          </VuiTypography>
+                        </Grid>
+                        <Grid item xs={4}>
+                          <VuiTypography
+                              fontSize={12}
+                              color="white"
+                              textTransform="capitalize"
+                              marginBottom="5px"
+                              marginTop="2px"
+                          >
+                            Bronze: {bronzeNFTS}
+                          </VuiTypography>
+                        </Grid>
+                        <Grid item xs={4}>
+                          <VuiTypography
+                              fontSize={12}
+                              color="white"
+                              textTransform="capitalize"
+                              marginBottom="5px"
+                              marginTop="2px"
+                          >
+                            Silver: {silverNFTS}
+                          </VuiTypography>
+                        </Grid>
+                        <Grid item xs={4}>
+                          <VuiTypography
+                              fontSize={12}
+                              color="white"
+                              textTransform="capitalize"
+                              marginBottom="5px"
+                              marginTop="2px"
+                          >
+                            Gold: {goldNFTS}
+                          </VuiTypography>
+                        </Grid>
+                        <Grid item xs={4}>
+                          <VuiTypography
+                              fontSize={12}
+                              color="white"
+                              textTransform="capitalize"
+                              marginBottom="5px"
+                              marginTop="2px"
+                          >
+                            Platinum: {platinumNFTS}
+                          </VuiTypography>
+                        </Grid>
+                        <Grid item xs={4}>
+                          <VuiTypography
+                              fontSize={12}
+                              color="white"
+                              textTransform="capitalize"
+                              marginBottom="5px"
+                              marginTop="2px"
+                          >
+                            Legendary: {legendaryNFTS}
+                          </VuiTypography>
+                        </Grid>
+                      </Grid>
                     </Grid>
                   </Grid>
-
-                  <VuiTypography
-                      fontSize={14}
-                      color="success"
-                      textTransform="capitalize"
-                      mt={4}
-                  >
-                    XLH Origins NFTS ({rustNFTS + bronzeNFTS + silverNFTS + goldNFTS + platinumNFTS + legendaryNFTS})
-                  </VuiTypography>
                   <Divider light />
                   <Grid container>
-                    <Grid item xs={4}>
-                      <VuiTypography
-                          fontSize={12}
-                          color="white"
-                          textTransform="capitalize"
-                          marginBottom="5px"
-                          marginTop="2px"
+                    <Grid item xs={12} sm={12} md={12} lg={12} mt={3}>
+                      <VuiButton
+                          fullWidth
+                          variant="outlined"
+                          color="light"
+                          size="small"
+                          sx={{ minWidth: 145}}
+                          onClick={() => logout(`${window.location.origin}/`)}
                       >
-                        Rust: {rustNFTS}
-                      </VuiTypography>
-                    </Grid>
-                    <Grid item xs={4}>
-                      <VuiTypography
-                          fontSize={12}
-                          color="white"
-                          textTransform="capitalize"
-                          marginBottom="5px"
-                          marginTop="2px"
-                      >
-                        Bronze: {bronzeNFTS}
-                      </VuiTypography>
-                    </Grid>
-                    <Grid item xs={4}>
-                      <VuiTypography
-                          fontSize={12}
-                          color="white"
-                          textTransform="capitalize"
-                          marginBottom="5px"
-                          marginTop="2px"
-                      >
-                        Silver: {silverNFTS}
-                      </VuiTypography>
-                    </Grid>
-                    <Grid item xs={4}>
-                      <VuiTypography
-                          fontSize={12}
-                          color="white"
-                          textTransform="capitalize"
-                          marginBottom="5px"
-                          marginTop="2px"
-                      >
-                        Gold: {goldNFTS}
-                      </VuiTypography>
-                    </Grid>
-                    <Grid item xs={4}>
-                      <VuiTypography
-                          fontSize={12}
-                          color="white"
-                          textTransform="capitalize"
-                          marginBottom="5px"
-                          marginTop="2px"
-                      >
-                        Platinum: {platinumNFTS}
-                      </VuiTypography>
-                    </Grid>
-                    <Grid item xs={4}>
-                      <VuiTypography
-                          fontSize={12}
-                          color="white"
-                          textTransform="capitalize"
-                          marginBottom="5px"
-                          marginTop="2px"
-                      >
-                        Legendary: {legendaryNFTS}
-                      </VuiTypography>
+                        <VuiTypography color={"white"} sx={{fontSize: 13}}>
+                          Disconnect
+                        </VuiTypography>
+                      </VuiButton>
                     </Grid>
                   </Grid>
                 </VuiBox>
@@ -643,7 +615,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
     return (   
       <React.Fragment>    
         <Grid container spacing={1}> 
-          <Grid item xs={12} sm={12} md={0} lg={4}> 
+          <Grid item xs={12} sm={12} md={6} lg={8}>
   
           </Grid>
           <Grid item xs={6} sm={6} md={3} lg={2}>  
@@ -654,31 +626,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
           </Grid> 
           <Grid item xs={6} sm={6} md={3} lg={2}>  
             {connectButton}  
-          </Grid>    
-          <Grid item xs={6} sm={6} md={3} lg={2}>  
-            <VuiButton 
-              fullWidth
-              variant="outlined"
-              color="white"
-              size="small"
-              onClick={()=> openInNewTab('https://www.frameit.gg/marketplace/XLHO-5135c9/items')}
-              sx={{ minWidth: 140}}
-            >
-              XLH NFT Mint
-            </VuiButton>
-          </Grid>     
-          <Grid item xs={6} sm={6} md={3} lg={2}>  
-            <VuiButton 
-              fullWidth 
-              variant="outlined"
-              color="white"
-              size="small"
-              onClick={()=> openInNewTab('https://forms.gle/XdiY6kTF2fNUcxZy8')} 
-              sx={{ minWidth: 140}}
-            >
-              APPLY TO US
-            </VuiButton>
-          </Grid>    
+          </Grid>
           {connectLoggedinSection}   
         </Grid>   
       </React.Fragment>

@@ -38,6 +38,7 @@ import SidenavCollapse from "examples/Sidenav/SidenavCollapse";
 import SidenavList from "examples/Sidenav/SidenavList";
 import SidenavItem from "examples/Sidenav/SidenavItem";
 import SidenavCard from "examples/Sidenav/SidenavCard";
+import SidenavCustom from "examples/Sidenav/SidenavCustom";
 
 // Vision UI Dashboard PRO custom icons
 import SimmmpleLogo from "examples/Icons/SimmmpleLogo";
@@ -65,6 +66,15 @@ import { useVisionUIController, setMiniSidenav, setTransparentSidenav } from "co
 import VuiButton from "../../components/VuiButton";
 import WebsiteIcon from "@mui/icons-material/Link";
 import IconButton from "@mui/material/IconButton";
+
+const openInNewTab = (url) => {
+    const newWindow = window.open(url, '_blank', 'noopener,noreferrer')
+    if (newWindow) newWindow.opener = null;
+}
+const openInSameTab = (url) => {
+    const newWindow = window.open(url, '_self', 'noopener,noreferrer')
+    if (newWindow) newWindow.opener = null;
+}
 
 function Sidenav({ color, brand, brandName, routes, ...rest }) {
   const [openCollapse, setOpenCollapse] = useState(false);
@@ -218,32 +228,59 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
         returnValue = <Divider key={key} />;
       } else if (type === "link") {
         returnValue =
-            // <div className="class1">
-            //   <VuiTypography
-            //       component="a"
-            //       href={href}
-            //       variant="body2"
-            //       color="white"
-            //       fontWeight="regular"
-            //   >
-            //     <Icon color={"info"} className="class2">{icon}</Icon>
-            //     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            //     See more
-            //
-            //   </VuiTypography>
-            // </div>
             <VuiButton
               variant="text"
               size="large"
               className="class1"
-              sx={{marginLeft: 2.3}}
+              sx={{marginLeft: 2.52}}
               href={href}
               key={key}
             >
               <Icon color={"info"} className="class2">{icon}</Icon>
-              <VuiTypography fontWeight="regular" color="white" variant="subtitle2" sx={{marginLeft: 1.8, fontSize: "14px"}}>{name}</VuiTypography>
-            </VuiButton>
-    }  
+              <VuiTypography fontWeight="regular" color="white" variant="subtitle2" sx={{marginLeft: 1.55, fontSize: "14px"}}>{name}</VuiTypography>
+            </VuiButton>;
+      }  else if (type === "externalLink") {
+        returnValue =
+            <div>
+                <VuiButton
+                    variant="text"
+                    size="large"
+                    className="class1"
+                    sx={{marginLeft: 2.52}}
+                    onClick={()=>openInNewTab(href)}
+                    key={key}
+                >
+                  <Icon color={"info"} className="class2">{icon}</Icon>
+                  <VuiTypography fontWeight="regular" color="white" variant="subtitle2" sx={{marginLeft: 1.55, fontSize: "14px"}}>{name}</VuiTypography>
+                </VuiButton>
+            </div>;
+      } else if (type === "customInternal"){
+          returnValue =
+              <SidenavCustom
+                  color={color}
+                  key={key}
+                  name={name}
+                  icon={icon}
+                  active={key === collapseName}
+                  open={openCollapse === name}
+                  onClick={() => openInSameTab(href)}
+              >
+                  {collapse ? renderCollapse(collapse) : null}
+              </SidenavCustom>;
+      } else if (type === "customExternal"){
+          returnValue =
+              <SidenavCustom
+                  color={color}
+                  key={key}
+                  name={name}
+                  icon={icon}
+                  active={key === collapseName}
+                  open={openCollapse === name}
+                  onClick={() => openInNewTab(href)}
+              >
+                  {collapse ? renderCollapse(collapse) : null}
+              </SidenavCustom>;
+      }
 
       return returnValue;
     }

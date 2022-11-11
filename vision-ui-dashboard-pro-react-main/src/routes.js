@@ -40,32 +40,36 @@ import { IoBuild } from "react-icons/io5";
 import { IoDocuments } from "react-icons/io5";
 import { FaShoppingCart, FaPiedPiperPp } from "react-icons/fa";
 import { IoHome, IoServer, IoCart, IoArrowUndo } from "react-icons/io5";
+import {AiFillFileAdd} from "react-icons/all";
+import {FaFileAlt} from "react-icons/fa";
+import {IoRocketSharp} from "react-icons/io5";
+
 
 const routes = [
+  //Home
   {
-    // type: "collapse",
     name: "Home",
     key: "dashboards",
     icon: <IoHome size="15px" color="inherit" />,
     collapse: [
       {
         name: "Dashboard",
-        key: "dashboards",
-        route: "/dashboards/home",
+        key: "dashboard",
+        route: "/dashboard",
         component: Home
       }
     ]
   },
   {
-    type: "link",
+    type: "customInternal",
     name: "Dashboard",
-    key: "dashboards",
+    key: "dashboard",
     icon: <IoHome size="15px" color="inherit" />,
-    href: "/"
+    href: "/#/dashboard"
   },
 
+  //Staking
   {
-    type: "collapse",
     name: "Staking",
     key: "staking",
     icon: <IoServer size="15px" color="inherit" />,
@@ -73,13 +77,22 @@ const routes = [
       {
         name: "Farms",
         key: "farms",
-        route: "/staking/farms",
+        route: "/staking",
         component: Staking
       }
     ]
   },
   {
-    type: "collapse",
+    type: "customInternal",
+    name: "Staking",
+    key: "staking",
+    icon: <IoServer size="15px" color="inherit" />,
+    href: "/#/staking"
+  },
+
+  //Projects
+  {
+    //type: "collapse",
     name: "Projects",
     key: "projects",
     icon: <FaPiedPiperPp size="15px" color="inherit" />,
@@ -87,11 +100,37 @@ const routes = [
       {
         name: "List",
         key: "list",
-        route: "/projects/list",
+        route: "/projects",
         component: Projects
       }
     ]
   },
+  {
+    type: "customInternal",
+    name: "Projects",
+    key: "projects",
+    icon: <FaPiedPiperPp size="15px" color="inherit" />,
+    href: "/#/projects"
+  },
+
+  //NFT Mint
+  {
+    type: "customExternal",
+    name: "Mint NFTS",
+    key: "nftMint",
+    icon: <IoRocketSharp size="15px" color="inherit" />,
+    href: "https://www.frameit.gg/marketplace/XLHO-5135c9/items"
+  },
+
+  //Apply to us
+  {
+    type: "customExternal",
+    name: "Apply to Us",
+    key: "apply",
+    icon: <FaFileAlt size="15px" color="inherit" />,
+    href: "https://forms.gle/XdiY6kTF2fNUcxZy8"
+  },
+
   {
     // type: "collapse",
     name: "Miscellaneous",
@@ -197,7 +236,7 @@ const routes = [
       {
         name: "Team",
         key: "team",
-        route: "/miscellaneous/Team",
+        route: "/team",
         component: Team
       }
     ]

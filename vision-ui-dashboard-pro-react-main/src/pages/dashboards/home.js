@@ -474,7 +474,7 @@ function Home() {
       <Main name="">
         <Grid container spacing={3}>
           {/*Title1*/}
-          <Grid item xs={12}>
+          <Grid item xs={12} mt={-8}>
             <VuiTypography
                 variant={window.innerWidth < values.sm ? "h3" : "h2"}
                 textTransform="capitalize"
