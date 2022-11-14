@@ -332,8 +332,6 @@ function Home() {
       </VuiButton>
   ;
 
-  var totalSupply = new Intl.NumberFormat("en-GB", {minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(100000000);
-
   var tokenHolders = "0";
   if(tokenDetails.accounts){
     tokenHolders = tokenDetails.accounts;
@@ -442,7 +440,18 @@ function Home() {
     priceLabels[12],
     priceLabels[13],
     priceLabels[14]
-  ]
+  ];
+
+  var burnedSupply = "0";
+  if(tokenDetails.burnt){
+    burnedSupply = new Intl.NumberFormat("en-GB", {minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(tokenDetails.burnt / multiplier);
+  }
+
+  var totalSupply = "0";
+  if(tokenDetails.supply){
+    totalSupply = new Intl.NumberFormat("en-GB", {minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(tokenDetails.supply);
+  }
+
 
   useEffect(() => {
     getTokenDetails();
@@ -535,7 +544,7 @@ function Home() {
                     textColor="success"
                     icon={<FaBurn color="white" size="22px" />}
                     title="Burned"
-                    description={tokenDetails.burnt + " XLH Burned"}
+                    description={burnedSupply + " XLH Burned"}
                 />
               </VuiBox>
               <VuiBox mt={3.5}>
