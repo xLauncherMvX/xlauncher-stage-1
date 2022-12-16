@@ -48,8 +48,9 @@ import {IoRocketSharp} from "react-icons/io5";
 const routes = [
   //Home
   {
+    //type: "collapse",
     name: "Home",
-    key: "dashboards",
+    key: "dashboard",
     icon: <IoHome size="15px" color="inherit" />,
     collapse: [
       {
@@ -65,18 +66,19 @@ const routes = [
     name: "Dashboard",
     key: "dashboard",
     icon: <IoHome size="15px" color="inherit" />,
-    href: "/#/dashboard"
+    href: "/dashboard"
   },
 
   //Staking
   {
+    //type: "collapse",
     name: "Staking",
     key: "staking",
     icon: <IoServer size="15px" color="inherit" />,
     collapse: [
       {
         name: "Farms",
-        key: "farms",
+        key: "staking",
         route: "/staking",
         component: Staking
       }
@@ -87,7 +89,7 @@ const routes = [
     name: "Staking",
     key: "staking",
     icon: <IoServer size="15px" color="inherit" />,
-    href: "/#/staking"
+    href: "/staking",
   },
 
   //Projects
@@ -110,7 +112,7 @@ const routes = [
     name: "Projects",
     key: "projects",
     icon: <FaPiedPiperPp size="15px" color="inherit" />,
-    href: "/#/projects"
+    href: "/projects"
   },
 
   //NFT Mint

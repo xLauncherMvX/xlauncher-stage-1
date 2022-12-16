@@ -37,6 +37,7 @@ import VuiTypography from "components/VuiTypography";
 import SidenavCollapse from "examples/Sidenav/SidenavCollapse";
 import SidenavList from "examples/Sidenav/SidenavList";
 import SidenavItem from "examples/Sidenav/SidenavItem";
+import SidenavItemCustom from "examples/Sidenav/SidenavItemCustom";
 import SidenavCard from "examples/Sidenav/SidenavCard";
 import SidenavCustom from "examples/Sidenav/SidenavCustom";
 
@@ -256,17 +257,11 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
             </div>;
       } else if (type === "customInternal"){
           returnValue =
-              <SidenavCustom
-                  color={color}
-                  key={key}
-                  name={name}
-                  icon={icon}
-                  active={key === collapseName}
-                  open={openCollapse === name}
-                  onClick={() => openInSameTab(href)}
-              >
-                  {collapse ? renderCollapse(collapse) : null}
-              </SidenavCustom>;
+              <div key={key}>
+                  <NavLink to={href} key={key} sx={{ textDecoration: "none" }}>
+                      <SidenavItemCustom color={color} name={name} key={key} icon={icon} active={key === itemName}/>
+                  </NavLink>
+              </div>
       } else if (type === "customExternal"){
           returnValue =
               <SidenavCustom
