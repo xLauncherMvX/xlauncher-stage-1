@@ -310,3 +310,6 @@ dapp-core-ui-component .btn-primary:active {
     left: 50%;
     transform: translate(-50%,-50%);
 }
+.white-text{
+    color: white;
+}

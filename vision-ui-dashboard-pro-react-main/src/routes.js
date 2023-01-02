@@ -33,6 +33,7 @@ import Z2IRefund from "pages/refunds/z2iRefund";
 import EstarGames from "pages/projects/EstarGames";
 import EstarGamesSale from "pages/presale/estarGames";
 import Team from "pages/miscellaneous/team";
+import Admin from "pages/miscellaneous/admin";
 
 // React icons
 import { IoDocument } from "react-icons/io5";
@@ -243,6 +244,22 @@ const routes = [
       }
     ]
   },
+
+  //Admin page
+  {
+    //type: "collapse",
+    name: "Admin",
+    key: "admin",
+    icon: <IoHome size="15px" color="inherit" />,
+    collapse: [
+      {
+        name: "Admin",
+        key: "admin",
+        route: "/admin",
+        component: Admin
+      }
+    ]
+  }
 ];
 
 export default routes;
