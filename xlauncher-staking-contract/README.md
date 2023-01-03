@@ -135,7 +135,12 @@ to the unstake funds. This is why wee need to keep track of 2 value fieds `reque
 
 ### totalStakedValue
 
-`SingleValueMapper<BigUint>` that is being updated everytime funds are being added for staking or removed from staking. 
+`SingleValueMapper<BigUint>` that is being updated everytime funds are being added for staking or removed from staking.
+
+### relevant branches
+
+- z2i buy back `059-d-z2i-buy-back`
+- main-sc `main-sc`
 
 
 
