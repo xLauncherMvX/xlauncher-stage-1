@@ -313,3 +313,8 @@ dapp-core-ui-component .btn-primary:active {
 .white-text{
     color: white;
 }
+
+.my-image {
+    max-width: 100%;
+    height: auto;
+}

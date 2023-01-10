@@ -8,7 +8,7 @@ import VuiButton from "components/VuiButton";
 
 import "assets/custom.css";
 
-function DefaultProjectCard({ image, label, title, description, action }) {
+function DefaultProjectCard({ image, label, title, description, action, action2 }) {
 
   return (
     <VuiBox
@@ -26,6 +26,12 @@ function DefaultProjectCard({ image, label, title, description, action }) {
         borderRadius="15px"
         height= "250px"
         width="100%"
+        className="my-image"
+        sx={({ breakpoints }) => ({
+            [breakpoints.only("xl")]: {
+                minHeight: "250px"
+            },
+        })}
       />
 
       <VuiBox
@@ -70,7 +76,7 @@ function DefaultProjectCard({ image, label, title, description, action }) {
             {description}
           </VuiTypography>
         </VuiBox>
-        <VuiBox display="flex" justifyContent="space-between" alignItems="center">
+        <VuiBox display="flex" alignItems="center">
           {action.type === "internal" ? (
             <VuiButton
               component={Link}
@@ -94,6 +100,20 @@ function DefaultProjectCard({ image, label, title, description, action }) {
               {action.label}
             </VuiButton>
           )}
+            {action2 ? (
+                <VuiButton
+                    component="a"
+                    href={action2.route}
+                    target="_blank"
+                    rel="noreferrer"
+                    variant="outlined"
+                    size="small"
+                    color={action2.color}
+                    sx={{marginLeft: "10px"}}
+                >
+                    {action2.label}
+                </VuiButton>
+            ) : "" }
         </VuiBox>
       </VuiBox>
     </VuiBox>

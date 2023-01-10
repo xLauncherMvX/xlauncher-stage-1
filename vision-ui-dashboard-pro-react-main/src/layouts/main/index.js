@@ -128,7 +128,7 @@ function Main(props) {
               fontSize={size.sm}
               px={1.5}
             >
-              &copy; {new Date().getFullYear()}, made with
+              &copy; 2022, made with
               <VuiBox fontSize={size.md} color="text" mb={-0.5} mx={0.25} align="center">
                 <Icon color="error" fontSize="inherit">
                   favorite

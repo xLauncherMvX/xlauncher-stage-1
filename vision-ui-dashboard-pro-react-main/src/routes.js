@@ -34,6 +34,7 @@ import EstarGames from "pages/projects/EstarGames";
 import EstarGamesSale from "pages/presale/estarGames";
 import Team from "pages/miscellaneous/team";
 import Admin from "pages/miscellaneous/admin";
+import VestaxFinance from "pages/projects/VestaXFinance";
 
 // React icons
 import { IoDocument } from "react-icons/io5";
@@ -226,6 +227,12 @@ const routes = [
         key: "projects2",
         route: "/projects/EstarGames",
         component: EstarGames
+      },
+      {
+        name: "VestaxFinance",
+        key: "projects3",
+        route: "/projects/VestaxFinance",
+        component: VestaxFinance
       }
     ]
   },

@@ -29,12 +29,19 @@ import VuiBadge from "components/VuiBadge";
 // Timeline context
 import { useTimeline } from "examples/Timeline/context";
 
+
 // Custom styles for the TimelineItem
 import { timelineItem, timelineItemIcon } from "examples/Timeline/TimelineItem/styles";
 
 import "assets/custom.css";
+import VuiButton from "../../../components/VuiButton";
 
-function TimelineItem({ color, icon, title, description, isWidgets, lastItem }) {
+const openInNewTab = (url) => {
+  const newWindow = window.open(url, '_blank', 'noopener,noreferrer')
+  if (newWindow) newWindow.opener = null;
+};
+
+function TimelineItem({ color, icon, title, description, isWidgets, lastItem, action }) {
   const isDark = useTimeline();
 
   return (
@@ -92,6 +99,21 @@ function TimelineItem({ color, icon, title, description, isWidgets, lastItem }) 
               {description}
             </VuiTypography>
           ) : null}
+
+          {action ? (
+              <VuiButton
+                  component="a"
+                  href={action.route}
+                  target="_blank"
+                  rel="noreferrer"
+                  variant="text"
+                  size="small"
+                  color={action.color}
+                  sx={{marginLeft: "-10px", fontWeight: "regular", textTransform: "capitalize"}}
+              >
+                {action.label}
+              </VuiButton>
+          ) : "" }
         </VuiBox>
       </VuiBox>
     </VuiBox>
