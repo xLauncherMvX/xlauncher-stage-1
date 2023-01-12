@@ -62,7 +62,7 @@ function List() {
                       <DefaultProjectCard
                           image={imgSrc}
                           label="project #3"
-                          title="VestaX.Finances"
+                          title="VestaX.Finance"
                           description=
                           "
                               VestaX.Finance is a community-driven liquid staking DEFI service provider for MultiverseX.
