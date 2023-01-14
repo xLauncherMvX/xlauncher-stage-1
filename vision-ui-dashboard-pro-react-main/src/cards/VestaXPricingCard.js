@@ -126,13 +126,6 @@ export default function VestaXPricingCard() {
     current_timestamp: 0,
   })
 
-  useEffect(() => {
-    const interval = window.setInterval(() => {
-      getViewSettings(provider, mintAddress, setViewSettings);
-    }, 2000);
-    return () => window.clearInterval(interval);
-  }, [])
-
   //Check if presale timestamp is smaller or equal to current timestamp
   let reachedTimestamp = false;
   if(viewSettings.start_timestamp){
@@ -150,6 +143,22 @@ export default function VestaXPricingCard() {
   //Buy Button Section
   var buttonShow;
   const [transactionSession, setTransactionSession] = React.useState(null);
+
+  useEffect(() => {
+      getViewSettings(provider, mintAddress, setViewSettings);
+  }, []);
+
+  useEffect(() => {
+    const interval = window.setInterval(() => {
+      getViewSettings(provider, mintAddress, setViewSettings);
+    }, 2000);
+    return () => window.clearInterval(interval);
+  }, []);
+
+  console.log("whitelistSwitcher" + whitelistSwitcher);
+  console.log("reachedTimestamp" + reachedTimestamp);
+  console.log("soldout" + soldout);
+  console.log("mintAmount" + mintAmount);
 
   if(isLoggedIn && whitelistSwitcher && !trans && reachedTimestamp && !soldout && mintAmount){
       if(requiredEgld){
@@ -230,7 +239,7 @@ export default function VestaXPricingCard() {
               placeholder="Mint Amount"
               onChange={handleInputChangeS}
               onKeyPress={(event) => {
-                if (!/[0-9.]/.test(event.key)) {
+                if (!/[0-9]/.test(event.key)) {
                   event.preventDefault();
                 }
               }}
@@ -240,8 +249,8 @@ export default function VestaXPricingCard() {
               value={mintAmount}
               onChange={handleSliderChangeS}
               step={1}
-              min={0}
-              max={totalAmount}
+              min={1}
+              max={100}
           />
         </Grid>
         <Grid item xs={1} textAlign="center"> </Grid>
