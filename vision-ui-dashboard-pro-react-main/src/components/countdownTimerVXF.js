@@ -77,7 +77,7 @@ export default function CountdownTimerVXF(){
             </div>
     }
 
-    if(viewSettings.current_status === 3){
+    if(viewSettings.current_status >= 3){
         displayTimer =
             <div className="show-counter" align={'center'}>
                     <span className="odometer-block">

@@ -155,11 +155,6 @@ export default function VestaXPricingCard() {
     return () => window.clearInterval(interval);
   }, []);
 
-  console.log("whitelistSwitcher" + whitelistSwitcher);
-  console.log("reachedTimestamp" + reachedTimestamp);
-  console.log("soldout" + soldout);
-  console.log("mintAmount" + mintAmount);
-
   if(isLoggedIn && whitelistSwitcher && !trans && reachedTimestamp && !soldout && mintAmount){
       if(requiredEgld){
         buttonShow =

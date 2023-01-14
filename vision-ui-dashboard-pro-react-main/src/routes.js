@@ -135,7 +135,7 @@ const routes = [
 
   //Presale Pages
   {
-    type: "collapse",
+    //type: "collapse",
     name: "Presales",
     key: "presale",
     icon: <IoCart size="15px" color="inherit" />,
@@ -146,25 +146,15 @@ const routes = [
         route: "/presale/VestaxFinance",
         component: VestaxFinancePresale
       }
-      // {
-      //   name: "EstarGames",
-      //   key: "estarGames",
-      //   route: "/presale/estarGames",
-      //   component: EstarGamesSale
-      // }
-      // {
-      //   name: "XLauncher",
-      //   key: "presale",
-      //   route: "/presale/xlh",
-      //   component: XLH
-      // },
-      // {
-      //   name: "Zero2Infinity",
-      //   key: "presalez2i",
-      //   route: "/presale/z2i",
-      //   component: Z2I
-      // }
     ]
+  },
+
+  {
+    type: "customInternal",
+    name: "Presale",
+    key: "presale",
+    icon: <FaPiedPiperPp size="15px" color="inherit" />,
+    href: "/presale/VestaxFinance"
   },
 
   //Public Sales Pages
