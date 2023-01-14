@@ -35,6 +35,7 @@ import EstarGamesSale from "pages/presale/estarGames";
 import Team from "pages/miscellaneous/team";
 import Admin from "pages/miscellaneous/admin";
 import VestaxFinance from "pages/projects/VestaXFinance";
+import VestaxFinancePresale from "pages/presale/vestaXFinance";
 
 // React icons
 import { IoDocument } from "react-icons/io5";
@@ -117,24 +118,6 @@ const routes = [
     href: "/projects"
   },
 
-  //NFT Mint
-  {
-    type: "customExternal",
-    name: "Mint NFTS",
-    key: "nftMint",
-    icon: <IoRocketSharp size="15px" color="inherit" />,
-    href: "https://www.frameit.gg/marketplace/XLHO-5135c9/items"
-  },
-
-  //Apply to us
-  {
-    type: "customExternal",
-    name: "Apply to Us",
-    key: "apply",
-    icon: <FaFileAlt size="15px" color="inherit" />,
-    href: "https://forms.gle/XdiY6kTF2fNUcxZy8"
-  },
-
   {
     // type: "collapse",
     name: "Miscellaneous",
@@ -152,11 +135,17 @@ const routes = [
 
   //Presale Pages
   {
-    //type: "collapse",
+    type: "collapse",
     name: "Presales",
     key: "presale",
     icon: <IoCart size="15px" color="inherit" />,
     collapse: [
+      {
+        name: "VestaxFinance",
+        key: "VestaxFinance",
+        route: "/presale/VestaxFinance",
+        component: VestaxFinancePresale
+      }
       // {
       //   name: "EstarGames",
       //   key: "estarGames",
@@ -209,6 +198,24 @@ const routes = [
   //     }
   //   ]
   // },
+
+  //NFT Mint
+  {
+    type: "customExternal",
+    name: "Mint NFTS",
+    key: "nftMint",
+    icon: <IoRocketSharp size="15px" color="inherit" />,
+    href: "https://www.frameit.gg/marketplace/XLHO-5135c9/items"
+  },
+
+  //Apply to us
+  {
+    type: "customExternal",
+    name: "Apply to Us",
+    key: "apply",
+    icon: <FaFileAlt size="15px" color="inherit" />,
+    href: "https://forms.gle/XdiY6kTF2fNUcxZy8"
+  },
 
   //Project Pages
   {

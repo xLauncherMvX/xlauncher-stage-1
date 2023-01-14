@@ -61,19 +61,11 @@ function VestaXFinance() {
         });
   }
 
-  var whitelistVar = [];
-  if(!whitelistData){
-    whitelistVar.addresses = [];
-  }else{
-    whitelistVar = whitelistData;
-  }
-
   var whitelistSwitcher = false;
   var kycStatus = "Not Verified";
-  if(isLoggedIn){
-    whitelistVar.addresses.map(name => {
-      console.log("name " + name);
-      if(name == address){
+  if(isLoggedIn && whitelistData){
+    whitelistData.addresses.map(name => {
+      if(name === address){
         whitelistSwitcher = true;
         kycStatus = "Verified";
       }
@@ -87,7 +79,7 @@ function VestaXFinance() {
     }
   }, []);
 
-  const MINUTE_MS = 5000;
+  const MINUTE_MS = 3000;
   useEffect(() => {
     if(isLoggedIn) {
       const interval = window.setInterval(() => {

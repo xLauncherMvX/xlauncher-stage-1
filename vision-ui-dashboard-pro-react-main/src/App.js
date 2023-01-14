@@ -39,7 +39,7 @@ import "assets/theme/base/plugins.css";
 import { DappProvider} from '@elrondnetwork/dapp-core';
 
 //Env config
-import xConfigs from 'configs/envConfig.json';
+import xConfigs from 'configs/envConfigTestnet.json';
 const environment = xConfigs["environment"];
 
 export default function App() {
