@@ -17,3 +17,7 @@ Is a very simple contract and al the storage values are initialized at deploy ti
 We plan in the future version of this contract to keep track for each client individually of the amount of funds
 purchased and fail if required to fail by checking against storage tracked values.
 
+## xlauncher wallets
+
+- presale and staking wallet: `erd12euqqtr68sqhdgy8xmzdtasvjgs00ju23cek30t33484qz3t4d6qz7e365`
+
