@@ -231,9 +231,11 @@ class DateCountdown extends Component {
 
     if (diff < 0) { // past date
       return (
-        <span className="odometer-block">
-          <p className='seedsale-text'>Presale Open</p>
-        </span>
+          <div className="show-counter">
+            <a className="countdown-link">
+              Presale open
+            </a>
+          </div>
       );
     }
 

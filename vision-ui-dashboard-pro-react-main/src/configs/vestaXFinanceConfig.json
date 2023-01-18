@@ -1,7 +1,7 @@
 {
-    "environment": "testnet",
-    "mintAddress": "erd1qqqqqqqqqqqqqpgqdw9gatcwzlsdtvjwu3mveln57g0quyzzpa7q9jg84s",
-    "provider": "https://testnet-gateway.elrond.com",
+    "environment": "mainnet",
+    "mintAddress": "erd1qqqqqqqqqqqqqpgq7qnljkrs6uye4eg8uzffk9yysmz029rr4d6qzgnl5f",
+    "provider": "https://gateway.elrond.com",
     "date": "January 20, 2022 19:00:00 GMT+03:00",
     "totalAmount": 2000
 }

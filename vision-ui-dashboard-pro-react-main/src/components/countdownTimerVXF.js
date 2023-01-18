@@ -20,8 +20,8 @@ export default function CountdownTimerVXF(){
     let mintAddress = xConfigs["mintAddress"];
 
     const [viewSettings, setViewSettings] = useState({
-        start_timestamp: 0,
-        first_round_max_mint_amount: 0,
+        start_timestamp: 1674237600,
+        first_round_max_mint_amount: 2000,
         first_round_total_minted_amount: 0,
         current_status: 0,
         current_timestamp: 0,
