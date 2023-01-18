@@ -153,7 +153,7 @@ const routes = [
     type: "customInternal",
     name: "Presale",
     key: "presale",
-    icon: <FaPiedPiperPp size="15px" color="inherit" />,
+    icon: <IoCart size="15px" color="inherit" />,
     href: "/presale/VestaxFinance"
   },
 

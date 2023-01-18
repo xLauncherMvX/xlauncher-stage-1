@@ -67,7 +67,7 @@ export default function VestaXPricingCard() {
     let newValue = mintAmount - amount;
     if(newValue > 0){
       setMintAmount(newValue);
-      setEgldAmount(newValue);
+      setEgldAmount(newValue * 2.85);
     }
   }
 
