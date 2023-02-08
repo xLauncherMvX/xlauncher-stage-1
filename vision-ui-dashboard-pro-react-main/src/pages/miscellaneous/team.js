@@ -31,6 +31,7 @@ function Team() {
     return (
         <Main name="Team">
             <Grid container spacing={3}>
+                <Grid item lg={1}> </Grid>
                 <Grid item xs={12} md={6} lg={4} align={"center"}>
                     <VuiBox
                         component="img"
@@ -75,6 +76,9 @@ function Team() {
                         &nbsp;
                     </VuiTypography>
                 </Grid>
+            </Grid>
+            <Grid container={3}>
+                <Grid item lg={1}> </Grid>
                 <Grid item xs={12} md={6} lg={4} align={"center"}>
                     <VuiBox
                         component="img"
@@ -112,50 +116,6 @@ function Team() {
                     <IconButton color="white" onClick={()=> openInNewTab("https://be.linkedin.com/in/bogdan-oloeriu")}>
                         <LinkedInIcon fontSize="large" />
                     </IconButton>
-                </Grid>
-                <Grid item xs={12} md={6} lg={4} align={"center"}>
-                    <VuiBox
-                        component="img"
-                        src={radu}
-                        mb="8px"
-                        borderRadius="15px"
-                        width="60%"
-                        height="58%"
-                    />
-                    <VuiTypography variant="h2" fontWeight="bold" color="light">
-                        Vasile Radu
-                    </VuiTypography>
-                    <VuiTypography variant="h5" fontWeight="bold" color="light">
-                        Advisor, CEO ARC Stake
-                    </VuiTypography>
-                    <IconButton color="white" onClick={()=> openInNewTab("https://arcstake.com/")}>
-                        <WebsiteIcon fontSize="large" />
-                    </IconButton>
-                </Grid>
-            </Grid>
-            <Grid container spacing={3}  mt={3}>
-                <Grid item xs={12} lg={12}>
-                    <VuiTypography
-                        variant={window.innerWidth < values.sm ? "h3" : "h2"}
-                        textTransform="capitalize"
-                        fontWeight="bold"
-                        color="white"
-                    >
-                        Partners
-                    </VuiTypography>
-                </Grid>
-                <Grid item xs={12} md={4} lg={4} align={"center"} mt={4} alignItems={"center"}>
-                    <VuiBox
-                        component="img"
-                        src={arcStake}
-                        mb="8px"
-                        borderRadius="15px"
-                        width="250px"
-                        height="100px"
-                    />
-                    <VuiTypography variant="h4" fontWeight="bold" color="light">
-                        ARC Stake
-                    </VuiTypography>
                 </Grid>
             </Grid>
         </Main>
