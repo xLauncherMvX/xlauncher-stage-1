@@ -24,7 +24,7 @@ export const mintFunction = async (mintAmount, mintAddress, sendTransactions, se
         .build().toString()
 
     const createMintTransaction = {
-        value: Egld.raw(new BigNumber(2.85 * egldMultiplier).multipliedBy(mintAmount).toFixed()),
+        value: Egld.raw(new BigNumber(0.85 * egldMultiplier).multipliedBy(mintAmount).toFixed()),
         data: data,
         receiver: mintAddress,
         gasLimit: 20_000_000,

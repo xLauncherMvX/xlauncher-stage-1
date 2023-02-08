@@ -218,7 +218,6 @@ export default (selectSize, selectError, selectSuccess) => {
 
     multiValue: (provided) => ({
       ...provided,
-      margin: 0,
       marginRight: pxToRem(4),
       borderRadius: borderRadius.section,
       display: "flex",

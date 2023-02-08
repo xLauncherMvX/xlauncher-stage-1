@@ -362,7 +362,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
     setIsCopied(true);
     setTimeout(() => {
       setIsCopied(false);
-    }, 1500);
+    }, 1500);p
   }
 
   if(isLoggedIn){

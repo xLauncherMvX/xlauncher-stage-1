@@ -24,6 +24,7 @@ import VuiBadge from "components/VuiBadge";
 import VuiButton from "components/VuiButton";
 import VuiInput from "components/VuiInput";
 import Slider from "@mui/material/Slider";
+import vestaXFinanceSilver from "assets/images/vestaXFinanceSilver.png";
 
 import {getViewSettings, mintFunction} from "utils/apiVestaXFinance";
 import {egldMultiplier, calc2} from "utils/utils";
@@ -42,32 +43,32 @@ export default function VestaXPricingCard() {
 
   //Increase the amount of sfts + egld according to user preferences
   const [mintAmount, setMintAmount] = React.useState(1);
-  const [egldAmount, setEgldAmount] = React.useState(2.85);
+  const [egldAmount, setEgldAmount] = React.useState(0.85);
 
   //slider
   const handleSliderChangeS = (event) => {
     setMintAmount(event.target.value);
-    setEgldAmount(event.target.value * 2.85);
+    setEgldAmount(event.target.value * 0.85);
   };
 
   //input
   const handleInputChangeS = (event) => {
     setMintAmount(event.target.value);
-    setEgldAmount(event.target.value * 2.85);
+    setEgldAmount(event.target.value * 0.85);
   };
 
   //+/- buttons
   const increaseAmount = (amount) => {
     let newValue = mintAmount + amount;
     setMintAmount(newValue);
-    setEgldAmount(newValue * 2.85);
+    setEgldAmount(newValue * 0.85);
   }
 
   const decreaseAmount = (amount) => {
     let newValue = mintAmount - amount;
     if(newValue > 0){
       setMintAmount(newValue);
-      setEgldAmount(newValue * 2.85);
+      setEgldAmount(newValue * 0.85);
     }
   }
 
@@ -140,6 +141,14 @@ export default function VestaXPricingCard() {
     soldout = true;
   }
 
+  //Check id the presale is ended
+  var endedPresale = false;
+  if(viewSettings.current_status >= 3){
+    endedPresale = true;
+  }
+
+  console.log(endedPresale);
+
   //Buy Button Section
   var buttonShow;
   const [transactionSession, setTransactionSession] = React.useState(null);
@@ -155,7 +164,7 @@ export default function VestaXPricingCard() {
     return () => window.clearInterval(interval);
   }, []);
 
-  if(isLoggedIn && whitelistSwitcher && !trans && reachedTimestamp && !soldout && mintAmount){
+  if(isLoggedIn && !trans && reachedTimestamp && !soldout && mintAmount && !endedPresale){
       if(requiredEgld){
         buttonShow =
           <VuiButton
@@ -196,11 +205,19 @@ export default function VestaXPricingCard() {
     <Card>
       <Grid container>
         <Grid item xs={12} textAlign="center">
+          <VuiBox
+              component="img"
+              src={vestaXFinanceSilver}
+              width="100px"
+              height="100px"
+          />
+        </Grid>
+        <Grid item xs={12} textAlign="center">
           <VuiBadge
             variant="contained"
             color={"dark"}
             size="sm"
-            badgeContent={"VestaXFinance"}
+            badgeContent={"VestaXFinance Silver"}
             circular
             container
           />

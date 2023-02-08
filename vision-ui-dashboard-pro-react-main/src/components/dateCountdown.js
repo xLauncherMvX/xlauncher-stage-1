@@ -230,13 +230,7 @@ class DateCountdown extends Component {
     let units = ['year', 'month', 'day', 'hour', 'min', 'sec'];
 
     if (diff < 0) { // past date
-      return (
-          <div className="show-counter">
-            <a className="countdown-link">
-              Presale open
-            </a>
-          </div>
-      );
+      return ("");
     }
 
     return (
