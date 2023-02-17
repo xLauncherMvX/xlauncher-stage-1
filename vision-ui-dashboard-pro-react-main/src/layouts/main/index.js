@@ -99,18 +99,20 @@ function Main(props) {
               onMouseLeave={handleOnMouseLeave}
           />
           <Grid container>
-              <Grid item lg={12}>
-                  <VuiBox mb={7} p={1} mt={5}>
-                      <VuiTypography
-                          variant={window.innerWidth < values.sm ? "h3" : "h2"}
-                          textTransform="capitalize"
-                          fontWeight="bold"
-                          color="white"
-                      >
-                          {props.name}
-                      </VuiTypography>
-                  </VuiBox>
-              </Grid>
+              {props.name? (
+                  <Grid item lg={12}>
+                      <VuiBox mb={7} p={1} mt={5}>
+                          <VuiTypography
+                              variant={window.innerWidth < values.sm ? "h3" : "h2"}
+                              textTransform="capitalize"
+                              fontWeight="bold"
+                              color="white"
+                          >
+                              {props.name}
+                          </VuiTypography>
+                      </VuiBox>
+                  </Grid>
+              ) : ('')}
               <Grid item lg={12}>
                   {props.children}
               </Grid>
