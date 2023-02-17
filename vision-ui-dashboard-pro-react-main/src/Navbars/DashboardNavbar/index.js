@@ -193,7 +193,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
               <Grid item xs={12}>
                 <WalletConnectLoginButton
                   callbackRoute="/"
-                  loginButtonText={"Maiar"}
+                  loginButtonText={"xPortal"}
                 />  
               </Grid>  
               <Grid item xs={12} mb={4}>

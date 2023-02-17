@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 
 // react-router components
 import { Route, useLocation } from "react-router-dom";
@@ -99,9 +99,9 @@ function Main(props) {
               onMouseLeave={handleOnMouseLeave}
           />
           <Grid container>
-              {props.name? (
-                  <Grid item lg={12}>
-                      <VuiBox mb={7} p={1} mt={5}>
+              <Grid item lg={12} mt={5}>
+                  {props.name? (
+                      <VuiBox mb={2} p={1}>
                           <VuiTypography
                               variant={window.innerWidth < values.sm ? "h3" : "h2"}
                               textTransform="capitalize"
@@ -111,15 +111,15 @@ function Main(props) {
                               {props.name}
                           </VuiTypography>
                       </VuiBox>
-                  </Grid>
-              ) : ('')}
+                  ) : ('')}
+              </Grid>
               <Grid item lg={12}>
                   {props.children}
               </Grid>
           </Grid>
           <div>
             <div style={style}>
-              <iframe src='https://egld.community/api/products/fdc676ce-0ec1-4460-b59f-c74d4ec2eef9/upvotes/embed' width='290' height='70' className="custom-footer"></iframe>
+              <iframe src='https://egld.community/api/products/fdc676ce-0ec1-4460-b59f-c74d4ec2eef9/upvotes/embed' width='290' height='70' className="custom-footer"/>
             <VuiBox
               display="flex"
               justifyContent="center"
