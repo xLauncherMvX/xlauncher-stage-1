@@ -40,12 +40,16 @@ import { DappProvider} from '@elrondnetwork/dapp-core';
 
 //Env config
 import xConfigs from 'configs/envConfig.json';
+import {networkConfig} from "configs/networks";
 const environment = xConfigs["environment"];
 
 export default function App() {
   const [controller] = useVisionUIController();
   const { direction } = controller;
   const { pathname } = useLocation();
+
+    //Set the config network
+    const customNetConfig = networkConfig.mainnet;
 
   // Setting the dir attribute for the body element
   useEffect(() => {
@@ -72,16 +76,16 @@ export default function App() {
     });
 
     return (
-      <ThemeProvider theme={theme}> 
+      <ThemeProvider theme={theme}>
         <DappProvider
-            environment={environment}
+            environment={customNetConfig.id}
             customNetworkConfig={{ name: 'customConfig', apiTimeout: 6000 }}
             completedTransactionsDelay={200}
           >
             <Switch>
               {getRoutes(routes)}
-                <Redirect from="*" to="/dashboard" />
-                {/*<Redirect from="*" to="/presale/vestaXFinance" />*/}
+                {/*<Redirect from="*" to="/dashboard" />*/}
+                <Redirect from="*" to="/presale/vestaXFinance" />
             </Switch>
           </DappProvider>
       </ThemeProvider>

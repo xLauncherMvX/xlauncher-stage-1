@@ -117,26 +117,6 @@ function DashboardNavbar({ absolute, light, isMini }) {
       }
   }
 
-  //Modal
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  useEffect(() => {
-    if(isLoggedIn) {
-      getAccountTokens();
-      //console.log("balanceAccount " + balanceAccount);
-    }
-  }, [isLoggedIn]);
-
-  useEffect(() => {
-    if(isLoggedIn) {
-      getAccountTokens();
-    }
-  }, [transB]);
-
   const openInNewTab = (url) => {
     const newWindow = window.open(url, '_blank', 'noopener,noreferrer')
     if (newWindow) newWindow.opener = null;
@@ -335,20 +315,25 @@ function DashboardNavbar({ absolute, light, isMini }) {
       console.error(error);
     }
   }
- 
-  useEffect(() => {    
-    if(isLoggedIn) {
-      getData();
-      getAcountNFTS();
-    }
-  }, [isLoggedIn]);
 
-  useEffect(() => {    
+  useEffect(() => {
     if(isLoggedIn) {
-      getData();
+      getAccountTokens();
       getAcountNFTS();
     }
-  }, []);
+  }, [transB]);
+
+  //Modal
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => {
+    setOpen(true);
+    getData();
+    getAcountNFTS();
+    getAccountTokens();
+  }
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   var egldAccount = account.balance/multiplier;
   if(!egldAccount){

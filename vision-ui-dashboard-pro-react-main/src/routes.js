@@ -141,21 +141,21 @@ const routes = [
     icon: <IoCart size="15px" color="inherit" />,
     collapse: [
       {
-        // name: "VestaxFinance",
-        // key: "VestaxFinance",
-        // route: "/presale/VestaxFinance",
-        // component: VestaxFinancePresale
+        name: "VestaxFinance",
+        key: "VestaxFinance",
+        route: "/presale/VestaxFinance",
+        component: VestaxFinancePresale
       }
     ]
   },
 
-  // {
-  //   type: "customInternal",
-  //   name: "Presale",
-  //   key: "presale",
-  //   icon: <IoCart size="15px" color="inherit" />,
-  //   href: "/presale/VestaxFinance"
-  // },
+  {
+    type: "customInternal",
+    name: "Presale",
+    key: "presale",
+    icon: <IoCart size="15px" color="inherit" />,
+    href: "/presale/VestaxFinance"
+  },
 
   //Public Sales Pages
   // {

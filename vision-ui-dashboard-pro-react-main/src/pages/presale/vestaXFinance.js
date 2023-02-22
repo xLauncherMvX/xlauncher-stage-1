@@ -3,13 +3,14 @@ import Grid from "@mui/material/Grid";
 import Main from "layouts/main";
 import {DappUI} from '@elrondnetwork/dapp-core';
 
-import CountdownTimer from "components/countdownTimerVXF";
-import VestaXPricingCard from "cards/VestaXPricingCard";
+//import CountdownTimer from "components/countdownTimerVXF";
+//import VestaXPricingCard from "cards/VestaXPricingCard";
+import XlhVestaXPricingCard from "cards/XLHVestaXPricingCard";
 
 import "assets/custom.css";
 import "assets/index.css";
 
-function VESTAXFINANCES() {
+function VestaXFinance() {
   const { SignTransactionsModals, TransactionsToastList, NotificationModal } = DappUI;
 
   return (    
@@ -18,20 +19,20 @@ function VESTAXFINANCES() {
       <NotificationModal />
       <SignTransactionsModals className="custom-class-for-modals" />  
       <Grid container spacing={3} mt={-10}>
-        <Grid item xs={12} lg={3}>
+        {/*<Grid item xs={12} lg={3}>*/}
 
-        </Grid>
-        <Grid item xs={12} lg={6} alignItems="center" textAlign="center" mb={3}>          
-          <CountdownTimer/>
-        </Grid>
-        <Grid item xs={12} lg={3}>
+        {/*</Grid>*/}
+        {/*<Grid item xs={12} lg={6} alignItems="center" textAlign="center" mb={3}>*/}
+        {/*    <CountdownTimer />*/}
+        {/*</Grid>*/}
+        {/*<Grid item xs={12} lg={3}>*/}
 
-        </Grid>
+        {/*</Grid>*/}
         <Grid item xs={12} lg={4}>
 
         </Grid>
         <Grid item xs={12} lg={4}>
-          <VestaXPricingCard />
+          <XlhVestaXPricingCard />
         </Grid>
         <Grid item xs={12} lg={4}>
 
@@ -41,4 +42,4 @@ function VESTAXFINANCES() {
   );
 }
 
-export default VESTAXFINANCES;
+export default VestaXFinance;
