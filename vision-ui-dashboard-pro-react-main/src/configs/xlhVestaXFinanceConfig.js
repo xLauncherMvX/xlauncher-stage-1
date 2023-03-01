@@ -13,7 +13,7 @@ export const configs = {
         environment: "mainnet",
         mintAddress: "erd1qqqqqqqqqqqqqpgq66t32z47346zjaglalvc6ceka4pw2hz3gjlq7nge94",
         provider: "https://gateway.multiversx.com",
-        date: "February 21, 2023 20:00:00 GMT+02:00",
+        date: "February 24, 2023 20:00:00 GMT+02:00",
         totalAmount: 200,
         apiLink : "https://api.multiversx.com/accounts/",
         token: "XLH-8daa50",
