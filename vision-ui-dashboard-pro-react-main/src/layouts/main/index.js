@@ -101,7 +101,7 @@ function Main(props) {
           <Grid container>
               <Grid item lg={12} mt={5}>
                   {props.name? (
-                      <VuiBox mb={2} p={1}>
+                      <VuiBox mb={4} p={1}>
                           <VuiTypography
                               variant={window.innerWidth < values.sm ? "h3" : "h2"}
                               textTransform="capitalize"
