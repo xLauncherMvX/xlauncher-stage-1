@@ -84,8 +84,8 @@ export default function App() {
           >
             <Switch>
               {getRoutes(routes)}
-                {/*<Redirect from="*" to="/dashboard" />*/}
-                <Redirect from="*" to="/presale/vestaXFinance" />
+                <Redirect from="*" to="/dashboard" />
+                {/*<Redirect from="*" to="/presale/vestaXFinance" />*/}
             </Switch>
           </DappProvider>
       </ThemeProvider>
