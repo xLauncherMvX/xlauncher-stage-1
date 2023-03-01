@@ -376,7 +376,7 @@ function Farms() {
   }else if(l2 >= 30000000 && l2 < 60000000){
     gasLimit2 = 90000000;
   }else if(l2 >= 60000000 && l2 < 100000000){
-    gasLimit2 = 130000000;
+    gasLimit2 = 200000000;
   }else if(l2 >= 100000000){
     gasLimit2 = 600000000;
   }
@@ -389,7 +389,7 @@ function Farms() {
   }else if(l3 >= 30000000 && l3 < 60000000){
     gasLimit3 = 90000000;
   }else if(l3 >= 60000000 && l3 < 100000000){
-    gasLimit3 = 130000000;
+    gasLimit3 = 200000000;
   }else if(l3 >= 100000000){
     gasLimit3 = 600000000;
   }
