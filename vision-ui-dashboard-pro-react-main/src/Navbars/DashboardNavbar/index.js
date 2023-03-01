@@ -84,13 +84,9 @@ function DashboardNavbar({ absolute, light, isMini }) {
   //Elrond login
   const { address, account } = useGetAccountInfo();
   const isLoggedIn = Boolean(address);
-  const [timeToConnect, setTimeToConnect] = React.useState(false);
 
   const { 
-    WebWalletLoginButton, 
-    WalletConnectLoginButton,
-    LedgerLoginButton,
-    ExtensionLoginButton
+    WebWalletLoginButton,
   } = DappUI;
 
   //Get Account Tokens Balance
@@ -127,90 +123,14 @@ function DashboardNavbar({ absolute, light, isMini }) {
     if (newWindow) newWindow.opener = null;
   };
 
-  let connectSection = timeToConnect ? (
-    <React.Fragment>
-    <Grid container alignContent={'center'} mt={4} mb={4}>
-        <Grid item xs={12} sm={12} md={4} lg={4}>
-
-        </Grid>
-        <Grid item xs={12} sm={12} md={5} lg={4}>            
-          <Box className="farm-card">          
-            <Grid container align={'center'}>  
-              <Grid item xs={12}>
-              <VuiButton 
-                  variant="gradient" 
-                  size="small" 
-                  color="light" 
-                  iconOnly className="float-right" 
-                  onClick={() =>  setTimeToConnect(false)}
-                >
-                    <Icon>close</Icon>
-                </VuiButton>
-              </Grid>          
-              <Grid item xs={12} mt = {2}>
-                
-                <VuiTypography
-                  fontSize={16}
-                  fontWeight="medium"
-                  color="white"
-                >
-                  Connect to a wallet
-                </VuiTypography>
-              </Grid>
-              <Grid item xs={12} mt={4}>
-                <WebWalletLoginButton 
-                  callbackRoute="/"
-                  loginButtonText={"Web wallet"}
-                  className="custom-login-button "
-                />   
-              </Grid>    
-              <Grid item xs={12}>
-                <LedgerLoginButton
-                      loginButtonText={"Ledger"}
-                      callbackRoute="/"
-                />  
-              </Grid>  
-              <Grid item xs={12}>
-                <WalletConnectLoginButton
-                  callbackRoute="/"
-                  loginButtonText={"xPortal"}
-                />  
-              </Grid>  
-              <Grid item xs={12} mb={4}>
-                <ExtensionLoginButton
-                  callbackRoute="/"
-                  loginButtonText={"Extension"}
-                  className="dapp-core-ui-component-2"
-                />  
-              </Grid>            
-            </Grid>
-          </Box>
-        </Grid>
-      </Grid>
-    </React.Fragment>
-  ) : (
-    ""
-  );
-
-  let connectLoggedinSection = " ";
-  if(!isLoggedIn){
-    connectLoggedinSection = connectSection;
-  }  
-
   let connectButton = isLoggedIn ? (
     ""
   ) : (
-    <VuiButton 
-      fullWidth
-      variant="outlined" 
-      color="light" 
-      size="small" 
-      sx={{ minWidth: 145}}
-      onClick={() =>  setTimeToConnect(prevCheck => !prevCheck)}
-    >
-      <Icon>wallet</Icon>&nbsp;
-      Connect
-    </VuiButton>
+      <WebWalletLoginButton
+          callbackRoute="/"
+          loginButtonText={"Connect"}
+          className="custom-login-button "
+      />
   );
 
   var fls = address.slice(0,20);
@@ -373,8 +293,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
             >
               MY ACCOUNT
             </VuiButton>   
-          </Grid> 
-          {connectLoggedinSection}   
+          </Grid>
         </Grid>
         {/* Modal Stake */}
         <Modal
@@ -609,10 +528,9 @@ function DashboardNavbar({ absolute, light, isMini }) {
               Menu
             </VuiButton>
           </Grid> 
-          <Grid item xs={6} sm={6} md={3} lg={2}>  
+          <Grid item xs={6} sm={6} md={3} lg={2} style={{marginRight: 0}}>
             {connectButton}  
           </Grid>
-          {connectLoggedinSection}   
         </Grid>   
       </React.Fragment>
     );
