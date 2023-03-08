@@ -13,3 +13,4 @@ output
 # interaction logs
 interaction-logs
 erdpy.data-storage.json
+mxpy.data-storage.json
