@@ -36,7 +36,7 @@ setEnvDevnet() {
   CURRENT_ENV="devnet"
   PEM_FILE="${PROJECT}/../../wallets/users/devnet_owner_wallet.pem"
   ADDRESS=$(mxpy data load --key=address-devnet)
-  PROXY=https://devnet-gateway.elrond.com
+  PROXY=https://devnet-gateway.multiversx.com
   CHAINID=D
   ENV_LOGS="devnet"
   TOKEN_ID="XLH-cb26c7"
@@ -72,7 +72,7 @@ setEnvTestnet() {
   CURRENT_ENV="testnet"
   PEM_FILE="${PROJECT}/../../wallets/users/testnet_owner_wallet.pem"
   ADDRESS=$(mxpy data load --key=address-devnet)
-  PROXY=https://testnet-gateway.elrond.com
+  PROXY=https://testnet-gateway.multiversx.com
   CHAINID=T
   ENV_LOGS="testnet"
   TOKEN_ID="XLH-b7f529"
@@ -106,7 +106,7 @@ setEnvMainnet() {
   CURRENT_ENV="mainnet"
   PEM_FILE="${PROJECT}/../../wallets/users/mainnet_owner_wallet.pem"
   ADDRESS=$(mxpy data load --key=address-devnet)
-  PROXY=https://api.elrond.com
+  PROXY=https://api.multiversx.com
   CHAINID=1
   ENV_LOGS="mainnet"
   TOKEN_ID="XLH-8daa50"
