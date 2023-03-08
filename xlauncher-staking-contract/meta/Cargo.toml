@@ -10,8 +10,8 @@ edition = "2021"
 [dependencies.xlauncher-staking]
 path = ".."
 
-[dependencies.elrond-wasm]
-version = "0.34.0"
+[dependencies.multiversx-sc]
+version = "0.39.4"
 
-[dependencies.elrond-wasm-debug]
-version = "0.34.0"
+[dependencies.multiversx-sc-meta]
+version = "0.39.4"

@@ -1,9 +1,9 @@
-use elrond_wasm::{
+use multiversx_sc::{
     api::ManagedTypeApi,
     types::{BigUint, ManagedVec, TokenIdentifier},
 };
 
-elrond_wasm::derive_imports!();
+multiversx_sc::derive_imports!();
 
 #[derive(TypeAbi, TopEncode, TopDecode, ManagedVecItem, NestedEncode, NestedDecode, Clone)]
 pub struct ClientPoolState<M: ManagedTypeApi> {

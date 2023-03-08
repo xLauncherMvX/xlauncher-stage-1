@@ -3,14 +3,14 @@
 
 extern crate alloc;
 
-elrond_wasm::imports!();
-elrond_wasm::derive_imports!();
+use staking_data::*;
+
+multiversx_sc::imports!();
+multiversx_sc::derive_imports!();
 
 mod staking_data;
 
-use staking_data::*;
-
-#[elrond_wasm::contract]
+#[multiversx_sc::contract]
 pub trait XLauncherStaking {
     #[init]
     fn init(
