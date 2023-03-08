@@ -48,7 +48,7 @@ app.listen(port, () => {
   getVariableContractSettings();
   //getClientState();
   //getClientReport();
-  getGasLimitValue();
+  //getGasLimitValue();
 });
 
 const getVariableContractSettings = async () => {
