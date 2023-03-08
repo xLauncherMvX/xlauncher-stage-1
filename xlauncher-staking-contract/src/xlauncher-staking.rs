@@ -90,6 +90,7 @@ pub trait XLauncherStaking {
             };
             self.variable_contract_settings().set(&variable_settings)
         }
+
     }
 
     fn build_pool(

@@ -146,6 +146,13 @@ updateContract() {
     ${PULL_C_ID} ${PULL_C_LOCKING_TIME_SPAN} ${APY_C0_ID} ${APY_C0_START} ${APY_C0_END} ${APY_C0_APY}
 }
 
+updateWithNoParams() {
+  mxpy --verbose contract upgrade ${ADDRESS} --project=${PROJECT} --recall-nonce --pem=${PEM_FILE} \
+    --gas-limit=150000000 --send --outfile="${MY_LOGS}/update-${ENV_LOGS}.json" \
+    --proxy=${PROXY} --chain=${CHAINID} \
+    --arguments "0x${TOKEN_ID_HEX}" ${MIN_AMOUNT}
+}
+
 fundContract() {
   method_name="0x$(echo -n 'fundContract' | xxd -p -u | tr -d '\n')"
   token_id="0x$(echo -n ${TOKEN_ID} | xxd -p -u | tr -d '\n')"
@@ -362,10 +369,6 @@ appendPeriod5PoolSettings() {
     --outfile="${MY_LOGS}/appendPoolSettings-${ENV_LOGS}.json"
 }
 
-
-
-
-
 switchIsActiveFieldValue(){
   mxpy --verbose contract call ${ADDRESS} --recall-nonce \
       --pem=${PEM_FILE} \
@@ -375,7 +378,6 @@ switchIsActiveFieldValue(){
       --send \
       --outfile="${MY_LOGS}/switchIsActiveFieldValue-${ENV_LOGS}.json"
 }
-
 
 getApiConfigReport1(){
   mxpy --verbose contract query ${ADDRESS} --function="getApiConfigReport1" \
