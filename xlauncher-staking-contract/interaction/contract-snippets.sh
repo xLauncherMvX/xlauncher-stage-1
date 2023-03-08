@@ -1,5 +1,5 @@
 PROJECT="${PWD}"
-DEPLOY_TRANSACTION=$(erdpy data load --key=deployTransaction-devnet)
+DEPLOY_TRANSACTION=$(mxpy data load --key=deployTransaction-devnet)
 
 MY_DECIMALS="000000000000000000"
 MIN_AMOUNT=250000000000000000
@@ -32,10 +32,10 @@ setEnvDevnet() {
   APY_C0_END=$(date -d '2022-07-04 00:00:00' +"%s")
   APY_C0_APY="18000"
 
-  cp -f erdpy.data-storage-devnet.json erdpy.data-storage.json
+  cp -f mxpy.data-storage-devnet.json mxpy.data-storage.json
   CURRENT_ENV="devnet"
   PEM_FILE="${PROJECT}/../../wallets/users/devnet_owner_wallet.pem"
-  ADDRESS=$(erdpy data load --key=address-devnet)
+  ADDRESS=$(mxpy data load --key=address-devnet)
   PROXY=https://devnet-gateway.elrond.com
   CHAINID=D
   ENV_LOGS="devnet"
@@ -68,10 +68,10 @@ setEnvTestnet() {
   APY_C0_END=$(date -d '2022-07-04 00:00:00' +"%s")
   APY_C0_APY="18000"
 
-  cp -f erdpy.data-storage-testnet.json erdpy.data-storage.json
+  cp -f mxpy.data-storage-testnet.json mxpy.data-storage.json
   CURRENT_ENV="testnet"
   PEM_FILE="${PROJECT}/../../wallets/users/testnet_owner_wallet.pem"
-  ADDRESS=$(erdpy data load --key=address-devnet)
+  ADDRESS=$(mxpy data load --key=address-devnet)
   PROXY=https://testnet-gateway.elrond.com
   CHAINID=T
   ENV_LOGS="testnet"
@@ -102,10 +102,10 @@ setEnvMainnet() {
   APY_C0_END=$(date -d '2022-07-06 23:59:59' +"%s")
   APY_C0_APY="18000"
 
-  cp -f erdpy.data-storage-mainnet.json erdpy.data-storage.json
+  cp -f mxpy.data-storage-mainnet.json mxpy.data-storage.json
   CURRENT_ENV="mainnet"
   PEM_FILE="${PROJECT}/../../wallets/users/mainnet_owner_wallet.pem"
-  ADDRESS=$(erdpy data load --key=address-devnet)
+  ADDRESS=$(mxpy data load --key=address-devnet)
   PROXY=https://api.elrond.com
   CHAINID=1
   ENV_LOGS="mainnet"
@@ -118,7 +118,7 @@ printCurrentEnv() {
 }
 
 deploy() {
-  erdpy --verbose contract deploy --project=${PROJECT} --recall-nonce --pem=${PEM_FILE} \
+  mxpy --verbose contract deploy --project=${PROJECT} --recall-nonce --pem=${PEM_FILE} \
     --gas-limit=100000000 --send --outfile="${MY_LOGS}/deploy-${ENV_LOGS}.json" \
     --proxy=${PROXY} --chain=${CHAINID} \
     --arguments "0x${TOKEN_ID_HEX}" ${MIN_AMOUNT} \
@@ -126,18 +126,18 @@ deploy() {
     ${PULL_B_ID} ${PULL_B_LOCKING_TIME_SPAN} ${APY_B0_ID} ${APY_B0_START} ${APY_A0_END} ${APY_B0_APY} \
     ${PULL_C_ID} ${PULL_C_LOCKING_TIME_SPAN} ${APY_C0_ID} ${APY_C0_START} ${APY_C0_END} ${APY_C0_APY} || return
 
-  TRANSACTION=$(erdpy data parse --file="${MY_LOGS}/deploy-${ENV_LOGS}.json" --expression="data['emitted_tx']['hash']")
-  ADDRESS=$(erdpy data parse --file="${MY_LOGS}/deploy-${ENV_LOGS}.json" --expression="data['emitted_tx']['address']")
+  TRANSACTION=$(mxpy data parse --file="${MY_LOGS}/deploy-${ENV_LOGS}.json" --expression="data['emitted_tx']['hash']")
+  ADDRESS=$(mxpy data parse --file="${MY_LOGS}/deploy-${ENV_LOGS}.json" --expression="data['emitted_tx']['address']")
 
-  erdpy data store --key=address-devnet --value=${ADDRESS}
-  erdpy data store --key=deployTransaction-devnet --value=${TRANSACTION}
+  mxpy data store --key=address-devnet --value=${ADDRESS}
+  mxpy data store --key=deployTransaction-devnet --value=${TRANSACTION}
 
   echo ""
   echo "Smart contract address: ${ADDRESS}"
 }
 
 updateContract() {
-  erdpy --verbose contract upgrade ${ADDRESS} --project=${PROJECT} --recall-nonce --pem=${PEM_FILE} \
+  mxpy --verbose contract upgrade ${ADDRESS} --project=${PROJECT} --recall-nonce --pem=${PEM_FILE} \
     --gas-limit=150000000 --send --outfile="${MY_LOGS}/update-${ENV_LOGS}.json" \
     --proxy=${PROXY} --chain=${CHAINID} \
     --arguments "0x${TOKEN_ID_HEX}" ${MIN_AMOUNT} \
@@ -150,7 +150,7 @@ fundContract() {
   method_name="0x$(echo -n 'fundContract' | xxd -p -u | tr -d '\n')"
   token_id="0x$(echo -n ${TOKEN_ID} | xxd -p -u | tr -d '\n')"
   amount="10000000${MY_DECIMALS}"
-  erdpy --verbose contract call ${ADDRESS} --recall-nonce \
+  mxpy --verbose contract call ${ADDRESS} --recall-nonce \
     --pem=${PEM_FILE} \
     --gas-limit=5000000 \
     --proxy=${PROXY} --chain=${CHAINID} \
@@ -164,7 +164,7 @@ fundContract() {
 updateUnstakeLockSpan(){
   # 60 * 5 = 300 (5 minutes)
   UNSTAKE_LOCK_SPAN="1"
-  erdpy --verbose contract call ${ADDRESS} --recall-nonce \
+  mxpy --verbose contract call ${ADDRESS} --recall-nonce \
       --pem=${PEM_FILE} \
       --gas-limit=8000000 \
       --proxy=${PROXY} --chain=${CHAINID} \
@@ -175,7 +175,7 @@ updateUnstakeLockSpan(){
 }
 
 getTokenBalance() {
-  erdpy --verbose contract query ${ADDRESS} --function="getTokenBalance" \
+  mxpy --verbose contract query ${ADDRESS} --function="getTokenBalance" \
     --proxy=${PROXY}
 }
 
@@ -184,7 +184,7 @@ stake() {
   token_id="0x$(echo -n ${TOKEN_ID} | xxd -p -u | tr -d '\n')"
   amount="5000${MY_DECIMALS}"
   pool_id="1"
-  erdpy --verbose contract call ${ADDRESS} --recall-nonce \
+  mxpy --verbose contract call ${ADDRESS} --recall-nonce \
     --pem=${CLIENT_PEM} \
     --gas-limit=8000000 \
     --proxy=${PROXY} --chain=${CHAINID} \
@@ -196,7 +196,7 @@ stake() {
 
 claim() {
   pool_id="2"
-  erdpy --verbose contract call ${ADDRESS} --recall-nonce \
+  mxpy --verbose contract call ${ADDRESS} --recall-nonce \
     --pem=${PEM_FILE} \
     --gas-limit=8000000 \
     --proxy=${PROXY} --chain=${CHAINID} \
@@ -208,7 +208,7 @@ claim() {
 
 reinvest() {
   pool_id="2"
-  erdpy --verbose contract call ${ADDRESS} --recall-nonce \
+  mxpy --verbose contract call ${ADDRESS} --recall-nonce \
     --pem=${PEM_FILE} \
     --gas-limit=600000000 \
     --proxy=${PROXY} --chain=${CHAINID} \
@@ -224,7 +224,7 @@ unstake() {
   pool_id="2"
   amount="50${MY_DECIMALS}"
   #amount="94000${MY_DECIMALS}"
-  erdpy --verbose contract call ${ADDRESS} --recall-nonce \
+  mxpy --verbose contract call ${ADDRESS} --recall-nonce \
     --pem=${PEM_FILE} \
     --gas-limit=100000000 \
     --proxy=${PROXY} --chain=${CHAINID} \
@@ -235,7 +235,7 @@ unstake() {
 }
 
 claimUnstakedValue() {
-   erdpy --verbose contract call ${ADDRESS} --recall-nonce \
+   mxpy --verbose contract call ${ADDRESS} --recall-nonce \
      --pem=${PEM_FILE} \
      --gas-limit=8000000 \
      --proxy=${PROXY} --chain=${CHAINID} \
@@ -246,24 +246,24 @@ claimUnstakedValue() {
 
 getClientReport() {
   # client
-  # erdpy wallet bech32 --decode erd1m98v82l4vkkejlwjka944r7nhlrf8j4xjefw03m0d2tzt5pywgyqfsq39v
+  # mxpy wallet bech32 --decode erd1m98v82l4vkkejlwjka944r7nhlrf8j4xjefw03m0d2tzt5pywgyqfsq39v
 
-  # erdpy wallet bech32 --decode erd1mhhnd3ux2duwc9824dhelherdj3gvzn04erdw29l8cyr5z8fpa7quda68z
+  # mxpy wallet bech32 --decode erd1mhhnd3ux2duwc9824dhelherdj3gvzn04erdw29l8cyr5z8fpa7quda68z
   timestamp=$(date +%s)
   echo "query timestamp=${timestamp}"
-  erdpy --verbose contract query ${ADDRESS} --function="getClientReport" \
+  mxpy --verbose contract query ${ADDRESS} --function="getClientReport" \
     --arguments 0xd94ec3abf565ad997dd2b74b5a8fd3bfc693caa69652e7c76f6a9625d0247208 \
     --proxy=${PROXY}
 }
 
 getClientState() {
-  erdpy --verbose contract query ${ADDRESS} --function="getClientState" \
+  mxpy --verbose contract query ${ADDRESS} --function="getClientState" \
     --arguments 0xddef36c7865378ec14eaab6f9fdf236ca2860a6fae46d728bf3e083a08e90f7c \
     --proxy=${PROXY}
 }
 
 getVariableContractSettings() {
-  erdpy --verbose contract query ${ADDRESS} --function="getVariableContractSettings" \
+  mxpy --verbose contract query ${ADDRESS} --function="getVariableContractSettings" \
     --proxy=${PROXY}
 }
 
@@ -276,7 +276,7 @@ updatePeriod1PoolSettings() {
     APPEND_APY_B="11000"
     APPEND_APY_C="18000"
 
-  erdpy --verbose contract call ${ADDRESS} --recall-nonce \
+  mxpy --verbose contract call ${ADDRESS} --recall-nonce \
     --pem=${PEM_FILE} \
     --gas-limit=8000000 \
     --proxy=${PROXY} --chain=${CHAINID} \
@@ -295,7 +295,7 @@ appendPeriod2PoolSettings() {
   APPEND_APY_B="9500"
   APPEND_APY_C="16000"
 
-  erdpy --verbose contract call ${ADDRESS} --recall-nonce \
+  mxpy --verbose contract call ${ADDRESS} --recall-nonce \
     --pem=${PEM_FILE} \
     --gas-limit=8000000 \
     --proxy=${PROXY} --chain=${CHAINID} \
@@ -314,7 +314,7 @@ appendPeriod3PoolSettings() {
   APPEND_APY_B="9000"
   APPEND_APY_C="15000"
 
-  erdpy --verbose contract call ${ADDRESS} --recall-nonce \
+  mxpy --verbose contract call ${ADDRESS} --recall-nonce \
     --pem=${PEM_FILE} \
     --gas-limit=9000000 \
     --proxy=${PROXY} --chain=${CHAINID} \
@@ -333,7 +333,7 @@ appendPeriod4PoolSettings() {
   APPEND_APY_B="7500"
   APPEND_APY_C="12500"
 
-  erdpy --verbose contract call ${ADDRESS} --recall-nonce \
+  mxpy --verbose contract call ${ADDRESS} --recall-nonce \
     --pem=${PEM_FILE} \
     --gas-limit=10000000 \
     --proxy=${PROXY} --chain=${CHAINID} \
@@ -352,7 +352,7 @@ appendPeriod5PoolSettings() {
   APPEND_APY_B="7500"
   APPEND_APY_C="12500"
 
-  erdpy --verbose contract call ${ADDRESS} --recall-nonce \
+  mxpy --verbose contract call ${ADDRESS} --recall-nonce \
     --pem=${PEM_FILE} \
     --gas-limit=11000000 \
     --proxy=${PROXY} --chain=${CHAINID} \
@@ -367,7 +367,7 @@ appendPeriod5PoolSettings() {
 
 
 switchIsActiveFieldValue(){
-  erdpy --verbose contract call ${ADDRESS} --recall-nonce \
+  mxpy --verbose contract call ${ADDRESS} --recall-nonce \
       --pem=${PEM_FILE} \
       --gas-limit=8000000 \
       --proxy=${PROXY} --chain=${CHAINID} \
@@ -378,7 +378,7 @@ switchIsActiveFieldValue(){
 
 
 getApiConfigReport1(){
-  erdpy --verbose contract query ${ADDRESS} --function="getApiConfigReport1" \
+  mxpy --verbose contract query ${ADDRESS} --function="getApiConfigReport1" \
       --arguments 1 \
       --proxy=${PROXY}
 }
