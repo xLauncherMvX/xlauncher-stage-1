@@ -688,18 +688,18 @@ pub trait XLauncherStaking {
         let pool_c_id: u32 = 3_u32;
 
         require!(
-            !self.pool_settings_exist(pool_a_id, apy_id),
-            "pool_a_id settings already exits for apy_id={}",
+            self.pool_settings_exist(pool_a_id, apy_id),
+            "pool_a_id settings do not exits for apy_id={}",
             apy_id
         );
         require!(
-            !self.pool_settings_exist(pool_b_id, apy_id),
-            "pool_a_id settings already exits for apy_id={}",
+            self.pool_settings_exist(pool_b_id, apy_id),
+            "pool_a_id settings do not exits for apy_id={}",
             apy_id
         );
         require!(
-            !self.pool_settings_exist(pool_c_id, apy_id),
-            "pool_a_id settings already exits for apy_id={}",
+            self.pool_settings_exist(pool_c_id, apy_id),
+            "pool_a_id settings do not exits for apy_id={}",
             apy_id
         );
 
@@ -713,9 +713,11 @@ pub trait XLauncherStaking {
                                   apy_id: &u32,
     ) {
         let mut id = 0_usize;
+        sc_print!("hello debug line i={}, apy_id={}",0_u32, apy_id);
         let mut config_vector = self.get_apy_config_vector(&pool_id);
         for i in 1..config_vector.len() {
             let apy = config_vector.get(i);
+            sc_print!("debug line i={}, apy_id={}",i, apy_id);
             if &apy.id == pool_id {
                 id = i;
                 break;
