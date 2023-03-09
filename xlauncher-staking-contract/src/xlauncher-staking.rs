@@ -703,29 +703,47 @@ pub trait XLauncherStaking {
             apy_id
         );
 
-        self.delete_pool_settings_by_pool_id(&pool_a_id, &apy_id);
-        self.delete_pool_settings_by_pool_id(&pool_b_id, &apy_id);
-        self.delete_pool_settings_by_pool_id(&pool_c_id, &apy_id);
+        self.delete_pool_settings_by_pool_id(pool_a_id, apy_id);
+        self.delete_pool_settings_by_pool_id(pool_b_id, apy_id);
+        self.delete_pool_settings_by_pool_id(pool_c_id, apy_id);
     }
 
     fn delete_pool_settings_by_pool_id(&self,
-                                       pool_id: &u32,
-                                       apy_id: &u32,
+                                       pool_id: u32,
+                                       apy_id: u32,
     ) {
-        let mut id = 0_usize;
-        let mut config_vector = self.get_apy_config_vector(&pool_id);
-        for i in 0..=(config_vector.len() - 1) {
-            let apy_config = config_vector.get(i);
-            if &apy_config.id == apy_id {
-                id = i;
-                break;
+        let mut var_setting = self.variable_contract_settings().get();
+        let mut pool_items = var_setting.pool_items;
+        let mut settings_located = false;
+
+        for i in 0..=(pool_items.len() - 1) {
+            let mut pool = pool_items.get(i);
+            if pool.id == pool_id {
+                let mut api_config_vector = pool.apy_configuration;
+                for k in 0..=(api_config_vector.len() - 1) {
+                    sc_print!("k value = {}", k);
+                    let config_item = api_config_vector.get(k);
+                    if config_item.id == apy_id {
+                        sc_print!("------------------------{}",pool.id);
+                        sc_print!("pool.id={}", pool_id);
+                        sc_print!("k={}", k);
+                        sc_print!("before removal len = {}", api_config_vector.len());
+                        let _updated_config_item = api_config_vector.remove(k);
+                        sc_print!("before removal len = {}", api_config_vector.len());
+                        settings_located = true;
+                        break;
+                    }
+                }
+                pool.apy_configuration = api_config_vector;
+                let _updated_pool_item = pool_items.set(i, &pool);
             }
         }
-        if id > 0 {
-            config_vector.remove(id)
-        } else {
-            sc_panic!("No item located to apy by pool_id={} and apy_id={}", pool_id,apy_id)
+        if settings_located {
+            var_setting.pool_items = pool_items;
+            self.variable_contract_settings().set(var_setting)
         }
+        sc_print!("End of removal {}", pool_id);
+        sc_print!("-------------- {}", pool_id);
     }
 
     fn pool_exists(&self, pool_id: u32) -> bool {
@@ -842,6 +860,7 @@ pub trait XLauncherStaking {
         }
         sc_panic!("Not valid pool_id={}", pool_id)
     }
+
 
     fn get_client_staked_items_by_pool_id(
         &self,
