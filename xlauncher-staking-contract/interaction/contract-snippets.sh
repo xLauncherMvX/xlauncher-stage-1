@@ -387,7 +387,7 @@ deletePoolSettings() {
 
   mxpy --verbose contract call ${ADDRESS} --recall-nonce \
     --pem=${PEM_FILE} \
-    --gas-limit=8000000 \
+    --gas-limit=10000000 \
     --proxy=${PROXY} --chain=${CHAINID} \
     --function="deletePoolSettings" \
     --arguments ${APPEND_APY_ID} \
