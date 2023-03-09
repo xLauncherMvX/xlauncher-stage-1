@@ -179,6 +179,28 @@
           "code": "file:../output/xlauncher-staking.wasm"
         }
       }
+    },
+    {
+      "step": "scCall",
+      "txId": "call-deletePoolSettings",
+      "tx": {
+        "from": "address:owner",
+        "to": "sc:xlauncher-staking",
+        "function": "deletePoolSettings",
+        "value": "0",
+        "gasLimit": "100,000,000",
+        "gasPrice": "0",
+        "arguments": [
+          "2"
+        ]
+      },
+      "expect": {
+        "out": [],
+        "status": "0",
+        "message": "",
+        "gas": "*",
+        "refund": "*"
+      }
     }
   ]
 }

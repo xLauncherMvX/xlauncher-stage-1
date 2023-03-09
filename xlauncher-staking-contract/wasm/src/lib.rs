@@ -29,7 +29,7 @@ multiversx_sc_wasm_adapter::endpoints! {
         updateUnstakeLockSpan
         updatePoolSettings
         appendPoolSettings
-        deleteApyIdFromPoolSettings
+        deletePoolSettings
         getClientTotalStakedValue
         getClientReport
         getApiConfigReport1

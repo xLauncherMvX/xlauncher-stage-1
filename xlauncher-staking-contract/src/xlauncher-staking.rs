@@ -681,8 +681,8 @@ pub trait XLauncherStaking {
     }
 
     #[only_owner]
-    #[endpoint(deleteApyIdFromPoolSettings)]
-    fn delete_apy_id_from_pool_settings(&self, apy_id: u32) {
+    #[endpoint(deletePoolSettings)]
+    fn delete_pool_settings(&self, apy_id: u32) {
         let pool_a_id = 1_u32;
         let pool_b_id: u32 = 2_u32;
         let pool_c_id: u32 = 3_u32;
@@ -703,22 +703,20 @@ pub trait XLauncherStaking {
             apy_id
         );
 
-        self.delete_pool_settings_by_id(&pool_a_id, &apy_id);
-        self.delete_pool_settings_by_id(&pool_b_id, &apy_id);
-        self.delete_pool_settings_by_id(&pool_c_id, &apy_id);
+        self.delete_pool_settings_by_pool_id(&pool_a_id, &apy_id);
+        self.delete_pool_settings_by_pool_id(&pool_b_id, &apy_id);
+        self.delete_pool_settings_by_pool_id(&pool_c_id, &apy_id);
     }
 
-    fn delete_pool_settings_by_id(&self,
-                                  pool_id: &u32,
-                                  apy_id: &u32,
+    fn delete_pool_settings_by_pool_id(&self,
+                                       pool_id: &u32,
+                                       apy_id: &u32,
     ) {
         let mut id = 0_usize;
-        sc_print!("hello debug line i={}, apy_id={}",0_u32, apy_id);
         let mut config_vector = self.get_apy_config_vector(&pool_id);
-        for i in 1..config_vector.len() {
-            let apy = config_vector.get(i);
-            sc_print!("debug line i={}, apy_id={}",i, apy_id);
-            if &apy.id == pool_id {
+        for i in 0..=(config_vector.len() - 1) {
+            let apy_config = config_vector.get(i);
+            if &apy_config.id == apy_id {
                 id = i;
                 break;
             }

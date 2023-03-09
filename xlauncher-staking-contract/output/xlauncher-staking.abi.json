@@ -263,7 +263,7 @@
             "outputs": []
         },
         {
-            "name": "deleteApyIdFromPoolSettings",
+            "name": "deletePoolSettings",
             "onlyOwner": true,
             "mutability": "mutable",
             "inputs": [
