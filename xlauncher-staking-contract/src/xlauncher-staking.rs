@@ -721,29 +721,27 @@ pub trait XLauncherStaking {
             if pool.id == pool_id {
                 let mut api_config_vector = pool.apy_configuration;
                 for k in 0..=(api_config_vector.len() - 1) {
-                    sc_print!("k value = {}", k);
                     let config_item = api_config_vector.get(k);
                     if config_item.id == apy_id {
-                        sc_print!("------------------------{}",pool.id);
-                        sc_print!("pool.id={}", pool_id);
-                        sc_print!("k={}", k);
-                        sc_print!("before removal len = {}", api_config_vector.len());
-                        let _updated_config_item = api_config_vector.remove(k);
-                        sc_print!("before removal len = {}", api_config_vector.len());
+                        //remove the located item
+                        api_config_vector.remove(k);
                         settings_located = true;
                         break;
                     }
                 }
                 pool.apy_configuration = api_config_vector;
-                let _updated_pool_item = pool_items.set(i, &pool);
+
+                //update specific pool
+                let _ignored_updated_item = pool_items.set(i, &pool);
             }
+        }
+        if !settings_located {
+            sc_panic!("delete_pool_settings_by_pool_id locate pull by pool_id={} and apy_id={}", pool_id, apy_id)
         }
         if settings_located {
             var_setting.pool_items = pool_items;
             self.variable_contract_settings().set(var_setting)
         }
-        sc_print!("End of removal {}", pool_id);
-        sc_print!("-------------- {}", pool_id);
     }
 
     fn pool_exists(&self, pool_id: u32) -> bool {
