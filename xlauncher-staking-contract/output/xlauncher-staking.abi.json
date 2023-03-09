@@ -263,6 +263,18 @@
             "outputs": []
         },
         {
+            "name": "deleteApyIdFromPoolSettings",
+            "onlyOwner": true,
+            "mutability": "mutable",
+            "inputs": [
+                {
+                    "name": "apy_id",
+                    "type": "u32"
+                }
+            ],
+            "outputs": []
+        },
+        {
             "name": "getClientTotalStakedValue",
             "mutability": "readonly",
             "inputs": [

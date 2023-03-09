@@ -1,5 +1,4 @@
 #![no_std]
-#![feature(generic_associated_types)]
 
 extern crate alloc;
 
@@ -90,7 +89,6 @@ pub trait XLauncherStaking {
             };
             self.variable_contract_settings().set(&variable_settings)
         }
-
     }
 
     fn build_pool(
@@ -247,7 +245,7 @@ pub trait XLauncherStaking {
             &client,
             &token_id,
             0,
-            &unstake_state.total_unstaked_amount
+            &unstake_state.total_unstaked_amount,
         );
         self.unstake_state(&client).clear();
         self.decrement_total_staked_value(unstake_state.requested_amount);
@@ -682,6 +680,54 @@ pub trait XLauncherStaking {
         );
     }
 
+    #[only_owner]
+    #[endpoint(deleteApyIdFromPoolSettings)]
+    fn delete_apy_id_from_pool_settings(&self, apy_id: u32) {
+        let pool_a_id = 1_u32;
+        let pool_b_id: u32 = 2_u32;
+        let pool_c_id: u32 = 3_u32;
+
+        require!(
+            !self.pool_settings_exist(pool_a_id, apy_id),
+            "pool_a_id settings already exits for apy_id={}",
+            apy_id
+        );
+        require!(
+            !self.pool_settings_exist(pool_b_id, apy_id),
+            "pool_a_id settings already exits for apy_id={}",
+            apy_id
+        );
+        require!(
+            !self.pool_settings_exist(pool_c_id, apy_id),
+            "pool_a_id settings already exits for apy_id={}",
+            apy_id
+        );
+
+        self.delete_pool_settings_by_id(&pool_a_id, &apy_id);
+        self.delete_pool_settings_by_id(&pool_b_id, &apy_id);
+        self.delete_pool_settings_by_id(&pool_c_id, &apy_id);
+    }
+
+    fn delete_pool_settings_by_id(&self,
+                                  pool_id: &u32,
+                                  apy_id: &u32,
+    ) {
+        let mut id = 0_usize;
+        let mut config_vector = self.get_apy_config_vector(&pool_id);
+        for i in 1..config_vector.len() {
+            let apy = config_vector.get(i);
+            if &apy.id == pool_id {
+                id = i;
+                break;
+            }
+        }
+        if id > 0 {
+            config_vector.remove(id)
+        } else {
+            sc_panic!("No item located to apy by pool_id={} and apy_id={}", pool_id,apy_id)
+        }
+    }
+
     fn pool_exists(&self, pool_id: u32) -> bool {
         let var_setting = self.variable_contract_settings().get();
         let pool_items = var_setting.pool_items;
@@ -868,7 +914,7 @@ pub trait XLauncherStaking {
     // reports
     #[view(getClientTotalStakedValue)]
     fn get_client_total_staked_value(&self, client: ManagedAddress) -> BigUint {
-        let report  = self.get_client_report(client);
+        let report = self.get_client_report(client);
         let total_amount = report.total_amount;
         sc_print!("Hello from staking contract val={}", total_amount);
         return total_amount;
@@ -909,7 +955,6 @@ pub trait XLauncherStaking {
                         rep_item.pool_amount.clone() + client_item.pool_amount.clone();
                     sc_print!("added value: pull_id={}, pull_amount={}", pul_id.clone(), rep_item.pool_amount.clone());
                     for pc in 0..=(pool.apy_configuration.len() - 1) {
-
                         let pc_val = pool.apy_configuration.get(pc);
                         let pc_clone = pc_val.clone();
                         let item_reward = self.calculate_rewards_v2(
@@ -933,8 +978,6 @@ pub trait XLauncherStaking {
         sc_print!("total_rewards={}",report.total_rewards);
         return report;
     }
-
-
 
 
     #[view(getApiConfigReport1)]
