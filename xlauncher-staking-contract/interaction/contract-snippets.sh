@@ -43,7 +43,6 @@ setEnvDevnet() {
   TOKEN_ID_HEX=$(echo -n ${TOKEN_ID} | xxd -p)
 }
 
-
 setEnvTestnet() {
   PULL_A_ID="1"
   PULL_A_LOCKING_TIME_SPAN="0"
@@ -167,18 +166,17 @@ fundContract() {
     --outfile="${MY_LOGS}/fundContract-${ENV_LOGS}.json"
 }
 
-
-updateUnstakeLockSpan(){
+updateUnstakeLockSpan() {
   # 60 * 5 = 300 (5 minutes)
   UNSTAKE_LOCK_SPAN="1"
   mxpy --verbose contract call ${ADDRESS} --recall-nonce \
-      --pem=${PEM_FILE} \
-      --gas-limit=8000000 \
-      --proxy=${PROXY} --chain=${CHAINID} \
-      --function="updateUnstakeLockSpan" \
-      --arguments ${UNSTAKE_LOCK_SPAN} \
-      --send \
-      --outfile="${MY_LOGS}/updateUnstakeLockSpan-${ENV_LOGS}.json"
+    --pem=${PEM_FILE} \
+    --gas-limit=8000000 \
+    --proxy=${PROXY} --chain=${CHAINID} \
+    --function="updateUnstakeLockSpan" \
+    --arguments ${UNSTAKE_LOCK_SPAN} \
+    --send \
+    --outfile="${MY_LOGS}/updateUnstakeLockSpan-${ENV_LOGS}.json"
 }
 
 getTokenBalance() {
@@ -225,8 +223,6 @@ reinvest() {
     --outfile="${MY_LOGS}/claim-${ENV_LOGS}.json"
 }
 
-
-
 unstake() {
   pool_id="2"
   amount="50${MY_DECIMALS}"
@@ -242,14 +238,14 @@ unstake() {
 }
 
 claimUnstakedValue() {
-   mxpy --verbose contract call ${ADDRESS} --recall-nonce \
-     --pem=${PEM_FILE} \
-     --gas-limit=8000000 \
-     --proxy=${PROXY} --chain=${CHAINID} \
-     --function="claimUnstakedValue" \
-     --send \
-     --outfile="${MY_LOGS}/claimUnstakedValue-${ENV_LOGS}.json"
- }
+  mxpy --verbose contract call ${ADDRESS} --recall-nonce \
+    --pem=${PEM_FILE} \
+    --gas-limit=8000000 \
+    --proxy=${PROXY} --chain=${CHAINID} \
+    --function="claimUnstakedValue" \
+    --send \
+    --outfile="${MY_LOGS}/claimUnstakedValue-${ENV_LOGS}.json"
+}
 
 getClientReport() {
   # client
@@ -276,12 +272,12 @@ getVariableContractSettings() {
 
 updatePeriod1PoolSettings() {
 
-    APPEND_APY_ID="1"
-    APPEND_APY_START=$(date -d '2022-05-12 00:00:01' +"%s")
-    APPEND_APY_END=$(date -d '2022-07-04 00:00:00' +"%s")
-    APPEND_APY_A="4000"
-    APPEND_APY_B="11000"
-    APPEND_APY_C="18000"
+  APPEND_APY_ID="1"
+  APPEND_APY_START=$(date -d '2022-05-12 00:00:01' +"%s")
+  APPEND_APY_END=$(date -d '2022-07-04 00:00:00' +"%s")
+  APPEND_APY_A="4000"
+  APPEND_APY_B="11000"
+  APPEND_APY_C="18000"
 
   mxpy --verbose contract call ${ADDRESS} --recall-nonce \
     --pem=${PEM_FILE} \
@@ -369,18 +365,32 @@ appendPeriod5PoolSettings() {
     --outfile="${MY_LOGS}/appendPoolSettings-${ENV_LOGS}.json"
 }
 
-switchIsActiveFieldValue(){
+switchIsActiveFieldValue() {
   mxpy --verbose contract call ${ADDRESS} --recall-nonce \
-      --pem=${PEM_FILE} \
-      --gas-limit=8000000 \
-      --proxy=${PROXY} --chain=${CHAINID} \
-      --function="switchIsActiveFieldValue" \
-      --send \
-      --outfile="${MY_LOGS}/switchIsActiveFieldValue-${ENV_LOGS}.json"
+    --pem=${PEM_FILE} \
+    --gas-limit=8000000 \
+    --proxy=${PROXY} --chain=${CHAINID} \
+    --function="switchIsActiveFieldValue" \
+    --send \
+    --outfile="${MY_LOGS}/switchIsActiveFieldValue-${ENV_LOGS}.json"
 }
 
-getApiConfigReport1(){
+getApiConfigReport1() {
   mxpy --verbose contract query ${ADDRESS} --function="getApiConfigReport1" \
-      --arguments 1 \
-      --proxy=${PROXY}
+    --arguments 1 \
+    --proxy=${PROXY}
+}
+
+deletePoolSettings() {
+
+  APPEND_APY_ID="1"
+
+  mxpy --verbose contract call ${ADDRESS} --recall-nonce \
+    --pem=${PEM_FILE} \
+    --gas-limit=8000000 \
+    --proxy=${PROXY} --chain=${CHAINID} \
+    --function="deletePoolSettings" \
+    --arguments ${APPEND_APY_ID} \
+    --send \
+    --outfile="${MY_LOGS}/deletePoolSettings-${ENV_LOGS}.json"
 }
