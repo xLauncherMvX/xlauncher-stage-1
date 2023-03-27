@@ -250,12 +250,13 @@ claimUnstakedValue() {
 getClientReport() {
   # client
   # mxpy wallet bech32 --decode erd1m98v82l4vkkejlwjka944r7nhlrf8j4xjefw03m0d2tzt5pywgyqfsq39v
+  # mxpy wallet bech32 --decode erd1znusjpmfpukrtf0wscvf4su8yjqg393c092j8sxxvvrfk9m0rdss0646y0
 
   # mxpy wallet bech32 --decode erd1mhhnd3ux2duwc9824dhelherdj3gvzn04erdw29l8cyr5z8fpa7quda68z
   timestamp=$(date +%s)
   echo "query timestamp=${timestamp}"
   mxpy --verbose contract query ${ADDRESS} --function="getClientReport" \
-    --arguments 0xd94ec3abf565ad997dd2b74b5a8fd3bfc693caa69652e7c76f6a9625d0247208 \
+    --arguments 0x14f90907690f2c35a5ee86189ac3872480889638795523c0c663069b176f1b61 \
     --proxy=${PROXY}
 }
 
