@@ -274,10 +274,10 @@ updatePeriod1PoolSettings() {
 
   APPEND_APY_ID="1"
   APPEND_APY_START=$(date -d '2022-05-12 00:00:01' +"%s")
-  APPEND_APY_END=$(date -d '2022-07-04 00:00:00' +"%s")
-  APPEND_APY_A="4000"
-  APPEND_APY_B="11000"
-  APPEND_APY_C="18000"
+  APPEND_APY_END=$(date -d '2024-01-5 23:59:59' +"%s")
+  APPEND_APY_A="900"
+  APPEND_APY_B="3000"
+  APPEND_APY_C="5000"
 
   mxpy --verbose contract call ${ADDRESS} --recall-nonce \
     --pem=${PEM_FILE} \
@@ -383,7 +383,7 @@ getApiConfigReport1() {
 
 deletePoolSettings() {
 
-  APPEND_APY_ID="1"
+  APPEND_APY_ID="2"
 
   mxpy --verbose contract call ${ADDRESS} --recall-nonce \
     --pem=${PEM_FILE} \
