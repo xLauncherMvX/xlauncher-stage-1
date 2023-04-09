@@ -5,9 +5,9 @@
 ////////////////////////////////////////////////////
 
 // Init:                                 1
-// Endpoints:                            0
+// Endpoints:                            2
 // Async Callback (empty):               1
-// Total number of exported functions:   2
+// Total number of exported functions:   4
 
 #![no_std]
 #![feature(alloc_error_handler, lang_items)]
@@ -18,6 +18,8 @@ multiversx_sc_wasm_adapter::panic_handler!();
 multiversx_sc_wasm_adapter::endpoints! {
     xlauncher_staking
     (
+        setContractSettings
+        getContractSettings
     )
 }
 
