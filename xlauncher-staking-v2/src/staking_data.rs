@@ -16,6 +16,7 @@ pub struct StakingSettings<M: ManagedTypeApi> {
     pub unstake_sft_lock_span: u64,
     pub min_apy: u64, // in 4 decimal (10000 = 1%) (150000 = 15%)
     pub max_apy: u64, // in 4 decimal (10000 = 1%) (150000 = 15%)
+    pub sft_increment_apy: u64, // in 4 decimal (100 = 0.01%) (1500 = 0.15%)
 
 }
 
