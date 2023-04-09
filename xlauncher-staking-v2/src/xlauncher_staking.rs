@@ -17,7 +17,6 @@ pub trait HelloWorld {
     #[endpoint(setContractSettings)]
     fn set_contract_settings(&self,
                              token_id: TokenIdentifier,
-                             min_staking_val: BigUint,
                              max_staking_val: BigUint,
                              unstake_xlh_lock_span: u64,
                              unstake_sft_lock_span: u64,
@@ -27,7 +26,6 @@ pub trait HelloWorld {
     ) {
         let settings = StakingSettings {
             token_id,
-            min_staking_val,
             max_staking_val,
             unstake_xlh_lock_span,
             unstake_sft_lock_span,
