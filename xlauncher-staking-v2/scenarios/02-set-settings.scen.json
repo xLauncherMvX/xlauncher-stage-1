@@ -1,0 +1,30 @@
+{
+  "name": "xlauncher-staking",
+  "comment": "deploy scenario",
+  "steps": [
+    {
+      "step": "externalSteps",
+      "path": "01-deploy.scen.json"
+    },
+    {
+      "step": "checkState",
+      "accounts": {
+        "address:owner": {
+          "nonce": "*",
+          "balance": "0",
+          "esdt": {
+            "str:BCOIN-a00000": "100,000,000,000,000,000,000,000,000"
+          },
+          "storage": {},
+          "code": ""
+        },
+        "sc:xlauncher-staking": {
+          "nonce": "*",
+          "balance": "0",
+          "storage": {},
+          "code": "file:../output/xlauncher-staking.wasm"
+        }
+      }
+    }
+  ]
+}
