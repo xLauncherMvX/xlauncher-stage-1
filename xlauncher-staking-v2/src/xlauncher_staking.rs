@@ -18,12 +18,14 @@ pub trait HelloWorld {
     fn set_contract_settings(&self,
                              token_id: TokenIdentifier,
                              max_staking_val: BigUint,
+                             unstake_xlh_lock_span: u64
     ) {
         let settings = StakingSettings {
             token_id,
             max_staking_val,
             total_staked: BigUint::zero(),
             total_available_for_rewords: BigUint::zero(),
+            unstake_xlh_lock_span,
         };
         self.contract_settings().set(&settings);
     }

@@ -12,6 +12,7 @@ pub struct StakingSettings<M: ManagedTypeApi> {
     pub max_staking_val: BigUint<M>,
     pub total_staked: BigUint<M>,
     pub total_available_for_rewords: BigUint<M>,
+    pub unstake_xlh_lock_span: u64,
 }
 
 // it keeps track at global level the total staked value for each pool
