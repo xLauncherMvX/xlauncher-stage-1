@@ -7,6 +7,34 @@
       "path": "01-deploy.scen.json"
     },
     {
+      "step": "scCall",
+      "txId": "call-setContractSettings",
+      "tx": {
+        "from": "address:owner",
+        "to": "sc:xlauncher-staking",
+        "function": "setContractSettings",
+        "value": "0",
+        "gasLimit": "100,000,000",
+        "gasPrice": "0",
+        "arguments": [
+          "str:BCOIN-a00000",
+          "2",
+          "1001",
+          "1002",
+          "400",
+          "500",
+          "600"
+        ]
+      },
+      "expect": {
+        "out": [],
+        "status": "0",
+        "message": "",
+        "gas": "*",
+        "refund": "*"
+      }
+    },
+    {
       "step": "checkState",
       "accounts": {
         "address:owner": {
@@ -21,7 +49,7 @@
         "sc:xlauncher-staking": {
           "nonce": "*",
           "balance": "0",
-          "storage": {},
+          "storage": "*",
           "code": "file:../output/xlauncher-staking.wasm"
         }
       }
