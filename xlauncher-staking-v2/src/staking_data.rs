@@ -9,22 +9,6 @@ multiversx_sc::derive_imports!();
 #[derive(TypeAbi, TopEncode, TopDecode, ManagedVecItem, NestedEncode, NestedDecode, Clone)]
 pub struct StakingSettings<M: ManagedTypeApi> {
     pub token_id: TokenIdentifier<M>,
-    pub max_staking_val: BigUint<M>,
-    pub total_staked: BigUint<M>,
-
-    /**
-     * When client collects rewards, we deduct from this value
-    * - claim is simple. We compute rewords send it to the client and deduct from this value
-    * - stake top up: we compute rewords deduct from this value and add on top with the
-    * staked current staked value
-     */
-    pub total_available_for_rewords: BigUint<M>,
-    pub unstake_xlh_lock_span: u64,
-    pub unstake_sft_lock_span: u64,
-    pub min_apy: u64, // in 4 decimal (10000 = 1%) (150000 = 15%)
-    pub max_apy: u64, // in 4 decimal (10000 = 1%) (150000 = 15%)
-    pub sft_increment_apy: u64, // in 4 decimal (100 = 0.01%) (1500 = 0.15%)
-    pub last_pool_id: usize, // if id is 0, then there are no pools
 }
 
 // it keeps track at global level the total staked value for each pool

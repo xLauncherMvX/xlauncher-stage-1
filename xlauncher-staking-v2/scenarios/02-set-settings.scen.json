@@ -17,13 +17,7 @@
         "gasLimit": "100,000,000",
         "gasPrice": "0",
         "arguments": [
-          "str:BCOIN-a00000",
-          "2",
-          "1001",
-          "1002",
-          "400",
-          "500",
-          "600"
+          "str:BCOIN-a00000"
         ]
       },
       "expect": {
@@ -49,7 +43,11 @@
         "sc:xlauncher-staking": {
           "nonce": "*",
           "balance": "0",
-          "storage": "*",
+          "storage": {
+            "str:contractSettings": {
+              "1-token_id": "nested:str:BCOIN-a00000"
+            }
+          },
           "code": "file:../output/xlauncher-staking.wasm"
         }
       }
