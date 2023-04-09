@@ -17,7 +17,8 @@
         "gasLimit": "100,000,000",
         "gasPrice": "0",
         "arguments": [
-          "str:BCOIN-a00000"
+          "str:BCOIN-a00000",
+          "1000000000000000000000000"
         ]
       },
       "expect": {
@@ -45,7 +46,8 @@
           "balance": "0",
           "storage": {
             "str:contractSettings": {
-              "1-token_id": "nested:str:BCOIN-a00000"
+              "1-token_id": "nested:str:BCOIN-a00000",
+              "2-max_staking_val": "biguint:1000000000000000000000000"
             }
           },
           "code": "file:../output/xlauncher-staking.wasm"

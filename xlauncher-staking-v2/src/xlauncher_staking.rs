@@ -16,10 +16,12 @@ pub trait HelloWorld {
     #[only_owner]
     #[endpoint(setContractSettings)]
     fn set_contract_settings(&self,
-                             token_id: TokenIdentifier
+                             token_id: TokenIdentifier,
+                             max_staking_val: BigUint,
     ) {
         let settings = StakingSettings {
             token_id,
+            max_staking_val,
         };
         self.contract_settings().set(&settings);
     }
