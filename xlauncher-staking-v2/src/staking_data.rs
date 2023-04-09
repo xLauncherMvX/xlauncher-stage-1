@@ -10,6 +10,8 @@ multiversx_sc::derive_imports!();
 pub struct StakingSettings<M: ManagedTypeApi> {
     pub token_id: TokenIdentifier<M>,
     pub max_staking_val: BigUint<M>,
+    pub total_staked: BigUint<M>,
+    pub total_available_for_rewords: BigUint<M>,
 }
 
 // it keeps track at global level the total staked value for each pool

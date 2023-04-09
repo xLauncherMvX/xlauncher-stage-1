@@ -47,7 +47,9 @@
           "storage": {
             "str:contractSettings": {
               "1-token_id": "nested:str:BCOIN-a00000",
-              "2-max_staking_val": "biguint:1,000,000,000000000000000000"
+              "2-max_staking_val": "biguint:1,000,000,000000000000000000",
+              "3-total_staked": "biguint:0",
+              "4-total_available_for_rewards": "biguint:0"
             }
           },
           "code": "file:../output/xlauncher-staking.wasm"
