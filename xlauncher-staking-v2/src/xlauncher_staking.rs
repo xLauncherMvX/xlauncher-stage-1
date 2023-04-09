@@ -25,7 +25,6 @@ pub trait HelloWorld {
                              sft_increment_apy: u64,
     ) {
 
-
         let settings = StakingSettings {
             token_id,
             max_staking_val,
@@ -38,6 +37,11 @@ pub trait HelloWorld {
             sft_increment_apy,
         };
         self.contract_settings().set(&settings);
+
+        //check if last_pool_id is set and if not set it to 0
+        if self.last_pool_id().is_empty() {
+            self.last_pool_id().set(&0);
+        }
     }
 
     // storage
@@ -45,6 +49,10 @@ pub trait HelloWorld {
     #[view(getContractSettings)]
     #[storage_mapper("contractSettings")]
     fn contract_settings(&self) -> SingleValueMapper<StakingSettings<Self::Api>>;
+
+    #[view(getLastPoolId)]
+    #[storage_mapper("lastPoolId")]
+    fn last_pool_id(&self) -> SingleValueMapper<u64>;
 }
 
 

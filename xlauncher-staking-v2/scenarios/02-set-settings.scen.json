@@ -60,7 +60,8 @@
               "7-min_apy": "u64:150000",
               "8-max_apy": "u64:300000",
               "9-sft_increment_apy": "u64:15000"
-            }
+            },
+            "str:lastPoolId": "0"
           },
           "code": "file:../output/xlauncher-staking.wasm"
         }
