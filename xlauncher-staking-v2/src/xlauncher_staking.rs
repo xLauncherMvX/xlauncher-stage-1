@@ -19,7 +19,9 @@ pub trait HelloWorld {
                              token_id: TokenIdentifier,
                              max_staking_val: BigUint,
                              unstake_xlh_lock_span: u64,
-                             unstake_sft_lock_span: u64
+                             unstake_sft_lock_span: u64,
+                             min_apy: u64,
+                             max_apy: u64,
     ) {
         let settings = StakingSettings {
             token_id,
@@ -28,6 +30,8 @@ pub trait HelloWorld {
             total_available_for_rewords: BigUint::zero(),
             unstake_xlh_lock_span,
             unstake_sft_lock_span,
+            min_apy,
+            max_apy,
         };
         self.contract_settings().set(&settings);
     }
