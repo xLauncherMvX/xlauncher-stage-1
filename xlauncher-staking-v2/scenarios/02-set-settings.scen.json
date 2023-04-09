@@ -19,7 +19,8 @@
         "arguments": [
           "str:BCOIN-a00000",
           "1000000000000000000000000",
-          "864000"
+          "864000",
+          "5184000"
         ]
       },
       "expect": {
@@ -51,7 +52,8 @@
               "2-max_staking_val": "biguint:1,000,000,000000000000000000",
               "3-total_staked": "biguint:0",
               "4-total_available_for_rewards": "biguint:0",
-              "5-unstake_xlh_lock_span": "u64:864000"
+              "5-unstake_xlh_lock_span": "u64:864000",
+              "6-unstake_sft_lock_span": "u64:5184000"
             }
           },
           "code": "file:../output/xlauncher-staking.wasm"
