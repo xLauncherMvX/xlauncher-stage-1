@@ -24,6 +24,8 @@ pub trait HelloWorld {
                              max_apy: u64,
                              sft_increment_apy: u64,
     ) {
+
+
         let settings = StakingSettings {
             token_id,
             max_staking_val,
