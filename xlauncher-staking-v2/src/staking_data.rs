@@ -22,7 +22,7 @@ pub struct StakingSettings<M: ManagedTypeApi> {
 // it keeps track at global level the total staked value for each pool
 #[derive(TypeAbi, TopEncode, TopDecode, ManagedVecItem, NestedEncode, NestedDecode, Clone)]
 pub struct PoolData<M: ManagedTypeApi> {
-    pub pool_id: usize,
+    pub pool_id: u64,
     pub pool_total_xlh: BigUint<M>,
 }
 

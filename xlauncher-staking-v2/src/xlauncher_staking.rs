@@ -6,6 +6,7 @@ multiversx_sc::derive_imports!();
 mod staking_data;
 
 use crate::staking_data::StakingSettings;
+use crate::staking_data::PoolData;
 
 
 #[multiversx_sc::contract]
@@ -47,8 +48,14 @@ pub trait HelloWorld {
     #[only_owner]
     #[endpoint(createNewPool)]
     fn create_new_pool(&self) {
-        let pool_id = self.last_pool_id().get() + 1;
+        let pool_id:u64 = self.last_pool_id().get() + 1;
+        assert!(self.pool_data(pool_id).is_empty(), "pool already exists");
         self.last_pool_id().set(&pool_id);
+        let new_pool = PoolData {
+            pool_id,
+            pool_total_xlh: BigUint::zero(),
+        };
+        self.pool_data(pool_id).set(&new_pool);
     }
 
 
@@ -61,6 +68,9 @@ pub trait HelloWorld {
     #[view(getLastPoolId)]
     #[storage_mapper("lastPoolId")]
     fn last_pool_id(&self) -> SingleValueMapper<u64>;
+
+    #[storage_mapper("poolData")]
+    fn pool_data(&self, pool_id: u64) -> SingleValueMapper<PoolData<Self::Api>>;
 }
 
 
