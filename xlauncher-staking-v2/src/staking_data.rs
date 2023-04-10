@@ -9,6 +9,8 @@ multiversx_sc::derive_imports!();
 #[derive(TypeAbi, TopEncode, TopDecode, ManagedVecItem, NestedEncode, NestedDecode)]
 pub struct StakingSettings<M: ManagedTypeApi> {
     pub token_id: TokenIdentifier<M>,
+    pub sft_id: TokenIdentifier<M>,
+    pub sft_nonce: u64,
     pub max_staking_val: BigUint<M>,
     pub unstake_xlh_lock_span: u64,
     pub unstake_sft_lock_span: u64,
