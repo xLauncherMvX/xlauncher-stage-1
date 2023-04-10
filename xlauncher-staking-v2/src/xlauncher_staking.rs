@@ -58,6 +58,21 @@ pub trait HelloWorld {
         self.pool_data(pool_id).set(&new_pool);
     }
 
+    #[payable("*")]
+    #[endpoint(stakeXlh)]
+    fn stake_xlh(&self, pool_id: u32) {
+        let egld_or_esdt_token_identifier = self.call_value().egld_or_single_esdt();
+
+        let amount = egld_or_esdt_token_identifier.amount;
+        let token_id = egld_or_esdt_token_identifier.token_identifier;
+        let client = self.blockchain().get_caller();
+
+        let settings = self.contract_settings().get();
+
+        //check token_id
+        assert!(token_id == settings.token_id, "wrong token id");
+
+    }
 
     // storage
 
