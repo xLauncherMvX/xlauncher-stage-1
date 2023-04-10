@@ -27,8 +27,6 @@ pub trait HelloWorld {
     ) {
         let settings = StakingSettings {
             token_id,
-            sft_id,
-            sft_nonce,
             max_staking_val,
             unstake_xlh_lock_span,
             unstake_sft_lock_span,
@@ -37,6 +35,12 @@ pub trait HelloWorld {
             sft_increment_apy,
         };
         self.contract_settings().set(&settings);
+
+        let sft_settings = SftSettings {
+            sft_id,
+            nonce: sft_nonce,
+        };
+        self.sft_settings().set(&sft_settings);
 
         //check if total_staked_data is set and if not set to default
         if self.total_staked_data().is_empty() {
@@ -278,6 +282,10 @@ pub trait HelloWorld {
     #[view(getContractSettings)]
     #[storage_mapper("contractSettings")]
     fn contract_settings(&self) -> SingleValueMapper<StakingSettings<Self::Api>>;
+
+    #[view(getSftSettings)]
+    #[storage_mapper("sftSettings")]
+    fn sft_settings(&self) -> SingleValueMapper<SftSettings<Self::Api>> ;
 
     #[view(getTotalStakedData)]
     #[storage_mapper("totalStakedData")]

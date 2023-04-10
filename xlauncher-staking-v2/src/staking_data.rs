@@ -9,14 +9,20 @@ multiversx_sc::derive_imports!();
 #[derive(TypeAbi, TopEncode, TopDecode, ManagedVecItem, NestedEncode, NestedDecode)]
 pub struct StakingSettings<M: ManagedTypeApi> {
     pub token_id: TokenIdentifier<M>,
-    pub sft_id: TokenIdentifier<M>,
-    pub sft_nonce: u64,
     pub max_staking_val: BigUint<M>,
     pub unstake_xlh_lock_span: u64,
     pub unstake_sft_lock_span: u64,
-    pub min_apy: u64, // in 4 decimal (10000 = 1%) (150000 = 15%)
-    pub max_apy: u64, // in 4 decimal (10000 = 1%) (150000 = 15%)
+    pub min_apy: u64,
+    // in 4 decimal (10000 = 1%) (150000 = 15%)
+    pub max_apy: u64,
+    // in 4 decimal (10000 = 1%) (150000 = 15%)
     pub sft_increment_apy: u64, // in 4 decimal (100 = 0.01%) (1500 = 0.15%)
+}
+
+#[derive(TypeAbi, TopEncode, TopDecode, ManagedVecItem, NestedEncode, NestedDecode)]
+pub struct SftSettings<M: ManagedTypeApi> {
+    pub sft_id: TokenIdentifier<M>,
+    pub nonce: u64,
 }
 
 #[derive(TypeAbi, TopEncode, TopDecode, ManagedVecItem, NestedEncode, NestedDecode)]
@@ -50,7 +56,7 @@ pub struct ClientXlhData<M: ManagedTypeApi> {
 }
 
 #[derive(TypeAbi, TopEncode, TopDecode, ManagedVecItem, NestedEncode, NestedDecode, Clone)]
-pub struct ClientXlhDataWithRewords<M:ManagedTypeApi>{
+pub struct ClientXlhDataWithRewords<M: ManagedTypeApi> {
     pub pool_id: u64,
     pub xlh_amount: BigUint<M>,
     pub xlh_rewords: BigUint<M>,

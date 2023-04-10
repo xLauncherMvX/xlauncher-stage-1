@@ -61,6 +61,10 @@
               "8-max_apy": "u64:300000",
               "9-sft_increment_apy": "u64:15000"
             },
+            "str:sftSettings": {
+              "1-sft_id": "nested:str:SFT-000000",
+              "2-nonce": "u64:1"
+            },
             "str:lastPoolId": "0",
             "str:totalStakedData": {
               "1-last_pool_id": "u64:0",
