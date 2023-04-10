@@ -152,7 +152,7 @@ pub trait HelloWorld {
         let current_time_stamp = self.blockchain().get_block_timestamp();
 
         let rewords = self.compute_pool_rewords(&pool_id, &current_time_stamp, &client);
-        self.udpate_client_pool_time_stamp(&pool_id, &client, current_time_stamp);
+        self.update_client_pool_time_stamp(&pool_id, &client, current_time_stamp);
         self.deduct_rewords_from_total_data(&rewords);
     }
 
@@ -172,7 +172,7 @@ pub trait HelloWorld {
         self.total_staked_data().set(&total_staked_data);
     }
 
-    fn udpate_client_pool_time_stamp(&self, pool_id: &u64, client: &ManagedAddress, current_time_stamp: u64) {
+    fn update_client_pool_time_stamp(&self, pool_id: &u64, client: &ManagedAddress, current_time_stamp: u64) {
         let mut client_state = self.client_state(&client).get();
         let xlh_data = &mut client_state.xlh_data;
         for i in 0..xlh_data.len() {
