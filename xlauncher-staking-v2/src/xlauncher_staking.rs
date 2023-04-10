@@ -36,11 +36,6 @@ pub trait HelloWorld {
         };
         self.contract_settings().set(&settings);
 
-        //check if last_pool_id is set and if not set it to 0
-        if self.last_pool_id().is_empty() {
-            self.last_pool_id().set(&0);
-        }
-
         //check if total_staked_data is set and if not set to default
         if self.total_staked_data().is_empty() {
             let total_staked_data = TotalStakedData {
@@ -135,10 +130,6 @@ pub trait HelloWorld {
     #[view(getTotalStakedData)]
     #[storage_mapper("totalStakedData")]
     fn total_staked_data(&self) -> SingleValueMapper<TotalStakedData<Self::Api>>;
-
-    #[view(getLastPoolId)]
-    #[storage_mapper("lastPoolId")]
-    fn last_pool_id(&self) -> SingleValueMapper<u64>;
 
     #[storage_mapper("poolData")]
     fn pool_data(&self, pool_id: u64) -> SingleValueMapper<PoolData<Self::Api>>;
