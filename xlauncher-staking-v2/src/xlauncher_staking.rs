@@ -129,18 +129,6 @@ pub trait HelloWorld {
         let client = self.blockchain().get_caller();
         let current_time_stamp = self.blockchain().get_block_timestamp();
 
-        let client_state = self.client_state(&client).get();
-        let xlh_data = client_state.xlh_data;
-        let mut client_pool_found = false;
-
-        for i in 0..xlh_data.len() {
-            let client_xlh_data = xlh_data.get(i);
-            if client_xlh_data.pool_id == pool_id {
-                client_pool_found = true;
-                break;
-            }
-        }
-
         let data_with_rewords = self.compute_pool_rewords(&pool_id, &current_time_stamp, &client);
     }
 
@@ -148,9 +136,6 @@ pub trait HelloWorld {
                             pool_id: &u64,
                             current_time_stamp: &u64,
                             client: &ManagedAddress) -> ClientXlhDataWithRewords<Self::Api> {
-        sc_print!("Hello compute_pool_rewords pool={}",pool_id);
-
-
         let mut optional_data: Option<ClientXlhData<Self::Api>> = None;
 
         //iterate over items and if located update item else add new item
@@ -169,8 +154,15 @@ pub trait HelloWorld {
         }
 
 
-
         let client_xlh_data = optional_data.unwrap();
+
+        let staking_settings = self.contract_settings().get();
+
+        let apy = self.compute_client_apy(client_state, staking_settings);
+        let rewords = self.compute_rewords(&client_xlh_data, &current_time_stamp, &apy);
+
+        sc_print!("Hello compute_pool_rewords apy={}, rewords={}",apy,rewords);
+
         let return_data = ClientXlhDataWithRewords {
             pool_id: client_xlh_data.pool_id,
             xlh_amount: client_xlh_data.xlh_amount,
@@ -179,6 +171,51 @@ pub trait HelloWorld {
         };
 
         return return_data;
+    }
+
+    fn compute_rewords(&self,
+                       client_xlh_data: &ClientXlhData<Self::Api>,
+                       current_time_stamp: &u64,
+                       apy: &u64) -> BigUint<Self::Api> {
+
+
+        let bu_hundred = BigUint::from(100u64); // 100 as BigUint
+        let bu_apy = BigUint::from(*apy); // pool api as BigUint
+        let bu_xlh_amount = client_xlh_data.xlh_amount.clone(); // xlh amount as BigUint
+        let bu_r_in_year = (bu_xlh_amount * bu_apy) / bu_hundred; // rewords in year as BigUint
+
+        let seconds_diff = current_time_stamp - client_xlh_data.time_stamp;
+        let seconds_in_year: u64 = 60 * 60 * 24 * 365;
+        let bu_s_in_year = BigUint::from(seconds_in_year); // seconds in year as BigUint
+        let bu_r_in_1_second = &bu_r_in_year / &bu_s_in_year; // rewards in one second as BigUint
+
+        let rewords = self.compute_seconds_rewards(&seconds_diff, bu_r_in_1_second);
+
+        return rewords;
+    }
+
+    fn compute_seconds_rewards(&self, &seconds: &u64, bu_r_in_1_second: BigUint) -> BigUint {
+        let bu_seconds = BigUint::from(seconds);
+        let rewards = (&bu_seconds * &bu_r_in_1_second) / BigUint::from(10000_u64);
+        return rewards;
+    }
+
+    fn compute_client_apy(&self,
+                          client_data: ClientData<Self::Api>,
+                          staking_settings: StakingSettings<Self::Api>,
+    ) -> u64 {
+        let min_apy = staking_settings.min_apy;
+        if client_data.sft_amount == 0_u64 {
+            return min_apy;
+        }
+
+        let mut total_apy = min_apy * client_data.sft_amount;
+
+        return if total_apy < staking_settings.max_apy {
+            total_apy
+        } else {
+            staking_settings.max_apy
+        };
     }
 
     // storage
