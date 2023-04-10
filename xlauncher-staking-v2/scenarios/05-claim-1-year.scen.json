@@ -50,7 +50,7 @@
           "nonce": "*",
           "balance": "0",
           "esdt": {
-            "str:BCOIN-a00000": "4,000,000,000,000,000,000,000"
+            "str:BCOIN-a00000": "4149999999999999997614"
           },
           "storage": {},
           "code": ""
@@ -59,7 +59,7 @@
           "nonce": "*",
           "balance": "0",
           "esdt": {
-            "str:BCOIN-a00000": "2000000000000000000000"
+            "str:BCOIN-a00000": "1850000000000000002386"
           },
           "storage": {
             "str:contractSettings": "*",

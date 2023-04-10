@@ -154,6 +154,11 @@ pub trait HelloWorld {
         let rewords = self.compute_pool_rewords(&pool_id, &current_time_stamp, &client);
         self.update_client_pool_time_stamp(&pool_id, &client, current_time_stamp);
         self.deduct_rewords_from_total_data(&rewords);
+
+        let token_id = self.contract_settings().get().token_id;
+
+        //send rewords to client
+        self.send().direct_esdt(&client, &token_id, 0, &rewords);
     }
 
     fn deduct_rewords_from_total_data(&self, rewords: &BigUint) {
