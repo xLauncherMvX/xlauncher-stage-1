@@ -5,9 +5,7 @@ multiversx_sc::derive_imports!();
 
 mod staking_data;
 
-use crate::staking_data::StakingSettings;
-use crate::staking_data::PoolData;
-
+use staking_data::*;
 
 #[multiversx_sc::contract]
 pub trait HelloWorld {
