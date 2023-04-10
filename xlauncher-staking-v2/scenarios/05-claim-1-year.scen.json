@@ -79,7 +79,7 @@
               "3-first_xlh_data": {
                 "1-pool_id": "u64:1",
                 "2-xlh_amount": "biguint:1000000000000000000000",
-                "3-time_stamp": "u64:0"
+                "3-time_stamp": "u64:31536000"
               }
             }
           },

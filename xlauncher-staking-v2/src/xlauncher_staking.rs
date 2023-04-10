@@ -134,12 +134,15 @@ pub trait HelloWorld {
     }
 
     fn udpate_client_pool_time_stamp(&self, pool_id: &u64, client: &ManagedAddress, current_time_stamp: u64) {
+
         let mut client_state = self.client_state(&client).get();
         let xlh_data = &mut client_state.xlh_data;
         for i in 0..xlh_data.len() {
             let client_xlh_data = &mut xlh_data.get(i);
             if client_xlh_data.pool_id == *pool_id {
                 client_xlh_data.time_stamp = current_time_stamp;
+                xlh_data.set(i, client_xlh_data);
+                sc_print!("udpate_client_pool_time_stamp stamp={}", current_time_stamp);
                 break;
             }
         }
