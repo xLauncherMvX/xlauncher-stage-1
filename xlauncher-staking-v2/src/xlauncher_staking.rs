@@ -26,8 +26,6 @@ pub trait HelloWorld {
         let settings = StakingSettings {
             token_id,
             max_staking_val,
-            total_staked: BigUint::zero(),
-            total_available_for_rewords: BigUint::zero(),
             unstake_xlh_lock_span,
             unstake_sft_lock_span,
             min_apy,

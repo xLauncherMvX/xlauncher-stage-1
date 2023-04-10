@@ -10,8 +10,6 @@ multiversx_sc::derive_imports!();
 pub struct StakingSettings<M: ManagedTypeApi> {
     pub token_id: TokenIdentifier<M>,
     pub max_staking_val: BigUint<M>,
-    pub total_staked: BigUint<M>,
-    pub total_available_for_rewords: BigUint<M>,
     pub unstake_xlh_lock_span: u64,
     pub unstake_sft_lock_span: u64,
     pub min_apy: u64, // in 4 decimal (10000 = 1%) (150000 = 15%)
