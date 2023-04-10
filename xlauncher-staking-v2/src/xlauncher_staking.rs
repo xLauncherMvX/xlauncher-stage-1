@@ -58,7 +58,7 @@ pub trait HelloWorld {
 
     #[payable("*")]
     #[endpoint(stakeXlh)]
-    fn stake_xlh(&self, pool_id: u32) {
+    fn stake_xlh(&self, pool_id: u64) {
         let egld_or_esdt_token_identifier = self.call_value().egld_or_single_esdt();
 
         let amount = egld_or_esdt_token_identifier.amount;
@@ -69,10 +69,37 @@ pub trait HelloWorld {
 
         //check token_id
         assert!(token_id == settings.token_id, "wrong token id");
+        //check amount
+        assert!(amount > 0, "amount must be greater than 0");
 
-        //check client state exists and if not create a new one
+        //check client state exists and if not create it
+        if self.client_state(&client).is_empty() {
+           let xlh_data: ManagedVec<ClientXlhData<Self::Api>> = ManagedVec::new();
+            let new_client = ClientData {
+                sft_amount: 0_u64,
+                xlh_data
+            };
+            self.client_state(&client).set(&new_client);
+        }
 
+
+        let current_time_stamp = self.blockchain().get_block_timestamp();
+
+
+        //iterate over items and if located update item else add new item
+        let mut client_state = self.client_state(&client).get();
+        let mut xlh_data = client_state.xlh_data;
+        let mut pool_found = false;
+        for i in 0..xlh_data.len() {
+            let data = xlh_data.get(i);
+            if data.pool_id == pool_id {
+                pool_found = true;
+                break;
+            }
+        }
     }
+
+
 
     // storage
 

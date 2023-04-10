@@ -6,7 +6,7 @@ use multiversx_sc::{
 
 multiversx_sc::derive_imports!();
 
-#[derive(TypeAbi, TopEncode, TopDecode, ManagedVecItem, NestedEncode, NestedDecode, Clone)]
+#[derive(TypeAbi, TopEncode, TopDecode, ManagedVecItem, NestedEncode, NestedDecode)]
 pub struct StakingSettings<M: ManagedTypeApi> {
     pub token_id: TokenIdentifier<M>,
     pub max_staking_val: BigUint<M>,
@@ -36,7 +36,7 @@ pub struct ClientData<M: ManagedTypeApi> {
 
 #[derive(TypeAbi, TopEncode, TopDecode, ManagedVecItem, NestedEncode, NestedDecode, Clone)]
 pub struct ClientXlhData<M: ManagedTypeApi> {
-    pub pull_id: u64,
+    pub pool_id: u64,
     pub xlh_amount: BigUint<M>,
     pub time_stamp: u64, // always needs to be modified when amount gets modified
 }
