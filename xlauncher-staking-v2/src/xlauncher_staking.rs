@@ -82,7 +82,7 @@ pub trait HelloWorld {
             self.client_state(&client).set(&new_client);
         }
 
-
+/*
         let current_time_stamp = self.blockchain().get_block_timestamp();
 
 
@@ -105,7 +105,7 @@ pub trait HelloWorld {
             };
             xlh_data.push(new_client_xlh_data);
         }
-        self.client_state(&client).set(client_state);
+        self.client_state(&client).set(client_state);*/
     }
 
 
