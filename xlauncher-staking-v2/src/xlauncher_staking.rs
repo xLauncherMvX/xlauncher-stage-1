@@ -129,13 +129,27 @@ pub trait HelloWorld {
         let client = self.blockchain().get_caller();
         let current_time_stamp = self.blockchain().get_block_timestamp();
 
-        let data_with_rewords = self.compute_pool_rewords(&pool_id, &current_time_stamp, &client);
+        let rewords = self.compute_pool_rewords(&pool_id, &current_time_stamp, &client);
+        self.udpate_client_pool_time_stamp(&pool_id, &client, current_time_stamp);
+    }
+
+    fn udpate_client_pool_time_stamp(&self, pool_id: &u64, client: &ManagedAddress, current_time_stamp: u64) {
+        let mut client_state = self.client_state(&client).get();
+        let xlh_data = &mut client_state.xlh_data;
+        for i in 0..xlh_data.len() {
+            let client_xlh_data = &mut xlh_data.get(i);
+            if client_xlh_data.pool_id == *pool_id {
+                client_xlh_data.time_stamp = current_time_stamp;
+                break;
+            }
+        }
+        self.client_state(&client).set(client_state);
     }
 
     fn compute_pool_rewords(&self,
                             pool_id: &u64,
                             current_time_stamp: &u64,
-                            client: &ManagedAddress) -> ClientXlhDataWithRewords<Self::Api> {
+                            client: &ManagedAddress) -> BigUint<Self::Api>  {
         let mut optional_data: Option<ClientXlhData<Self::Api>> = None;
 
         //iterate over items and if located update item else add new item
@@ -163,14 +177,7 @@ pub trait HelloWorld {
 
         sc_print!("Hello compute_pool_rewords apy={}, rewords={}",apy,rewords);
 
-        let return_data = ClientXlhDataWithRewords {
-            pool_id: client_xlh_data.pool_id,
-            xlh_amount: client_xlh_data.xlh_amount,
-            xlh_rewords: BigUint::zero(),
-            last_collection_time_stamp: client_xlh_data.time_stamp,
-        };
-
-        return return_data;
+        return rewords;
     }
 
     fn compute_rewords(&self,
