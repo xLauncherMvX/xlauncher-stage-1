@@ -112,12 +112,19 @@ pub trait HelloWorld {
         if !client_pool_found {
             let new_client_xlh_data = ClientXlhData {
                 pool_id,
-                xlh_amount: amount,
+                xlh_amount: amount.clone(),
                 time_stamp: current_time_stamp,
             };
             xlh_data.push(new_client_xlh_data);
         }
+
+        // persist client state
         self.client_state(&client).set(client_state);
+
+        //update total_staked_data
+        let mut total_staked_data = self.total_staked_data().get();
+        total_staked_data.total_xlh_staked += amount;
+        self.total_staked_data().set(&total_staked_data);
     }
 
 
