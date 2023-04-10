@@ -15,6 +15,11 @@ fn world() -> ScenarioWorld {
 }
 
 #[test]
+fn fund_with_rewords_rs() {
+    multiversx_sc_scenario::run_rs("scenarios/03-fund-with-rewords.scen.json", world());
+}
+
+#[test]
 fn stake_pool_a_rs() {
     multiversx_sc_scenario::run_rs("scenarios/04-xtake-xlh-1-client.scen.json", world());
 }

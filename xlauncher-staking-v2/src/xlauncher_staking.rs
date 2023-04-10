@@ -66,6 +66,26 @@ pub trait HelloWorld {
         self.pool_data(pull_id).set(&new_pool);
     }
 
+
+    #[payable("*")]
+    #[endpoint(fundWithRewords)]
+    fn fund_with_rewords(&self) {
+        let egld_or_esdt_token_identifier = self.call_value().egld_or_single_esdt();
+
+        let amount = egld_or_esdt_token_identifier.amount;
+        let token_id = egld_or_esdt_token_identifier.token_identifier;
+        let client = self.blockchain().get_caller();
+
+        let settings = self.contract_settings().get();
+
+        //check token_id
+        assert!(token_id == settings.token_id, "wrong token id");
+        //check amount
+        assert!(amount > 0, "amount must be greater than 0");
+        sc_print!("hell endpoint fundWithRewords amount={}", amount);
+
+    }
+
     #[payable("*")]
     #[endpoint(stakeXlh)]
     fn stake_xlh(&self, pool_id: u64) {
@@ -140,16 +160,11 @@ pub trait HelloWorld {
         let total_xlh_available_for_rewords = total_staked_data.total_xlh_available_for_rewords;
         let available_rewords = total_xlh_available_for_rewords - rewords; // this will throw error is result would be negative
 
-        if available_rewords < BigUint::zero() {
-            sc_panic!("available rewords is less than 0");
-        } else {
-            total_staked_data.total_xlh_available_for_rewords = available_rewords;
-        }
+        total_staked_data.total_xlh_available_for_rewords = available_rewords;
         self.total_staked_data().set(&total_staked_data);
     }
 
     fn udpate_client_pool_time_stamp(&self, pool_id: &u64, client: &ManagedAddress, current_time_stamp: u64) {
-
         let mut client_state = self.client_state(&client).get();
         let xlh_data = &mut client_state.xlh_data;
         for i in 0..xlh_data.len() {
@@ -167,7 +182,7 @@ pub trait HelloWorld {
     fn compute_pool_rewords(&self,
                             pool_id: &u64,
                             current_time_stamp: &u64,
-                            client: &ManagedAddress) -> BigUint<Self::Api>  {
+                            client: &ManagedAddress) -> BigUint<Self::Api> {
         let mut optional_data: Option<ClientXlhData<Self::Api>> = None;
 
         //iterate over items and if located update item else add new item
@@ -202,8 +217,6 @@ pub trait HelloWorld {
                        client_xlh_data: &ClientXlhData<Self::Api>,
                        current_time_stamp: &u64,
                        apy: &u64) -> BigUint<Self::Api> {
-
-
         let bu_hundred = BigUint::from(100u64); // 100 as BigUint
         let bu_apy = BigUint::from(*apy); // pool api as BigUint
         let bu_xlh_amount = client_xlh_data.xlh_amount.clone(); // xlh amount as BigUint
