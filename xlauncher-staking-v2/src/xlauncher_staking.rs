@@ -84,6 +84,13 @@ pub trait HelloWorld {
 
     #[storage_mapper("poolData")]
     fn pool_data(&self, pool_id: u64) -> SingleValueMapper<PoolData<Self::Api>>;
+
+    #[view(getClientState)]
+    #[storage_mapper("clientState")]
+    fn client_state(
+        &self,
+        client_address: &ManagedAddress,
+    ) -> SingleValueMapper<ClientData<Self::Api>>;
 }
 
 

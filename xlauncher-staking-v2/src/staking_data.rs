@@ -28,6 +28,7 @@ pub struct PoolData<M: ManagedTypeApi> {
 
 // it keeps track at client level the client staked value for each pool
 // and the total sft staked
+#[derive(TypeAbi, TopEncode, TopDecode, ManagedVecItem, NestedEncode, NestedDecode, Clone)]
 pub struct ClientData<M: ManagedTypeApi> {
     pub sft_amount: usize,
     pub xlh_data: ManagedVec<M, ClientXlhData<M>>,
