@@ -44,6 +44,14 @@ pub trait HelloWorld {
         }
     }
 
+    #[only_owner]
+    #[endpoint(createNewPool)]
+    fn create_new_pool(&self) {
+        let pool_id = self.last_pool_id().get() + 1;
+        self.last_pool_id().set(&pool_id);
+    }
+
+
     // storage
 
     #[view(getContractSettings)]
