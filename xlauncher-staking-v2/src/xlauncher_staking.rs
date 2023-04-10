@@ -131,6 +131,21 @@ pub trait HelloWorld {
 
         let rewords = self.compute_pool_rewords(&pool_id, &current_time_stamp, &client);
         self.udpate_client_pool_time_stamp(&pool_id, &client, current_time_stamp);
+        //self.deduct_rewords_from_total_data(&rewords);
+    }
+
+    fn deduct_rewords_from_total_data(&self, rewords: &BigUint) {
+        let mut total_staked_data = self.total_staked_data().get();
+
+        let total_xlh_available_for_rewords = total_staked_data.total_xlh_available_for_rewords;
+        let available_rewords = total_xlh_available_for_rewords - rewords; // this will throw error is result would be negative
+
+        if available_rewords < BigUint::zero() {
+            sc_panic!("available rewords is less than 0");
+        } else {
+            total_staked_data.total_xlh_available_for_rewords = available_rewords;
+        }
+        self.total_staked_data().set(&total_staked_data);
     }
 
     fn udpate_client_pool_time_stamp(&self, pool_id: &u64, client: &ManagedAddress, current_time_stamp: u64) {
