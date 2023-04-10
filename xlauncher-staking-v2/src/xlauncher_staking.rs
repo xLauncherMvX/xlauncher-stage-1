@@ -52,7 +52,6 @@ pub trait HelloWorld {
     #[only_owner]
     #[endpoint(createNewPool)]
     fn create_new_pool(&self) {
-
         let mut total_staked_data = self.total_staked_data().get();
         let pull_id = total_staked_data.last_pool_id + 1;
         //check pool_data does not exist
@@ -65,8 +64,6 @@ pub trait HelloWorld {
             pool_total_xlh: BigUint::zero(),
         };
         self.pool_data(pull_id).set(&new_pool);
-
-
     }
 
     #[payable("*")]
@@ -128,7 +125,7 @@ pub trait HelloWorld {
     }
 
     #[endpoint(claimRewards)]
-    fn claim_rewards(&self, pool_id:u64){
+    fn claim_rewards(&self, pool_id: u64) {
         let client = self.blockchain().get_caller();
         let current_time_stamp = self.blockchain().get_block_timestamp();
 
@@ -143,7 +140,8 @@ pub trait HelloWorld {
                 break;
             }
         }
-
+        //print debug message
+        sc_print!("Hello claim report for pool={}",pool_id)
     }
 
     // storage
