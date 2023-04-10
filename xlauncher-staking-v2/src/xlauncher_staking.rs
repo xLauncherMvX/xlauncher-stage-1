@@ -23,7 +23,6 @@ pub trait HelloWorld {
                              max_apy: u64,
                              sft_increment_apy: u64,
     ) {
-
         let settings = StakingSettings {
             token_id,
             max_staking_val,
@@ -42,22 +41,37 @@ pub trait HelloWorld {
             self.last_pool_id().set(&0);
         }
 
-
+        //check if total_staked_data is set and if not set to default
+        if self.total_staked_data().is_empty() {
+            let total_staked_data = TotalStakedData {
+                last_pool_id: 0,
+                total_xlh_staked: BigUint::zero(),
+                total_xlh_available_for_rewords: BigUint::zero(),
+                total_sft_staked: 0,
+            };
+            self.total_staked_data().set(&total_staked_data);
+        }
     }
-
 
 
     #[only_owner]
     #[endpoint(createNewPool)]
     fn create_new_pool(&self) {
-        let pool_id:u64 = self.last_pool_id().get() + 1;
-        assert!(self.pool_data(pool_id).is_empty(), "pool already exists");
-        self.last_pool_id().set(&pool_id);
+
+        let mut total_staked_data = self.total_staked_data().get();
+        let pull_id = total_staked_data.last_pool_id + 1;
+        //check pool_data does not exist
+        assert!(self.pool_data(pull_id).is_empty(), "pool already exists");
+        total_staked_data.last_pool_id = pull_id;
+        self.total_staked_data().set(&total_staked_data);
+
         let new_pool = PoolData {
-            pool_id,
+            pool_id: pull_id,
             pool_total_xlh: BigUint::zero(),
         };
-        self.pool_data(pool_id).set(&new_pool);
+        self.pool_data(pull_id).set(&new_pool);
+
+
     }
 
     #[payable("*")]
@@ -78,10 +92,10 @@ pub trait HelloWorld {
 
         //check client state exists and if not create it
         if self.client_state(&client).is_empty() {
-           let xlh_data: ManagedVec<ClientXlhData<Self::Api>> = ManagedVec::new();
+            let xlh_data: ManagedVec<ClientXlhData<Self::Api>> = ManagedVec::new();
             let new_client = ClientData {
                 sft_amount: 0_u64,
-                xlh_data
+                xlh_data,
             };
             self.client_state(&client).set(&new_client);
         }
@@ -112,12 +126,15 @@ pub trait HelloWorld {
     }
 
 
-
     // storage
 
     #[view(getContractSettings)]
     #[storage_mapper("contractSettings")]
     fn contract_settings(&self) -> SingleValueMapper<StakingSettings<Self::Api>>;
+
+    #[view(getTotalStakedData)]
+    #[storage_mapper("totalStakedData")]
+    fn total_staked_data(&self) -> SingleValueMapper<TotalStakedData<Self::Api>>;
 
     #[view(getLastPoolId)]
     #[storage_mapper("lastPoolId")]

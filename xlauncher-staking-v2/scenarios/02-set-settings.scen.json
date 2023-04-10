@@ -61,7 +61,13 @@
               "8-max_apy": "u64:300000",
               "9-sft_increment_apy": "u64:15000"
             },
-            "str:lastPoolId": "0"
+            "str:lastPoolId": "0",
+            "str:totalStakedData": {
+              "1-last_pool_id": "u64:0",
+              "2-total_xlh_staked": "biguint:0",
+              "3-total_xlh_available_for_rewords": "biguint:0",
+              "4-total_sft_staked": "u64:0"
+            }
           },
           "code": "file:../output/xlauncher-staking.wasm"
         }

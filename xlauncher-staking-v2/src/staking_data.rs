@@ -19,6 +19,14 @@ pub struct StakingSettings<M: ManagedTypeApi> {
     pub sft_increment_apy: u64, // in 4 decimal (100 = 0.01%) (1500 = 0.15%)
 }
 
+#[derive(TypeAbi, TopEncode, TopDecode, ManagedVecItem, NestedEncode, NestedDecode)]
+pub struct TotalStakedData<M: ManagedTypeApi> {
+    pub last_pool_id: u64,
+    pub total_xlh_staked: BigUint<M>,
+    pub total_xlh_available_for_rewords: BigUint<M>,
+    pub total_sft_staked: u64,
+}
+
 // it keeps track at global level the total staked value for each pool
 #[derive(TypeAbi, TopEncode, TopDecode, ManagedVecItem, NestedEncode, NestedDecode, Clone)]
 pub struct PoolData<M: ManagedTypeApi> {
