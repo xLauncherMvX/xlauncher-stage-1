@@ -41,7 +41,11 @@ pub trait HelloWorld {
         if self.last_pool_id().is_empty() {
             self.last_pool_id().set(&0);
         }
+
+
     }
+
+
 
     #[only_owner]
     #[endpoint(createNewPool)]
