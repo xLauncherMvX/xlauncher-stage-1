@@ -30,13 +30,13 @@ pub struct PoolData<M: ManagedTypeApi> {
 // and the total sft staked
 #[derive(TypeAbi, TopEncode, TopDecode, ManagedVecItem, NestedEncode, NestedDecode, Clone)]
 pub struct ClientData<M: ManagedTypeApi> {
-    pub sft_amount: usize,
+    pub sft_amount: u64,
     pub xlh_data: ManagedVec<M, ClientXlhData<M>>,
 }
 
 #[derive(TypeAbi, TopEncode, TopDecode, ManagedVecItem, NestedEncode, NestedDecode, Clone)]
 pub struct ClientXlhData<M: ManagedTypeApi> {
-    pub pull_id: usize,
+    pub pull_id: u64,
     pub xlh_amount: BigUint<M>,
     pub time_stamp: u64, // always needs to be modified when amount gets modified
 }

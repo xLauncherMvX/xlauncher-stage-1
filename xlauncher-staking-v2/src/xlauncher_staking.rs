@@ -70,6 +70,8 @@ pub trait HelloWorld {
         //check token_id
         assert!(token_id == settings.token_id, "wrong token id");
 
+        //check client state exists and if not create a new one
+
     }
 
     // storage
