@@ -89,14 +89,23 @@ pub trait HelloWorld {
         //iterate over items and if located update item else add new item
         let mut client_state = self.client_state(&client).get();
         let mut xlh_data = client_state.xlh_data;
-        let mut pool_found = false;
+        let mut client_pool_found = false;
         for i in 0..xlh_data.len() {
-            let data = xlh_data.get(i);
-            if data.pool_id == pool_id {
-                pool_found = true;
+            let client_xlh_data = xlh_data.get(i);
+            if client_xlh_data.pool_id == pool_id {
+                client_pool_found = true;
                 break;
             }
         }
+        if !client_pool_found {
+            let new_client_xlh_data = ClientXlhData {
+                pool_id,
+                xlh_amount: amount,
+                time_stamp: current_time_stamp,
+            };
+            xlh_data.push(new_client_xlh_data);
+        }
+        //self.client_state(&client).set(client_state);
     }
 
 
