@@ -140,8 +140,17 @@ pub trait HelloWorld {
                 break;
             }
         }
-        //print debug message
-        sc_print!("Hello claim report for pool={}",pool_id)
+
+    }
+
+    fn compute_pool_rewords(&self,
+                             pool_id: &u64,
+                            current_time_stamp: &u64,
+                            client: &ManagedAddress) -> BigUint<Self::Api> {
+
+        sc_print!("Hello claim report for pool={}",pool_id);
+        let mut return_data = BigUint::zero();
+        return return_data;
     }
 
     // storage

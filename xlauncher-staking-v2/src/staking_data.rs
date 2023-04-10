@@ -49,11 +49,12 @@ pub struct ClientXlhData<M: ManagedTypeApi> {
     pub time_stamp: u64, // always needs to be modified when amount gets modified
 }
 
+#[derive(TypeAbi, TopEncode, TopDecode, ManagedVecItem, NestedEncode, NestedDecode, Clone)]
 pub struct ClientXlhDataWithRewords<M:ManagedTypeApi>{
     pub pool_id: u64,
     pub xlh_amount: BigUint<M>,
     pub xlh_rewords: BigUint<M>,
-    pub time_stamp: u64,
+    pub last_collection_time_stamp: u64,
 }
 
 #[derive(TypeAbi, TopEncode, TopDecode, ManagedVecItem, NestedEncode, NestedDecode, Clone)]
