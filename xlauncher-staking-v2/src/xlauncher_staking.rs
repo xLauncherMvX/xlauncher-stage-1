@@ -86,7 +86,6 @@ pub trait HelloWorld {
         let mut total_staked_data = self.total_staked_data().get();
         total_staked_data.total_xlh_available_for_rewords += amount;
         self.total_staked_data().set(&total_staked_data);
-
     }
 
     #[payable("*")]
@@ -154,14 +153,20 @@ pub trait HelloWorld {
 
         let rewords = self.compute_pool_rewords(&pool_id, &current_time_stamp, &client);
         self.udpate_client_pool_time_stamp(&pool_id, &client, current_time_stamp);
-        //self.deduct_rewords_from_total_data(&rewords);
+        self.deduct_rewords_from_total_data(&rewords);
     }
 
     fn deduct_rewords_from_total_data(&self, rewords: &BigUint) {
         let mut total_staked_data = self.total_staked_data().get();
 
+
+
+
         let total_xlh_available_for_rewords = total_staked_data.total_xlh_available_for_rewords;
+        sc_print!("total_xlh_available_for_rewords={}, rewords={}", total_xlh_available_for_rewords, rewords);
         let available_rewords = total_xlh_available_for_rewords - rewords; // this will throw error is result would be negative
+
+        sc_print!("available_rewords={}", available_rewords);
 
         total_staked_data.total_xlh_available_for_rewords = available_rewords;
         self.total_staked_data().set(&total_staked_data);

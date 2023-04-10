@@ -4,7 +4,7 @@
   "steps": [
     {
       "step": "externalSteps",
-      "path": "03-create-new-pool.scen.json"
+      "path": "03-fund-with-rewords.scen.json"
     },
     {
       "step": "setState",
@@ -56,7 +56,7 @@
           "nonce": "*",
           "balance": "0",
           "esdt": {
-            "str:BCOIN-a00000": "100,000,000,000,000,000,000,000,000"
+            "str:BCOIN-a00000": "99999000000000000000000000"
           },
           "storage": {},
           "code": ""
@@ -74,14 +74,14 @@
           "nonce": "*",
           "balance": "0",
           "esdt": {
-            "str:BCOIN-a00000": "1000000000000000000000"
+            "str:BCOIN-a00000": "2000000000000000000000"
           },
           "storage": {
             "str:contractSettings": "*",
             "str:totalStakedData": {
               "1-last_pool_id": "u64:1",
               "2-total_xlh_staked": "biguint:1000000000000000000000",
-              "3-total_xlh_available_for_rewords": "biguint:0",
+              "3-total_xlh_available_for_rewords": "biguint:1000000000000000000000",
               "4-total_sft_staked": "u64:0"
             },
             "str:poolData|u64:1": {
