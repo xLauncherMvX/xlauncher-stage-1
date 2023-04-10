@@ -84,6 +84,11 @@ pub trait HelloWorld {
         assert!(amount > 0, "amount must be greater than 0");
         sc_print!("hell endpoint fundWithRewords amount={}", amount);
 
+        //update total_staked_data
+        let mut total_staked_data = self.total_staked_data().get();
+        total_staked_data.total_xlh_available_for_rewords += amount;
+        self.total_staked_data().set(&total_staked_data);
+
     }
 
     #[payable("*")]

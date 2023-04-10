@@ -65,7 +65,7 @@
             "str:totalStakedData": {
               "1-last_pool_id": "u64:1",
               "2-total_xlh_staked": "biguint:0",
-              "3-total_xlh_available_for_rewords": "biguint:0",
+              "3-total_xlh_available_for_rewords": "biguint:1000000000000000000000",
               "4-total_sft_staked": "u64:0"
             },
             "str:poolData|u64:1": {
