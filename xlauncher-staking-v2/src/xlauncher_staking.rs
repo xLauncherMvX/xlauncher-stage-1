@@ -127,6 +127,24 @@ pub trait HelloWorld {
         self.total_staked_data().set(&total_staked_data);
     }
 
+    #[endpoint(claimRewards)]
+    fn claim_rewards(&self, pool_id:u64){
+        let client = self.blockchain().get_caller();
+        let current_time_stamp = self.blockchain().get_block_timestamp();
+
+        let client_state = self.client_state(&client).get();
+        let xlh_data = client_state.xlh_data;
+        let mut client_pool_found = false;
+
+        for i in 0..xlh_data.len() {
+            let client_xlh_data = xlh_data.get(i);
+            if client_xlh_data.pool_id == pool_id {
+                client_pool_found = true;
+                break;
+            }
+        }
+
+    }
 
     // storage
 
