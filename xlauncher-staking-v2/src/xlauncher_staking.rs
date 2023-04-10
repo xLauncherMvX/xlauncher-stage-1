@@ -141,15 +141,43 @@ pub trait HelloWorld {
             }
         }
 
+        let data_with_rewords = self.compute_pool_rewords(&pool_id, &current_time_stamp, &client);
     }
 
     fn compute_pool_rewords(&self,
-                             pool_id: &u64,
+                            pool_id: &u64,
                             current_time_stamp: &u64,
-                            client: &ManagedAddress) -> BigUint<Self::Api> {
+                            client: &ManagedAddress) -> ClientXlhDataWithRewords<Self::Api> {
+        sc_print!("Hello compute_pool_rewords pool={}",pool_id);
 
-        sc_print!("Hello claim report for pool={}",pool_id);
-        let mut return_data = BigUint::zero();
+
+        let mut optional_data: Option<ClientXlhData<Self::Api>> = None;
+
+        //iterate over items and if located update item else add new item
+        let mut client_state = self.client_state(&client).get();
+        let xlh_data = &mut client_state.xlh_data;
+        for i in 0..xlh_data.len() {
+            let client_xlh_data = xlh_data.get(i);
+            if client_xlh_data.pool_id == *pool_id {
+                optional_data = Some(client_xlh_data);
+                break;
+            }
+        }
+
+        if optional_data.is_none() {
+            sc_panic!("Not able to locate client pool_id={}",pool_id);
+        }
+
+
+
+        let client_xlh_data = optional_data.unwrap();
+        let return_data = ClientXlhDataWithRewords {
+            pool_id: client_xlh_data.pool_id,
+            xlh_amount: client_xlh_data.xlh_amount,
+            xlh_rewords: BigUint::zero(),
+            last_collection_time_stamp: client_xlh_data.time_stamp,
+        };
+
         return return_data;
     }
 

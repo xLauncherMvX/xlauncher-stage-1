@@ -1,6 +1,6 @@
 use multiversx_sc::{
     api::ManagedTypeApi,
-    types::{BigUint, TokenIdentifier, ManagedAddress, ManagedVec},
+    types::{BigUint, TokenIdentifier, ManagedVec},
 };
 
 
@@ -57,6 +57,7 @@ pub struct ClientXlhDataWithRewords<M:ManagedTypeApi>{
     pub last_collection_time_stamp: u64,
 }
 
+// this is used to keep track of the unstaked funds
 #[derive(TypeAbi, TopEncode, TopDecode, ManagedVecItem, NestedEncode, NestedDecode, Clone)]
 pub struct ClientXlhUnstakeData<M: ManagedTypeApi> {
     pub total_unstake_amount: BigUint<M>,
