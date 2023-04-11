@@ -87,7 +87,6 @@ pub trait HelloWorld {
         assert!(token_id == settings.token_id, "wrong token id");
         //check amount
         assert!(amount > 0, "amount must be greater than 0");
-        sc_print!("hell endpoint fundWithRewords amount={}", amount);
 
         //update total_staked_data
         let mut total_staked_data = self.total_staked_data().get();
@@ -195,6 +194,9 @@ pub trait HelloWorld {
         let current_time_stamp = self.blockchain().get_block_timestamp();
 
         let rewords = self.compute_pool_rewords(&pool_id, &current_time_stamp, &client);
+
+        sc_print!("debug claim_rewards rewords={}", rewords);
+
         self.update_client_pool_time_stamp(&pool_id, &client, current_time_stamp);
         self.deduct_rewords_from_total_data(&rewords);
 

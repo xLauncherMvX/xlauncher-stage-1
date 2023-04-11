@@ -8,68 +8,18 @@
     },
     {
       "step": "setState",
-      "accounts": {
-        "address:client1": {
-          "nonce": "0",
-          "balance": "0",
-          "esdt": {
-            "str:BCOIN-a00000": "5,000,000,000,000,000,000,000",
-            "str:SFT-000000": {
-              "instances": [
-                {
-                  "nonce": "1",
-                  "balance": "11"
-                }
-              ]
-            }
-          }
-        }
-      },
       "currentBlockInfo": {
-        "blockTimestamp": "0"
+        "blockTimestamp": "31536000"
       }
     },
     {
       "step": "scCall",
-      "txId": "call-stakeSft",
+      "txId": "claimRewards-1",
       "tx": {
         "from": "address:client1",
         "to": "sc:xlauncher-staking",
         "value": "0",
-        "function": "stakeSft",
-        "esdtValue": [
-          {
-            "tokenIdentifier": "str:SFT-000000",
-            "nonce": "1",
-            "value": "10"
-          }
-        ],
-        "arguments": [        ],
-        "gasLimit": "100,000,000",
-        "gasPrice": "0"
-      },
-      "expect": {
-        "out": [],
-        "status": "0",
-        "message": "",
-        "gas": "*",
-        "refund": "*"
-      }
-    },
-    {
-      "step": "scCall",
-      "txId": "stake-xlh-timestamp-zero",
-      "tx": {
-        "from": "address:client1",
-        "to": "sc:xlauncher-staking",
-        "value": "0",
-        "function": "stakeXlh",
-        "esdtValue": [
-          {
-            "tokenIdentifier": "str:BCOIN-a00000",
-            "value": "1,000,000,000,000,000,000,000"
-          }
-        ],
+        "function": "claimRewards",
         "arguments": [
           "1"
         ],
@@ -100,7 +50,7 @@
           "nonce": "*",
           "balance": "0",
           "esdt": {
-            "str:BCOIN-a00000": "4000000000000000000000",
+            "str:BCOIN-a00000": "4299999999999999998382",
             "str:SFT-000000": {
               "instances": [
                 {
@@ -117,7 +67,7 @@
           "nonce": "*",
           "balance": "0",
           "esdt": {
-            "str:BCOIN-a00000": "2000000000000000000000",
+            "str:BCOIN-a00000": "1700000000000000001618",
             "str:SFT-000000": {
               "instances": [
                 {
@@ -132,7 +82,7 @@
             "str:totalStakedData": {
               "1-last_pool_id": "u64:1",
               "2-total_xlh_staked": "biguint:1000000000000000000000",
-              "3-total_xlh_available_for_rewords": "biguint:1000000000000000000000",
+              "3-total_xlh_available_for_rewords": "biguint:700000000000000001618",
               "4-total_sft_staked": "u64:10"
             },
             "str:sftSettings": "*",
@@ -146,7 +96,7 @@
               "3-first_xlh_data": {
                 "1-pool_id": "u64:1",
                 "2-xlh_amount": "biguint:1000000000000000000000",
-                "3-time_stamp": "u64:0"
+                "3-time_stamp": "u64:31536000"
               }
             }
           },
