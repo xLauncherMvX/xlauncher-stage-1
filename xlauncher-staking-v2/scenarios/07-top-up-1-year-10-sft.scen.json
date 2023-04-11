@@ -14,12 +14,18 @@
     },
     {
       "step": "scCall",
-      "txId": "claimRewards-1",
+      "txId": "stake-xlh-after-1-year",
       "tx": {
         "from": "address:client1",
         "to": "sc:xlauncher-staking",
         "value": "0",
-        "function": "claimRewards",
+        "function": "stakeXlh",
+        "esdtValue": [
+          {
+            "tokenIdentifier": "str:BCOIN-a00000",
+            "value": "1,000,000,000,000,000,000,000"
+          }
+        ],
         "arguments": [
           "1"
         ],
@@ -50,7 +56,7 @@
           "nonce": "*",
           "balance": "0",
           "esdt": {
-            "str:BCOIN-a00000": "4299999999999999998382",
+            "str:BCOIN-a00000": "3000000000000000000000",
             "str:SFT-000000": {
               "instances": [
                 {
@@ -67,7 +73,7 @@
           "nonce": "*",
           "balance": "0",
           "esdt": {
-            "str:BCOIN-a00000": "1700000000000000001618",
+            "str:BCOIN-a00000": "3000000000000000000000",
             "str:SFT-000000": {
               "instances": [
                 {
@@ -81,7 +87,7 @@
             "str:contractSettings": "*",
             "str:totalStakedData": {
               "1-last_pool_id": "u64:1",
-              "2-total_xlh_staked": "biguint:1000000000000000000000",
+              "2-total_xlh_staked": "biguint:2299999999999999998382",
               "3-total_xlh_available_for_rewords": "biguint:700000000000000001618",
               "4-total_sft_staked": "u64:10"
             },
@@ -95,7 +101,7 @@
               "2-xlh_data_vec_len": "u32:1",
               "3-first_xlh_data": {
                 "1-pool_id": "u64:1",
-                "2-xlh_amount": "biguint:1000000000000000000000",
+                "2-xlh_amount": "biguint:2299999999999999998382",
                 "3-time_stamp": "u64:31536000"
               }
             }
