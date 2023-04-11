@@ -28,3 +28,8 @@ fn stake_pool_a_rs() {
 fn claim_1_year_rs() {
     multiversx_sc_scenario::run_rs("scenarios/05-claim-1-year.scen.json", world());
 }
+
+#[test]
+fn stake_sft_rs() {
+    multiversx_sc_scenario::run_rs("scenarios/05-xtake-sft-1-client.scen.json", world());
+}
