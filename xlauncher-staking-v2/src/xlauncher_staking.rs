@@ -125,7 +125,17 @@ pub trait HelloWorld {
                 client_pool_found = true;
 
                 let rewords = self.compute_pool_rewords(&pool_id, &current_time_stamp, &client);
+                self.update_client_pool_time_stamp(&pool_id, &client, current_time_stamp.clone());
+                let new_xlh_staked = client_xlh_data.xlh_amount.clone() + amount.clone() + rewords.clone();
+                self.update_client_pool_xlh_staked(&pool_id, &client, new_xlh_staked);
+                self.deduct_rewords_from_total_data(&rewords);
 
+                //update total_staked_data
+                let new_staked_amount = amount.clone() + rewords.clone();
+                let mut total_staked_data = self.total_staked_data().get();
+                let total_xlh_staked = total_staked_data.total_xlh_staked.clone() + new_staked_amount.clone();
+                total_staked_data.total_xlh_staked = total_xlh_staked;
+                self.total_staked_data().set(&total_staked_data);
 
                 break;
             }
@@ -136,16 +146,14 @@ pub trait HelloWorld {
                 xlh_amount: amount.clone(),
                 time_stamp: current_time_stamp,
             };
-            xlh_data.push(new_client_xlh_data);
+            xlh_data.push(new_client_xlh_data); // persist client state
+            self.client_state(&client).set(client_state);
+
+            //update total_staked_data
+            let mut total_staked_data = self.total_staked_data().get();
+            total_staked_data.total_xlh_staked += amount;
+            self.total_staked_data().set(&total_staked_data);
         }
-
-        // persist client state
-        self.client_state(&client).set(client_state);
-
-        //update total_staked_data
-        let mut total_staked_data = self.total_staked_data().get();
-        total_staked_data.total_xlh_staked += amount;
-        self.total_staked_data().set(&total_staked_data);
     }
 
     fn check_client_exists_and_if_not_create_it(&self, client: &ManagedAddress) {
@@ -199,8 +207,6 @@ pub trait HelloWorld {
 
         let rewords = self.compute_pool_rewords(&pool_id, &current_time_stamp, &client);
 
-        sc_print!("debug claim_rewards rewords={}", rewords);
-
         self.update_client_pool_time_stamp(&pool_id, &client, current_time_stamp);
         self.deduct_rewords_from_total_data(&rewords);
 
@@ -215,10 +221,7 @@ pub trait HelloWorld {
 
 
         let total_xlh_available_for_rewords = total_staked_data.total_xlh_available_for_rewords;
-        sc_print!("total_xlh_available_for_rewords={}, rewords={}", total_xlh_available_for_rewords, rewords);
         let available_rewords = total_xlh_available_for_rewords - rewords; // this will throw error is result would be negative
-
-        sc_print!("available_rewords={}", available_rewords);
 
         total_staked_data.total_xlh_available_for_rewords = available_rewords;
         self.total_staked_data().set(&total_staked_data);
@@ -280,8 +283,6 @@ pub trait HelloWorld {
 
         let apy = self.compute_client_apy(client_state, staking_settings);
         let rewords = self.compute_rewords(&client_xlh_data, &current_time_stamp, &apy);
-
-        sc_print!("Hello compute_pool_rewords apy={}, rewords={}",apy,rewords);
 
         return rewords;
     }
