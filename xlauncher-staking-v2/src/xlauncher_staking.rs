@@ -382,11 +382,14 @@ pub trait HelloWorld {
         total_amount: BigUint,
         requested_amount: BigUint,
     ) {
-        sc_print!("total unstake amount = {}", total_amount.clone());
+
         let client = self.blockchain().get_caller();
         let settings = self.contract_settings().get();
         let unstake_lock_span: u64 = settings.unstake_xlh_lock_span;
         let free_after_time_stamp: u64 = time_stamp + unstake_lock_span;
+
+        sc_print!("total unstake amount = {}", total_amount.clone());
+        sc_print!("requested amount = {}", requested_amount.clone());
         sc_print!("free after time stamp = {}", free_after_time_stamp);
         if self.unstake_xlh_state(&client).is_empty() {
             let unstake_state = UnstakeXlhState {
