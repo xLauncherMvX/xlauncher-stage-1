@@ -201,6 +201,37 @@ pub trait HelloWorld {
         assert!(client_pool_found, "client pool not found");
     }
 
+    #[endpoint(claimUnstakedXlhValue)]
+    fn claim_unstaked_xlh_value(&self) {
+        let current_time_stamp: u64 = self.blockchain().get_block_timestamp();
+        let client = self.blockchain().get_caller();
+        require!(!self.unstake_xlh_state(&client).is_empty(), "No funds to claim");
+        let unstake_state = self.unstake_xlh_state(&client).get();
+
+        sc_print!(
+            "claim_unstaked_value_log: current_time_stamp={}, free_after_time_stamp={}",
+            current_time_stamp,
+            unstake_state.free_after_time_stamp
+        );
+        require!(
+            unstake_state.free_after_time_stamp < current_time_stamp,
+            "current_time_stamp is smaller then free_after_time_stamp"
+        );
+
+        require!(
+            BigUint::zero() < unstake_state.total_unstaked_amount,
+            "No funds available to claim"
+        );
+        let token_id = self.contract_settings().get().token_id;
+        self.send().direct_esdt(
+            &client,
+            &token_id,
+            0,
+            &unstake_state.total_unstaked_amount,
+        );
+        self.unstake_xlh_state(&client).clear();
+    }
+
 
     fn check_client_exists_and_if_not_create_it(&self, client: &ManagedAddress) {
         if self.client_state(&client).is_empty() {
