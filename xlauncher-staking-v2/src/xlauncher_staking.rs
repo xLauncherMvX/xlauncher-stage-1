@@ -153,6 +153,18 @@ pub trait HelloWorld {
         self.total_staked_data().set(&total_staked_data);
     }
 
+    #[payable("*")]
+    #[endpoint(stakeSft)]
+    fn stake_sft(&self) {
+        let egld_or_esdt_token_identifier = self.call_value().egld_or_single_esdt();
+
+        let amount = egld_or_esdt_token_identifier.amount;
+        let token_id = egld_or_esdt_token_identifier.token_identifier;
+        let client = self.blockchain().get_caller();
+
+        sc_print!("sft id={}", token_id);
+    }
+
     #[endpoint(claimRewards)]
     fn claim_rewards(&self, pool_id: u64) {
         let client = self.blockchain().get_caller();
@@ -170,8 +182,6 @@ pub trait HelloWorld {
 
     fn deduct_rewords_from_total_data(&self, rewords: &BigUint) {
         let mut total_staked_data = self.total_staked_data().get();
-
-
 
 
         let total_xlh_available_for_rewords = total_staked_data.total_xlh_available_for_rewords;
@@ -283,7 +293,7 @@ pub trait HelloWorld {
 
     #[view(getSftSettings)]
     #[storage_mapper("sftSettings")]
-    fn sft_settings(&self) -> SingleValueMapper<SftSettings<Self::Api>> ;
+    fn sft_settings(&self) -> SingleValueMapper<SftSettings<Self::Api>>;
 
     #[view(getTotalStakedData)]
     #[storage_mapper("totalStakedData")]
