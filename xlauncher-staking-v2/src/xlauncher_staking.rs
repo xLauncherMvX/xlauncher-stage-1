@@ -111,15 +111,7 @@ pub trait HelloWorld {
         //check amount
         assert!(amount > 0, "amount must be greater than 0");
 
-        //check client state exists and if not create it
-        if self.client_state(&client).is_empty() {
-            let xlh_data: ManagedVec<ClientXlhData<Self::Api>> = ManagedVec::new();
-            let new_client = ClientData {
-                sft_amount: 0_u64,
-                xlh_data,
-            };
-            self.client_state(&client).set(&new_client);
-        }
+        self.check_client_exists_and_if_not_create_it(&client);
 
         let current_time_stamp = self.blockchain().get_block_timestamp();
 
@@ -153,6 +145,17 @@ pub trait HelloWorld {
         self.total_staked_data().set(&total_staked_data);
     }
 
+    fn check_client_exists_and_if_not_create_it(&self, client: &ManagedAddress) {
+        if self.client_state(&client).is_empty() {
+            let xlh_data: ManagedVec<ClientXlhData<Self::Api>> = ManagedVec::new();
+            let new_client = ClientData {
+                sft_amount: 0_u64,
+                xlh_data,
+            };
+            self.client_state(&client).set(&new_client);
+        }
+    }
+
     #[payable("*")]
     #[endpoint(stakeSft)]
     fn stake_sft(&self) {
@@ -160,9 +163,16 @@ pub trait HelloWorld {
 
         let amount = egld_or_esdt_token_identifier.amount;
         let token_id = egld_or_esdt_token_identifier.token_identifier;
+        let token_nonce = egld_or_esdt_token_identifier.token_nonce;
         let client = self.blockchain().get_caller();
 
-        sc_print!("sft id={}", token_id);
+        let sft_settings = self.sft_settings().get();
+        // check sft id
+        assert!(token_id == sft_settings.sft_id, "wrong token id");
+        // check nonce
+        assert!(token_nonce == sft_settings.nonce, "wrong token nonce");
+        //check amount
+        assert!(amount > 0, "amount must be greater than 0");
     }
 
     #[endpoint(claimRewards)]
