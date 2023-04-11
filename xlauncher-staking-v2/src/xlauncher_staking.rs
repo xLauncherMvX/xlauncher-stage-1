@@ -157,7 +157,7 @@ pub trait HelloWorld {
     }
 
     #[endpoint(unstakeXlh)]
-    fn unstake_xlh(&self, pool_id:u64, amount: BigUint) {
+    fn unstake_xlh(&self, pool_id: u64, amount: BigUint) {
         let client = self.blockchain().get_caller();
         let current_time_stamp = self.blockchain().get_block_timestamp();
 
@@ -192,14 +192,14 @@ pub trait HelloWorld {
                 //send rewords + amount to client
                 let token_id = self.contract_settings().get().token_id;
                 let rewords_plus_amount = amount.clone() + rewords.clone();
-                self.send().direct_esdt(&client, &token_id, 0, &rewords_plus_amount);
 
+                // add to client sft unstake data
+                self.add_to_xlh_unstake_value(current_time_stamp, rewords_plus_amount, amount);
                 break;
             }
         }
         assert!(client_pool_found, "client pool not found");
     }
-
 
 
     fn check_client_exists_and_if_not_create_it(&self, client: &ManagedAddress) {
@@ -376,6 +376,37 @@ pub trait HelloWorld {
         };
     }
 
+    fn add_to_xlh_unstake_value(
+        &self,
+        time_stamp: u64,
+        total_amount: BigUint,
+        requested_amount: BigUint,
+    ) {
+        sc_print!("total unstake amount = {}", total_amount.clone());
+        let client = self.blockchain().get_caller();
+        let settings = self.contract_settings().get();
+        let unstake_lock_span: u64 = settings.unstake_xlh_lock_span;
+        let free_after_time_stamp: u64 = time_stamp + unstake_lock_span;
+        sc_print!("free after time stamp = {}", free_after_time_stamp);
+        if self.unstake_xlh_state(&client).is_empty() {
+            let unstake_state = UnstakeXlhState {
+                total_unstaked_amount: total_amount.clone(),
+                requested_amount,
+                free_after_time_stamp,
+            };
+            self.unstake_xlh_state(&client).set(&unstake_state);
+        } else {
+            let mut unstake_state = self.unstake_xlh_state(&client).get();
+            unstake_state.free_after_time_stamp = free_after_time_stamp;
+            unstake_state.total_unstaked_amount =
+                unstake_state.total_unstaked_amount + total_amount;
+
+            unstake_state.requested_amount = unstake_state.requested_amount + requested_amount;
+
+            self.unstake_xlh_state(&client).set(&unstake_state);
+        }
+    }
+
     // storage
 
     #[view(getContractSettings)]
@@ -399,6 +430,13 @@ pub trait HelloWorld {
         &self,
         client_address: &ManagedAddress,
     ) -> SingleValueMapper<ClientData<Self::Api>>;
+
+    #[view(getUnstakeXlhState)]
+    #[storage_mapper("unstakeXlhState")]
+    fn unstake_xlh_state(
+        &self,
+        client_address: &ManagedAddress,
+    ) -> SingleValueMapper<UnstakeXlhState<Self::Api>>;
 }
 
 
