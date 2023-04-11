@@ -80,7 +80,6 @@ pub trait HelloWorld {
 
         let amount = egld_or_esdt_token_identifier.amount;
         let token_id = egld_or_esdt_token_identifier.token_identifier;
-        let client = self.blockchain().get_caller();
 
         let settings = self.contract_settings().get();
 
@@ -192,8 +191,7 @@ pub trait HelloWorld {
             let client_xlh_data = &mut xlh_data.get(i);
             if client_xlh_data.pool_id == *pool_id {
                 client_xlh_data.time_stamp = current_time_stamp;
-                xlh_data.set(i, client_xlh_data);
-                sc_print!("udpate_client_pool_time_stamp stamp={}", current_time_stamp);
+                let _ignore_result = xlh_data.set(i, client_xlh_data);
                 break;
             }
         }
@@ -268,7 +266,7 @@ pub trait HelloWorld {
             return min_apy;
         }
 
-        let mut total_apy = min_apy * client_data.sft_amount;
+        let total_apy = min_apy * client_data.sft_amount;
 
         return if total_apy < staking_settings.max_apy {
             total_apy
