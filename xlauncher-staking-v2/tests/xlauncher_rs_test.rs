@@ -38,3 +38,8 @@ fn stake_sft_rs() {
 fn claim_1_year_10_sft_rs() {
     multiversx_sc_scenario::run_rs("scenarios/06-claim-1-year-10-sft.scen.json", world());
 }
+
+#[test]
+fn top_up_1_year_rs() {
+    multiversx_sc_scenario::run_rs("scenarios/07-top-up-1-year.scen.json", world());
+}
