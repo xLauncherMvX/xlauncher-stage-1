@@ -156,6 +156,52 @@ pub trait HelloWorld {
         }
     }
 
+    #[endpoint(unstakeXlh)]
+    fn unstake_xlh(&self, pool_id:u64, amount: BigUint) {
+        let client = self.blockchain().get_caller();
+        let current_time_stamp = self.blockchain().get_block_timestamp();
+
+        //iterate over items and if located unstake requested value
+        let mut client_state = self.client_state(&client).get();
+        let xlh_data = &mut client_state.xlh_data;
+        let mut client_pool_found = false;
+        for i in 0..xlh_data.len() {
+            let client_xlh_data = xlh_data.get(i);
+            if client_xlh_data.pool_id == pool_id {
+                client_pool_found = true;
+
+                let rewords = self.compute_pool_rewords(&pool_id, &current_time_stamp, &client);
+                self.update_client_pool_time_stamp(&pool_id, &client, current_time_stamp.clone());
+
+                let new_xlh_staked = client_xlh_data.xlh_amount.clone() - amount.clone();
+                assert!(new_xlh_staked >= 0, "not enough xlh staked");
+                if new_xlh_staked == 0 {
+                    xlh_data.remove(i);
+                } else {
+                    self.update_client_pool_xlh_staked(&pool_id, &client, new_xlh_staked);
+                    self.update_client_pool_time_stamp(&pool_id, &client, current_time_stamp.clone());
+                }
+
+                //update total_staked_data
+                let mut total_staked_data = self.total_staked_data().get();
+                let total_xlh_staked = total_staked_data.total_xlh_staked.clone() - amount.clone();
+                total_staked_data.total_xlh_staked = total_xlh_staked;
+                self.total_staked_data().set(&total_staked_data);
+                self.deduct_rewords_from_total_data(&rewords);
+
+                //send rewords + amount to client
+                let token_id = self.contract_settings().get().token_id;
+                let rewords_plus_amount = amount.clone() + rewords.clone();
+                self.send().direct_esdt(&client, &token_id, 0, &rewords_plus_amount);
+
+                break;
+            }
+        }
+        assert!(client_pool_found, "client pool not found");
+    }
+
+
+
     fn check_client_exists_and_if_not_create_it(&self, client: &ManagedAddress) {
         if self.client_state(&client).is_empty() {
             let xlh_data: ManagedVec<ClientXlhData<Self::Api>> = ManagedVec::new();
