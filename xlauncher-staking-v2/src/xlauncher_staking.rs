@@ -176,11 +176,17 @@ pub trait HelloWorld {
 
         self.check_client_exists_and_if_not_create_it(&client);
 
+        //update client state
         let mut client_state = self.client_state(&client).get();
         let amount: u64 = amount_biguint.to_u64().unwrap();
 
         client_state.sft_amount += amount;
         self.client_state(&client).set(client_state);
+
+        //update total contract sft staked
+        let mut total_staked_data = self.total_staked_data().get();
+        total_staked_data.total_sft_staked += amount;
+        self.total_staked_data().set(&total_staked_data);
     }
 
     #[endpoint(claimRewards)]

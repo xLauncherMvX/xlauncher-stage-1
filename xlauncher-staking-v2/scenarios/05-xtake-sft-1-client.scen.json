@@ -18,7 +18,7 @@
               "instances": [
                 {
                   "nonce": "1",
-                  "balance": "10"
+                  "balance": "11"
                 }
               ]
             }
@@ -41,7 +41,7 @@
           {
             "tokenIdentifier": "str:SFT-000000",
             "nonce": "1",
-            "value": "2"
+            "value": "10"
           }
         ],
         "arguments": [        ],
@@ -77,7 +77,7 @@
               "instances": [
                 {
                   "nonce": "1",
-                  "balance": "8"
+                  "balance": "1"
                 }
               ]
             }
@@ -94,7 +94,7 @@
               "instances": [
                 {
                   "nonce": "1",
-                  "balance": "2"
+                  "balance": "10"
                 }
               ]
             }
@@ -105,7 +105,7 @@
               "1-last_pool_id": "u64:1",
               "2-total_xlh_staked": "biguint:0",
               "3-total_xlh_available_for_rewords": "biguint:1000000000000000000000",
-              "4-total_sft_staked": "u64:0"
+              "4-total_sft_staked": "u64:10"
             },
             "str:sftSettings": "*",
             "str:poolData|u64:1": {
@@ -113,7 +113,7 @@
               "2-pool_total_xlh": "biguint:0"
             },
             "str:clientState|address:client1": {
-              "1-sft_amount": "u64:2",
+              "1-sft_amount": "u64:10",
               "2-xlh_data_vec_len": "u32:0",
               "2-xlh_data_vec": ""
             }
