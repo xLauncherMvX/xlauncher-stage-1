@@ -4,7 +4,7 @@
   "steps": [
     {
       "step": "externalSteps",
-      "path": "04-xtake-xlh-1-client.scen.json"
+      "path": "04-stake-xlh-1-client.scen.json"
     },
     {
       "step": "setState",
