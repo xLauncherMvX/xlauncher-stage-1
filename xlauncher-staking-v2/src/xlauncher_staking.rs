@@ -161,7 +161,7 @@ pub trait HelloWorld {
     fn stake_sft(&self) {
         let egld_or_esdt_token_identifier = self.call_value().egld_or_single_esdt();
 
-        let amount = egld_or_esdt_token_identifier.amount;
+        let amount_biguint = egld_or_esdt_token_identifier.amount;
         let token_id = egld_or_esdt_token_identifier.token_identifier;
         let token_nonce = egld_or_esdt_token_identifier.token_nonce;
         let client = self.blockchain().get_caller();
@@ -172,7 +172,15 @@ pub trait HelloWorld {
         // check nonce
         assert!(token_nonce == sft_settings.nonce, "wrong token nonce");
         //check amount
-        assert!(amount > 0, "amount must be greater than 0");
+        assert!(amount_biguint > 0, "amount must be greater than 0");
+
+        self.check_client_exists_and_if_not_create_it(&client);
+
+        let mut client_state = self.client_state(&client).get();
+        let amount: u64 = amount_biguint.to_u64().unwrap();
+
+        client_state.sft_amount += amount;
+        self.client_state(&client).set(client_state);
     }
 
     #[endpoint(claimRewards)]
