@@ -123,6 +123,10 @@ pub trait HelloWorld {
             let client_xlh_data = xlh_data.get(i);
             if client_xlh_data.pool_id == pool_id {
                 client_pool_found = true;
+
+                let rewords = self.compute_pool_rewords(&pool_id, &current_time_stamp, &client);
+
+
                 break;
             }
         }
@@ -227,6 +231,20 @@ pub trait HelloWorld {
             let client_xlh_data = &mut xlh_data.get(i);
             if client_xlh_data.pool_id == *pool_id {
                 client_xlh_data.time_stamp = current_time_stamp;
+                let _ignore_result = xlh_data.set(i, client_xlh_data);
+                break;
+            }
+        }
+        self.client_state(&client).set(client_state);
+    }
+
+    fn update_client_pool_xlh_staked(&self, pool_id: &u64, client: &ManagedAddress, xlh_amount: BigUint) {
+        let mut client_state = self.client_state(&client).get();
+        let xlh_data = &mut client_state.xlh_data;
+        for i in 0..xlh_data.len() {
+            let client_xlh_data = &mut xlh_data.get(i);
+            if client_xlh_data.pool_id == *pool_id {
+                client_xlh_data.xlh_amount = xlh_amount;
                 let _ignore_result = xlh_data.set(i, client_xlh_data);
                 break;
             }
