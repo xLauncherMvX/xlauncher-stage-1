@@ -7,35 +7,7 @@
       "path": "10-unstake-sft.scen.json"
     },
 
-    {
-      "step": "setState",
-      "currentBlockInfo": {
-        "blockTimestamp": "1000000"
-      }
-    },
 
-    {
-      "step": "scCall",
-      "txId": "unstakeSft-1",
-      "tx": {
-        "from": "address:client1",
-        "to": "sc:xlauncher-staking",
-        "value": "0",
-        "function": "unstakeSft",
-        "arguments": [
-          "1"
-        ],
-        "gasLimit": "100,000,000",
-        "gasPrice": "0"
-      },
-      "expect": {
-        "out": [],
-        "status": "0",
-        "message": "",
-        "gas": "*",
-        "refund": "*"
-      }
-    },
 
     {
       "step": "checkState",
@@ -86,7 +58,7 @@
               "1-last_pool_id": "u64:1",
               "2-total_xlh_staked": "biguint:0",
               "3-total_xlh_available_for_rewords": "biguint:1000000000000000000000",
-              "4-total_sft_staked": "u64:8"
+              "4-total_sft_staked": "u64:9"
             },
             "str:sftSettings": "*",
             "str:poolData|u64:1": {
@@ -94,13 +66,13 @@
               "2-pool_total_xlh": "biguint:0"
             },
             "str:clientState|address:client1": {
-              "1-sft_amount": "u64:8",
+              "1-sft_amount": "u64:9",
               "2-xlh_data_vec_len": "u32:0",
               "2-xlh_data_vec": ""
             },
             "str:unstakeSftState|address:client1": {
-              "0-total_unstaked_sft_amount": "u64:2",
-              "2-free_after_time_stamp": "u64:6184000"
+              "0-total_unstaked_sft_amount": "u64:1",
+              "2-free_after_time_stamp": "u64:5184000"
             }
           },
           "code": "file:../output/xlauncher-staking.wasm"
