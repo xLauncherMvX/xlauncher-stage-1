@@ -7,6 +7,32 @@
       "path": "08-unstake-all-1-year.scen.json"
     },
 
+    {
+      "step": "setState",
+      "currentBlockInfo": {
+        "blockTimestamp": "32400001"
+      }
+    },
+
+    {
+      "step": "scCall",
+      "txId": "claimUnstakedXlhValue-1",
+      "tx": {
+        "from": "address:client1",
+        "to": "sc:xlauncher-staking",
+        "value": "0",
+        "function": "claimUnstakedXlhValue",
+        "gasLimit": "100,000,000",
+        "gasPrice": "0"
+      },
+      "expect": {
+        "out": [],
+        "status": "0",
+        "message": "",
+        "gas": "*",
+        "refund": "*"
+      }
+    },
 
     {
       "step": "checkState",
@@ -24,7 +50,7 @@
           "nonce": "*",
           "balance": "0",
           "esdt": {
-            "str:BCOIN-a00000": "4000000000000000000000"
+            "str:BCOIN-a00000": "5149999999999999997614"
           },
           "storage": {},
           "code": ""
@@ -33,7 +59,7 @@
           "nonce": "*",
           "balance": "0",
           "esdt": {
-            "str:BCOIN-a00000": "2000000000000000000000"
+            "str:BCOIN-a00000": "850000000000000002386"
           },
           "storage": {
             "str:contractSettings": "*",
@@ -52,11 +78,6 @@
               "1-sft_amount": "u64:0",
               "2-xlh_data_vec_len": "u32:0",
               "2-xlh_data_vec": ""
-            },
-            "str:unstakeXlhState|address:client1": {
-              "0-total_unstaked_amount": "biguint:1149999999999999997614",
-              "1-requested_amount": "biguint:1000000000000000000000",
-              "2-free_after_time_stamp": "u64:32400000"
             }
           },
           "code": "file:../output/xlauncher-staking.wasm"
