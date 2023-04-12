@@ -183,7 +183,7 @@ pub trait HelloWorld {
                 free_after_time_stamp,
             };
             self.unstake_sft_state(&client).set(unstake_sft_state);
-        }else {
+        } else {
             let mut unstake_sft_state = self.unstake_sft_state(&client).get();
             unstake_sft_state.total_unstaked_sft_amount += amount;
             unstake_sft_state.free_after_time_stamp = free_after_time_stamp;
@@ -266,6 +266,44 @@ pub trait HelloWorld {
             &unstake_state.total_unstaked_amount,
         );
         self.unstake_xlh_state(&client).clear();
+    }
+
+    #[endpoint(claimUnstakedSftValue)]
+    fn claim_unstaked_sft_value(&self) {
+        let current_time_stamp: u64 = self.blockchain().get_block_timestamp();
+        let client = self.blockchain().get_caller();
+        require!(!self.unstake_sft_state(&client).is_empty(), "No funds to claim");
+        let unstake_state = self.unstake_sft_state(&client).get();
+
+        sc_print!(
+            "claim_unstaked_value_log: current_time_stamp={}, free_after_time_stamp={}",
+            current_time_stamp,
+            unstake_state.free_after_time_stamp
+        );
+        require!(
+            unstake_state.free_after_time_stamp < current_time_stamp,
+            "current_time_stamp is smaller then free_after_time_stamp"
+        );
+
+        require!(
+            BigUint::zero() < unstake_state.total_unstaked_sft_amount,
+            "No funds available to claim"
+        );
+
+        //convert unstake_state.total_unstaked_sft_amount to BigUint
+        let amount_u64:u64 = unstake_state.total_unstaked_sft_amount;
+        let unstaked_sft_amount = BigUint::from(amount_u64);
+        let settings = self.sft_settings().get();
+        let sft_id = settings.sft_id;
+        let nonce = settings.nonce;
+
+        self.send().direct_esdt(
+            &client,
+            &sft_id,
+            nonce,
+            &unstaked_sft_amount,
+        );
+        self.unstake_sft_state(&client).clear();
     }
 
 
