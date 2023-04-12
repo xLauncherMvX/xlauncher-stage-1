@@ -85,3 +85,9 @@ pub struct UnstakeXlhState<M: ManagedTypeApi> {
     pub requested_amount: BigUint<M>,
     pub free_after_time_stamp: u64,
 }
+
+#[derive(TypeAbi, TopEncode, TopDecode, ManagedVecItem, NestedEncode, NestedDecode, Clone)]
+pub struct UnstakeSftState {
+    pub total_unstaked_sft_amount: u64,
+    pub free_after_time_stamp: u64,
+}

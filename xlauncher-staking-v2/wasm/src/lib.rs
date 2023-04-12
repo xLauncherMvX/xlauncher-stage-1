@@ -5,9 +5,9 @@
 ////////////////////////////////////////////////////
 
 // Init:                                 1
-// Endpoints:                           13
+// Endpoints:                           15
 // Async Callback (empty):               1
-// Total number of exported functions:  15
+// Total number of exported functions:  17
 
 #![no_std]
 #![feature(alloc_error_handler, lang_items)]
@@ -22,6 +22,7 @@ multiversx_sc_wasm_adapter::endpoints! {
         createNewPool
         fundWithRewords
         stakeXlh
+        unstakeSft
         unstakeXlh
         claimUnstakedXlhValue
         stakeSft
@@ -31,6 +32,7 @@ multiversx_sc_wasm_adapter::endpoints! {
         getTotalStakedData
         getClientState
         getUnstakeXlhState
+        getUnstakeSftState
     )
 }
 

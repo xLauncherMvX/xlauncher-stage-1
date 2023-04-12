@@ -1,0 +1,77 @@
+{
+  "name": "xlauncher-staking",
+  "comment": "deploy scenario",
+  "steps": [
+    {
+      "step": "externalSteps",
+      "path": "05-stake-sft-1-client.scen.json"
+    },
+
+    {
+      "step": "checkState",
+      "accounts": {
+        "address:owner": {
+          "nonce": "*",
+          "balance": "0",
+          "esdt": {
+            "str:BCOIN-a00000": "99999000000000000000000000"
+          },
+          "storage": {},
+          "code": ""
+        },
+        "address:client1": {
+          "nonce": "*",
+          "balance": "0",
+          "esdt": {
+            "str:BCOIN-a00000": "5000000000000000000000",
+            "str:SFT-000000": {
+              "instances": [
+                {
+                  "nonce": "1",
+                  "balance": "1"
+                }
+              ]
+            }
+          },
+          "storage": {},
+          "code": ""
+        },
+        "sc:xlauncher-staking": {
+          "nonce": "*",
+          "balance": "0",
+          "esdt": {
+            "str:BCOIN-a00000": "1000000000000000000000",
+            "str:SFT-000000": {
+              "instances": [
+                {
+                  "nonce": "1",
+                  "balance": "10"
+                }
+              ]
+            }
+          },
+          "storage": {
+            "str:contractSettings": "*",
+            "str:totalStakedData": {
+              "1-last_pool_id": "u64:1",
+              "2-total_xlh_staked": "biguint:0",
+              "3-total_xlh_available_for_rewords": "biguint:1000000000000000000000",
+              "4-total_sft_staked": "u64:10"
+            },
+            "str:sftSettings": "*",
+            "str:poolData|u64:1": {
+              "1-pool_id": "u64:1",
+              "2-pool_total_xlh": "biguint:0"
+            },
+            "str:clientState|address:client1": {
+              "1-sft_amount": "u64:10",
+              "2-xlh_data_vec_len": "u32:0",
+              "2-xlh_data_vec": ""
+            }
+          },
+          "code": "file:../output/xlauncher-staking.wasm"
+        }
+      }
+    }
+  ]
+}

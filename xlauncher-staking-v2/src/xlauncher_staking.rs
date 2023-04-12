@@ -156,6 +156,41 @@ pub trait HelloWorld {
         }
     }
 
+    #[endpoint(unstakeSft)]
+    fn unstake_sft(&self, amount: u64) {
+        let client = self.blockchain().get_caller();
+        let current_time_stamp = self.blockchain().get_block_timestamp();
+        let mut client_state = self.client_state(&client).get();
+        //check amount is not greater than client sft balance
+        assert!(amount <= client_state.sft_amount, "amount is greater than client sft balance");
+
+        //remove amount from client sft balance
+        client_state.sft_amount -= amount;
+        self.client_state(&client).set(client_state);
+
+        //update total_staked_data
+        let mut total_staked_data = self.total_staked_data().get();
+        total_staked_data.total_sft_staked -= amount;
+        self.total_staked_data().set(&total_staked_data);
+
+        let settings = self.contract_settings().get();
+        let free_after_time_stamp = current_time_stamp + settings.unstake_sft_lock_span;
+
+        //update client_sft_data
+        if self.unstake_sft_state(&client).is_empty() {
+            let unstake_sft_state = UnstakeSftState {
+                total_unstaked_sft_amount: amount,
+                free_after_time_stamp,
+            };
+            self.unstake_sft_state(&client).set(unstake_sft_state);
+        }else {
+            let mut unstake_sft_state = self.unstake_sft_state(&client).get();
+            unstake_sft_state.total_unstaked_sft_amount += amount;
+            unstake_sft_state.free_after_time_stamp = free_after_time_stamp;
+            self.unstake_sft_state(&client).set(unstake_sft_state);
+        }
+    }
+
     #[endpoint(unstakeXlh)]
     fn unstake_xlh(&self, pool_id: u64, amount: BigUint) {
         let client = self.blockchain().get_caller();
@@ -414,7 +449,6 @@ pub trait HelloWorld {
         total_amount: BigUint,
         requested_amount: BigUint,
     ) {
-
         let client = self.blockchain().get_caller();
         let settings = self.contract_settings().get();
         let unstake_lock_span: u64 = settings.unstake_xlh_lock_span;
@@ -472,6 +506,13 @@ pub trait HelloWorld {
         &self,
         client_address: &ManagedAddress,
     ) -> SingleValueMapper<UnstakeXlhState<Self::Api>>;
+
+    #[view(getUnstakeSftState)]
+    #[storage_mapper("unstakeSftState")]
+    fn unstake_sft_state(
+        &self,
+        client_address: &ManagedAddress,
+    ) -> SingleValueMapper<UnstakeSftState>;
 }
 
 
