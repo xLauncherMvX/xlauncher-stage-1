@@ -176,7 +176,9 @@ pub trait HelloWorld {
                 let new_xlh_staked = client_xlh_data.xlh_amount.clone() - amount.clone();
                 assert!(new_xlh_staked >= 0, "not enough xlh staked");
                 if new_xlh_staked == 0 {
+                    sc_print!("unstake all xlh from pool, new_xlh_staked={}", new_xlh_staked);
                     xlh_data.remove(i);
+                    self.client_state(&client).set(client_state);
                 } else {
                     self.update_client_pool_xlh_staked(&pool_id, &client, new_xlh_staked);
                     self.update_client_pool_time_stamp(&pool_id, &client, current_time_stamp.clone());
@@ -190,7 +192,6 @@ pub trait HelloWorld {
                 self.deduct_rewords_from_total_data(&rewords);
 
                 //send rewords + amount to client
-                let token_id = self.contract_settings().get().token_id;
                 let rewords_plus_amount = amount.clone() + rewords.clone();
 
                 // add to client sft unstake data

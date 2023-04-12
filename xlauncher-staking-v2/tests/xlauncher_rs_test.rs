@@ -48,3 +48,8 @@ fn top_up_1_year_rs() {
 fn unstake_half_1_year_rs() {
     multiversx_sc_scenario::run_rs("scenarios/08-unstake-half-1-year.scen.json", world());
 }
+
+#[test]
+fn _08_unstake_all_1_year() {
+    multiversx_sc_scenario::run_rs("scenarios/08-unstake-all-1-year.scen.json", world());
+}
