@@ -7,7 +7,32 @@
       "path": "10-unstake-sft.scen.json"
     },
 
+    {
+      "step": "setState",
+      "currentBlockInfo": {
+        "blockTimestamp": "5184001"
+      }
+    },
 
+    {
+      "step": "scCall",
+      "txId": "claimUnstakedSftValue-1",
+      "tx": {
+        "from": "address:client1",
+        "to": "sc:xlauncher-staking",
+        "value": "0",
+        "function": "claimUnstakedSftValue",
+        "gasLimit": "100,000,000",
+        "gasPrice": "0"
+      },
+      "expect": {
+        "out": [],
+        "status": "0",
+        "message": "",
+        "gas": "*",
+        "refund": "*"
+      }
+    },
 
     {
       "step": "checkState",
@@ -30,7 +55,7 @@
               "instances": [
                 {
                   "nonce": "1",
-                  "balance": "1"
+                  "balance": "2"
                 }
               ]
             }
@@ -47,7 +72,7 @@
               "instances": [
                 {
                   "nonce": "1",
-                  "balance": "10"
+                  "balance": "9"
                 }
               ]
             }
@@ -69,10 +94,6 @@
               "1-sft_amount": "u64:9",
               "2-xlh_data_vec_len": "u32:0",
               "2-xlh_data_vec": ""
-            },
-            "str:unstakeSftState|address:client1": {
-              "0-total_unstaked_sft_amount": "u64:1",
-              "2-free_after_time_stamp": "u64:5184000"
             }
           },
           "code": "file:../output/xlauncher-staking.wasm"
