@@ -528,6 +528,7 @@ pub trait HelloWorld {
     #[storage_mapper("totalStakedData")]
     fn total_staked_data(&self) -> SingleValueMapper<TotalStakedData<Self::Api>>;
 
+    #[view(getPoolData)]
     #[storage_mapper("poolData")]
     fn pool_data(&self, pool_id: u64) -> SingleValueMapper<PoolData<Self::Api>>;
 
