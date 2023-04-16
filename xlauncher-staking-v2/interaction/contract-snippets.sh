@@ -3,7 +3,7 @@ DEPLOY_TRANSACTION=$(mxpy data load --key=deployTransaction-devnet)
 CORE_LOGS="interaction-logs"
 MY_DECIMALS="000000000000000000"
 
-setEnvDevnet(){
+setEnvDevnet() {
   CURRENT_ENV="devnet"
   ENV_LOGS="${CORE_LOGS}/${CURRENT_ENV}"
 
@@ -43,17 +43,42 @@ deploy() {
   echo "Smart contract address: ${ADDRESS}"
 }
 
-setContractSettings(){
+setContractSettings() {
   MY_LOGS="${ENV_LOGS}-setContractSettings.json"
-    mxpy --verbose contract call ${ADDRESS} --recall-nonce \
-      --pem=${PEM_FILE} \
-      --gas-limit=8000000 \
-      --proxy=${PROXY} --chain=${CHAINID} \
-      --function="setContractSettings" \
-      --arguments "0x${TOKEN_ID_HEX}" "0x${SFT_ID_HEX}" 1 \
-      ${MAX_STAKING_VAL} ${UNSTAKE_XLH_LOCK_SPAN} ${UNSTAKE_SFT_LOCK_SPAN} \
-      ${MIN_APY} ${MAX_APY} ${SFT_INCREMENT_APY} \
-      --send \
-      --outfile="${MY_LOGS}"
+  mxpy --verbose contract call ${ADDRESS} --recall-nonce \
+    --pem=${PEM_FILE} \
+    --gas-limit=8000000 \
+    --proxy=${PROXY} --chain=${CHAINID} \
+    --function="setContractSettings" \
+    --arguments "0x${TOKEN_ID_HEX}" "0x${SFT_ID_HEX}" 1 \
+    ${MAX_STAKING_VAL} ${UNSTAKE_XLH_LOCK_SPAN} ${UNSTAKE_SFT_LOCK_SPAN} \
+    ${MIN_APY} ${MAX_APY} ${SFT_INCREMENT_APY} \
+    --send \
+    --outfile="${MY_LOGS}"
 }
 
+createNewPool() {
+  MY_LOGS="${ENV_LOGS}-createNewPool.json"
+  mxpy --verbose contract call ${ADDRESS} --recall-nonce \
+    --pem=${PEM_FILE} \
+    --gas-limit=8000000 \
+    --proxy=${PROXY} --chain=${CHAINID} \
+    --function="createNewPool" \
+    --send \
+    --outfile="${MY_LOGS}"
+}
+
+fundWithRewords() {
+  MY_LOGS="${ENV_LOGS}-fundWithRewords.json"
+  method_name="0x$(echo -n 'fundWithRewords' | xxd -p -u | tr -d '\n')"
+  token_id="0x$(echo -n ${TOKEN_ID} | xxd -p -u | tr -d '\n')"
+  amount="2000000${MY_DECIMALS}"
+  mxpy --verbose contract call ${ADDRESS} --recall-nonce \
+    --pem=${PEM_FILE} \
+    --gas-limit=5000000 \
+    --proxy=${PROXY} --chain=${CHAINID} \
+    --function="ESDTTransfer" \
+    --arguments $token_id $amount $method_name \
+    --send \
+    --outfile="${MY_LOGS}"
+}
