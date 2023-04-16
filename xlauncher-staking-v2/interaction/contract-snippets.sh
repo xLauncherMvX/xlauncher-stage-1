@@ -8,9 +8,9 @@ setEnvDevnet(){
   ADDRESS=$(mxpy data load --key=address-devnet)
   PROXY=https://devnet-gateway.multiversx.com
   CHAINID=D
-  TOKEN_ID="XLH-cb26c7"
+  TOKEN_ID="XLH-4a7cc0"
   TOKEN_ID_HEX=$(echo -n ${TOKEN_ID} | xxd -p)
-  SFT_ID="SFT-1"
+  SFT_ID="SFT-8ff335"
   SFT_ID_HEX=$(echo -n ${SFT_ID} | xxd -p)
   ENV_LOGS="${CORE_LOGS}/${CURRENT_ENV}"
 }
@@ -30,3 +30,8 @@ deploy() {
   echo ""
   echo "Smart contract address: ${ADDRESS}"
 }
+
+setSettings(){
+
+}
+
