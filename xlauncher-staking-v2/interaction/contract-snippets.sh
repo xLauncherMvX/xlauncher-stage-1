@@ -43,6 +43,13 @@ deploy() {
   echo "Smart contract address: ${ADDRESS}"
 }
 
+updateContract() {
+    MY_LOGS="${ENV_LOGS}-updateContract.json"
+  mxpy --verbose contract upgrade ${ADDRESS} --project=${PROJECT} --recall-nonce --pem=${PEM_FILE} \
+    --gas-limit=100000000 --send --outfile="${MY_LOGS}" \
+    --proxy=${PROXY} --chain=${CHAINID}
+}
+
 setContractSettings() {
   MY_LOGS="${ENV_LOGS}-setContractSettings.json"
   mxpy --verbose contract call ${ADDRESS} --recall-nonce \
