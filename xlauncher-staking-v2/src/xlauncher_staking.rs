@@ -221,7 +221,6 @@ pub trait HelloWorld {
                 let new_xlh_staked = client_xlh_data.xlh_amount.clone() - amount.clone();
                 assert!(new_xlh_staked >= 0, "not enough xlh staked");
                 if new_xlh_staked == 0 {
-                    sc_print!("unstake all xlh from pool, new_xlh_staked={}", new_xlh_staked);
                     xlh_data.remove(i);
                     self.client_state(&client).set(client_state);
                 } else {
@@ -235,6 +234,12 @@ pub trait HelloWorld {
                 total_staked_data.total_xlh_staked = total_xlh_staked;
                 self.total_staked_data().set(&total_staked_data);
                 self.deduct_rewords_from_total_data(&rewords);
+
+                //update pool_data
+                let mut pool_data = self.pool_data(pool_id).get();
+                let pool_total_xlh = pool_data.pool_total_xlh.clone() - amount.clone();
+                pool_data.pool_total_xlh = pool_total_xlh;
+                self.pool_data(pool_id).set(&pool_data);
 
                 //send rewords + amount to client
                 let rewords_plus_amount = amount.clone() + rewords.clone();
@@ -502,9 +507,6 @@ pub trait HelloWorld {
         let unstake_lock_span: u64 = settings.unstake_xlh_lock_span;
         let free_after_time_stamp: u64 = time_stamp + unstake_lock_span;
 
-        sc_print!("total unstake amount = {}", total_amount.clone());
-        sc_print!("requested amount = {}", requested_amount.clone());
-        sc_print!("free after time stamp = {}", free_after_time_stamp);
         if self.unstake_xlh_state(&client).is_empty() {
             let unstake_state = UnstakeXlhState {
                 total_unstaked_amount: total_amount.clone(),

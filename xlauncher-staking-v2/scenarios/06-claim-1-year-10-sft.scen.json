@@ -88,7 +88,7 @@
             "str:sftSettings": "*",
             "str:poolData|u64:1": {
               "1-pool_id": "u64:1",
-              "2-pool_total_xlh": "biguint:0"
+              "2-pool_total_xlh": "biguint:1000000000000000000000"
             },
             "str:clientState|address:client1": {
               "1-sft_amount": "u64:10",

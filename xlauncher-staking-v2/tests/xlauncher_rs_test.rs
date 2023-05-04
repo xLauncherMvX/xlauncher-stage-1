@@ -45,7 +45,7 @@ fn top_up_1_year_rs() {
 }
 
 #[test]
-fn unstake_half_1_year_rs() {
+fn _08_unstake_half_1_year_rs() {
     multiversx_sc_scenario::run_rs("scenarios/08-unstake-half-1-year.scen.json", world());
 }
 
