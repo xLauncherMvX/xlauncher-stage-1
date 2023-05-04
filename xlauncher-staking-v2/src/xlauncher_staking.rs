@@ -46,12 +46,23 @@ pub trait HelloWorld {
         if self.total_staked_data().is_empty() {
             let total_staked_data = TotalStakedData {
                 last_pool_id: 0,
+                last_price_rank_id: 0,
                 total_xlh_staked: BigUint::zero(),
                 total_xlh_available_for_rewords: BigUint::zero(),
                 total_sft_staked: 0,
             };
             self.total_staked_data().set(&total_staked_data);
         }
+    }
+
+    #[only_owner]
+    #[endpoint(setPoolPrice)]
+    fn set_pool_price(&self, rank_id: u64, xlh_price: BigUint) {
+       let new_price = PoolPrice {
+            rank_id,
+            xlh_price,
+        };
+        self.pool_price(rank_id).set(&new_price);
     }
 
 
@@ -544,6 +555,10 @@ pub trait HelloWorld {
     #[storage_mapper("poolData")]
     fn pool_data(&self, pool_id: u64) -> SingleValueMapper<PoolData<Self::Api>>;
 
+    #[view(getPoolPrice)]
+    #[storage_mapper("poolPrice")]
+    fn pool_price(&self, pool_id: u64) -> SingleValueMapper<PoolPrice<Self::Api>>;
+
     #[view(getClientState)]
     #[storage_mapper("clientState")]
     fn client_state(
@@ -564,6 +579,8 @@ pub trait HelloWorld {
         &self,
         client_address: &ManagedAddress,
     ) -> SingleValueMapper<UnstakeSftState>;
+
+
 }
 
 

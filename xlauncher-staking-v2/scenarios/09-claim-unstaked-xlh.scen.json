@@ -65,6 +65,7 @@
             "str:contractSettings": "*",
             "str:totalStakedData": {
               "1-last_pool_id": "u64:1",
+              "1-last_price_rank_id": "u64:0",
               "2-total_xlh_staked": "biguint:0",
               "3-total_xlh_available_for_rewords": "biguint:850000000000000002386",
               "4-total_sft_staked": "u64:0"

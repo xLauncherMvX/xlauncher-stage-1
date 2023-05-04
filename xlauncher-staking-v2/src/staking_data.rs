@@ -28,6 +28,7 @@ pub struct SftSettings<M: ManagedTypeApi> {
 #[derive(TypeAbi, TopEncode, TopDecode, ManagedVecItem, NestedEncode, NestedDecode)]
 pub struct TotalStakedData<M: ManagedTypeApi> {
     pub last_pool_id: u64,
+    pub last_price_rank_id: u64,
     pub total_xlh_staked: BigUint<M>,
     pub total_xlh_available_for_rewords: BigUint<M>,
     pub total_sft_staked: u64,
@@ -91,3 +92,12 @@ pub struct UnstakeSftState {
     pub total_unstaked_sft_amount: u64,
     pub free_after_time_stamp: u64,
 }
+
+// create pool settings
+#[derive(TypeAbi, TopEncode, TopDecode, ManagedVecItem, NestedEncode, NestedDecode, Clone)]
+pub struct PoolPrice<M: ManagedTypeApi> {
+    pub rank_id: u64,
+    pub xlh_price: BigUint<M>
+}
+
+
