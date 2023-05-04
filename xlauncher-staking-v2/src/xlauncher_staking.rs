@@ -57,12 +57,32 @@ pub trait HelloWorld {
 
     #[only_owner]
     #[endpoint(setPoolPrice)]
-    fn set_pool_price(&self, rank_id: u64, xlh_price: BigUint) {
-       let new_price = PoolPrice {
-            rank_id,
-            xlh_price,
+    fn set_pool_price(&self, rank_1_price: BigUint, rank_2_price: BigUint, rank_3_price: BigUint) {
+        let id1 = 1_u64;
+        let id2 = 2_u64;
+        let id3 = 3_u64;
+        let price_1 = PoolPrice {
+            rank_id: id1,
+            xlh_price: rank_1_price,
         };
-        self.pool_price(rank_id).set(&new_price);
+        let price_2 = PoolPrice {
+            rank_id: id2,
+            xlh_price: rank_2_price,
+        };
+        let price_3 = PoolPrice {
+            rank_id: id3,
+            xlh_price: rank_3_price,
+        };
+
+        //set pool prices
+        self.pool_price(id1).set(&price_1);
+        self.pool_price(id2).set(&price_2);
+        self.pool_price(id3).set(&price_3);
+
+        //set last_price_rank_id
+        let mut total_staked_data = self.total_staked_data().get();
+        total_staked_data.last_price_rank_id = id3;
+        self.total_staked_data().set(&total_staked_data);
     }
 
 
@@ -317,7 +337,7 @@ pub trait HelloWorld {
         );
 
         //convert unstake_state.total_unstaked_sft_amount to BigUint
-        let amount_u64:u64 = unstake_state.total_unstaked_sft_amount;
+        let amount_u64: u64 = unstake_state.total_unstaked_sft_amount;
         let unstaked_sft_amount = BigUint::from(amount_u64);
         let settings = self.sft_settings().get();
         let sft_id = settings.sft_id;
@@ -579,8 +599,6 @@ pub trait HelloWorld {
         &self,
         client_address: &ManagedAddress,
     ) -> SingleValueMapper<UnstakeSftState>;
-
-
 }
 
 
