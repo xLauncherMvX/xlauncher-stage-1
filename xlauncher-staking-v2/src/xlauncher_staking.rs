@@ -137,6 +137,11 @@ pub trait HelloWorld {
                 total_staked_data.total_xlh_staked = total_xlh_staked;
                 self.total_staked_data().set(&total_staked_data);
 
+                //update pool_data
+                let mut pool_data = self.pool_data(pool_id).get();
+                pool_data.pool_total_xlh += new_staked_amount;
+                self.pool_data(pool_id).set(&pool_data);
+
                 break;
             }
         }
@@ -151,8 +156,13 @@ pub trait HelloWorld {
 
             //update total_staked_data
             let mut total_staked_data = self.total_staked_data().get();
-            total_staked_data.total_xlh_staked += amount;
+            total_staked_data.total_xlh_staked += amount.clone();
             self.total_staked_data().set(&total_staked_data);
+
+            //update pool_data
+            let mut pool_data = self.pool_data(pool_id).get();
+            pool_data.pool_total_xlh += amount;
+            self.pool_data(pool_id).set(&pool_data);
         }
     }
 

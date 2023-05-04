@@ -20,8 +20,8 @@ fn fund_with_rewords_rs() {
 }
 
 #[test]
-fn stake_pool_a_rs() {
-    multiversx_sc_scenario::run_rs("scenarios/04-xtake-xlh-1-client.scen.json", world());
+fn _04_stake_xlh_1_client() {
+    multiversx_sc_scenario::run_rs("scenarios/04-stake-xlh-1-client.scen.json", world());
 }
 
 #[test]
