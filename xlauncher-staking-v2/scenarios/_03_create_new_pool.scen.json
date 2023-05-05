@@ -4,7 +4,7 @@
   "steps": [
     {
       "step": "externalSteps",
-      "path": "02-set-settings.scen.json"
+      "path": "002-set-pool-price.scen.json"
     },
     {
       "step": "scCall",
@@ -15,7 +15,17 @@
         "function": "createNewPool",
         "value": "0",
         "gasLimit": "100,000,000",
-        "gasPrice": "0"
+        "gasPrice": "0",
+        "esdtValue": [
+          {
+            "tokenIdentifier": "str:BCOIN-a00000",
+            "value": "300,000,000,000,000,000,000,000"
+          }
+        ],
+        "arguments": [
+          "1",
+          "str:BogdanCoin"
+        ]
       },
       "expect": {
         "out": [],

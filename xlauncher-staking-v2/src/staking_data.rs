@@ -2,6 +2,7 @@ use multiversx_sc::{
     api::ManagedTypeApi,
     types::{BigUint, TokenIdentifier, ManagedVec},
 };
+use multiversx_sc::types::ManagedBuffer;
 
 
 multiversx_sc::derive_imports!();
@@ -38,7 +39,10 @@ pub struct TotalStakedData<M: ManagedTypeApi> {
 #[derive(TypeAbi, TopEncode, TopDecode, ManagedVecItem, NestedEncode, NestedDecode, Clone)]
 pub struct PoolData<M: ManagedTypeApi> {
     pub pool_id: u64,
+    pub pool_rank: u64,
+    pub pool_title: ManagedBuffer<M>,
     pub pool_total_xlh: BigUint<M>,
+    pub pool_creation_funds: BigUint<M>,
 }
 
 // it keeps track at client level the client staked value for each pool

@@ -86,9 +86,27 @@ pub trait HelloWorld {
     }
 
 
-    #[only_owner]
+    #[payable("*")]
     #[endpoint(createNewPool)]
-    fn create_new_pool(&self) {
+    fn create_new_pool(&self, pool_rank: u64, pool_title: ManagedBuffer) {
+
+        let egld_or_esdt_token_identifier = self.call_value().egld_or_single_esdt();
+
+        let amount = egld_or_esdt_token_identifier.amount;
+        let token_id = egld_or_esdt_token_identifier.token_identifier;
+        let client = self.blockchain().get_caller();
+
+        // check pool_price exists
+        assert!(!self.pool_price(pool_rank).is_empty(), "pool price does not exist");
+        //check token_id
+
+        let settings = self.contract_settings().get();
+        assert!(token_id == settings.token_id, "wrong token id");
+
+        //check amount matches pool price
+        let pool_price = self.pool_price(pool_rank).get();
+        assert!(amount == pool_price.xlh_price, "wrong xlh amount");
+
         let mut total_staked_data = self.total_staked_data().get();
         let pull_id = total_staked_data.last_pool_id + 1;
         //check pool_data does not exist
@@ -98,8 +116,12 @@ pub trait HelloWorld {
 
         let new_pool = PoolData {
             pool_id: pull_id,
+            pool_rank,
+            pool_title,
             pool_total_xlh: BigUint::zero(),
+            pool_creation_funds: amount,
         };
+
         self.pool_data(pull_id).set(&new_pool);
     }
 
