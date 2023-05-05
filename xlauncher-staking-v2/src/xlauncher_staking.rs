@@ -119,6 +119,7 @@ pub trait HelloWorld {
             pool_title: pool_title.clone(),
             pool_total_xlh: BigUint::zero(),
             pool_creation_funds: amount,
+            pool_owner: client,
         };
 
         self.pool_data(pull_id).set(&new_pool);
