@@ -69,7 +69,7 @@
               "3-pool_title": "0x0000000a426f6764616e436f696e",
               "4-pool_total_xlh": "biguint:0",
               "5-pool_creation_funds": "biguint:300000000000000000000000",
-              "5-pool_owner": "address:owner"
+              "6-pool_owner": "address:owner"
             },
             "str:poolPrice|u64:1": {
               "1-pool_id": "u64:1",
