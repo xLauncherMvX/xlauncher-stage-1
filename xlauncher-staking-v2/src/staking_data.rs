@@ -45,6 +45,11 @@ pub struct PoolData<M: ManagedTypeApi> {
     pub pool_creation_funds: BigUint<M>,
 }
 
+#[derive(TypeAbi, TopEncode, TopDecode, ManagedVecItem, NestedEncode, NestedDecode, Clone)]
+pub struct SimplePoolData<M: ManagedTypeApi> {
+    pub pool_title: ManagedBuffer<M>,
+}
+
 // it keeps track at client level the client staked value for each pool
 // and the total sft staked
 #[derive(TypeAbi, TopEncode, TopDecode, ManagedVecItem, NestedEncode, NestedDecode, Clone)]

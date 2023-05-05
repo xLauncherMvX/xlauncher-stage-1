@@ -89,7 +89,6 @@ pub trait HelloWorld {
     #[payable("*")]
     #[endpoint(createNewPool)]
     fn create_new_pool(&self, pool_rank: u64, pool_title: ManagedBuffer) {
-
         let egld_or_esdt_token_identifier = self.call_value().egld_or_single_esdt();
 
         let amount = egld_or_esdt_token_identifier.amount;
@@ -117,12 +116,14 @@ pub trait HelloWorld {
         let new_pool = PoolData {
             pool_id: pull_id,
             pool_rank,
-            pool_title,
+            pool_title: pool_title.clone(),
             pool_total_xlh: BigUint::zero(),
             pool_creation_funds: amount,
         };
 
         self.pool_data(pull_id).set(&new_pool);
+
+
     }
 
 
@@ -596,6 +597,10 @@ pub trait HelloWorld {
     #[view(getPoolData)]
     #[storage_mapper("poolData")]
     fn pool_data(&self, pool_id: u64) -> SingleValueMapper<PoolData<Self::Api>>;
+
+    #[view(getSimplePoolData)]
+    #[storage_mapper("simplePoolData")]
+    fn simple_pool_data(&self, pool_id: u64) -> SingleValueMapper<SimplePoolData<Self::Api>>;
 
     #[view(getPoolPrice)]
     #[storage_mapper("poolPrice")]
