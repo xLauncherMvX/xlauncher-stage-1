@@ -12,10 +12,15 @@
       "tx": {
         "from": "address:owner",
         "to": "sc:xlauncher-staking",
-        "function": "createNewPool",
+        "function": "setPoolPrice",
         "value": "0",
         "gasLimit": "100,000,000",
-        "gasPrice": "0"
+        "gasPrice": "0",
+        "arguments": [
+          "300,000,000,000,000,000,000,000",
+          "200,000,000,000,000,000,000,000",
+          "100,000,000,000,000,000,000,000"
+        ]
       },
       "expect": {
         "out": [],
@@ -44,15 +49,23 @@
             "str:contractSettings": "*",
             "str:sftSettings": "*",
             "str:totalStakedData": {
-              "1-last_pool_id": "u64:1",
-              "1-last_price_rank_id": "u64:0",
+              "1-last_pool_id": "u64:0",
+              "1-last_price_rank_id": "u64:3",
               "2-total_xlh_staked": "biguint:0",
               "3-total_xlh_available_for_rewords": "biguint:0",
               "4-total_sft_staked": "u64:0"
             },
-            "str:poolData|u64:1": {
+            "str:poolPrice|u64:1": {
               "1-pool_id": "u64:1",
-              "2-pool_total_xlh": "biguint:0"
+              "2-pool_total_xlh": "biguint:300,000,000,000,000,000,000,000"
+            },
+            "str:poolPrice|u64:2": {
+              "1-pool_id": "u64:2",
+              "2-pool_total_xlh": "biguint:200,000,000,000,000,000,000,000"
+            },
+            "str:poolPrice|u64:3": {
+              "1-pool_id": "u64:3",
+              "2-pool_total_xlh": "biguint:100,000,000,000,000,000,000,000"
             }
           },
           "code": "file:../output/xlauncher-staking.wasm"
