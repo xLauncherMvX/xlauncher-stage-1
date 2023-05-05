@@ -15,6 +15,11 @@ fn world() -> ScenarioWorld {
 }
 
 #[test]
+fn _03_create_new_pool() {
+    multiversx_sc_scenario::run_rs("scenarios/_03_create_new_pool.scen.json", world());
+}
+
+#[test]
 fn fund_with_rewords_rs() {
     multiversx_sc_scenario::run_rs("scenarios/03-fund-with-rewords.scen.json", world());
 }
