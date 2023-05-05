@@ -42,7 +42,7 @@
           "nonce": "*",
           "balance": "0",
           "esdt": {
-            "str:BCOIN-a00000": "100,000,000,000,000,000,000,000,000"
+            "str:BCOIN-a00000": "99700000000000000000000000"
           },
           "storage": {},
           "code": ""
@@ -55,14 +55,29 @@
             "str:sftSettings": "*",
             "str:totalStakedData": {
               "1-last_pool_id": "u64:1",
-              "1-last_price_rank_id": "u64:0",
+              "1-last_price_rank_id": "u64:3",
               "2-total_xlh_staked": "biguint:0",
               "3-total_xlh_available_for_rewords": "biguint:0",
               "4-total_sft_staked": "u64:0"
             },
             "str:poolData|u64:1": {
               "1-pool_id": "u64:1",
-              "2-pool_total_xlh": "biguint:0"
+              "2-pool_rank": "u64:1",
+              "3-pool_title": "str:BogdanCoin",
+              "4-pool_total_xlh": "biguint:0",
+              "5-pool_creation_funds": "biguint:300000000000000000000000"
+            },
+            "str:poolPrice|u64:1": {
+              "1-pool_id": "u64:1",
+              "2-pool_total_xlh": "biguint:300,000,000,000,000,000,000,000"
+            },
+            "str:poolPrice|u64:2": {
+              "1-pool_id": "u64:2",
+              "2-pool_total_xlh": "biguint:200,000,000,000,000,000,000,000"
+            },
+            "str:poolPrice|u64:3": {
+              "1-pool_id": "u64:3",
+              "2-pool_total_xlh": "biguint:100,000,000,000,000,000,000,000"
             }
           },
           "code": "file:../output/xlauncher-staking.wasm"
