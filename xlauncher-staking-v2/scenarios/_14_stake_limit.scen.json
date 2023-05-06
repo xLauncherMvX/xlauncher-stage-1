@@ -1,0 +1,40 @@
+{
+  "name": "xlauncher-staking",
+  "comment": "deploy scenario",
+  "steps": [
+    {
+      "step": "externalSteps",
+      "path": "_13_stake_to_the_limit.scen.json"
+    },
+
+
+    {
+      "step": "scCall",
+      "txId": "stake-by-owner-1-year",
+      "tx": {
+        "from": "address:owner",
+        "to": "sc:xlauncher-staking",
+        "value": "0",
+        "function": "stakeXlh",
+        "esdtValue": [
+          {
+            "tokenIdentifier": "str:BCOIN-a00000",
+            "value": "1000000000000000000000000"
+          }
+        ],
+        "arguments": [
+          "1"
+        ],
+        "gasLimit": "100,000,000",
+        "gasPrice": "0"
+      },
+      "expect": {
+        "out": [],
+        "status": "0",
+        "message": "",
+        "gas": "*",
+        "refund": "*"
+      }
+    }
+  ]
+}
