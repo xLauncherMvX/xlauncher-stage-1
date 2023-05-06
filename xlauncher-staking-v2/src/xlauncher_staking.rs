@@ -602,6 +602,28 @@ pub trait HelloWorld {
         }
     }
 
+    #[view(getClientReport)]
+    fn get_client_report(&self, client: ManagedAddress) -> ReportClientAllPools<Self::Api> {
+        let current_time_stamp = self.blockchain().get_block_timestamp();
+        let client_data = self.client_state(&client).get();
+        let staking_settings = self.contract_settings().get();
+        let apy = self.compute_client_apy(client_data, staking_settings);
+
+        //let xlh_data = client_data.xlh_data;
+        let mut report = ReportClientAllPools {
+            total_xlh_amount: BigUint::from(0u64),
+            total_xlh_rewards: BigUint::from(0u64),
+            total_sft_amount: 0,
+            report_pool_items: ManagedVec::new(),
+        };
+
+       /* for i in 0..xlh_data.len() {
+            let client_xlh_data = xlh_data.get(i);
+            let rewords = self.compute_rewords(&client_xlh_data, &current_time_stamp, &apy);
+        }*/
+        return report;
+    }
+
     // storage
 
     #[view(getContractSettings)]

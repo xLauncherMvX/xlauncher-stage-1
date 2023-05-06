@@ -5,9 +5,9 @@
 ////////////////////////////////////////////////////
 
 // Init:                                 1
-// Endpoints:                           21
+// Endpoints:                           22
 // Async Callback (empty):               1
-// Total number of exported functions:  23
+// Total number of exported functions:  24
 
 #![no_std]
 #![feature(alloc_error_handler, lang_items)]
@@ -29,6 +29,7 @@ multiversx_sc_wasm_adapter::endpoints! {
         claimUnstakedSftValue
         stakeSft
         claimRewards
+        getClientReport
         getContractSettings
         getSftSettings
         getTotalStakedData
