@@ -607,7 +607,11 @@ pub trait HelloWorld {
         let staking_settings = self.contract_settings().get();
         let apy = self.compute_client_apy(&client_data, &staking_settings);
 
-        let xlh_data = client_data.xlh_data;
+       return self.compute_client_report(&current_time_stamp, &client_data, &apy);
+    }
+
+    fn compute_client_report(&self, current_time_stamp: &u64, client_data: &ClientData<Self::Api>, apy: &u64) -> ReportClientAllPools<Self::Api> {
+        let xlh_data = &client_data.xlh_data;
         let mut report = ReportClientAllPools {
             total_xlh_amount: BigUint::from(0u64),
             total_xlh_rewards: BigUint::from(0u64),
@@ -626,7 +630,6 @@ pub trait HelloWorld {
             report.total_xlh_amount = report.total_xlh_amount.clone() + report_item.xlh_amount.clone();
             report.total_xlh_rewards = report.total_xlh_rewards.clone() + report_item.xlh_rewords.clone();
             report.report_pool_items.push(report_item);
-
         }
         return report;
     }
