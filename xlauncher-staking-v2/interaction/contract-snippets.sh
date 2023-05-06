@@ -83,18 +83,28 @@ setPoolPrice() {
 createNewPool() {
   method_name="0x$(echo -n 'createNewPool' | xxd -p -u | tr -d '\n')"
   token_id="0x$(echo -n ${TOKEN_ID} | xxd -p -u | tr -d '\n')"
-  amount="3000000${MY_DECIMALS}"
-  rank_id="1"
-  pool_title="0x$(echo -n 'BogdanPool' | xxd -p -u | tr -d '\n')"
+
+  #  amount="3000000${MY_DECIMALS}"
+  #  rank_id="1"
+  #  pool_title="0x$(echo -n 'BogdanPool' | xxd -p -u | tr -d '\n')"
+
+  #  amount="2000000${MY_DECIMALS}"
+  #  rank_id="2"
+  #  pool_title="0x$(echo -n 'IonutPool' | xxd -p -u | tr -d '\n')"
+
+  amount="1000000${MY_DECIMALS}"
+  rank_id="3"
+  pool_title="0x$(echo -n 'CosminPool' | xxd -p -u | tr -d '\n')"
+
   MY_LOGS="${ENV_LOGS}-createNewPool.json"
   mxpy --verbose contract call ${ADDRESS} --recall-nonce \
-      --pem=${PEM_FILE} \
-      --gas-limit=5000000 \
-      --proxy=${PROXY} --chain=${CHAINID} \
-      --function="ESDTTransfer" \
-      --arguments $token_id $amount $method_name $rank_id $pool_title \
-      --send \
-      --outfile="${MY_LOGS}"
+    --pem=${PEM_FILE} \
+    --gas-limit=5000000 \
+    --proxy=${PROXY} --chain=${CHAINID} \
+    --function="ESDTTransfer" \
+    --arguments $token_id $amount $method_name $rank_id $pool_title \
+    --send \
+    --outfile="${MY_LOGS}"
 }
 
 fundWithRewords() {
