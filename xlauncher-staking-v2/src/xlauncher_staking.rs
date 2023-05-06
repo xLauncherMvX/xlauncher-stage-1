@@ -610,6 +610,25 @@ pub trait HelloWorld {
         return self.compute_client_report(&current_time_stamp, &client, &client_data, &apy);
     }
 
+    #[view(getAllClientsReport)]
+    fn get_all_clients_report(&self) -> ManagedVec<ReportClientAllPools<Self::Api>> {
+        let current_time_stamp = self.blockchain().get_block_timestamp();
+        let mut clients_report = ManagedVec::new();
+        let staking_settings = self.contract_settings().get();
+
+        let clients_set = self.client_list();
+        let clients_iter = clients_set.iter();
+        for client in clients_iter {
+            let client_data = self.client_state(&client).get();
+            let apy = self.compute_client_apy(&client_data, &staking_settings);
+            let client_report =
+                self.compute_client_report(&current_time_stamp, &client, &client_data, &apy);
+            clients_report.push(client_report);
+        }
+
+        return clients_report;
+    }
+
     fn compute_client_report(&self, current_time_stamp: &u64, client_address: &ManagedAddress, client_data: &ClientData<Self::Api>, apy: &u64) -> ReportClientAllPools<Self::Api> {
         let xlh_data = &client_data.xlh_data;
         let mut report = ReportClientAllPools {
