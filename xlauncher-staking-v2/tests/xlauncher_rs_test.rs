@@ -58,3 +58,8 @@ fn _08_unstake_half_1_year_rs() {
 fn _08_unstake_all_1_year() {
     multiversx_sc_scenario::run_rs("../scenarios/archive2/08-unstake-all-1-year.scen.json", world());
 }
+
+#[test]
+fn _14_stake_limit() {
+    multiversx_sc_scenario::run_rs("scenarios/_14_stake_limit.scen.json", world());
+}

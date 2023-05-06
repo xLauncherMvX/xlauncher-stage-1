@@ -195,8 +195,12 @@ pub trait HelloWorld {
                 //update pool_data
                 let mut pool_data = self.pool_data(pool_id).get();
                 pool_data.pool_total_xlh += new_staked_amount;
-                self.pool_data(pool_id).set(&pool_data);
 
+                //check if new_pool_talal_xlh is smaller or equal then max_pool_xlh
+                let new_pool_total_xlh = pool_data.pool_total_xlh.clone();
+                require!(new_pool_total_xlh <= settings.max_staking_val, "pool is full");
+
+                self.pool_data(pool_id).set(&pool_data);
                 self.append_client_if_needed();
 
                 break;
@@ -219,8 +223,12 @@ pub trait HelloWorld {
             //update pool_data
             let mut pool_data = self.pool_data(pool_id).get();
             pool_data.pool_total_xlh += amount;
-            self.pool_data(pool_id).set(&pool_data);
 
+            //check if new_pool_talal_xlh is smaller or equal then max_pool_xlh
+            let new_pool_total_xlh = pool_data.pool_total_xlh.clone();
+            require!(new_pool_total_xlh <= settings.max_staking_val, "pool is full");
+
+            self.pool_data(pool_id).set(&pool_data);
             self.append_client_if_needed();
         }
     }
