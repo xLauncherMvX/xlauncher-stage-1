@@ -3,6 +3,13 @@ DEPLOY_TRANSACTION=$(mxpy data load --key=deployTransaction-devnet)
 CORE_LOGS="interaction-logs"
 MY_DECIMALS="000000000000000000"
 
+MAX_STAKING_VAL="1000000${MY_DECIMALS}"
+UNSTAKE_XLH_LOCK_SPAN="864000"
+UNSTAKE_SFT_LOCK_SPAN="5184000"
+MIN_APY="150000"
+MAX_APY="300000"
+SFT_INCREMENT_APY="15000"
+
 setEnvDevnet() {
   CURRENT_ENV="devnet"
   ENV_LOGS="${CORE_LOGS}/${CURRENT_ENV}"
@@ -18,13 +25,6 @@ setEnvDevnet() {
 
   TOKEN_ID_HEX=$(echo -n ${TOKEN_ID} | xxd -p)
   SFT_ID_HEX=$(echo -n ${SFT_ID} | xxd -p)
-
-  MAX_STAKING_VAL="1000000${MY_DECIMALS}"
-  UNSTAKE_XLH_LOCK_SPAN="864000"
-  UNSTAKE_SFT_LOCK_SPAN="5184000"
-  MIN_APY="150000"
-  MAX_APY="300000"
-  SFT_INCREMENT_APY="15000"
 }
 
 deploy() {
@@ -44,7 +44,7 @@ deploy() {
 }
 
 updateContract() {
-    MY_LOGS="${ENV_LOGS}-updateContract.json"
+  MY_LOGS="${ENV_LOGS}-updateContract.json"
   mxpy --verbose contract upgrade ${ADDRESS} --project=${PROJECT} --recall-nonce --pem=${PEM_FILE} \
     --gas-limit=100000000 --send --outfile="${MY_LOGS}" \
     --proxy=${PROXY} --chain=${CHAINID}
