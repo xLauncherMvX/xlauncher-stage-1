@@ -10,6 +10,10 @@ MIN_APY="150000"
 MAX_APY="300000"
 SFT_INCREMENT_APY="15000"
 
+RANK_1_PRICE="3000000${MY_DECIMALS}"
+RANK_2_PRICE="2000000${MY_DECIMALS}"
+RANK_3_PRICE="1000000${MY_DECIMALS}"
+
 setEnvDevnet() {
   CURRENT_ENV="devnet"
   ENV_LOGS="${CORE_LOGS}/${CURRENT_ENV}"
@@ -60,6 +64,18 @@ setContractSettings() {
     --arguments "0x${TOKEN_ID_HEX}" "0x${SFT_ID_HEX}" 1 \
     ${MAX_STAKING_VAL} ${UNSTAKE_XLH_LOCK_SPAN} ${UNSTAKE_SFT_LOCK_SPAN} \
     ${MIN_APY} ${MAX_APY} ${SFT_INCREMENT_APY} \
+    --send \
+    --outfile="${MY_LOGS}"
+}
+
+setPoolPrice() {
+  MY_LOGS="${ENV_LOGS}-setPoolPrice.json"
+  mxpy --verbose contract call ${ADDRESS} --recall-nonce \
+    --pem=${PEM_FILE} \
+    --gas-limit=8000000 \
+    --proxy=${PROXY} --chain=${CHAINID} \
+    --function="setPoolPrice" \
+    --arguments ${RANK_1_PRICE} ${RANK_2_PRICE} ${RANK_3_PRICE} \
     --send \
     --outfile="${MY_LOGS}"
 }
