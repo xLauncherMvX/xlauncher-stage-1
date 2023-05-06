@@ -197,6 +197,8 @@ pub trait HelloWorld {
                 pool_data.pool_total_xlh += new_staked_amount;
                 self.pool_data(pool_id).set(&pool_data);
 
+                self.append_client_if_needed();
+
                 break;
             }
         }
@@ -218,6 +220,8 @@ pub trait HelloWorld {
             let mut pool_data = self.pool_data(pool_id).get();
             pool_data.pool_total_xlh += amount;
             self.pool_data(pool_id).set(&pool_data);
+
+            self.append_client_if_needed();
         }
     }
 
@@ -414,6 +418,7 @@ pub trait HelloWorld {
 
         client_state.sft_amount += amount;
         self.client_state(&client).set(client_state);
+        self.append_client_if_needed();
 
         //update total contract sft staked
         let mut total_staked_data = self.total_staked_data().get();
@@ -581,6 +586,14 @@ pub trait HelloWorld {
         }
     }
 
+    fn append_client_if_needed(&self) {
+        let mut clients_set = self.client_list();
+        let client = self.blockchain().get_caller();
+        if !clients_set.contains(&client) {
+            clients_set.insert(client);
+        }
+    }
+
     // storage
 
     #[view(getContractSettings)]
@@ -627,6 +640,10 @@ pub trait HelloWorld {
         &self,
         client_address: &ManagedAddress,
     ) -> SingleValueMapper<UnstakeSftState>;
+
+    #[view(getClientList)]
+    #[storage_mapper("clientList")]
+    fn client_list(&self) -> UnorderedSetMapper<ManagedAddress>;
 }
 
 

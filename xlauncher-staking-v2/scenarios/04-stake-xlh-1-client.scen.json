@@ -105,7 +105,10 @@
             },
             "str:poolPrice|u64:1": "*",
             "str:poolPrice|u64:2": "*",
-            "str:poolPrice|u64:3": "*"
+            "str:poolPrice|u64:3": "*",
+            "str:clientList|str:.len": "1",
+            "str:clientList|str:.index|address:client1": "1",
+            "str:clientList|str:.item|u32:1": "address:client1"
           },
           "code": "file:../output/xlauncher-staking.wasm"
         }
