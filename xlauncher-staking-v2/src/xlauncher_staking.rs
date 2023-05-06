@@ -515,7 +515,7 @@ pub trait HelloWorld {
 
         let staking_settings = self.contract_settings().get();
 
-        let apy = self.compute_client_apy(client_state, staking_settings);
+        let apy = self.compute_client_apy(&client_state, &staking_settings);
         let rewords = self.compute_rewords(&client_xlh_data, &current_time_stamp, &apy);
 
         return rewords;
@@ -547,8 +547,8 @@ pub trait HelloWorld {
     }
 
     fn compute_client_apy(&self,
-                          client_data: ClientData<Self::Api>,
-                          staking_settings: StakingSettings<Self::Api>,
+                          client_data: &ClientData<Self::Api>,
+                          staking_settings: &StakingSettings<Self::Api>,
     ) -> u64 {
         let min_apy = staking_settings.min_apy;
         if client_data.sft_amount == 0_u64 {
@@ -607,7 +607,7 @@ pub trait HelloWorld {
         let current_time_stamp = self.blockchain().get_block_timestamp();
         let client_data = self.client_state(&client).get();
         let staking_settings = self.contract_settings().get();
-        let apy = self.compute_client_apy(client_data, staking_settings);
+        let apy = self.compute_client_apy(&client_data, &staking_settings);
 
         //let xlh_data = client_data.xlh_data;
         let mut report = ReportClientAllPools {
