@@ -81,14 +81,19 @@ setPoolPrice() {
 }
 
 createNewPool() {
+  method_name="0x$(echo -n 'createNewPool' | xxd -p -u | tr -d '\n')"
+  token_id="0x$(echo -n ${TOKEN_ID} | xxd -p -u | tr -d '\n')"
+  amount="3000000${MY_DECIMALS}"
+  rank_id="1"
   MY_LOGS="${ENV_LOGS}-createNewPool.json"
   mxpy --verbose contract call ${ADDRESS} --recall-nonce \
-    --pem=${PEM_FILE} \
-    --gas-limit=8000000 \
-    --proxy=${PROXY} --chain=${CHAINID} \
-    --function="createNewPool" \
-    --send \
-    --outfile="${MY_LOGS}"
+      --pem=${PEM_FILE} \
+      --gas-limit=5000000 \
+      --proxy=${PROXY} --chain=${CHAINID} \
+      --function="ESDTTransfer" \
+      --arguments $token_id $amount $method_name $rank_id \
+      --send \
+      --outfile="${MY_LOGS}"
 }
 
 fundWithRewords() {
