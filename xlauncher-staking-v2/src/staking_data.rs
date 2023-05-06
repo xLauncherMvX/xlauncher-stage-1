@@ -120,10 +120,18 @@ pub struct ReportClientPoolPoolItem<M: ManagedTypeApi> {
 
 #[derive(TypeAbi, TopEncode, TopDecode, ManagedVecItem, NestedEncode, NestedDecode, Clone)]
 pub struct ReportClientAllPools<M: ManagedTypeApi> {
+    pub client_address: ManagedAddress<M>,
     pub total_xlh_amount: BigUint<M>,
     pub total_xlh_rewards: BigUint<M>,
     pub total_sft_amount: u64,
-    pub report_pool_items: ManagedVec<M, ReportClientPoolPoolItem<M>>,
+    pub report_pool_vector: ManagedVec<M, ReportClientPoolPoolItem<M>>,
+}
+
+pub struct ReportAllClients<M:ManagedTypeApi>{
+    pub total_xlh_amount: BigUint<M>,
+    pub total_xlh_rewards: BigUint<M>,
+    pub total_sft_amount: u64,
+    pub report_client_vector: ManagedVec<M, ReportClientAllPools<M>>,
 }
 
 
