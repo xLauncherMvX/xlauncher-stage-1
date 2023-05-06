@@ -1,0 +1,156 @@
+{
+  "name": "xlauncher-staking",
+  "comment": "deploy scenario",
+  "steps": [
+    {
+      "step": "externalSteps",
+      "path": "04-stake-xlh-1-client.scen.json"
+    },
+    {
+      "step": "setState",
+      "currentBlockInfo": {
+        "blockTimestamp": "31536000"
+      }
+    },
+    {
+      "step": "scCall",
+      "txId": "stake-xlh-after-1-year",
+      "tx": {
+        "from": "address:client1",
+        "to": "sc:xlauncher-staking",
+        "value": "0",
+        "function": "stakeXlh",
+        "esdtValue": [
+          {
+            "tokenIdentifier": "str:BCOIN-a00000",
+            "value": "1,000,000,000,000,000,000,000"
+          }
+        ],
+        "arguments": [
+          "1"
+        ],
+        "gasLimit": "100,000,000",
+        "gasPrice": "0"
+      },
+      "expect": {
+        "out": [],
+        "status": "0",
+        "message": "",
+        "gas": "*",
+        "refund": "*"
+      }
+    },
+    {
+      "step": "scCall",
+      "txId": "stake-by-owner-1-year",
+      "tx": {
+        "from": "address:owner",
+        "to": "sc:xlauncher-staking",
+        "value": "0",
+        "function": "stakeXlh",
+        "esdtValue": [
+          {
+            "tokenIdentifier": "str:BCOIN-a00000",
+            "value": "988,000,000000000000000000"
+          }
+        ],
+        "arguments": [
+          "1"
+        ],
+        "gasLimit": "100,000,000",
+        "gasPrice": "0"
+      },
+      "expect": {
+        "out": [],
+        "status": "0",
+        "message": "",
+        "gas": "*",
+        "refund": "*"
+      }
+    },
+    {
+      "step": "checkState",
+      "accounts": {
+        "address:owner": {
+          "nonce": "*",
+          "balance": "0",
+          "esdt": {
+            "str:BCOIN-a00000": "98711000000000000000000000"
+          },
+          "storage": {},
+          "code": ""
+        },
+        "address:client1": {
+          "nonce": "*",
+          "balance": "0",
+          "esdt": {
+            "str:BCOIN-a00000": "3000000000000000000000"
+          },
+          "storage": {},
+          "code": ""
+        },
+        "sc:xlauncher-staking": {
+          "nonce": "*",
+          "balance": "0",
+          "esdt": {
+            "str:BCOIN-a00000": "1291000000000000000000000"
+          },
+          "storage": {
+            "str:contractSettings": {
+              "1-token_id": "nested:str:BCOIN-a00000",
+              "2-max_staking_val": "biguint:1000000000000000000000000",
+              "5-unstake_xlh_lock_span": "u64:864000",
+              "6-unstake_sft_lock_span": "u64:5184000",
+              "7-min_apy": "u64:150000",
+              "8-max_apy": "u64:300000",
+              "9-sft_increment_apy": "u64:15000"
+            },
+            "str:totalStakedData": {
+              "1-last_pool_id": "u64:1",
+              "1-last_price_rank_id": "u64:3",
+              "2-total_xlh_staked": "biguint:990149999999999999997614",
+              "3-total_xlh_available_for_rewords": "biguint:850000000000000002386",
+              "4-total_sft_staked": "u64:0"
+            },
+            "str:sftSettings": "*",
+            "str:poolData|u64:1": {
+              "1-pool_id": "u64:1",
+              "2-pool_rank": "u64:1",
+              "3-pool_title": "0x0000000a426f6764616e436f696e",
+              "4-pool_total_xlh": "biguint:990149999999999999997614",
+              "5-pool_creation_funds": "biguint:300000000000000000000000",
+              "6-pool_owner": "address:owner"
+            },
+            "str:clientState|address:client1": {
+              "1-sft_amount": "u64:0",
+              "2-xlh_data_vec_len": "u32:1",
+              "3-first_xlh_data": {
+                "1-pool_id": "u64:1",
+                "2-xlh_amount": "biguint:2149999999999999997614",
+                "3-time_stamp": "u64:31536000"
+              }
+            },
+            "str:clientState|address:owner": {
+              "1-sft_amount": "u64:0",
+              "2-xlh_data_vec_len": "u32:1",
+              "3-first_xlh_data": {
+                "1-pool_id": "u64:1",
+                "2-xlh_amount": "biguint:988,000,000000000000000000",
+                "3-time_stamp": "u64:31536000"
+              }
+            },
+            "str:poolPrice|u64:1": "*",
+            "str:poolPrice|u64:2": "*",
+            "str:poolPrice|u64:3": "*",
+            "str:clientList|str:.len": "2",
+            "str:clientList|str:.index|address:client1": "1",
+            "str:clientList|str:.item|u32:1": "address:client1",
+            "str:clientList|str:.index|address:owner": "2",
+            "str:clientList|str:.item|u32:2": "address:owner"
+          },
+          "code": "file:../output/xlauncher-staking.wasm"
+        }
+      }
+    }
+  ]
+}
