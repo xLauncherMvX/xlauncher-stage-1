@@ -123,8 +123,6 @@ pub trait HelloWorld {
         };
 
         self.pool_data(pull_id).set(&new_pool);
-
-
     }
 
 
@@ -609,7 +607,7 @@ pub trait HelloWorld {
         let staking_settings = self.contract_settings().get();
         let apy = self.compute_client_apy(&client_data, &staking_settings);
 
-        //let xlh_data = client_data.xlh_data;
+        let xlh_data = client_data.xlh_data;
         let mut report = ReportClientAllPools {
             total_xlh_amount: BigUint::from(0u64),
             total_xlh_rewards: BigUint::from(0u64),
@@ -617,10 +615,19 @@ pub trait HelloWorld {
             report_pool_items: ManagedVec::new(),
         };
 
-       /* for i in 0..xlh_data.len() {
+        for i in 0..xlh_data.len() {
             let client_xlh_data = xlh_data.get(i);
             let rewords = self.compute_rewords(&client_xlh_data, &current_time_stamp, &apy);
-        }*/
+            let report_item = ReportClientPoolPoolItem {
+                pool_id: client_xlh_data.pool_id,
+                xlh_amount: client_xlh_data.xlh_amount,
+                xlh_rewords: rewords,
+            };
+            report.total_xlh_amount = report.total_xlh_amount.clone() + report_item.xlh_amount.clone();
+            report.total_xlh_rewards = report.total_xlh_rewards.clone() + report_item.xlh_rewords.clone();
+            report.report_pool_items.push(report_item);
+
+        }
         return report;
     }
 

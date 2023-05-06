@@ -113,9 +113,9 @@ pub struct PoolPrice<M: ManagedTypeApi> {
 // client report
 #[derive(TypeAbi, TopEncode, TopDecode, ManagedVecItem, NestedEncode, NestedDecode, Clone)]
 pub struct ReportClientPoolPoolItem<M: ManagedTypeApi> {
-    pub pool_id: u32,
-    pub pool_amount: BigUint<M>,
-    pub rewards_amount: BigUint<M>,
+    pub pool_id: u64,
+    pub xlh_amount: BigUint<M>,
+    pub xlh_rewords: BigUint<M>,
 }
 
 #[derive(TypeAbi, TopEncode, TopDecode, ManagedVecItem, NestedEncode, NestedDecode, Clone)]
