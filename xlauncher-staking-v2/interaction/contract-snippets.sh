@@ -143,7 +143,7 @@ fundWithRewords() {
 stakeSft() {
   MY_LOGS="${ENV_LOGS}-stakeSft.json"
   user_address="$(mxpy wallet pem-address $PEM_FILE)"
-  method_name="0x$(echo -n 'stakeSft' | xxd -p -u | tr -d '\n')"
+  method_name=str:stakeSft
   token_id="0x$(echo -n ${SFT_ID} | xxd -p -u | tr -d '\n')"
   token_nonce="1"
   amount="1"
