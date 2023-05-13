@@ -31,6 +31,23 @@ setEnvDevnet() {
   SFT_ID_HEX=$(echo -n ${SFT_ID} | xxd -p)
 }
 
+setEnvTestnet() {
+  CURRENT_ENV="devnet"
+  ENV_LOGS="${CORE_LOGS}/${CURRENT_ENV}"
+
+  cp -f mxpy.data-storage-testnet.json mxpy.data-storage.json
+  PEM_FILE="${PROJECT}/../../wallets/users/2nd-dev-wallet.pem"
+  ADDRESS=$(mxpy data load --key=address-devnet)
+  PROXY=https://testnet-gateway.multiversx.com
+  CHAINID=T
+
+  TOKEN_ID="no-token"
+  SFT_ID="no-sft"
+
+  TOKEN_ID_HEX=$(echo -n ${TOKEN_ID} | xxd -p)
+  SFT_ID_HEX=$(echo -n ${SFT_ID} | xxd -p)
+}
+
 deploy() {
   MY_LOGS="${ENV_LOGS}-deploy.json"
   mxpy --verbose contract deploy --project=${PROJECT} --recall-nonce --pem=${PEM_FILE} \
