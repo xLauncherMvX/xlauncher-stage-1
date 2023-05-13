@@ -138,3 +138,20 @@ fundWithRewords() {
     --send \
     --outfile="${MY_LOGS}"
 }
+
+stakeSft() {
+  MY_LOGS="${ENV_LOGS}-stakeSft.json"
+  user_address="$(mxpy wallet pem-address $WALLET_PEM)"
+  method_name="0x$(echo -n 'stakeSft' | xxd -p -u | tr -d '\n')"
+  token_id="0x$(echo -n ${SFT_ID} | xxd -p -u | tr -d '\n')"
+  token_nonce="1"
+  amount="1"
+  mxpy --verbose contract call $user_address --recall-nonce \
+    --pem=${PEM_FILE} \
+    --gas-limit=5000000 \
+    --proxy=${PROXY} --chain=${CHAINID} \
+    --function="ESDTTransfer" \
+    --arguments $token_id $token_nonce $amount $ADDRESS $method_name \
+    --send \
+    --outfile="${MY_LOGS}"
+}
