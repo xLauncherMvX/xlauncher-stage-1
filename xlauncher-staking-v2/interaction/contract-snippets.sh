@@ -128,7 +128,8 @@ fundWithRewords() {
   MY_LOGS="${ENV_LOGS}-fundWithRewords.json"
   method_name="0x$(echo -n 'fundWithRewords' | xxd -p -u | tr -d '\n')"
   token_id="0x$(echo -n ${TOKEN_ID} | xxd -p -u | tr -d '\n')"
-  amount="2000000${MY_DECIMALS}"
+  #amount="2000000${MY_DECIMALS}"
+  amount="1${MY_DECIMALS}"
   mxpy --verbose contract call ${ADDRESS} --recall-nonce \
     --pem=${PEM_FILE} \
     --gas-limit=5000000 \
@@ -141,7 +142,7 @@ fundWithRewords() {
 
 stakeSft() {
   MY_LOGS="${ENV_LOGS}-stakeSft.json"
-  user_address="$(mxpy wallet pem-address $WALLET_PEM)"
+  user_address="$(mxpy wallet pem-address $PEM_FILE)"
   method_name="0x$(echo -n 'stakeSft' | xxd -p -u | tr -d '\n')"
   token_id="0x$(echo -n ${SFT_ID} | xxd -p -u | tr -d '\n')"
   token_nonce="1"
