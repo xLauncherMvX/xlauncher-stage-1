@@ -116,7 +116,7 @@ createNewPool() {
   MY_LOGS="${ENV_LOGS}-createNewPool.json"
   mxpy --verbose contract call ${ADDRESS} --recall-nonce \
     --pem=${PEM_FILE} \
-    --gas-limit=5000000 \
+    --gas-limit=10000000 \
     --proxy=${PROXY} --chain=${CHAINID} \
     --function="ESDTTransfer" \
     --arguments $token_id $amount $method_name $rank_id $pool_title \
