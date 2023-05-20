@@ -96,20 +96,20 @@ pub trait HelloWorld {
         let client = self.blockchain().get_caller();
 
         // check pool_price exists
-        assert!(!self.pool_price(pool_rank).is_empty(), "pool price does not exist");
+        require!(!self.pool_price(pool_rank).is_empty(), "pool price does not exist");
         //check token_id
 
         let settings = self.contract_settings().get();
-        assert!(token_id == settings.token_id, "wrong token id");
+        require!(token_id == settings.token_id, "wrong token id");
 
         //check amount matches pool price
         let pool_price = self.pool_price(pool_rank).get();
-        assert!(amount == pool_price.xlh_price, "wrong xlh amount");
+        require!(amount == pool_price.xlh_price, "wrong xlh amount");
 
         let mut total_staked_data = self.total_staked_data().get();
         let pull_id = total_staked_data.last_pool_id + 1;
         //check pool_data does not exist
-        assert!(self.pool_data(pull_id).is_empty(), "pool already exists");
+        require!(self.pool_data(pull_id).is_empty(), "pool already exists");
         total_staked_data.last_pool_id = pull_id;
         self.total_staked_data().set(&total_staked_data);
 
