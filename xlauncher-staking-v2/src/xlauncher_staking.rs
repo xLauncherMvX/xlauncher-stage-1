@@ -104,7 +104,7 @@ pub trait HelloWorld {
 
         //check amount matches pool price
         let pool_price = self.pool_price(pool_rank).get();
-        require!(amount == pool_price.xlh_price, "wrong xlh amount");
+        require!(amount == pool_price.xlh_price, "wrong xlh amount {}", amount);
 
         let mut total_staked_data = self.total_staked_data().get();
         let pull_id = total_staked_data.last_pool_id + 1;
