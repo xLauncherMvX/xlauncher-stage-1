@@ -110,8 +110,8 @@ createNewPool() {
   #  pool_title="0x$(echo -n 'IonutPool' | xxd -p -u | tr -d '\n')"
 
   amount="1000000${MY_DECIMALS}"
-  rank_id="3"
-  pool_title="0x$(echo -n 'CosminPool' | xxd -p -u | tr -d '\n')"
+  rank_id="1"
+  pool_title="0x$(echo -n 'Alex_is_best_moderator' | xxd -p -u | tr -d '\n')"
 
   MY_LOGS="${ENV_LOGS}-createNewPool.json"
   mxpy --verbose contract call ${ADDRESS} --recall-nonce \
