@@ -146,7 +146,7 @@ fundWithRewords() {
   method_name="0x$(echo -n 'fundWithRewords' | xxd -p -u | tr -d '\n')"
   token_id="0x$(echo -n ${TOKEN_ID} | xxd -p -u | tr -d '\n')"
   #amount="2000000${MY_DECIMALS}"
-  amount="1${MY_DECIMALS}"
+  amount="5000000${MY_DECIMALS}"
   mxpy --verbose contract call ${ADDRESS} --recall-nonce \
     --pem=${PEM_FILE} \
     --gas-limit=5000000 \
