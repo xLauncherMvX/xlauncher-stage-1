@@ -275,7 +275,7 @@ updatePeriod1PoolSettings() {
 
   APPEND_APY_ID="1"
   APPEND_APY_START=$(date -d '2022-05-12 00:00:01' +"%s")
-  APPEND_APY_END=$(date -d '2024-01-5 23:59:59' +"%s")
+  APPEND_APY_END=$(date -d '2023-05-31 23:59:59' +"%s")
   APPEND_APY_A="900"
   APPEND_APY_B="3000"
   APPEND_APY_C="5000"
@@ -293,8 +293,8 @@ updatePeriod1PoolSettings() {
 appendPeriod2PoolSettings() {
 
   APPEND_APY_ID="2"
-  APPEND_APY_START=$(date -d '2022-07-07 00:00:00' +"%s")
-  APPEND_APY_END=$(date -d '2022-07-20 23:59:59' +"%s")
+  APPEND_APY_START=$(date -d '2023-06-01 00:00:01' +"%s")
+  APPEND_APY_END=$(date -d '2023-12-31 23:59:59' +"%s")
   APPEND_APY_A="3200"
   APPEND_APY_B="9500"
   APPEND_APY_C="16000"
@@ -309,62 +309,6 @@ appendPeriod2PoolSettings() {
     --outfile="${MY_LOGS}/appendPoolSettings-${ENV_LOGS}.json"
 }
 
-appendPeriod3PoolSettings() {
-
-  APPEND_APY_ID="3"
-  APPEND_APY_START=$(date -d '2022-07-21 00:00:00' +"%s")
-  APPEND_APY_END=$(date -d '2022-08-10 23:59:59' +"%s")
-  APPEND_APY_A="3000"
-  APPEND_APY_B="9000"
-  APPEND_APY_C="15000"
-
-  mxpy --verbose contract call ${ADDRESS} --recall-nonce \
-    --pem=${PEM_FILE} \
-    --gas-limit=9000000 \
-    --proxy=${PROXY} --chain=${CHAINID} \
-    --function="appendPoolSettings" \
-    --arguments ${APPEND_APY_ID} ${APPEND_APY_START} ${APPEND_APY_END} ${APPEND_APY_A} ${APPEND_APY_B} ${APPEND_APY_C} \
-    --send \
-    --outfile="${MY_LOGS}/appendPoolSettings-${ENV_LOGS}.json"
-}
-
-appendPeriod4PoolSettings() {
-
-  APPEND_APY_ID="4"
-  APPEND_APY_START=$(date -d '2022-08-11 00:00:00' +"%s")
-  APPEND_APY_END=$(date -d '2023-01-04 23:59:59' +"%s")
-  APPEND_APY_A="2500"
-  APPEND_APY_B="7500"
-  APPEND_APY_C="12500"
-
-  mxpy --verbose contract call ${ADDRESS} --recall-nonce \
-    --pem=${PEM_FILE} \
-    --gas-limit=10000000 \
-    --proxy=${PROXY} --chain=${CHAINID} \
-    --function="appendPoolSettings" \
-    --arguments ${APPEND_APY_ID} ${APPEND_APY_START} ${APPEND_APY_END} ${APPEND_APY_A} ${APPEND_APY_B} ${APPEND_APY_C} \
-    --send \
-    --outfile="${MY_LOGS}/appendPoolSettings-${ENV_LOGS}.json"
-}
-
-appendPeriod5PoolSettings() {
-
-  APPEND_APY_ID="5"
-  APPEND_APY_START=$(date -d '2023-01-05 00:00:00' +"%s")
-  APPEND_APY_END=$(date -d '2024-01-5 23:59:59' +"%s")
-  APPEND_APY_A="2500"
-  APPEND_APY_B="7500"
-  APPEND_APY_C="12500"
-
-  mxpy --verbose contract call ${ADDRESS} --recall-nonce \
-    --pem=${PEM_FILE} \
-    --gas-limit=11000000 \
-    --proxy=${PROXY} --chain=${CHAINID} \
-    --function="appendPoolSettings" \
-    --arguments ${APPEND_APY_ID} ${APPEND_APY_START} ${APPEND_APY_END} ${APPEND_APY_A} ${APPEND_APY_B} ${APPEND_APY_C} \
-    --send \
-    --outfile="${MY_LOGS}/appendPoolSettings-${ENV_LOGS}.json"
-}
 
 switchIsActiveFieldValue() {
   mxpy --verbose contract call ${ADDRESS} --recall-nonce \
