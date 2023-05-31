@@ -295,9 +295,9 @@ appendPeriod2PoolSettings() {
   APPEND_APY_ID="2"
   APPEND_APY_START=$(date -d '2023-06-01 00:00:01' +"%s")
   APPEND_APY_END=$(date -d '2023-12-31 23:59:59' +"%s")
-  APPEND_APY_A="3200"
-  APPEND_APY_B="9500"
-  APPEND_APY_C="16000"
+  APPEND_APY_A="300"
+  APPEND_APY_B="800"
+  APPEND_APY_C="1300"
 
   mxpy --verbose contract call ${ADDRESS} --recall-nonce \
     --pem=${PEM_FILE} \
