@@ -55,7 +55,7 @@ setEnvMainnet() {
   cp -f mxpy.data-storage-mainnet.json mxpy.data-storage.json
   PEM_FILE="${PROJECT}/../../wallets/users/mainnet_owner_wallet.pem"
   ADDRESS=$(mxpy data load --key=address-devnet)
-  PROXY=https://testnet-gateway.multiversx.com
+  PROXY=https://api.multiversx.com
   CHAINID=1
 
   TOKEN_ID="XLH-8daa50"
