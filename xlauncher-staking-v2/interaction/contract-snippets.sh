@@ -173,3 +173,8 @@ stakeSft() {
     --send \
     --outfile="${MY_LOGS}"
 }
+
+getAllClientsReport() {
+  mxpy --verbose contract query ${ADDRESS} --function="getAllClientsReport" \
+   --proxy=${PROXY}
+}
