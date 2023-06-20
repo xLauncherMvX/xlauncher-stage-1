@@ -654,6 +654,28 @@ pub trait HelloWorld {
         return report;
     }
 
+    #[view(getStakingWalletsReport)]
+    fn get_staking_wallets_report(&self, pool_id: &u64) -> ManagedVec< StakingWalletReportItem<Self::Api>> {
+        let mut staking_report = ManagedVec::new();
+        let clients_set = self.client_list();
+        let clients_iter = clients_set.iter();
+        for client in clients_iter {
+            let client_data = self.client_state(&client).get();
+            let xlh_data = &client_data.xlh_data;
+            for i in 0..xlh_data.len() {
+                let client_xlh_data = xlh_data.get(i);
+                if client_xlh_data.pool_id == *pool_id {
+                    let report_item = StakingWalletReportItem {
+                        client_address: client.clone(),
+                        xlh_amount: client_xlh_data.xlh_amount,
+                    };
+                    staking_report.push(report_item);
+                }
+            }
+        }
+        return staking_report;
+    }
+
     // storage
 
     #[view(getContractSettings)]
