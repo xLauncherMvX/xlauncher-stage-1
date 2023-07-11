@@ -7,8 +7,43 @@
       "path": "04-stake-xlh-1-client.scen.json"
     },
     {
+      "step": "setState",
+      "accounts": {
+        "address:mainXlhAddress": {
+          "nonce": "0",
+          "balance": "0"
+        }
+      }
+    },
+    {
+      "step": "scCall",
+      "txId": "call-setMainXlhAddress",
+      "tx": {
+        "from": "address:owner",
+        "to": "sc:xlauncher-staking",
+        "function": "setMainXlhAddress",
+        "value": "0",
+        "gasLimit": "100,000,000",
+        "gasPrice": "0",
+        "arguments": [
+          "address:mainXlhAddress"
+        ]
+      },
+      "expect": {
+        "out": [],
+        "status": "0",
+        "message": "",
+        "gas": "*",
+        "refund": "*"
+      }
+    },
+    {
       "step": "checkState",
       "accounts": {
+        "address:mainXlhAddress": {
+          "nonce": "0",
+          "balance": "0"
+        },
         "address:owner": {
           "nonce": "*",
           "balance": "0",
@@ -43,6 +78,7 @@
               "4-total_sft_staked": "u64:0"
             },
             "str:sftSettings": "*",
+            "str:mainXlhAddress": "address:mainXlhAddress",
             "str:poolData|u64:1": {
               "1-pool_id": "u64:1",
               "2-pool_rank": "u64:1",
