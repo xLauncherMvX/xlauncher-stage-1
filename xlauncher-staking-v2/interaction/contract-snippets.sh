@@ -56,6 +56,7 @@ setEnvMainnet() {
   cp -f mxpy.data-storage-mainnet.json mxpy.data-storage.json
   PEM_FILE="${PROJECT}/../../wallets/users/mainnet_owner_wallet.pem"
   ADDRESS=$(mxpy data load --key=address-devnet)
+  MAIN_XLH_ADDRESS="erd1xa39h8q20gy25449vw2qt4dm38pp3nnxp7kzga2pt54z4u2rgjlqadlgdl"
   PROXY=https://api.multiversx.com
   CHAINID=1
 
@@ -188,6 +189,17 @@ setMainXlhAddress(){
     --proxy=${PROXY} --chain=${CHAINID} \
     --function="setMainXlhAddress" \
     --arguments ${MAIN_XLH_ADDRESS} \
+    --send \
+    --outfile="${MY_LOGS}"
+}
+
+collectCreationFunds(){
+  MY_LOGS="${ENV_LOGS}-collectCreationFunds.json"
+  mxpy --verbose contract call ${ADDRESS} --recall-nonce \
+    --pem=${PEM_FILE} \
+    --gas-limit=90000000 \
+    --proxy=${PROXY} --chain=${CHAINID} \
+    --function="collectCreationFunds" \
     --send \
     --outfile="${MY_LOGS}"
 }
