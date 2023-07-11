@@ -5,9 +5,9 @@
 ////////////////////////////////////////////////////
 
 // Init:                                 1
-// Endpoints:                           24
+// Endpoints:                           26
 // Async Callback (empty):               1
-// Total number of exported functions:  26
+// Total number of exported functions:  28
 
 #![no_std]
 #![feature(alloc_error_handler, lang_items)]
@@ -20,6 +20,7 @@ multiversx_sc_wasm_adapter::endpoints! {
     (
         setContractSettings
         setPoolPrice
+        setMainXlhAddress
         createNewPool
         fundWithRewords
         stakeXlh
@@ -38,6 +39,7 @@ multiversx_sc_wasm_adapter::endpoints! {
         getPoolData
         getSimplePoolData
         getPoolPrice
+        getMainXlhAddress
         getClientState
         getUnstakeXlhState
         getUnstakeSftState

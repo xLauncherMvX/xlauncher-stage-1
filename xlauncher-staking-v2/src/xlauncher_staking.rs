@@ -85,6 +85,12 @@ pub trait HelloWorld {
         self.total_staked_data().set(&total_staked_data);
     }
 
+    #[only_owner]
+    #[endpoint(setMainXlhAddress)]
+    fn set_main_xlh_address(&self, main_xlh_wallet: ManagedAddress) {
+        self.main_xlh_address().set(&main_xlh_wallet);
+    }
+
 
     #[payable("*")]
     #[endpoint(createNewPool)]
@@ -702,6 +708,10 @@ pub trait HelloWorld {
     #[storage_mapper("poolPrice")]
     fn pool_price(&self, pool_id: u64) -> SingleValueMapper<PoolPrice<Self::Api>>;
 
+    #[view(getMainXlhAddress)]
+    #[storage_mapper("mainXlhAddress")]
+    fn main_xlh_address(&self) -> SingleValueMapper<ManagedAddress>;
+
     #[view(getClientState)]
     #[storage_mapper("clientState")]
     fn client_state(
@@ -726,6 +736,8 @@ pub trait HelloWorld {
     #[view(getClientList)]
     #[storage_mapper("clientList")]
     fn client_list(&self) -> UnorderedSetMapper<ManagedAddress>;
+
+
 }
 
 
