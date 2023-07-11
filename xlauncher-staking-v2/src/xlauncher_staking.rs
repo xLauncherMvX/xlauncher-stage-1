@@ -91,6 +91,34 @@ pub trait HelloWorld {
         self.main_xlh_address().set(&main_xlh_wallet);
     }
 
+    #[only_owner]
+    #[endpoint(collectCreationFunds)]
+    fn collect_creation_funds(&self) {
+        // iterate over all pools and collect creation funds
+        let total_staked_data = self.total_staked_data().get();
+        let last_pool_id = total_staked_data.last_pool_id;
+        let mut collected_funds = BigUint::zero();
+        for i in 1..=last_pool_id {
+            //if creation funds bigger than 0, collect them
+            if self.pool_data(i).get().pool_creation_funds == BigUint::zero() {
+                continue;
+            }
+            let mut pool_data = self.pool_data(i).get();
+            collected_funds += pool_data.pool_creation_funds;
+            pool_data.pool_creation_funds = BigUint::zero();
+            self.pool_data(i).set(&pool_data);
+        }
+        // transfer collected funds to main_xlh_wallet
+        let main_xlh_wallet = self.main_xlh_address().get();
+        let token_id = self.contract_settings().get().token_id;
+        self.send().direct_esdt(
+            &main_xlh_wallet,
+            &token_id,
+            0,
+            &collected_funds,
+        );
+    }
+
 
     #[payable("*")]
     #[endpoint(createNewPool)]
