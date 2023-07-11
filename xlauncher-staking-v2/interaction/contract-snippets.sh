@@ -21,6 +21,7 @@ setEnvDevnet() {
   cp -f mxpy.data-storage-devnet.json mxpy.data-storage.json
   PEM_FILE="${PROJECT}/../../wallets/users/devnet_owner_wallet.pem"
   ADDRESS=$(mxpy data load --key=address-devnet)
+  MAIN_XLH_ADDRESS="erd1mhhnd3ux2duwc9824dhelherdj3gvzn04erdw29l8cyr5z8fpa7quda68z"
   PROXY=https://devnet-gateway.multiversx.com
   CHAINID=D
 
@@ -177,4 +178,16 @@ stakeSft() {
 getAllClientsReport() {
   mxpy --verbose contract query ${ADDRESS} --function="getAllClientsReport" \
    --proxy=${PROXY}
+}
+
+setMainXlhAddress(){
+  MY_LOGS="${ENV_LOGS}-setMainXlhAddress.json"
+  mxpy --verbose contract call ${ADDRESS} --recall-nonce \
+    --pem=${PEM_FILE} \
+    --gas-limit=10000000 \
+    --proxy=${PROXY} --chain=${CHAINID} \
+    --function="setMainXlhAddress" \
+    --arguments ${MAIN_XLH_ADDRESS} \
+    --send \
+    --outfile="${MY_LOGS}"
 }
